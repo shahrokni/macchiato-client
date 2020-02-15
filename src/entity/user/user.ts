@@ -1,5 +1,6 @@
 export class User{
 
     name:String;
-    lastName:String;        
+    lastName:String;       
+    studentNumber:Number; 
 }

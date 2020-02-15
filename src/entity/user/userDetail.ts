@@ -7,5 +7,6 @@ export class UserDetail extends User{
     email:String;
     userName:String;
     birthDate:Date;
-    gender:Gender;    
+    gender:Gender;
+    levelScore:Number;    
 }
