@@ -7,6 +7,7 @@ export class UserService{
 
     signUp(userDetail:UserDetail){
 
+        
     }
 
     signIn(user:User){
