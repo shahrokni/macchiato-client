@@ -5,6 +5,10 @@ export class UserService{
 
     //TODO: You need to review ES6 OOP features before you continue this part!
 
+    getUser(user:User){
+
+    }
+
     signUp(userDetail:UserDetail){
 
         
