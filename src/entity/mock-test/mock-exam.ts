@@ -1,7 +1,9 @@
 import { Skill } from "./skill";
 
 export class MockExam{
-    examBeginDate:Date;
+
+    id:Number;
+    beginDate:Date;
     timeLimit:Number;
     skills:Array<Skill>;
     cost: Number;
