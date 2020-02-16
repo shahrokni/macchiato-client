@@ -13,3 +13,7 @@ export function checkStrongPassword(password){
 export function checkUserName(username){
 
 }
+
+export function checkCellphone(cellphone){
+    
+}

@@ -9,5 +9,6 @@ export class UserDetail extends User{
     userName:String;
     birthDate:Date;
     gender:Gender;
+    cellphone:String;
     skillScore:SkillScore;
 }
