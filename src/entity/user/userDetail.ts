@@ -1,5 +1,6 @@
 import { User } from "./user";
 import { Gender } from "./gender";
+import { SkillScore } from "./skill-score";
 
 export class UserDetail extends User{
 
@@ -8,5 +9,5 @@ export class UserDetail extends User{
     userName:String;
     birthDate:Date;
     gender:Gender;
-    levelScore:Number;    
+    skillScore:SkillScore;
 }

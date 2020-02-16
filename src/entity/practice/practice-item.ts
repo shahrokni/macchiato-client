@@ -1,9 +1,7 @@
 import { Question } from "../question/question";
 import { Answer } from "../answer/answer";
 
-export class QuestionAnswer {
-
-    order:Number;   
+export class PracticeItem{
     question:Question;
     answer:Answer;
 }
