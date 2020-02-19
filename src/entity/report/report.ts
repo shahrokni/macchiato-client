@@ -3,9 +3,9 @@ import { User } from "../user/user";
 import { ReportState } from "./report-state";
 
 export class Report{
-    reportDate:Date;
-    reportLastUpdate:Date;
-    reportType:ReportType;
-    student:User;
-    state:ReportState;
+    reportDate:Date=new Date();
+    reportLastUpdate:Date=new Date();
+    reportType:ReportType=ReportType.notSet;
+    student:User = new User();
+    state:ReportState=ReportState.notSet;
 }

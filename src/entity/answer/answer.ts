@@ -1,5 +1,5 @@
 import { AnswerType } from "./answer-type";
 
 export class Answer{
-    answerType:AnswerType
+    answerType:AnswerType=AnswerType.notSet;
 }

@@ -1,11 +1,11 @@
 import { Skill } from "./skill";
 
-export class MockExam{
+export class MockExam {
 
-    id:Number;
-    beginDate:Date;
-    timeLimit:Number;
-    skills:Array<Skill>;
-    cost: Number;
-    avialableSeat:Number;
+    id: Number = 0;
+    beginDate: Date = new Date();
+    timeLimit: Number = 0;
+    skills: Array<Skill> = new Array<Skill>();
+    cost: Number = 0;
+    avialableSeat: Number = 0;
 }

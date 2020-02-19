@@ -1,8 +1,9 @@
 export enum QuestionType{
-    Reading,
-    Speaking,
-    Listening,
-    Writing,
-    Slang,
-    Vocab
+    notSet=-1,
+    Reading=0,
+    Speaking=1,
+    Listening=2,
+    Writing=3,
+    Slang=4,
+    Vocab=5
 }

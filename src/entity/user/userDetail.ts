@@ -4,11 +4,11 @@ import { SkillScore } from "./skill-score";
 
 export class UserDetail extends User{
 
-    registerationDate:Date;
-    email:String;
-    userName:String;
-    birthDate:Date;
-    gender:Gender;
-    cellphone:String;
-    skillScore:SkillScore;
+    registerationDate:Date=new Date();
+    email:String="";
+    userName:String="";
+    birthDate:Date=new Date();
+    gender:Gender=Gender.notSet;
+    cellphone:String="";
+    skillScore:SkillScore=new SkillScore;
 }

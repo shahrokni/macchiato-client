@@ -1,3 +1,3 @@
 export class QuestionItem{
-    title:String;    
+    title:String="";    
 }

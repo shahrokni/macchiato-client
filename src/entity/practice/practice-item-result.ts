@@ -1,8 +1,8 @@
 import { YesNo } from "../global/YesNo";
 
-export class PracticeItemResult{
+export class PracticeItemResult {
 
-    wasCorrect:YesNo;
-    score: Number;
-    
+    wasCorrect: YesNo = YesNo.notSet;
+    score: Number = 0;
+
 }

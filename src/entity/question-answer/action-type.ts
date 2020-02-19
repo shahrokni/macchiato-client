@@ -1,5 +1,6 @@
 export enum ActionType{
-    Mock,
-    Level,
-    Practice
+    notSet=-1,
+    Mock=0,
+    Level=1,
+    Practice=2
 }

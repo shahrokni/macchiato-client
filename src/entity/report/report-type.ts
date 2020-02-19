@@ -1,4 +1,5 @@
 export enum ReportType{
-    studentLevel,
-    mockExam
+    notSet=-1,
+    studentLevel=0,
+    mockExam=1
 }

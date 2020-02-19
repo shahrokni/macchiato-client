@@ -1,4 +1,5 @@
 export enum ReportState{
-    Done,
-    PartiallyDone,
+    notSet=-1,
+    PartiallyDone=0,
+    Done=1,
 }

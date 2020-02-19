@@ -1,4 +1,4 @@
 export class PaymentItem{
-    date:Date;
-    amount:Number;
+    date:Date=new Date();
+    amount:Number=0;
 }
