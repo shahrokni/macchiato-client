@@ -1,5 +1,7 @@
 import {UserDetail} from '../../entity/user/userDetail';
 import { User } from '../../entity/user/user';
+import {validateSignUpData} from '../../util/validation/user-validation';
+import { ServerResponse } from '../../communication/entity/server-response';
 
 export class UserService{
 
@@ -9,9 +11,14 @@ export class UserService{
 
     }
 
-    signUp(userDetail:UserDetail){
+    signUp(userDetail:UserDetail):ServerResponse{
 
-        
+        let errorArray = validateSignUpData(userDetail);
+
+        if(errorArray.length!=0){
+            // Redirect to Global Message Component for showing a proper message!
+        }      
+        return new ServerResponse();
     }
 
     signIn(user:User){
