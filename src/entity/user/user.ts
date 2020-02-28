@@ -1,7 +1,7 @@
-export class User{
+export default class User{
 
     name:String="";
     lastName:String="";       
-    studentNumber:Number=0;
+    studentNumber:String="";
     password:String=""; 
 }

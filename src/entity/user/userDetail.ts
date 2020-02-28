@@ -1,4 +1,4 @@
-import { User } from "./user";
+import User from "./user";
 import { Gender } from "./gender";
 import { SkillScore } from "./skill-score";
 
