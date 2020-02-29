@@ -4,6 +4,13 @@ import {checkNameFormat,
   checkUserName,
   checkCellphone} from '../util/regex/string-regex';
 
+import {
+validateSignUpData,
+validateUpdateData,
+} from '../util/validation/user-validation'
+import { UserDetail } from '../entity/user/userDetail';
+import ErrorMessage from '../resource/text/error-message';
+
 // Util - Regular Expression Unit Tests
 test('m.shahrokny@gmail.com is a valid Email',()=>{expect(
   checkEmailFormat('m.shahrokny@gmail.com')
@@ -58,3 +65,34 @@ test('Ali*1990 is not a valid username',()=>{expect(
   checkUserName("Ali*1990")
 ).toBe(false);});
 //--------------------------------------------------------------
+// Validators unit tests
+
+test('Signup method validation has problem with userName, email, and name format',()=>{
+
+  //Arrange 
+  let userDetail = new UserDetail();
+  userDetail.email = "Ali@com";
+  userDetail.lastName = "123Shahrokni"
+  userDetail.name = "Mahm1oud";
+  userDetail.userName="Ali*1990";
+
+  //Act 
+  let errorMessages = validateSignUpData(userDetail);
+
+  //Assert
+  expect(errorMessages).toContain(ErrorMessage.ErrBu0003());
+  expect(errorMessages).toContain(ErrorMessage.ErrBu0004());
+  expect(errorMessages).toContain(ErrorMessage.ErrBu0005());
+});
+
+test('Update user information validation has problem with birthdate',()=>{
+  //Arrange 
+  let userDetail = new UserDetail();
+  userDetail.birthDate = "MMYYDDDD";
+
+  //Act
+  let errorMessages = validateUpdateData(userDetail);
+
+  //Assert 
+  expect(errorMessages).toContain(ErrorMessage.ErrBu0007());
+});

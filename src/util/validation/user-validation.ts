@@ -19,7 +19,7 @@ export function validateSignUpData(userDetail:UserDetail):Array<String>{
         errorMessages.push(ErrorMessage.ErrBu0004());
     }
     //Check name fromat
-    if(checkNameFormat(userDetail.name)&&checkNameFormat(userDetail.lastName)===false){
+    if(checkNameFormat(userDetail.name)===false || checkNameFormat(userDetail.lastName)===false){
         errorMessages.push(ErrorMessage.ErrBu0005());
     }
 
@@ -38,7 +38,7 @@ export function validateUpdateData(userDetail:UserDetail):Array<String>{
         errorMessages.push(ErrorMessage.ErrBu0003());
     }
 
-    if(checkNameFormat(userDetail.name)&&checkNameFormat(userDetail.lastName)===false){
+    if(checkNameFormat(userDetail.name)===false || checkNameFormat(userDetail.lastName)===false){
         errorMessages.push(ErrorMessage.ErrBu0005());
     }
 
