@@ -5,8 +5,7 @@ import { SkillScore } from "./skill-score";
 export class UserDetail extends User{
 
     registerationDate:Date=new Date();
-    email:String="";
-    userName:String="";
+    email:String="";  
     birthDate:Date=new Date();
     gender:Gender=Gender.notSet;
     cellphone:String="";
