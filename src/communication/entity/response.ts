@@ -7,5 +7,5 @@ export default class Response {
  
     outputType:String="";
     outputJson:String="";
-    operationTimestamp:Date=new Date();    
+    operationTimestamp:Date=new Date();  
 }
