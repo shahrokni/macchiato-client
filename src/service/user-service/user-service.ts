@@ -62,7 +62,13 @@ export default class UserService {
         }
 
         let restInstance = RestProvider.createInstance(1500);
-        //TODO: Calling Rest service
+        restInstance.post('/users',userDetail).then(function(response:String){
+           
+        })
+        .catch(function(err:any){
+
+        });
+      
         return new Response();
     }
 

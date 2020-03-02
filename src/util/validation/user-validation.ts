@@ -3,6 +3,8 @@ import User from "../../entity/user/user";
 import ErrorMessage from "../../resource/text/error-message";
 import {checkEmailFormat,checkUserName,checkNameFormat} from '../regex/string-regex';
 
+/*---------------------------------------------------------------------------------*/
+
 export function validateSignUpData(userDetail:UserDetail):Array<String>{
 
     let errorMessages = new Array<String>();

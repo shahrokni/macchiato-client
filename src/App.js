@@ -3,8 +3,31 @@ import logo from './logo.svg';
 import './App.css';
 import UserService from './service/user-service/user-service';
 import User  from './entity/user/user';
+import { UserDetail } from './entity/user/userDetail';
+import { Gender } from './entity/user/gender';
 
 function App() {  
+
+  useEffect(()=>{
+
+    let user = new UserDetail();
+    user.name = 'Mahmoud';
+    user.lastName = 'Shahrokni';
+    user.gender = Gender.Male;
+    user.email = 'm.shahrokny@gmail.com';
+    user.userName = 'mim_delta';
+    user.password = 'C#8isthebest!';
+
+    let service = new UserService();
+    service.signUp(user);
+
+
+  }
+  );
+
+
+
+
 
   return (
     <div className="App">
