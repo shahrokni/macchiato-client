@@ -1,46 +1,49 @@
-"use strict";
-exports.__esModule = true;
-var ErrorMessage = /** @class */ (function () {
-    function ErrorMessage() {
-    }
-    ErrorMessage.Err0000 = function () {
+export default class ErrorMessage{
+
+    static Err0000(){
         return "An unknown error occurred!";
-    };
-    ErrorMessage.Err0001 = function () {
+    }
+
+    static Err0001(){
         return "Server returned erro!";
-    };
-    ErrorMessage.Err0002 = function () {
+    }
+
+    static Err0002() {
         return "Something went wrong! Please try again or call the administration!";
-    };
+    }
     /*------------------------------------------------------------ */
     //studentNumber
-    ErrorMessage.ErrBu0001 = function () {
-        return "Student number is not set!";
-    };
+    static ErrBu0001(){
+        return "Student number is not set!"
+    }
+
     //user
-    ErrorMessage.ErrBu0002 = function () {
+    static ErrBu0002(){
         return "User information is not set!";
-    };
+    }
+
     //email
-    ErrorMessage.ErrBu0003 = function () {
+    static ErrBu0003(){
         return "Email format is not correct!";
-    };
+    }
+
     //username
-    ErrorMessage.ErrBu0004 = function () {
+    static ErrBu0004(){
         return "Username format is not correct!";
-    };
+    }
+
     //name and lastName
-    ErrorMessage.ErrBu0005 = function () {
+    static ErrBu0005(){
         return "Either you name or last name format is not correct!";
-    };
+    }
+    
     //password
-    ErrorMessage.ErrBu0006 = function () {
+    static ErrBu0006(){
         return "Password format is not correct!";
-    };
+    }
+
     //birthDate
-    ErrorMessage.ErrBu0007 = function () {
+    static ErrBu0007(){
         return "Birthdate format is not correct!";
-    };
-    return ErrorMessage;
-}());
-exports["default"] = ErrorMessage;
+    }
+}
