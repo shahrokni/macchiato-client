@@ -22,10 +22,7 @@ export default class UserService {
 
              let result = new Response();
              result.isSuccessful =  false;
-             
-             for(let i=0; i<errorMessages.length; i++){
-                 result.clientValidations.push(errorMessages[i]);
-             }
+             result.setClientValidations(errorMessages);          
 
              return result;
          }
@@ -56,14 +53,13 @@ export default class UserService {
 
             let result = new Response();
             result.isSuccessful = false;
-            
-            for(let i = 0 ; i<errorMessages.length; i++){
-                result.clientValidations.push(errorMessages[i]);
-            }
+            result.setClientValidations(errorMessages);
+           
             return result;
         }
 
         let restInstance = RestProvider.createInstance(1500);
+
         restInstance.post('/users',userDetail).then(function(response){
            
         })
@@ -83,11 +79,8 @@ export default class UserService {
 
             let result = new Response();
             result.isSuccessful = false;
-
-            for(let i=0; i<errorMessages.length; i++){
-                result.clientValidations.push(errorMessages[i]);
-            }
-
+            result.setClientValidations(errorMessages);
+         
             return result;
         }
 
@@ -104,10 +97,7 @@ export default class UserService {
         if(errorMessages!=null && errorMessages.length!==0){
             let result = new Response();
             result.isSuccessful=false;
-
-            for(let i=0;i<errorMessages.length; i++){
-                result.clientValidations.push(errorMessages[i]);
-            }
+            result.setClientValidations(errorMessages);
 
             return result;
         }
@@ -126,10 +116,8 @@ export default class UserService {
         if(errorMessages!=null && errorMessages.length!==0){
             let result = new Response();
             result.isSuccessful=false;
-
-            for(let i=0;i<errorMessages.length;i++){
-                result.clientValidations.push(errorMessages[i]);
-            }
+            result.setClientValidations(errorMessages);
+           
             return result;
         }
         

@@ -1,5 +1,4 @@
 import { UserDetail } from "../../entity/user/userDetail";
-import User from "../../entity/user/user";
 import ErrorMessage from "../../resource/text/error-message";
 import {checkEmailFormat,checkUserName,checkNameFormat} from '../regex/string-regex';
 
