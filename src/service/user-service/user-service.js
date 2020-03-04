@@ -13,7 +13,8 @@ export default class UserService {
 
     //TODO: You need to review ES6 OOP features before you continue this part!
 
-    getUser(user: User): Response {
+    /*user: User - output:Response*/
+    getUser(user){
        
         //validation
          let errorMessages = validateGetUserData(user);
@@ -33,11 +34,11 @@ export default class UserService {
         let restInstance = RestProvider.createInstance(1500);
         
         //Calling get method and return the result
-        restInstance.get('/users', { params: { studentNumber: user.studentNumber } }).then(function (response: string) {            
+        restInstance.get('/users', { params: { studentNumber: user.studentNumber } }).then(function (response) {            
             return JSON.parse(response);
         })
         //Catching the error
-        .catch(function (error: any) {
+        .catch(function (error) {
              let response = new Response();
              response.isSuccessful=false;            
              return response;
@@ -46,7 +47,8 @@ export default class UserService {
             return new Response();
     }
 
-    signUp(userDetail: UserDetail): Response {
+    /*userDetial: UserDetail - output: Response*/
+    signUp(userDetail){
 
         //Validattion
         let errorMessages = validateSignUpData(userDetail);
@@ -62,17 +64,18 @@ export default class UserService {
         }
 
         let restInstance = RestProvider.createInstance(1500);
-        restInstance.post('/users',userDetail).then(function(response:String){
+        restInstance.post('/users',userDetail).then(function(response){
            
         })
-        .catch(function(err:any){
+        .catch(function(err){
 
         });
       
         return new Response();
     }
 
-    signIn(user: User): Response {
+    /*user: User - output: Response*/
+    signIn(user){
         
         let errorMessages = validateSignIn(user);
 
@@ -93,7 +96,8 @@ export default class UserService {
         return new Response();
     }
 
-    update(userDetail: UserDetail) : Response {
+    /*userDetail: UserDetail-output: Reponse*/
+    update(userDetail){
 
         let errorMessages = validateUpdateData(userDetail);
 
@@ -114,7 +118,8 @@ export default class UserService {
         return new Response();
     }
 
-    logOut(user: User): Response {
+    /*user: User - output: Response*/
+    logOut(user){
 
         let errorMessages = validateLogOut(user);
 

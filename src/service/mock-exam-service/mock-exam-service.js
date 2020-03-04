@@ -7,13 +7,15 @@ export class ExamService{
 
     }
     
-    getExamContext(exam:MockExam){
+    /*exam: MockExam*/
+    getExamContext(exam){
 
     }
 
     //TODO: You need to read about adding properties at run-time. 
     //Using teqnique you can add Mock exam number to user-collected-answers!!!
-    sendAnswer(answer:UserCollectedAnswers){
+    /*answer: UserCollectedAnswers*/
+    sendAnswer(answer){
 
     }
 }

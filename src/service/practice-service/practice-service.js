@@ -3,11 +3,13 @@ import { UserCollectedAnswers } from '../../entity/question-answer/user-collecte
 
 export class PracticeService{
 
-    getNewItem(filter:PracticeFilter){
+    /*filter: PracticeFilter*/
+    getNewItem(filter){
 
     }
 
-    sendAnswer(answer:UserCollectedAnswers){
+    /*answer: UserCollectedAnswers*/
+    sendAnswer(answer){
         
     }
 }

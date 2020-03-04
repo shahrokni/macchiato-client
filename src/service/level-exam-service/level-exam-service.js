@@ -3,13 +3,15 @@ import {UserCollectedAnswers} from '../../entity/question-answer/user-collected-
 
 export class LevelExamService{
 
-    getExamContext(exam:MockExam){
+    /*exam: MockExam*/
+    getExamContext(exam){
 
     }
 
     //TODO: You need to read about adding properties at run-time. 
     //Using teqnique you can add Mock exam number to user-collected-answers!!!
-    sendAnswer(answer:UserCollectedAnswers){
+    /* answer: UserCollectedAnswer */
+    sendAnswer(answer){
 
     }
 }
