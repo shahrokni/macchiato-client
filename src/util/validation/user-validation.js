@@ -1,100 +1,122 @@
-import { UserDetail } from "../../entity/user/userDetail";
+
+import {checkEmailFormat, checkUserName, checkNameFormat} from "../regex/string-regex";
 import ErrorMessage from "../../resource/text/error-message";
-import {checkEmailFormat,checkUserName,checkNameFormat} from '../regex/string-regex';
 
-/*---------------------------------------------------------------------------------*/
+export class UserValidation {
+ 
 
-/*userDetail: UserDetail - output: String Array*/
-export function validateSignUpData(userDetail){
+    /*userDetail: UserDetail - output: String Array*/
+    validateSignUpData(userDetail) {       
 
-    let errorMessages = new Array();
+        let errorMessages = [];
 
-    if(UserDetail==null)
-        errorMessages.push(ErrorMessage.ErrBu0002());   
+        if (userDetail == null)
+            errorMessages.push(ErrorMessage.ErrBu0002());
 
-    //Ceck email format
-    if(checkEmailFormat(userDetail.email)===false){
-        errorMessages.push(ErrorMessage.ErrBu0003());
-    }
-    //Check user name 
-    if(checkUserName(userDetail.userName)===false){
-        errorMessages.push(ErrorMessage.ErrBu0004());
-    }
-    //Check name fromat
-    if(checkNameFormat(userDetail.name)===false || checkNameFormat(userDetail.lastName)===false){
-        errorMessages.push(ErrorMessage.ErrBu0005());
-    }
+        //Ceck email format
+        if (checkEmailFormat(userDetail.email) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0003());
+        }
+        //Check user name 
+        if (checkUserName(userDetail.userName) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0004());
+        }
+        //Check name fromat
+        if (checkNameFormat(userDetail.name) === false || checkNameFormat(userDetail.lastName) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0005());
+        }
 
-    return errorMessages;
-}
+        return errorMessages;
 
-/*userDetail: UserDetail - output: String Array*/
-export function validateUpdateData(userDetail){
-
-    let errorMessages = new Array();
-
-    if(userDetail == null){
-        errorMessages.push(ErrorMessage.ErrBu0002());
+        return [];
     }
 
-    if(checkEmailFormat(userDetail.email)===false){
-        errorMessages.push(ErrorMessage.ErrBu0003());
-    }
 
-    if(checkNameFormat(userDetail.name)===false || checkNameFormat(userDetail.lastName)===false){
-        errorMessages.push(ErrorMessage.ErrBu0005());
-    }
+    /*userDetail: UserDetail - output: String Array*/
+    validateUpdateData(userDetail) {
 
-    if((userDetail.birthDate instanceof Date)===false){
-        errorMessages.push(ErrorMessage.ErrBu0007());
-    }
+        let { checkEmailFormat, checkNameFormat } =
+             import('../regex/string-regex');
 
-    return errorMessages;
-}
+        let errorMessages = [];
 
-/* user:User - output: String Array */
-export function validateGetUserData(user){
+        if (userDetail == null) {
+            errorMessages.push(ErrorMessage.ErrBu0002());
+        }
 
-    
-    if(user != null && user.studentNumber != null && user.studentNumber !==""){
-        //return an empty array        
-        return new Array();
-    }
-        let errorMessages = new Array();
-        errorMessages.push(ErrorMessage.ErrBu0001());
-        return errorMessages;   
-}
+        if (checkEmailFormat(userDetail.email) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0003());
+        }
 
-/*user: User - output: String Array */
-export function validateSignIn(user){
+        if (checkNameFormat(userDetail.name) === false || checkNameFormat(userDetail.lastName) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0005());
+        }
 
-    let errorMessages= new Array();
+        if ((userDetail.birthDate instanceof Date) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0007());
+        }
 
-    if(user == null){
-        errorMessages.push(ErrorMessage.ErrBu0002());
-    }
-
-    if(checkUserName(user.userName)===false){
-        errorMessages.push(ErrorMessage.ErrBu0004());
-    }
-
-    if(user.password == null || user.password===""){
-        errorMessages.push(ErrorMessage.ErrBu0006());
-    }
-
-    return errorMessages;
-}
-
-/*user: User - output: String Array*/
-export function validateLogOut(user){
-
-    let errorMessages = new Array();
-
-    if(user!=null && user.studentNumber!=null && user.studentNumber!=null){
         return errorMessages;
     }
 
-    //Do not show technical error to the user!
-    errorMessages.push(ErrorMessage.Err0002());
-    return errorMessages;
+
+
+    /* user:User - output: String Array */
+    validateGetUserData(user) {
+
+
+        if (user != null && user.studentNumber != null && user.studentNumber !== "") {
+            //return an empty array        
+            return [];
+        }
+        let errorMessages = [];
+        errorMessages.push(ErrorMessage.ErrBu0001());
+        return errorMessages;
+    }
+
+
+
+    /*user: User - output: String Array */
+    validateSignIn(user) {
+
+
+        let { checkUserName } =
+             import('../regex/string-regex');
+
+        let errorMessages = [];
+
+        if (user == null) {
+            errorMessages.push(ErrorMessage.ErrBu0002());
+        }
+
+        if (checkUserName(user.userName) === false) {
+            errorMessages.push(ErrorMessage.ErrBu0004());
+        }
+
+        if (user.password == null || user.password === "") {
+            errorMessages.push(ErrorMessage.ErrBu0006());
+        }
+
+        return errorMessages;
+    }
+
+    /*user: User - output: String Array*/
+    validateLogOut(user) {
+
+        let errorMessages = [];
+
+        if (user != null && user.studentNumber != null && user.studentNumber != null) {
+            return errorMessages;
+        }
+
+        //Do not show technical error to the user!
+        errorMessages.push(ErrorMessage.Err0002());
+        return errorMessages;
+    }
 }
+
+
+
+
+
+

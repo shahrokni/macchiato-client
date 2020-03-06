@@ -1,10 +1,5 @@
-import { UserDetail } from '../../entity/user/userDetail';
-import User  from '../../entity/user/user';
-import { validateSignUpData,
-    validateGetUserData,
-    validateSignIn,
-    validateUpdateData,
-    validateLogOut } from '../../util/validation/user-validation';
+
+import {UserValidation} from '../../util/validation/user-validation';
 import  Response  from '../../communication/entity/response';
 import RestProvider from '../../communication/entity/rest-provider';
 
@@ -16,8 +11,10 @@ export default class UserService {
     /*user: User - output:Response*/
     getUser(user){
        
-        //validation
-         let errorMessages = validateGetUserData(user);
+         //validation
+        let validator = new UserValidation();       
+        let errorMessages = validator.validateGetUserData(user);
+
          if(errorMessages !=null && errorMessages.length!==0){
 
              let result = new Response();
@@ -48,7 +45,8 @@ export default class UserService {
     signUp(userDetail){
 
         //Validattion
-        let errorMessages = validateSignUpData(userDetail);
+        let validator = new UserValidation();     
+        let errorMessages = validator.validateSignUpData(userDetail);
         if (errorMessages!=null && errorMessages.length !== 0) {
 
             let result = new Response();
@@ -73,7 +71,8 @@ export default class UserService {
     /*user: User - output: Response*/
     signIn(user){
         
-        let errorMessages = validateSignIn(user);
+        let validator = new UserValidation();     
+        let errorMessages = validator.validateSignIn(user);
 
         if(errorMessages!=null && errorMessages.length!==0){
 
@@ -92,7 +91,8 @@ export default class UserService {
     /*userDetail: UserDetail-output: Reponse*/
     update(userDetail){
 
-        let errorMessages = validateUpdateData(userDetail);
+        let validator = new UserValidation();  
+        let errorMessages = validator.validateUpdateData(userDetail);
 
         if(errorMessages!=null && errorMessages.length!==0){
             let result = new Response();
@@ -111,7 +111,8 @@ export default class UserService {
     /*user: User - output: Response*/
     logOut(user){
 
-        let errorMessages = validateLogOut(user);
+        let validator = new UserValidation();  
+        let errorMessages = validator.validateLogOut(user);
 
         if(errorMessages!=null && errorMessages.length!==0){
             let result = new Response();

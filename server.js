@@ -11,6 +11,7 @@ app.listen(port, () => console.log('Listening on port ' + port));
 
 app.post('/users',(req,res)=>{
 
-   console.log('Start learning Express in Action!!!');
-    
+   let resolvedFunction = require("./src/util/entity-object-resolver/entity-object-resolver");  
+   let obj = resolvedFunction(); 
+   console.log(obj);
 });
