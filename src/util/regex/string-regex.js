@@ -1,4 +1,4 @@
-export function checkEmailFormat(email){
+ function checkEmailFormat(email){
 
   // TODO Check whether emails can start with a numeric value!?
   let regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
@@ -6,8 +6,9 @@ export function checkEmailFormat(email){
   
   return result;
 }
+module.exports.checkEmailFormat = checkEmailFormat;
 
-export function checkNameFormat(name){
+function checkNameFormat(name){
 
     // TODO: The total lenght of names must be less than 50 charactes!
     let regex = /^[a-z ,.'-]+$/i;
@@ -15,8 +16,9 @@ export function checkNameFormat(name){
     return result; 
     
 }
+module.exports.checkNameFormat = checkNameFormat;
 
-export function checkStrongPassword(password){
+function checkStrongPassword(password){
 
     let result = false;
 
@@ -26,8 +28,9 @@ export function checkStrongPassword(password){
 
     return result;
 }
+module.exports.checkStrongPassword = checkStrongPassword;
 
-export function checkUserName(username){
+function checkUserName(username){
     
     //TODO: The total length of the user name must be restricted!
     let regex = /^[a-zA-Z0-9]+([_ - .]?[a-zA-Z0-9])*$/;
@@ -35,8 +38,9 @@ export function checkUserName(username){
 
     return result;
 }
+module.exports.checkUserName = checkUserName;
 
-export function checkCellphone(cellphone){
+function checkCellphone(cellphone){
 
     //TODO : Should we consider international numbers!?
     let regex = /^(09)\d{9}/;
@@ -44,3 +48,4 @@ export function checkCellphone(cellphone){
 
     return result;
 }
+module.exports.checkCellphone = checkCellphone;

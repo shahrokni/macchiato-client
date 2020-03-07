@@ -1,9 +1,16 @@
 
-import {checkEmailFormat, checkUserName, checkNameFormat} from "../regex/string-regex";
-import ErrorMessage from "../../resource/text/error-message";
-
-export class UserValidation {
+class UserValidation {
  
+    constructor(){
+
+        this.regexModule = require('../regex/string-regex');
+        
+        this.checkEmailFormatFunc = this.regexModule.checkEmailFormat;
+        this.checkUserNameFunc = this.regexModule.checkUserName;
+        this.checkNameFormatFunc = this.regexModule.checkNameFormat;
+
+        this.ErrorMessage = require('../../resource/text/error-message');
+    }
 
     /*userDetail: UserDetail - output: String Array*/
     validateSignUpData(userDetail) {       
@@ -11,49 +18,44 @@ export class UserValidation {
         let errorMessages = [];
 
         if (userDetail == null)
-            errorMessages.push(ErrorMessage.ErrBu0002());
+            errorMessages.push(this.ErrorMessage.ErrBu0002());
 
         //Ceck email format
-        if (checkEmailFormat(userDetail.email) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0003());
+        if (this.checkEmailFormatFunc(userDetail.email) === false) {
+            errorMessages.push(this.ErrorMessage.ErrBu0003());
         }
         //Check user name 
-        if (checkUserName(userDetail.userName) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0004());
+        if (this.checkUserNameFunc(userDetail.userName) === false) {
+            errorMessages.push(this.ErrorMessage.ErrBu0004());
         }
         //Check name fromat
-        if (checkNameFormat(userDetail.name) === false || checkNameFormat(userDetail.lastName) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0005());
+        if (this.checkNameFormatFunc(userDetail.name) === false || this.checkNameFormatFunc(userDetail.lastName) === false) {
+            errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
-        return errorMessages;
-
-        return [];
+        return errorMessages;        
     }
 
 
     /*userDetail: UserDetail - output: String Array*/
     validateUpdateData(userDetail) {
-
-        let { checkEmailFormat, checkNameFormat } =
-             import('../regex/string-regex');
-
+      
         let errorMessages = [];
 
         if (userDetail == null) {
-            errorMessages.push(ErrorMessage.ErrBu0002());
+            errorMessages.push(this.ErrorMessage.ErrBu0002());
         }
 
-        if (checkEmailFormat(userDetail.email) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0003());
+        if (this.checkEmailFormatFunc(userDetail.email) === false) {
+            errorMessages.push(this.ErrorMessage.ErrBu0003());
         }
 
-        if (checkNameFormat(userDetail.name) === false || checkNameFormat(userDetail.lastName) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0005());
+        if (this.checkNameFormatFunc(userDetail.name) === false || this.checkNameFormatFunc(userDetail.lastName) === false) {
+            errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
         if ((userDetail.birthDate instanceof Date) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0007());
+            errorMessages.push(this.ErrorMessage.ErrBu0007());
         }
 
         return errorMessages;
@@ -70,31 +72,27 @@ export class UserValidation {
             return [];
         }
         let errorMessages = [];
-        errorMessages.push(ErrorMessage.ErrBu0001());
+        errorMessages.push(this.ErrorMessage.ErrBu0001());
         return errorMessages;
     }
 
 
 
     /*user: User - output: String Array */
-    validateSignIn(user) {
-
-
-        let { checkUserName } =
-             import('../regex/string-regex');
+    validateSignIn(user) {        
 
         let errorMessages = [];
 
         if (user == null) {
-            errorMessages.push(ErrorMessage.ErrBu0002());
+            errorMessages.push(this.ErrorMessage.ErrBu0002());
         }
 
-        if (checkUserName(user.userName) === false) {
-            errorMessages.push(ErrorMessage.ErrBu0004());
+        if (this.checkUserNameFunc(user.userName) === false) {
+            errorMessages.push(this.ErrorMessage.ErrBu0004());
         }
 
         if (user.password == null || user.password === "") {
-            errorMessages.push(ErrorMessage.ErrBu0006());
+            errorMessages.push(this.ErrorMessage.ErrBu0006());
         }
 
         return errorMessages;
@@ -110,12 +108,12 @@ export class UserValidation {
         }
 
         //Do not show technical error to the user!
-        errorMessages.push(ErrorMessage.Err0002());
+        errorMessages.push(this.ErrorMessage.Err0002());
         return errorMessages;
     }
 }
 
-
+module.exports = UserValidation;
 
 
 

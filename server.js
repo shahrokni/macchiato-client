@@ -8,10 +8,27 @@ app.listen(port, () => console.log('Listening on port ' + port));
 /*----------------------------------------------*/
 
 
-
 app.post('/users',(req,res)=>{
+  
+   let responseClass = require('./src/communication/entity/response');
 
-   let resolvedFunction = require("./src/util/entity-object-resolver/entity-object-resolver");  
-   let obj = resolvedFunction(); 
-   console.log(obj);
+   let response = new responseClass();
+   let dateUtilModule = require('./src/util/date-util/date-util');
+   response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+
+   let userValidationClass = require('./src/util/validation/user-validation');
+   
+
+   let userValidation = new userValidationClass();
+
+   let errorMessages = userValidation.validateSignUpData(req.body);
+   
+   if(errorMessages!=null && errorMessages.length!=0){
+      response.isSuccessful =false;
+      response.setServerValidations(errorMessages);
+      return response;
+   }   
+
+   
+
 });

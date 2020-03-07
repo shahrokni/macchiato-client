@@ -1,4 +1,4 @@
-export default class Response {
+class Response {
 
 
     constructor() {
@@ -30,3 +30,5 @@ export default class Response {
     
     }
 }
+
+module.exports = Response;

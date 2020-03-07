@@ -1,5 +1,5 @@
 
-import {UserValidation} from '../../util/validation/user-validation';
+
 import  Response  from '../../communication/entity/response';
 import RestProvider from '../../communication/entity/rest-provider';
 
@@ -12,7 +12,9 @@ export default class UserService {
     getUser(user){
        
          //validation
-        let validator = new UserValidation();       
+        let UserValidationClass =  require('../../util/validation/user-validation');
+        let validator = new UserValidationClass();    
+           
         let errorMessages = validator.validateGetUserData(user);
 
          if(errorMessages !=null && errorMessages.length!==0){
@@ -45,7 +47,9 @@ export default class UserService {
     signUp(userDetail){
 
         //Validattion
-        let validator = new UserValidation();     
+        let UserValidationClass =  require('../../util/validation/user-validation');
+        let validator = new UserValidationClass();    
+
         let errorMessages = validator.validateSignUpData(userDetail);
         if (errorMessages!=null && errorMessages.length !== 0) {
 
@@ -71,7 +75,9 @@ export default class UserService {
     /*user: User - output: Response*/
     signIn(user){
         
-        let validator = new UserValidation();     
+        let UserValidationClass =  require('../../util/validation/user-validation');
+        let validator = new UserValidationClass();      
+        
         let errorMessages = validator.validateSignIn(user);
 
         if(errorMessages!=null && errorMessages.length!==0){
@@ -91,7 +97,9 @@ export default class UserService {
     /*userDetail: UserDetail-output: Reponse*/
     update(userDetail){
 
-        let validator = new UserValidation();  
+        let UserValidationClass =  require('../../util/validation/user-validation');
+        let validator = new UserValidationClass();    
+
         let errorMessages = validator.validateUpdateData(userDetail);
 
         if(errorMessages!=null && errorMessages.length!==0){
@@ -111,7 +119,8 @@ export default class UserService {
     /*user: User - output: Response*/
     logOut(user){
 
-        let validator = new UserValidation();  
+        let UserValidationClass =  require('../../util/validation/user-validation');
+        let validator = new UserValidationClass();    
         let errorMessages = validator.validateLogOut(user);
 
         if(errorMessages!=null && errorMessages.length!==0){

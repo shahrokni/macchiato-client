@@ -1,25 +1,25 @@
 
-const months = Object.freeze(
-["Jan","Feb","Mar",
+var months = Object.freeze(["Jan","Feb","Mar",
 "Apr","May","Jun",
 "Jul","Aug","Sep",
 "Oct","Nov","Dec"]);
 
-export function getCurrentDate(){
+function getCurrentDate(){
     //Example : 14 Mar 2016
     let currentDate = "";
     let date = new Date();
 
     currentDate+=date.getDate();
     currentDate+=" ";
-    currentDate+=months[date.getMonth];
+    currentDate+=months[date.getMonth()];
     currentDate+=" ";
     currentDate+=date.getFullYear();
 
     return currentDate;
 }
+module.exports.getCurrentDate = getCurrentDate;
 
-export function getCurrentTime(){
+function getCurrentTime(){
 
     //Example: 7:31:25
     let currentTime = "";
@@ -33,8 +33,9 @@ export function getCurrentTime(){
 
     return currentTime;
 }
+module.exports.getCurrentTime = getCurrentTime;
 
-export function getCurrentDateTime(){
+function getCurrentDateTime(){
     
     //Example 14 Mar 2016 7:31:25
     let currentDateTime = getCurrentDate()+" "
@@ -42,3 +43,4 @@ export function getCurrentDateTime(){
 
     return currentDateTime;
 }
+module.exports.getCurrentDateTime = getCurrentDateTime;

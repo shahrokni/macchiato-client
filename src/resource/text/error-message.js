@@ -1,4 +1,4 @@
-export default class ErrorMessage{
+class ErrorMessage{
 
     static Err0000(){
         return "An unknown error occurred!";
@@ -47,3 +47,4 @@ export default class ErrorMessage{
         return "Birthdate format is not correct!";
     }
 }
+module.exports = ErrorMessage;
