@@ -62,7 +62,7 @@ export default class UserService {
 
         let restInstance = RestProvider.createInstance(1500);
 
-        restInstance.post('/users',userDetail).then(function(response){
+        restInstance.post('user_api/user',userDetail).then(function(response){
            
         })
         .catch(function(err){
