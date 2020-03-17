@@ -1,6 +1,6 @@
 
 
-import  Response  from '../../communication/entity/response';
+import Response  from '../../communication/entity/response';
 import RestProvider from '../../communication/entity/rest-provider';
 
 
@@ -62,7 +62,7 @@ export default class UserService {
 
         let restInstance = RestProvider.createInstance(1500);
 
-        restInstance.post('user_api/user',userDetail).then(function(response){
+        restInstance.post('user_api/v1/user',userDetail).then(function(response){
            
         })
         .catch(function(err){

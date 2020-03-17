@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserService from './service/user-service/user-service';
-import User  from './entity/user/user';
+import User from './entity/user/user';
 import { UserDetail } from './entity/user/userDetail';
 import { Gender } from './entity/user/gender';
 
-function App() {  
+function App() {
 
-  useEffect(()=>{
+  useEffect(() => {
 
     let user = new UserDetail();
     user.name = 'Mahmoud';
@@ -19,14 +19,8 @@ function App() {
     user.password = 'C#8isthebest!';
 
     let service = new UserService();
-    service.signUp(user);
-
-
-  }
+    service.signUp(user);}
   );
-
-
-
 
 
   return (
