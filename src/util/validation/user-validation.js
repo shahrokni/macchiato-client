@@ -21,7 +21,7 @@ class UserValidation {
             errorMessages.push(this.ErrorMessage.ErrBu0002());
 
         //Ceck email format
-        if (this.checkEmailFormatFunc(userDetail.email) === false) {
+        if (userDeatil.email!=null && this.checkEmailFormatFunc(userDetail.email) === false) {
             errorMessages.push(this.ErrorMessage.ErrBu0003());
         }
         //Check user name 
