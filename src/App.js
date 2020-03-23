@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserService from './service/user-service/user-service';
-import User from './entity/user/user';
 import { UserDetail } from './entity/user/userDetail';
 import { Gender } from './entity/user/gender';
+import { Province } from '../src/entity/global/province';
 
 function App() {
 
@@ -17,9 +17,13 @@ function App() {
     user.email = 'm.shahrokny@gmail.com';
     user.userName = 'mim_delta';
     user.password = 'C#8isthebest!';
+    user.province = Province.Tehran;
 
+    console.log(user);
     let service = new UserService();
-    service.signUp(user);}
+    let result = service.signUp(user);
+
+  }
   );
 
 

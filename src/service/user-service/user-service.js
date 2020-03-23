@@ -2,74 +2,78 @@
 
 import Response  from '../../communication/entity/response';
 import RestProvider from '../../communication/entity/rest-provider';
+import ErrorMessages from '../../resource/text/error-message';
 
-
-export default class UserService {
-
-    //TODO: You need to review ES6 OOP features before you continue this part!
+export default class UserService {   
 
     /*user: User - output:Response*/
     getUser(user){
        
-         //validation
+        
+        let dateUtil = require('../../util/date-util/date-util');
+
+        let response = new Response();        
+
         let UserValidationClass =  require('../../util/validation/user-validation');
         let validator = new UserValidationClass();    
            
         let errorMessages = validator.validateGetUserData(user);
 
          if(errorMessages !=null && errorMessages.length!==0){
-
-             let result = new Response();
-             result.isSuccessful =  false;
-             result.setClientValidations(errorMessages);          
-
-             return result;
+           
+            response.isSuccessful =  false;
+            response.operationTimestamp = dateUtil.getCurrentDateTime();
+            response.setClientValidations(errorMessages);
+            return response;
          }
 
         //creating instance
         let restInstance = RestProvider.createInstance(1500);
         
         //Calling get method and return the result
-        restInstance.get('/users', { params: { studentNumber: user.studentNumber } }).then(function (response) {            
-            return JSON.parse(response);
+        restInstance.get('/users', { params: { studentNumber: user.studentNumber } }).then(function (res) {            
+            return res.response;
         })
         //Catching the error
         .catch(function (error) {
-             let response = new Response();
-             response.isSuccessful=false;            
-             return response;
-            });      
-        //TODO: check if this return statement can be removed.
-            return new Response();
+
+            response.isSuccessful =  false;
+            response.operationTimestamp = dateUtil.getCurrentDateTime();
+            response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
+            return response;
+        });        
     }
 
     /*userDetial: UserDetail - output: Response*/
     signUp(userDetail){
 
+        let dateUtil = require('../../util/date-util/date-util');
         //Validattion
         let UserValidationClass =  require('../../util/validation/user-validation');
         let validator = new UserValidationClass();    
 
+        let response = new Response();
+
         let errorMessages = validator.validateSignUpData(userDetail);
         if (errorMessages!=null && errorMessages.length !== 0) {
-
-            let result = new Response();
-            result.isSuccessful = false;
-            result.setClientValidations(errorMessages);
            
-            return result;
+            response.isSuccessful = false;
+            response.operationTimestamp = dateUtil.getCurrentDateTime();
+            response.setClientValidations(errorMessages);           
+            return response;
         }
 
         let restInstance = RestProvider.createInstance(1500);
 
-        restInstance.post('user_api/v1/user',userDetail).then(function(response){
-           
+        restInstance.post('user_api/v1/user',userDetail).then(function(res){
+            return res.response;
         })
         .catch(function(err){
-
-        });
-      
-        return new Response();
+            response.isSuccessful =  false;
+            response.operationTimestamp = dateUtil.getCurrentDateTime();
+            response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
+            return response;
+        });     
     }
 
     /*user: User - output: Response*/

@@ -1,5 +1,3 @@
-
-
 export class SkillScore {
 
     constructor() {
@@ -7,5 +5,6 @@ export class SkillScore {
         this.readingScore = 0;
         this.writingScore = 0;
         this.speakingScore = 0;
+        this.slangScore = 0; 
     }
 }

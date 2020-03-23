@@ -1,15 +1,20 @@
 var mongoose = require('mongoose');
+var SkillScoreSchema = require('./skill-score');
+
 var userSchema = mongoose.Schema({
 
-    userName : {type:String, required:true, unique:true},
-    password : {type:String, required:true},
-    name:{type:String,required:true},
-    lastName:{type:String,required:true},
-    studentNumberPrefix:{type:String,required:true},
-    registerationDate:{type:Date,required:true},
-    email:{type:String},
-    gender:{type:String},
-    cellphone:{type:String,required:true},
-    province:{type:String,required:true},
-    //TODO: SKILL SCORE
+    userName: { type: mongoose.Schema.Types.String, required: true, unique: true },
+    password: { type: mongoose.Schema.Types.String, required: true },
+    name: { type: mongoose.Schema.Types.String, required: true },
+    lastName: { type: mongoose.Schema.Types.String, required: true },
+    studentNumberPrefix: { type: mongoose.Schema.Types.String, required: true },
+    registerationDate: { type: mongoose.Schema.Types.Date, required: true },
+    email: { type: mongoose.Schema.Types.String, },
+    gender: { type: mongoose.Schema.Types.String },
+    cellphone: { type: mongoose.Schema.Types.String},
+    province: { type: mongoose.Schema.Types.String, required: true },
+    skillScore: [SkillScoreSchema]
 });
+
+var User = mongoose.model('User', userSchema);
+module.exports = User;

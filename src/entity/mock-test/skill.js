@@ -1,11 +1,11 @@
 export {Skill};
 
 const Skill = Object.freeze({
-    NotSet = Symbol('NotSet'),
-    Speaking = Symbol('Speaking'),
-    Listening = Symbol('Listening'),
-    Reading = Symbol('Reading'),
-    Writing = Symbol('Writing'),
-    Vocab = Symbol('Vocab'),
-    Slang = Symbol('Slang')
+    NotSet = 'NotSet',
+    Speaking = 'Speaking',
+    Listening = 'Listening',
+    Reading = 'Reading',
+    Writing = 'Writing',
+    Vocab = 'Vocab',
+    Slang = 'Slang'
 })

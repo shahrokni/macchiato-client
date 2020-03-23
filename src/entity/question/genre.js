@@ -1,13 +1,13 @@
 export {Genre};
 
 const Genre = Object.freeze({
-    NotSet : Symbol('NotSet'),
-    Ordinary : Symbol('Ordinary'),
-    Science : Symbol('Science'),
-    Astronomy : Symbol('Astronomy'),
-    Legislative : Symbol('Legislative'),
-    Forensic : Symbol('Forensic'),
-    Zoology : Symbol('Zoology'),
-    Geology : Symbol('Geology'),
-    Engineering : Symbol('Engineering')
+    NotSet : 'NotSet',
+    Ordinary : 'Ordinary',
+    Science : 'Science',
+    Astronomy : 'Astronomy',
+    Legislative : 'Legislative',
+    Forensic : 'Forensic',
+    Zoology : 'Zoology',
+    Geology : 'Geology',
+    Engineering : 'Engineering'
 })
