@@ -8,6 +8,7 @@ class UserValidation {
         this.checkEmailFormatFunc = this.regexModule.checkEmailFormat;
         this.checkUserNameFunc = this.regexModule.checkUserName;
         this.checkNameFormatFunc = this.regexModule.checkNameFormat;
+        this.checkPasswordFunc = this.regexModule.checkStrongPassword;
 
         this.ErrorMessage = require('../../resource/text/error-message');
     }
@@ -19,20 +20,26 @@ class UserValidation {
 
         if (userDetail == null)
             errorMessages.push(this.ErrorMessage.ErrBu0002());
-
-        //Ceck email format
-        if (userDetail.email!=null && this.checkEmailFormatFunc(userDetail.email) === false) {
-            errorMessages.push(this.ErrorMessage.ErrBu0003());
-        }
+       
         //Check user name 
         if (this.checkUserNameFunc(userDetail.userName) === false) {
             errorMessages.push(this.ErrorMessage.ErrBu0004());
         }
+
+        //Check password
+        if(this.checkPasswordFunc(userDetail.password)===false){
+            errorMessages.push(this.ErrorMessage.ErrBu0006());
+        }
+
         //Check name fromat
         if (this.checkNameFormatFunc(userDetail.name) === false || this.checkNameFormatFunc(userDetail.lastName) === false) {
             errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
+        //Check province 
+        if(userDetail.province){
+            errorMessages.push(this.ErrorMessage.ErrBu0008());
+        }
         return errorMessages;        
     }
 

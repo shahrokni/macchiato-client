@@ -46,5 +46,10 @@ class ErrorMessage{
     static ErrBu0007(){
         return "Birthdate format is not correct!";
     }
+
+    //province 
+    static ErrBu0008(){
+        return "Province has not been set!";
+    }
 }
 module.exports = ErrorMessage;

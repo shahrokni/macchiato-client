@@ -52,6 +52,8 @@ api.post('/user', (req, res) => {
         let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
         newUser.skillScore.push(new SkillScore());
 
+
+        let query = User.findOne({'userName':req.body.userName});
         newUser.save(function (err, user) {
             if (err) {
 
@@ -60,9 +62,7 @@ api.post('/user', (req, res) => {
                 response.operationTimestamp = dateUtilModule.getCurrentDateTime();
                 response.setServerValidations(errorMessages.push(errorResource.Err0000()));
             }
-            else {
-                //TODO: Delete this line later!
-                console.log('user was saved successfully!');
+            else {                
 
                 response.isSuccessful = true;
                 response.operationTimestamp = dateUtilModule.getCurrentDateTime();

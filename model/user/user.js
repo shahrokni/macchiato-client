@@ -13,6 +13,7 @@ var userSchema = mongoose.Schema({
     gender: { type: mongoose.Schema.Types.String },
     cellphone: { type: mongoose.Schema.Types.String},
     province: { type: mongoose.Schema.Types.String, required: true },
+    birthDate:{type:mongoose.Schema.Types.Date},
     skillScore: [SkillScoreSchema]
 });
 
