@@ -37,7 +37,7 @@ class UserValidation {
         }
 
         //Check province 
-        if(userDetail.province){
+        if(!userDetail.province){
             errorMessages.push(this.ErrorMessage.ErrBu0008());
         }
         return errorMessages;        

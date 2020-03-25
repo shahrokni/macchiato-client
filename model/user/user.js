@@ -11,9 +11,9 @@ var userSchema = mongoose.Schema({
     registerationDate: { type: mongoose.Schema.Types.Date, required: true },
     email: { type: mongoose.Schema.Types.String, },
     gender: { type: mongoose.Schema.Types.String },
-    cellphone: { type: mongoose.Schema.Types.String},
+    cellphone: { type: mongoose.Schema.Types.String },
     province: { type: mongoose.Schema.Types.String, required: true },
-    birthDate:{type:mongoose.Schema.Types.Date},
+    birthDate: { type: mongoose.Schema.Types.Date },
     skillScore: [SkillScoreSchema]
 });
 

@@ -31,7 +31,7 @@ class ErrorMessage{
     static ErrBu0004(){
         return "Username format is not correct!";
     }
-
+    
     //name and lastName
     static ErrBu0005(){
         return "Either you name or last name format is not correct!";
@@ -50,6 +50,11 @@ class ErrorMessage{
     //province 
     static ErrBu0008(){
         return "Province has not been set!";
+    }
+
+    //username 2 
+    static ErrBu0009(){
+        return "Your desired username has already been taken!"
     }
 }
 module.exports = ErrorMessage;

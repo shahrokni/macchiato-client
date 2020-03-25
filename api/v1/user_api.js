@@ -12,6 +12,7 @@ api.use(bodyParser.json());
 /*--------------------------------------------------*/
 
 api.post('/user', (req, res) => {
+  
 
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
@@ -29,11 +30,14 @@ api.post('/user', (req, res) => {
 
         response.isSuccessful = false;
         response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-        response.setServerValidations(errorMessages);      
+        response.serverValidations = errorMessages;
+        res.json({response:response});
+        return;
+
     }
     else {
         let User = require('../../model/user/user');
-        let SkillScoreSchema = require('../../model/user/skill-score');       
+        let SkillScoreSchema = require('../../model/user/skill-score');
 
         let newUser = new User({
             userName: req.body.userName,
@@ -52,29 +56,55 @@ api.post('/user', (req, res) => {
         let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
         newUser.skillScore.push(new SkillScore());
 
+        
+        let query = User.findOne({ 'userName': req.body.userName },'userName');
 
-        let query = User.findOne({'userName':req.body.userName});
-        newUser.save(function (err, user) {
-            if (err) {
+        query.exec(function (err, user) {
 
-                console.log(err);
+            if (!err) {
+
+                //Check wether the chosen username has already been taken by another user
+                if (user) {                   
+                  
+                    response.isSuccessful = false;
+                    response.operationTimestamp = dateUtilModule.getCurrentDateTime();                  
+                    response.serverValidations.push(errorResource.ErrBu0009());
+                    res.json({response:response});
+                    return;                  
+                }
+                else {
+                   
+                    //Save new user
+                    newUser.save(function (err, user) {
+                        if (err) {
+                           
+                            response.isSuccessful = false;
+                            response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+                            response.serverValidations.push(errorResource.Err0000());
+                            res.json({response:response});
+                            return;
+                        }
+                        else {               
+
+                            response.isSuccessful = true;
+                            response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+                            response.outputJson = user;
+                            res.json({response:response});
+                            return;
+                        }
+                    });
+                }
+            }
+            else {              
+
                 response.isSuccessful = false;
                 response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-                response.setServerValidations(errorMessages.push(errorResource.Err0000()));
-            }
-            else {                
-
-                response.isSuccessful = true;
-                response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-                response.outputJson = user;
+                response.serverValidations.push(errorResource.Err0000());
+                res.json({response:response});
+                return;
             }
         });
     }  
-   
-    res.json({ reponse: response });
-    //If you didn’t return, you’d continue on to the rest of the function and
-    //you’d send the request twice, and Express would start throwing nasty errors
-    return;
 });
 
 module.exports = api;

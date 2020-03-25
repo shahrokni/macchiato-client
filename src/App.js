@@ -15,14 +15,14 @@ function App() {
     user.lastName = 'Shahrokni';
     user.gender = Gender.Male;
     user.email = 'm.shahrokny@gmail.com';
-    user.userName = 'mim_delta';
+    user.userName = 'mim_delta1';
     user.password = 'C#8isthebest!';
     user.province = Province.Tehran;
 
     console.log(user);
     let service = new UserService();
     let result = service.signUp(user);
-
+    document.write(result);
   }
   );
 
