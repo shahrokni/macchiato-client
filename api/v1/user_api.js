@@ -14,14 +14,14 @@ api.use(bodyParser.json());
 api.post('/user', (req, res) => {
   
 
+    let dateUtilModule = require('../../src/util/date-util/date-util');
+
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
-    let errorResource = require('../../src/resource/text/error-message');
-
-    let dateUtilModule = require('../../src/util/date-util/date-util');
+    let errorResource = require('../../src/resource/text/error-message');    
 
     let userValidationClass = require('../../src/util/validation/user-validation');
     let userValidation = new userValidationClass();
@@ -40,7 +40,7 @@ api.post('/user', (req, res) => {
         let SkillScoreSchema = require('../../model/user/skill-score');
 
         let newUser = new User({
-            userName: req.body.userName,
+            userName: req.body.userName.toLowerCase(),
             password: req.body.password,
             name: req.body.name,
             lastName: req.body.lastName,

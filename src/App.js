@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import UserService from './service/user-service/user-service';
 import { UserDetail } from './entity/user/userDetail';
-import { Gender } from './entity/user/gender';
 import { Province } from '../src/entity/global/province';
 
 function App() {
@@ -11,18 +10,16 @@ function App() {
   useEffect(() => {
 
     let user = new UserDetail();
-    user.name = 'Mahmoud';
-    user.lastName = 'Shahrokni';
-    user.gender = Gender.Male;
-    user.email = 'm.shahrokny@gmail.com';
-    user.userName = 'mim_delta1';
-    user.password = 'C#8isthebest!';
-    user.province = Province.Tehran;
+    user.userName = "Test1";
+    user.password = "ES6isthebest@!123";
+    user.name  ="Mahmoud";
+    user.lastName = "Shahrokni";
+    user.province = Province.Khuzestan;
 
-    console.log(user);
-    let service = new UserService();
-    let result = service.signUp(user);
-    document.write(result);
+    
+    let service = new UserService();    
+    let reponse = service.signUp(user);
+    document.write(reponse);
   }
   );
 

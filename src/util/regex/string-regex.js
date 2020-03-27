@@ -32,7 +32,8 @@ module.exports.checkStrongPassword = checkStrongPassword;
 
 function checkUserName(username){
     
-    //TODO: The total length of the user name must be restricted!
+    //TODO : Length of username must be chcked!
+    username = username.toLowerCase();    
     let regex = /^[a-zA-Z0-9]+([_ - .]?[a-zA-Z0-9])*$/;
     let result  = regex.test(username);   
 

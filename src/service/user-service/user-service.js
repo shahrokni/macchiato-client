@@ -53,13 +53,13 @@ export default class UserService {
         let validator = new UserValidationClass();
 
         let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = dateUtil.getCurrentDateTime();
 
         let errorMessages = validator.validateSignUpData(userDetail);
 
         if (errorMessages != null && errorMessages.length !== 0) {
-
-            response.isSuccessful = false;
-            response.operationTimestamp = dateUtil.getCurrentDateTime();
+            
             response.setClientValidations(errorMessages);
             return response;
         }
@@ -67,12 +67,14 @@ export default class UserService {
         let restInstance = RestProvider.createInstance(1500);
 
         restInstance.post('user_api/v1/user', userDetail).then(function (res) {
-            console.log(res);
-            return res;
+
+           let responseUtil = require('../../util/response-util/response-util');
+           let serverResponse = responseUtil.extractResponse(res);
+           console.log(serverResponse);
+           return serverResponse;
         })
-            .catch(function (err) {
-                response.isSuccessful = false;
-                response.operationTimestamp = dateUtil.getCurrentDateTime();
+            .catch(function (err) {    
+
                 response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
                 return response;
             });
