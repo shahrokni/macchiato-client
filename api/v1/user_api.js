@@ -16,6 +16,8 @@ api.post('/user', (req, res) => {
 
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
     let errorResource = require('../../src/resource/text/error-message');
 
@@ -26,10 +28,8 @@ api.post('/user', (req, res) => {
 
     let errorMessages = userValidation.validateSignUpData(req.body);
 
-    if (errorMessages != null && errorMessages.length != 0) {
-
-        response.isSuccessful = false;
-        response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    if (errorMessages != null && errorMessages.length != 0) {       
+       
         response.serverValidations = errorMessages;
         res.json({response:response});
         return;
@@ -58,16 +58,14 @@ api.post('/user', (req, res) => {
 
         
         let query = User.findOne({ 'userName': req.body.userName },'userName');
-
+        
         query.exec(function (err, user) {
 
             if (!err) {
 
                 //Check wether the chosen username has already been taken by another user
-                if (user) {                   
-                  
-                    response.isSuccessful = false;
-                    response.operationTimestamp = dateUtilModule.getCurrentDateTime();                  
+                if (user) {                 
+                               
                     response.serverValidations.push(errorResource.ErrBu0009());
                     res.json({response:response});
                     return;                  
@@ -77,17 +75,14 @@ api.post('/user', (req, res) => {
                     //Save new user
                     newUser.save(function (err, user) {
                         if (err) {
-                           
-                            response.isSuccessful = false;
-                            response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+                      
                             response.serverValidations.push(errorResource.Err0000());
                             res.json({response:response});
                             return;
                         }
                         else {               
 
-                            response.isSuccessful = true;
-                            response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+                            response.isSuccessful = true;                            
                             response.outputJson = user;
                             res.json({response:response});
                             return;
@@ -95,10 +90,8 @@ api.post('/user', (req, res) => {
                     });
                 }
             }
-            else {              
+            else {           
 
-                response.isSuccessful = false;
-                response.operationTimestamp = dateUtilModule.getCurrentDateTime();
                 response.serverValidations.push(errorResource.Err0000());
                 res.json({response:response});
                 return;
