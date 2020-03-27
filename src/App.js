@@ -18,8 +18,12 @@ function App() {
 
     
     let service = new UserService();    
-    let reponse = service.signUp(user);
-    document.write(reponse);
+    service.signUp(user,function(response){
+      let result = response.isSuccessful+"<br>";
+      result = result+response.operationTimestamp+"<br>";
+      document.write(result);
+    });
+    
   }
   );
 

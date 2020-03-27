@@ -45,7 +45,7 @@ export default class UserService {
     }
 
     /*userDetial: UserDetail - output: Response*/
-    signUp(userDetail) {
+    signUp(userDetail,callBack) {
 
         let dateUtil = require('../../util/date-util/date-util');
         //Validattion
@@ -61,7 +61,7 @@ export default class UserService {
         if (errorMessages != null && errorMessages.length !== 0) {
             
             response.setClientValidations(errorMessages);
-            return response;
+            callBack(response);
         }
 
         let restInstance = RestProvider.createInstance(1500);
@@ -69,14 +69,13 @@ export default class UserService {
         restInstance.post('user_api/v1/user', userDetail).then(function (res) {
 
            let responseUtil = require('../../util/response-util/response-util');
-           let serverResponse = responseUtil.extractResponse(res);
-           console.log(serverResponse);
-           return serverResponse;
+           let serverResponse = responseUtil.extractResponse(res);          
+           callBack(serverResponse);
         })
             .catch(function (err) {    
 
                 response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
-                return response;
+                callBack(response);
             });
     }
 
