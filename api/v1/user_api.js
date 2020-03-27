@@ -47,7 +47,8 @@ api.post('/user', (req, res) => {
             province: req.body.province
         });
 
-        newUser.studentNumberPrefix = dateUtilModule.getCompactCurrentDate();
+        //Set the first part of student number
+        newUser.studentNumber = dateUtilModule.getCompactCurrentDate();
 
         let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
         newUser.skillScore.push(new SkillScore());
@@ -75,15 +76,14 @@ api.post('/user', (req, res) => {
 
                             newUser.password = hash;
 
-                            //Save the new user
-                            newUser.save(function (err, user) {
+                            User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } }, function (countErr, count) {
 
-                                if (err) {
+                                if (countErr){
 
                                     let exceptionHandler =
                                         require('../../src/util/mongo-handler/mongo-exception-handler');
 
-                                    let message = exceptionHandler.tryGetErrorMessage(err);
+                                    let message = exceptionHandler.tryGetErrorMessage(countErr);
 
                                     if (message != null)
                                         response.serverValidations.push(message);
@@ -92,15 +92,43 @@ api.post('/user', (req, res) => {
 
                                     res.json({ response: response });
                                     return;
+
                                 }
                                 else {
 
-                                    response.isSuccessful = true;
-                                    response.outputJson = user;
-                                    res.json({ response: response });
-                                    return;
+                                    //Add the second part of the student number                                    
+                                    newUser.studentNumber += count;
+
+                                    //Save the new user
+                                    newUser.save(function (err, user) {
+
+                                        if (err) {
+                                           
+                                            let exceptionHandler =
+                                                require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                                            let message = exceptionHandler.tryGetErrorMessage(err);
+
+                                            if (message != null)
+                                                response.serverValidations.push(message);
+                                            else
+                                                response.serverValidations.push(errorResource.Err0000());
+
+                                            res.json({ response: response });
+                                            return;
+                                        }
+                                        else {
+
+                                            response.isSuccessful = true;
+                                            user.password = '***';
+                                            response.outputJson = user;
+                                            res.json({ response: response });
+                                            return;
+                                        }
+                                    });
+
                                 }
-                            });
+                            }).exec();
                         }
                         else {
 

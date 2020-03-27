@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
     password: { type: mongoose.Schema.Types.String, required: true },
     name: { type: mongoose.Schema.Types.String, required: true },
     lastName: { type: mongoose.Schema.Types.String, required: true },
-    studentNumberPrefix: { type: mongoose.Schema.Types.String, required: true },
+    studentNumber: { type: mongoose.Schema.Types.String, required: true, unique:true },
     registerationDate: { type: mongoose.Schema.Types.Date, required: true },
     email: { type: mongoose.Schema.Types.String, },
     gender: { type: mongoose.Schema.Types.String },

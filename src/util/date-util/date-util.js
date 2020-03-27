@@ -12,15 +12,19 @@ function getCompactCurrentDate() {
 
     compactCurrentDate += date.getFullYear();
 
-    if (date.getMonth.length === 1)
-        compactCurrentDate = compactCurrentDate + "0" + date.getMonth();
-    else
-        compactCurrentDate = compactCurrentDate + date.getMonth();
+    let month = date.getMonth()+1;
 
-    if (date.getMonth.length === 1)
+    //Add month
+    if (month.toString().length === 1)
+        compactCurrentDate = compactCurrentDate + "0" + month;
+    else
+        compactCurrentDate += month;
+
+    //Add day
+    if (date.getDate().toString().length === 1)
         compactCurrentDate = compactCurrentDate + "0" + date.getDate();
     else
-        compactCurrentDate = compactCurrentDate + date.getDate();
+        compactCurrentDate += date.getDate();
 
     return compactCurrentDate;
 }

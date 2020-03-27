@@ -12,7 +12,7 @@ function App() {
     let user = new UserDetail();
     user.userName = "Test1";
     user.password = "ES6isthebest@!123";
-    user.name  ="Mahmoud";
+    user.name  ="Seyed Mahmoud";
     user.lastName = "Shahrokni";
     user.province = Province.Khuzestan;
 
