@@ -19,8 +19,19 @@ function App() {
     
     let service = new UserService();    
     service.signUp(user,function(response){
+
       let result = response.isSuccessful+"<br>";
       result = result+response.operationTimestamp+"<br>";
+      result = result+"client errors: "+"<br>";
+
+      for(let i=0;i<response.clientValidations.length;i++){
+        result = result + i + "-" + response.clientValidations[i]+"<br>"
+      }
+      
+      result =result +"server errors: "+ "<br>";
+      for(let i=0;i<response.serverValidations.length;i++){
+        result = result + i+ "-" + response.serverValidations[i]+"<br>"
+      }
       document.write(result);
     });
     

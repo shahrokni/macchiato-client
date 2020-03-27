@@ -12,7 +12,7 @@ api.use(bodyParser.json());
 /*--------------------------------------------------*/
 
 api.post('/user', (req, res) => {
-  
+
 
     let dateUtilModule = require('../../src/util/date-util/date-util');
 
@@ -21,17 +21,17 @@ api.post('/user', (req, res) => {
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
-    let errorResource = require('../../src/resource/text/error-message');    
+    let errorResource = require('../../src/resource/text/error-message');
 
     let userValidationClass = require('../../src/util/validation/user-validation');
     let userValidation = new userValidationClass();
 
     let errorMessages = userValidation.validateSignUpData(req.body);
 
-    if (errorMessages != null && errorMessages.length != 0) {       
-       
+    if (errorMessages != null && errorMessages.length != 0) {
+
         response.serverValidations = errorMessages;
-        res.json({response:response});
+        res.json({ response: response });
         return;
 
     }
@@ -56,48 +56,66 @@ api.post('/user', (req, res) => {
         let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
         newUser.skillScore.push(new SkillScore());
 
-        
-        let query = User.findOne({ 'userName': req.body.userName },'userName');
-        
+
+        let query = User.findOne({ 'userName': req.body.userName }, 'userName');
+
         query.exec(function (err, user) {
 
             if (!err) {
 
                 //Check wether the chosen username has already been taken by another user
-                if (user) {                 
-                               
+                if (user) {
+
                     response.serverValidations.push(errorResource.ErrBu0009());
-                    res.json({response:response});
-                    return;                  
+                    res.json({ response: response });
+                    return;
                 }
                 else {
-                   
+
                     //Save new user
                     newUser.save(function (err, user) {
                         if (err) {
-                      
-                            response.serverValidations.push(errorResource.Err0000());
-                            res.json({response:response});
+
+                            let exceptionHandler =
+                                require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                            let message = exceptionHandler.tryGetErrorMessage(err);
+
+                            if (message != null)
+                                response.serverValidations.push(message);
+                            else
+                                response.serverValidations.push(errorResource.Err0000());
+
+                            res.json({ response: response });
                             return;
                         }
-                        else {               
+                        else {
 
-                            response.isSuccessful = true;                            
+                            response.isSuccessful = true;
                             response.outputJson = user;
-                            res.json({response:response});
+                            res.json({ response: response });
                             return;
                         }
                     });
                 }
             }
-            else {           
+            else {
 
-                response.serverValidations.push(errorResource.Err0000());
-                res.json({response:response});
+                let exceptionHandler =
+                    require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                let message = exceptionHandler.tryGetErrorMessage(err);
+
+                if (message != null)
+                    response.serverValidations.push(message);
+                else
+                    response.serverValidations.push(errorResource.Err0000());
+
+                res.json({ response: response });
                 return;
             }
         });
-    }  
+    }
 });
 
 module.exports = api;
