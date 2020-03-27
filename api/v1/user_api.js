@@ -13,7 +13,7 @@ api.use(bodyParser.json());
 
 api.post('/user', (req, res) => {
 
-
+    const bcrypt = require('bcrypt-nodejs');
     let dateUtilModule = require('../../src/util/date-util/date-util');
 
     let responseClass = require('../../src/communication/entity/response');
@@ -41,13 +41,9 @@ api.post('/user', (req, res) => {
 
         let newUser = new User({
             userName: req.body.userName.toLowerCase(),
-            password: req.body.password,
             name: req.body.name,
             lastName: req.body.lastName,
             registerationDate: Date.now(),
-            email: req.body.email,
-            gender: req.body.gender,
-            cellphone: req.body.cellphone,
             province: req.body.province
         });
 
@@ -59,9 +55,9 @@ api.post('/user', (req, res) => {
 
         let query = User.findOne({ 'userName': req.body.userName }, 'userName');
 
-        query.exec(function (err, user) {
+        query.exec(function (queryError, user) {
 
-            if (!err) {
+            if (!queryError) {
 
                 //Check wether the chosen username has already been taken by another user
                 if (user) {
@@ -72,31 +68,47 @@ api.post('/user', (req, res) => {
                 }
                 else {
 
-                    //Save new user
-                    newUser.save(function (err, user) {
-                        if (err) {
+                    //Encrypt the user's password
+                    bcrypt.hash(req.body.password, bcrypt.genSaltSync(5), null, function (bcryptError, hash) {
 
-                            let exceptionHandler =
-                                require('../../src/util/mongo-handler/mongo-exception-handler');
+                        if (!bcryptError) {
 
-                            let message = exceptionHandler.tryGetErrorMessage(err);
+                            newUser.password = hash;
 
-                            if (message != null)
-                                response.serverValidations.push(message);
-                            else
-                                response.serverValidations.push(errorResource.Err0000());
+                            //Save the new user
+                            newUser.save(function (err, user) {
 
-                            res.json({ response: response });
-                            return;
+                                if (err) {
+
+                                    let exceptionHandler =
+                                        require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                                    let message = exceptionHandler.tryGetErrorMessage(err);
+
+                                    if (message != null)
+                                        response.serverValidations.push(message);
+                                    else
+                                        response.serverValidations.push(errorResource.Err0000());
+
+                                    res.json({ response: response });
+                                    return;
+                                }
+                                else {
+
+                                    response.isSuccessful = true;
+                                    response.outputJson = user;
+                                    res.json({ response: response });
+                                    return;
+                                }
+                            });
                         }
                         else {
 
-                            response.isSuccessful = true;
-                            response.outputJson = user;
+                            response.serverValidations.push(errorResource.Err0000());
                             res.json({ response: response });
                             return;
                         }
-                    });
+                    })
                 }
             }
             else {
@@ -104,7 +116,7 @@ api.post('/user', (req, res) => {
                 let exceptionHandler =
                     require('../../src/util/mongo-handler/mongo-exception-handler');
 
-                let message = exceptionHandler.tryGetErrorMessage(err);
+                let message = exceptionHandler.tryGetErrorMessage(queryError);
 
                 if (message != null)
                     response.serverValidations.push(message);
