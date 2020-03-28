@@ -9,6 +9,7 @@ class UserValidation {
         this.checkUserNameFunc = this.regexModule.checkUserName;
         this.checkNameFormatFunc = this.regexModule.checkNameFormat;
         this.checkPasswordFunc = this.regexModule.checkStrongPassword;
+        this.checkCellphoneFunc = this.regexModule.checkCellphone;
 
         this.ErrorMessage = require('../../resource/text/error-message');
     }
@@ -23,21 +24,25 @@ class UserValidation {
        
         //Check user name 
         if (this.checkUserNameFunc(userDetail.userName) === false) {
+            
             errorMessages.push(this.ErrorMessage.ErrBu0004());
         }
 
         //Check password
         if(this.checkPasswordFunc(userDetail.password)===false){
+
             errorMessages.push(this.ErrorMessage.ErrBu0006());
         }
 
         //Check name fromat
         if (this.checkNameFormatFunc(userDetail.name) === false || this.checkNameFormatFunc(userDetail.lastName) === false) {
+
             errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
         //Check province 
-        if(!userDetail.province){
+        if(!userDetail.province || userDetail.province === 'NotSet'){
+
             errorMessages.push(this.ErrorMessage.ErrBu0008());
         }
         return errorMessages;        
@@ -50,19 +55,43 @@ class UserValidation {
         let errorMessages = [];
 
         if (userDetail == null) {
+
             errorMessages.push(this.ErrorMessage.ErrBu0002());
+        }       
+
+        if(!userDetail.studentNumber){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0001())
         }
 
-        if (this.checkEmailFormatFunc(userDetail.email) === false) {
+        if (userDetail.email && this.checkEmailFormatFunc(userDetail.email) === false) {
+
             errorMessages.push(this.ErrorMessage.ErrBu0003());
         }
 
         if (this.checkNameFormatFunc(userDetail.name) === false || this.checkNameFormatFunc(userDetail.lastName) === false) {
+
             errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
-        if ((userDetail.birthDate instanceof Date) === false) {
+        if (userDetail.birthDate && userDetail.birthDate.getMonth) {            
+            
             errorMessages.push(this.ErrorMessage.ErrBu0007());
+        }
+
+        if(userDetail.cellphone && this.checkCellphoneFunc(userDetail.cellphone)===false){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0011());
+        }
+
+        if(!userDetail.province || userDetail.province==='NotSet'){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0008());
+        }       
+
+        if(!userDetail.gender){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0012());
         }
 
         return errorMessages;

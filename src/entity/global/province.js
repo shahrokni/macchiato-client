@@ -7,8 +7,8 @@ const Province = Object.freeze({
     Fars : 'Fars',
     Isfahan : 'Isfahan',
     Semnan : 'Semnan',
-    EastAzarbaijan : 'EastAzarbaijan',
-    WestAzarbaijan : 'WestAzarbaijan',
+    EastAzarbaijan : 'East Azarbaijan',
+    WestAzarbaijan : 'West Azarbaijan',
     Ardabil : 'Ardabil',
     Gilan : 'Gilan',
     Zanjan : 'Zanjan',
@@ -26,11 +26,11 @@ const Province = Object.freeze({
     Bushehr : 'Bushehr',
     Hormozgan : 'Hormozgan',
     Kerman : 'Kerman',  
-    SouthKhorasan : 'SouthKhorasan',
-    RazaviKhorsan : 'RazaviKhorsan',
-    NorthKhorasan : 'NorthKhorasan',
+    SouthKhorasan : 'South Khorasan',
+    RazaviKhorsan : 'Razavi Khorsan',
+    NorthKhorasan : 'North Khorasan',
     Golestan : 'Golestan',
-    SistanBaluchestan : 'SistanBaluchestan',
+    SistanBaluchestan : 'Sistan Baluchestan',
     Ilam : 'Ilam'
 
 });

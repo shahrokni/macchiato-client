@@ -11,17 +11,18 @@ var api = express.Router();
 api.use(bodyParser.json());
 /*--------------------------------------------------*/
 
+var dateUtilModule = require('../../src/util/date-util/date-util');
+var errorResource = require('../../src/resource/text/error-message');
+
+/*-------------------------------------------------*/
 api.post('/user', (req, res) => {
 
     const bcrypt = require('bcrypt-nodejs');
-    let dateUtilModule = require('../../src/util/date-util/date-util');
 
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-
-    let errorResource = require('../../src/resource/text/error-message');
 
     let userValidationClass = require('../../src/util/validation/user-validation');
     let userValidation = new userValidationClass();
@@ -78,7 +79,7 @@ api.post('/user', (req, res) => {
 
                             User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } }, function (countErr, count) {
 
-                                if (countErr){
+                                if (countErr) {
 
                                     let exceptionHandler =
                                         require('../../src/util/mongo-handler/mongo-exception-handler');
@@ -103,7 +104,7 @@ api.post('/user', (req, res) => {
                                     newUser.save(function (err, user) {
 
                                         if (err) {
-                                           
+
                                             let exceptionHandler =
                                                 require('../../src/util/mongo-handler/mongo-exception-handler');
 
@@ -120,6 +121,7 @@ api.post('/user', (req, res) => {
                                         else {
 
                                             response.isSuccessful = true;
+                                            user._id = '';
                                             user.password = '***';
                                             response.outputJson = user;
                                             res.json({ response: response });
@@ -157,5 +159,101 @@ api.post('/user', (req, res) => {
         });
     }
 });
+
+api.put('/user', (req, res) => {
+
+
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+
+    let userValidationClass = require('../../src/util/validation/user-validation');
+    let userValidation = new userValidationClass();
+
+    let errorMessages = userValidation.validateUpdateData(req.body);
+
+    if (errorMessages != null && errorMessages.length != 0) {
+
+        response.serverValidations = errorMessages;
+        res.json({ response: response });
+        return;
+    }
+    else {
+
+        let User = require('../../model/user/user');
+
+        // Firts, find the user using the student number
+        User.findOne({ studentNumber: req.body.studentNumber }, function (findErr, user) {
+
+            if (!findErr) {
+
+                if (user) {
+
+                    //Set sent data
+                    user.name = req.body.name;
+                    user.lastName = req.body.lastName;
+                    user.email = req.body.email;
+                    user.gender = req.body.gender;
+                    user.cellphone = req.body.cellphone;
+                    user.province = req.body.province;
+                    user.birthDate = req.body.birthDate;
+
+                    //Save the instance and return it to the client
+                    user.save(function (saveErr, savedUser) {
+
+                        if (!saveErr) {
+
+                            response.isSuccessful = true;
+                            user._id = '';
+                            user.password = '***';
+                            response.outputJson = savedUser;
+                            res.json({ response: response });
+                            return;
+                        }
+                        else {
+
+                            let exceptionHandler =
+                                require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                            let message = exceptionHandler.tryGetErrorMessage(saveErr);
+
+                            if (message != null)
+                                response.serverValidations.push(message);
+                            else
+                                response.serverValidations.push(errorResource.Err0000());
+
+                            res.json({ response: response });
+                            return;
+                        }
+                    });
+                }
+                else {
+
+                    response.serverValidations.push(errorResource.ErrBu0010());
+                    res.json({ response: response });
+                    return;
+                }
+            }
+            else {
+
+                let exceptionHandler =
+                    require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                let message = exceptionHandler.tryGetErrorMessage(findErr);
+
+                if (message != null)
+                    response.serverValidations.push(message);
+                else
+                    response.serverValidations.push(errorResource.Err0000());
+
+                res.json({ response: response });
+                return;
+            }
+        })
+    }
+});
+
+
 
 module.exports = api;

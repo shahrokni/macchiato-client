@@ -9,7 +9,7 @@ export class UserDetail extends User {
         super();
         this.registerationDate = new Date();
         this.email = "";
-        this.birthDate = new Date();
+        this.birthDate = undefined;
         this.gender = Gender.NotSet;
         this.cellphone = "";
         this.skillScore = new SkillScore();

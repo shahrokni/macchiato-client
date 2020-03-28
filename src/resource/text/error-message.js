@@ -14,47 +14,79 @@ class ErrorMessage{
     /*------------------------------------------------------------ */
     //studentNumber
     static ErrBu0001(){
+
         return "Student number is not set!"
     }
 
     //user
     static ErrBu0002(){
+
         return "User information is not set!";
     }
 
     //email
     static ErrBu0003(){
+
         return "Email format is not correct!";
     }
 
     //username
     static ErrBu0004(){
+
         return "Username format is not correct!";
     }
     
     //name and lastName
     static ErrBu0005(){
+
         return "Either you name or last name format is not correct!";
     }
     
     //password
     static ErrBu0006(){
+
         return "Password format is not correct!";
     }
 
     //birthDate
     static ErrBu0007(){
+
         return "Birthdate format is not correct!";
     }
 
     //province 
     static ErrBu0008(){
+
         return "Province has not been set!";
     }
 
     //username 2 
     static ErrBu0009(){
+
         return "Your desired username has already been taken!"
+    }
+
+    //user
+    static ErrBu0010(){
+
+        return "No related user was found!";
+    }
+    //cellphone 
+    static ErrBu0011(){
+
+        return "Cellphone format is not correct!";
+    }
+
+    //gender
+    static ErrBu0012(){
+
+        return "Gender is not set correctly!"
+    }
+
+    //email
+    static ErrBu0013(){
+
+        return "The email you are trying to use has already been taken!";
     }
 }
 module.exports = ErrorMessage;

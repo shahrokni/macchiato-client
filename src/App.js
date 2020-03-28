@@ -4,46 +4,34 @@ import './App.css';
 import UserService from './service/user-service/user-service';
 import { UserDetail } from './entity/user/userDetail';
 import { Province } from '../src/entity/global/province';
+import { Gender } from './entity/user/gender';
 
 function App() {
 
   useEffect(() => {
 
     let user = new UserDetail();
-    user.userName = "Test1";
-    user.password = "ES6isthebest@!123";
-    user.name  ="Seyed Mahmoud";
-    user.lastName = "Shahrokni";
-    user.province = Province.Khuzestan;
-
-    
-    let service = new UserService();    
-    service.signUp(user,function(response){
-
-      let result = response.isSuccessful+"<br>";
-      result = result+response.operationTimestamp+"<br>";
-      result = result+"client errors: "+"<br>";
-
-      for(let i=0;i<response.clientValidations.length;i++){
-        result = result + i + "-" + response.clientValidations[i]+"<br>"
-      }
+   
+    user.name  ="Elham";
+    user.lastName = "Vaghefi";
+    user.province = Province.Tehran;
+    user.studentNumber = "202003281"
+    user.cellphone = "09375681787";
+    user.email = "m.shahrokny@gmail.com";
+    let service = new UserService();
+    service.update(user, function (response) {    
       
-      result =result +"server errors: "+ "<br>";
-      for(let i=0;i<response.serverValidations.length;i++){
-        result = result + i+ "-" + response.serverValidations[i]+"<br>"
-      }
-      document.write(result);
+      console.log(response);
     });
-    
-  }
-  );
+
+  });
 
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        <p id='myP'>
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
