@@ -29,7 +29,8 @@ class UserValidation {
         }
 
         //Check password
-        if(this.checkPasswordFunc(userDetail.password)===false){
+        if(userDetail.password===undefined || userDetail.password==null ||
+             this.checkPasswordFunc(userDetail.password)===false){
 
             errorMessages.push(this.ErrorMessage.ErrBu0006());
         }

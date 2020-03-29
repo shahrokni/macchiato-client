@@ -12,12 +12,13 @@ function App() {
 
     let user = new UserDetail();
    
-    user.name  ="Elham";
-    user.lastName = "Vaghefi";
+   
+    user.studentNumber = "202003290";
+    user.name  =" mahmoud";
+    user.lastName = "shahrokny ";
     user.province = Province.Tehran;
-    user.studentNumber = "202003281"
-    user.cellphone = "09375681787";
-    user.email = "m.shahrokny@gmail.com";
+    user.cellphone = "09126104851";
+    user.gender = Gender.Male;
     let service = new UserService();
     service.update(user, function (response) {    
       

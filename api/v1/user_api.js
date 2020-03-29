@@ -14,6 +14,8 @@ api.use(bodyParser.json());
 var dateUtilModule = require('../../src/util/date-util/date-util');
 var errorResource = require('../../src/resource/text/error-message');
 
+var uniformData = require('../../src/util/uniform-data/uniform-data');
+
 /*-------------------------------------------------*/
 api.post('/user', (req, res) => {
 
@@ -21,13 +23,17 @@ api.post('/user', (req, res) => {
 
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
+
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
     let userValidationClass = require('../../src/util/validation/user-validation');
     let userValidation = new userValidationClass();
 
-    let errorMessages = userValidation.validateSignUpData(req.body);
+    //unifrom data before the operation is done
+    let receivedData = uniformData.uniformUserDetail(req.body);
+
+    let errorMessages = userValidation.validateSignUpData(receivedData);
 
     if (errorMessages != null && errorMessages.length != 0) {
 
@@ -41,11 +47,11 @@ api.post('/user', (req, res) => {
         let SkillScoreSchema = require('../../model/user/skill-score');
 
         let newUser = new User({
-            userName: req.body.userName.toLowerCase(),
-            name: req.body.name,
-            lastName: req.body.lastName,
+            userName: receivedData.userName,
+            name: receivedData.name,
+            lastName: receivedData.lastName,
             registerationDate: Date.now(),
-            province: req.body.province
+            province: receivedData.province
         });
 
         //Set the first part of student number
@@ -55,7 +61,7 @@ api.post('/user', (req, res) => {
         newUser.skillScore.push(new SkillScore());
 
 
-        let query = User.findOne({ 'userName': req.body.userName }, 'userName');
+        let query = User.findOne({ 'userName': receivedData.userName }, 'userName');
 
         query.exec(function (queryError, user) {
 
@@ -71,7 +77,7 @@ api.post('/user', (req, res) => {
                 else {
 
                     //Encrypt the user's password
-                    bcrypt.hash(req.body.password, bcrypt.genSaltSync(5), null, function (bcryptError, hash) {
+                    bcrypt.hash(receivedData.password, bcrypt.genSaltSync(5), null, function (bcryptError, hash) {
 
                         if (!bcryptError) {
 
@@ -171,7 +177,8 @@ api.put('/user', (req, res) => {
     let userValidationClass = require('../../src/util/validation/user-validation');
     let userValidation = new userValidationClass();
 
-    let errorMessages = userValidation.validateUpdateData(req.body);
+    let receivedData =  uniformData.uniformUserDetail(req.body);
+    let errorMessages = userValidation.validateUpdateData(receivedData);
 
     if (errorMessages != null && errorMessages.length != 0) {
 
@@ -184,20 +191,20 @@ api.put('/user', (req, res) => {
         let User = require('../../model/user/user');
 
         // Firts, find the user using the student number
-        User.findOne({ studentNumber: req.body.studentNumber }, function (findErr, user) {
+        User.findOne({ studentNumber: receivedData.studentNumber }, function (findErr, user) {
 
             if (!findErr) {
 
                 if (user) {
 
                     //Set sent data
-                    user.name = req.body.name;
-                    user.lastName = req.body.lastName;
-                    user.email = req.body.email;
-                    user.gender = req.body.gender;
-                    user.cellphone = req.body.cellphone;
-                    user.province = req.body.province;
-                    user.birthDate = req.body.birthDate;
+                    user.name = receivedData.name;
+                    user.lastName = receivedData.lastName;
+                    user.email = receivedData.email;
+                    user.gender = receivedData.gender;
+                    user.cellphone = receivedData.cellphone;
+                    user.province = receivedData.province;
+                    user.birthDate = receivedData.birthDate;
 
                     //Save the instance and return it to the client
                     user.save(function (saveErr, savedUser) {
