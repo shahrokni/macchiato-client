@@ -1,68 +1,26 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Features: 
 
-## Available Scripts
+F-03.28.2020.1: Create a service for updating user information. – [OK]
+F-03.29.2020.1: User data must be uniformed before it is either updated or saved. – [OK]
+F-03.30.2020.1: Develop a service for fetching user information. – [OK]
+F-03.30.2020.2: Develop a service for fetching user detailed information. – [OK]
+F-03.30.2020.3: Develop a service for sign in operation. -
+F-03.30.2020.4: Add Passport JS to the project. –
+F-03.30.2020.5: Authenticate users for using services. –
 
-In the project directory, you can run:
+Bugs: 
 
-### `npm start`
+03.18.2020.1: Signup validation method does not work properly. -  [OK]
+03.23.2020.1: Uniqueness of usernames must be checked before the signup operation is completed. - [OK]
+03.23.2020.1 > 03.25.2020.1: Server validation must be tested after the related changes are committed! -[OK]
+03.23.2020.3 : All ENUMs must get fixed - [OK]
+03.23.2020.1 > 03.25.2020.2: Check how exactly callback functions work in JavaScript! - [OK]
+03.27.2020.1: API response initialization was fixed - [OK]
+03.25.2020.3: A response parser is needed for the client. It should extract response object from the server sent data! - [OK]
+03.27.2020.2: A callback function must be considered when API call is done! - [OK]
+03.23.2020.4: Mongo DB errors must be handled using a utility  - [OK]
+03.23.2020.7: Passwords must be encrypted before the new user is saved - [OK]
+03.27.2020.3: Student number must be fixed - [OK]
+B-03.30.2020.1: Email validation must be eliminated from update service. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
