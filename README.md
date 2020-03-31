@@ -10,7 +10,7 @@ F-03.30.2020.2: Develop a service for fetching user detailed information. – [O
 
 F-03.30.2020.3: Develop a service for sign in operation. -
 
-F-03.30.2020.4: Add Passport JS to the project. –
+F-03.30.2020.4: Add Passport JS to the project. – [OK]
 
 F-03.30.2020.5: Authenticate users for using services. –
 
