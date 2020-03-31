@@ -14,9 +14,9 @@ function App() {
    let filter = new UserFilter();
    let service = new UserService();
 
-  
+  filter.id = '123';
    
-    service.getUser(filter, function (response) {    
+    service.getUserDetail(filter, function (response) {    
       
       console.log(response);
     });
