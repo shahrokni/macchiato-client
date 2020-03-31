@@ -5,22 +5,18 @@ import UserService from './service/user-service/user-service';
 import { UserDetail } from './entity/user/userDetail';
 import { Province } from '../src/entity/global/province';
 import { Gender } from './entity/user/gender';
+import {UserFilter} from '../src/entity/user/user-filter';
 
 function App() {
 
   useEffect(() => {
 
-    let user = new UserDetail();
+   let filter = new UserFilter();
+   let service = new UserService();
+
+  
    
-   
-    user.studentNumber = "202003290";
-    user.name  =" mahmoud";
-    user.lastName = "shahrokny ";
-    user.province = Province.Tehran;
-    user.cellphone = "09126104851";
-    user.gender = Gender.Male;
-    let service = new UserService();
-    service.update(user, function (response) {    
+    service.getUser(filter, function (response) {    
       
       console.log(response);
     });

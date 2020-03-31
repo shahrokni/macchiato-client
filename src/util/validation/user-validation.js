@@ -143,9 +143,21 @@ class UserValidation {
         if (user != null && user.studentNumber != null && user.studentNumber != null) {
             return errorMessages;
         }
-
-        //Do not show technical error to the user!
+       
         errorMessages.push(this.ErrorMessage.Err0002());
+        return errorMessages;
+    }
+
+    /*userFilter: UserFilter - output: String Array*/
+    validateFetchUser(userFilter){
+
+        let errorMessages = [];
+
+        if(!userFilter || (!userFilter.studentNumber && !userFilter.id)){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0014());
+        }
+
         return errorMessages;
     }
 }

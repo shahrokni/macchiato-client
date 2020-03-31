@@ -12,6 +12,7 @@ class ErrorMessage{
         return "Something went wrong! Please try again or call the administration!";
     }
     /*------------------------------------------------------------ */
+
     //studentNumber
     static ErrBu0001(){
 
@@ -87,6 +88,12 @@ class ErrorMessage{
     static ErrBu0013(){
 
         return "The email you are trying to use has already been taken!";
+    }
+
+    //user filter
+    static ErrBu0014(){
+
+        return "Filter has not been set properly!";
     }
 }
 module.exports = ErrorMessage;

@@ -177,7 +177,7 @@ api.put('/user', (req, res) => {
     let userValidationClass = require('../../src/util/validation/user-validation');
     let userValidation = new userValidationClass();
 
-    let receivedData =  uniformData.uniformUserDetail(req.body);
+    let receivedData = uniformData.uniformUserDetail(req.body);
     let errorMessages = userValidation.validateUpdateData(receivedData);
 
     if (errorMessages != null && errorMessages.length != 0) {
@@ -261,6 +261,75 @@ api.put('/user', (req, res) => {
     }
 });
 
+api.get('/user', (req, res) => {
 
+
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();  
+
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();    
+
+    let findQueryFilter;
+    let columns = 'userName name lastName studentNumber';
+
+    let User = require('../../model/user/user');
+   
+    //Validate request query
+    if(!('studentNumber' in req.query) && !('id' in req.query)){
+       
+        response.serverValidations.push(errorResource.ErrBu0014());
+        res.json({response:response});
+        return;
+    }
+
+    if (req.query.studentNumber) {
+
+        findQueryFilter = { 'studentNumber': req.query.studentNumber };
+    }
+    else if (req.query.id) {
+
+        findQueryFilter = { '_id': req.query.id };
+    }
+
+    let findQuery = User.findOne(findQueryFilter, columns);
+
+    findQuery.exec(function (err, user) {
+
+        if (!err) {
+
+            //Query has been excuted successfully
+            response.isSuccessful = true;
+
+            if (user) {
+
+                response.outputJson = user;
+                res.json({ response: response });
+                return;
+            }
+            else {
+
+                res.json({ response: response });
+                return;
+            }
+        }
+        else {
+
+            let exceptionHandler =
+                require('../../src/util/mongo-handler/mongo-exception-handler');
+
+            let message = exceptionHandler.tryGetErrorMessage(err);
+
+            if (message != null)
+                response.serverValidations.push(message);
+            else
+                response.serverValidations.push(errorResource.Err0000());
+
+            res.json({ response: response });
+            return;
+        }
+
+    });
+});
 
 module.exports = api;
