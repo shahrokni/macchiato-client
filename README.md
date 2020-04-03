@@ -8,11 +8,13 @@ F-03.30.2020.1: Develop a service for fetching user information. – [OK]
 
 F-03.30.2020.2: Develop a service for fetching user detailed information. – [OK]
 
-F-03.30.2020.3: Develop a service for sign in operation. -
+F-03.30.2020.3: Develop a service for sign in operation. -[OK]
 
 F-03.30.2020.4: Add Passport JS to the project. – [OK]
 
-F-03.30.2020.5: Authenticate users for using services. –
+F-03.30.2020.5: Authenticate users for using services. – [OK]
+
+F-04.03.2020.1: Develop a logout service. - [OK]
 
 
 Bugs: 
@@ -39,6 +41,12 @@ Bugs:
 
 03.27.2020.3: Student number must be fixed - [OK]
 
-B-03.30.2020.1: Email validation must be eliminated from update service. 
+B-03.30.2020.1: Email validation must be eliminated from update service. [OK]
+
+B-04.03.2020.1: Student number must be eliminated from update service. [OK]
+
+B-04.03.2020.2: Get/user must return data to the authenticated user. The filter must be displaced with req.user.  
+
+B-04.03.2020.3: Get/userDetail must return data to the authenticated user. The filter must be displaced with req.user.  
 
 
