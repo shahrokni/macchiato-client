@@ -11,20 +11,14 @@ import {UserFilter} from '../src/entity/user/user-filter';
 function App() {
 
   useEffect(() => {
-    let user = new UserDetail();
+   
+  
     let service = new UserService();
 
-    user.name = 'Mahmoud';
-    user.lastName = 'Shahrokni';
-    user.province = Province.Khuzestan;
-    user.cellphone = '09126104851'
-    user.gender = Gender.Male;
-    service.update(user, function (response) {    
+    service.getUserDetail(function (response) {    
       
       console.log(response);
     });
-   
-   
 
   });
 

@@ -282,30 +282,12 @@ api.get('/user',isUserAuthenticated, (req, res) => {
 
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-
-    let findQueryFilter;
+   
     let columns = 'userName name lastName studentNumber';
 
-    let User = require('../../model/user/user');
+    let User = require('../../model/user/user');   
 
-    //Validate request query
-    if (!('studentNumber' in req.query) && !('id' in req.query)) {
-
-        response.serverValidations.push(errorResource.ErrBu0014());
-        res.json({ response: response });
-        return;
-    }
-
-    if (req.query.studentNumber) {
-
-        findQueryFilter = { 'studentNumber': req.query.studentNumber };
-    }
-    else if (req.query.id) {
-
-        findQueryFilter = { '_id': req.query.id };
-    }
-
-    let findQuery = User.findOne(findQueryFilter, columns);
+    let findQuery = User.findOne({'_id':req.user._id}, columns);
 
     findQuery.exec(function (err, user) {
 
@@ -354,30 +336,13 @@ api.get('/userDetail',isUserAuthenticated, (req, res) => {
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
-    let findQueryFilter;
+   
     let columns = 'userName name lastName studentNumber registerationDate email gender ' +
         'cellphone province birthDate skillScore';
 
-    let User = require('../../model/user/user');
+    let User = require('../../model/user/user');    
 
-    //Validate request query
-    if (!('studentNumber' in req.query) && !('id' in req.query)) {
-
-        response.serverValidations.push(errorResource.ErrBu0014());
-        res.json({ response: response });
-        return;
-    }
-
-    if (req.query.studentNumber) {
-
-        findQueryFilter = { 'studentNumber': req.query.studentNumber };
-    }
-    else if (req.query.id) {
-
-        findQueryFilter = { '_id': req.query.id };
-    }
-
-    let findQuery = User.findOne(findQueryFilter, columns);
+    let findQuery = User.findOne({'_id':req.user._id}, columns);
 
     findQuery.exec(function (err, user) {
 
