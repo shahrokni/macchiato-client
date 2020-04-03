@@ -41,12 +41,12 @@ Bugs:
 
 03.27.2020.3: Student number must be fixed - [OK]
 
-B-03.30.2020.1: Email validation must be eliminated from update service. [OK]
+B-03.30.2020.1: Email validation must be eliminated from update service.-[OK]
 
-B-04.03.2020.1: Student number must be eliminated from update service. [OK]
+B-04.03.2020.1: Student number must be eliminated from update service.-[OK]
 
-B-04.03.2020.2: Get/user must return data to the authenticated user. The filter must be displaced with req.user.  
+B-04.03.2020.2: Get/user must return data to the authenticated user. The filter must be displaced with req.user.-[OK]
 
-B-04.03.2020.3: Get/userDetail must return data to the authenticated user. The filter must be displaced with req.user.  
+B-04.03.2020.3: Get/userDetail must return data to the authenticated user. The filter must be displaced with req.user.-[OK]
 
 
