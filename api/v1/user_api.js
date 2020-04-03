@@ -1,3 +1,4 @@
+var passport = require('passport');
 /*--------------------------------------------------*/
 var mongoose = require('mongoose');
 mongoose.set('useNewUrlParser', true);
@@ -15,7 +16,19 @@ var dateUtilModule = require('../../src/util/date-util/date-util');
 var errorResource = require('../../src/resource/text/error-message');
 
 var uniformData = require('../../src/util/uniform-data/uniform-data');
+/*------------------Function----------------------*/
+function isUserAuthenticated(req,res,next){
 
+   
+    if(req.isAuthenticated()){
+
+        next();
+    }
+    else{       
+       
+        res.redirect(303,'notlogedIn');
+    }
+}
 /*-------------------------------------------------*/
 api.post('/user', (req, res) => {
 
@@ -166,7 +179,7 @@ api.post('/user', (req, res) => {
     }
 });
 
-api.put('/user', (req, res) => {
+api.put('/user',isUserAuthenticated, (req, res) => {
 
 
     let responseClass = require('../../src/communication/entity/response');
@@ -191,7 +204,7 @@ api.put('/user', (req, res) => {
         let User = require('../../model/user/user');
 
         // Firts, find the user using the student number
-        User.findOne({ studentNumber: receivedData.studentNumber }, function (findErr, user) {
+        User.findOne({ studentNumber: req.user.studentNumber }, function (findErr, user) {
 
             if (!findErr) {
 
@@ -261,25 +274,25 @@ api.put('/user', (req, res) => {
     }
 });
 
-api.get('/user', (req, res) => {
+api.get('/user',isUserAuthenticated, (req, res) => {
 
 
     let responseClass = require('../../src/communication/entity/response');
-    let response = new responseClass();  
+    let response = new responseClass();
 
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();    
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
     let findQueryFilter;
     let columns = 'userName name lastName studentNumber';
 
     let User = require('../../model/user/user');
-   
+
     //Validate request query
-    if(!('studentNumber' in req.query) && !('id' in req.query)){
-       
+    if (!('studentNumber' in req.query) && !('id' in req.query)) {
+
         response.serverValidations.push(errorResource.ErrBu0014());
-        res.json({response:response});
+        res.json({ response: response });
         return;
     }
 
@@ -332,26 +345,26 @@ api.get('/user', (req, res) => {
     });
 });
 
-api.get('/userDetail', (req, res) => {
+api.get('/userDetail',isUserAuthenticated, (req, res) => {
 
 
     let responseClass = require('../../src/communication/entity/response');
-    let response = new responseClass();  
+    let response = new responseClass();
 
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();    
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
     let findQueryFilter;
-    let columns = 'userName name lastName studentNumber registerationDate email gender '+
-    'cellphone province birthDate skillScore';
+    let columns = 'userName name lastName studentNumber registerationDate email gender ' +
+        'cellphone province birthDate skillScore';
 
     let User = require('../../model/user/user');
-   
+
     //Validate request query
-    if(!('studentNumber' in req.query) && !('id' in req.query)){
-       
+    if (!('studentNumber' in req.query) && !('id' in req.query)) {
+
         response.serverValidations.push(errorResource.ErrBu0014());
-        res.json({response:response});
+        res.json({ response: response });
         return;
     }
 
@@ -372,7 +385,7 @@ api.get('/userDetail', (req, res) => {
 
             //Query has been excuted successfully
             response.isSuccessful = true;
-           
+
             if (user) {
 
                 response.outputJson = user;
@@ -387,7 +400,7 @@ api.get('/userDetail', (req, res) => {
         }
         else {
 
-           
+
             let exceptionHandler =
                 require('../../src/util/mongo-handler/mongo-exception-handler');
 
@@ -403,6 +416,66 @@ api.get('/userDetail', (req, res) => {
         }
 
     });
+});
+
+api.post('/user/login', passport.authenticate('login', {
+
+    successRedirect: 'successfulLogin',
+    failureRedirect: 'failedLogin',
+}));
+
+api.get('/user/successfulLogin', (req, res) => {
+    
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+
+    response.isSuccessful = true;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+
+    res.json({ response: response });
+    return;
+});
+
+api.get('/user/failedLogin', (req, res) => {
+    
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.serverValidations.push(errorResource.ErrBu0016());
+
+    res.json({ response: response });
+    return;
+});
+
+api.get('/user/logout', (req, res) => {
+
+    req.logout();
+    res.redirect('logedout');
+});
+
+api.get('/user/logedout',(req,res)=>{
+
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+    response.isSuccessful = true;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+
+    res.json({response:response});
+    return res;
+});
+
+api.get('/notlogedIn',(req,res)=>{
+
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.serverValidations.push(errorResource.ErrBu0017());
+
+    res.json({response:response});
+    return res;
 });
 
 module.exports = api;

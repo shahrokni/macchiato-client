@@ -95,5 +95,23 @@ class ErrorMessage{
 
         return "Filter has not been set properly!";
     }
+
+    //َauthentication
+    static ErrBu0015(){
+
+        return "Please fill both username and password!";
+    }
+    
+    //َauthentication 2
+    static ErrBu0016(){
+
+        return "Either username or password is not correct!";
+    }
+
+    //authentication 3 
+    static ErrBu0017(){
+
+        return "User is not authenticated!";
+    }
 }
 module.exports = ErrorMessage;

@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import UserService from './service/user-service/user-service';
 import { UserDetail } from './entity/user/userDetail';
+import User from './entity/user/user';
 import { Province } from '../src/entity/global/province';
 import { Gender } from './entity/user/gender';
 import {UserFilter} from '../src/entity/user/user-filter';
@@ -10,16 +11,20 @@ import {UserFilter} from '../src/entity/user/user-filter';
 function App() {
 
   useEffect(() => {
+    let user = new UserDetail();
+    let service = new UserService();
 
-   let filter = new UserFilter();
-   let service = new UserService();
-
-  filter.id = '123';
-   
-    service.getUserDetail(filter, function (response) {    
+    user.name = 'Mahmoud';
+    user.lastName = 'Shahrokni';
+    user.province = Province.Khuzestan;
+    user.cellphone = '09126104851'
+    user.gender = Gender.Male;
+    service.update(user, function (response) {    
       
       console.log(response);
     });
+   
+   
 
   });
 

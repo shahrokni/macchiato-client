@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var SkillScoreSchema = require('./skill-score');
+var bcrypt = require("bcrypt-nodejs");
 
 var userSchema = mongoose.Schema({
 
@@ -17,6 +18,15 @@ var userSchema = mongoose.Schema({
     isActive : {type: mongoose.Schema.Types.Boolean, required:true, default:true},
     skillScore: [SkillScoreSchema]
 });
+
+//Check password
+userSchema.methods.checkPassword = function(guess,done){
+
+    bcrypt.compare(guess,this.password,function(err,isMathc){
+
+        done(err,isMathc);
+    });
+};
 
 var User = mongoose.model('User', userSchema);
 module.exports = User;

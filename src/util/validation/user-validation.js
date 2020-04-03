@@ -60,16 +60,6 @@ class UserValidation {
             errorMessages.push(this.ErrorMessage.ErrBu0002());
         }       
 
-        if(!userDetail.studentNumber){
-
-            errorMessages.push(this.ErrorMessage.ErrBu0001())
-        }
-
-        if (userDetail.email && this.checkEmailFormatFunc(userDetail.email) === false) {
-
-            errorMessages.push(this.ErrorMessage.ErrBu0003());
-        }
-
         if (this.checkNameFormatFunc(userDetail.name) === false || this.checkNameFormatFunc(userDetail.lastName) === false) {
 
             errorMessages.push(this.ErrorMessage.ErrBu0005());

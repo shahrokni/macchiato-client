@@ -1,5 +1,3 @@
-
-
 import Response from '../../communication/entity/response';
 import RestProvider from '../../communication/entity/rest-provider';
 import ErrorMessages from '../../resource/text/error-message';
@@ -142,7 +140,34 @@ export default class UserService {
     /*user: User - output: Response*/
     signIn(user, callBack) {
 
-        //TODO      
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+
+        if (!user.userName || !user.password) {
+
+            response.clientValidations.push(ErrorMessages.ErrBu0015());
+            callBack(response);
+        }
+        else {
+
+            //let bcrypt = require('bcrypt-nodejs');
+            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+
+            restInstance.post('user_api/v1/user/login', { username: user.userName, password: user.password })
+                .then(function (res) {
+
+                    let responseUtil = require('../../util/response-util/response-util');
+                    let serverResponse = responseUtil.extractResponse(res);
+                    callBack(serverResponse);
+                })
+                .catch(function (err) {
+
+                    response.clientValidations.push(ErrorMessages.Err0000());
+                    callBack(response);
+                });
+
+        }
     }
 
     /*userDetail: UserDetail-output: Reponse*/
@@ -165,7 +190,7 @@ export default class UserService {
         else {
 
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
+           
             restInstance.put('user_api/v1/user', userDetail).then(function (res) {
 
                 let responseUtil = require('../../util/response-util/response-util');
@@ -182,8 +207,25 @@ export default class UserService {
     }
 
     /*user: User - output: Response*/
-    logOut(user, callBack) {
+    logOut(callBack) {
 
-        //TODO        
+        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+           
+            restInstance.get('user_api/v1/user/logout').then(function (res) {
+
+                let responseUtil = require('../../util/response-util/response-util');
+                let serverResponse = responseUtil.extractResponse(res);
+                callBack(serverResponse);
+
+            })
+                .catch(function (err) {
+
+                    let response = new Response();
+                    response.isSuccessful = false;
+                    response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+                    
+                    response.clientValidations.push(ErrorMessages.Err0000());
+                    callBack(response);
+                });   
     }
 }
