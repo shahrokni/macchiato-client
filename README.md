@@ -18,6 +18,9 @@ F-04.03.2020.1: Develop a logout service. - [OK]
 
 F-04.03.2020.2: Develop a service for updating users Emails. 
 
+F-04.04.2020.1: Develop a service for changing users' passwords. 
+
+
 
 Bugs: 
 
