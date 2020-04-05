@@ -16,9 +16,9 @@ F-03.30.2020.5: Authenticate users for using services. – [OK]
 
 F-04.03.2020.1: Develop a logout service. - [OK]
 
-F-04.03.2020.2: Develop a service for updating users Emails. 
+F-04.03.2020.2: Develop a service for updating users Emails. - [OK]
 
-F-04.04.2020.1: Develop a service for changing users' passwords. 
+F-04.04.2020.1: Develop a service for changing users' passwords. - [OK]
 
 
 

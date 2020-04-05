@@ -113,5 +113,28 @@ class ErrorMessage{
 
         return "User is not authenticated!";
     }
+
+    //new password
+    static ErrBu0018(){
+
+        return "New password format is not correct!";
+    }
+
+    //repeated new password
+    static ErrBu0019(){
+
+        return "Repeated new password format is not correct!";
+    }
+
+    //new and repeated passwords are not alike
+    static ErrBu0020(){
+
+        return "New and repeated passwords are not alike!";
+    }
+    //current password is nt correct
+    static ErrBu0021(){
+
+        return "The old password that you have entered is not correct!";
+    }
 }
 module.exports = ErrorMessage;

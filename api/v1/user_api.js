@@ -17,19 +17,22 @@ var errorResource = require('../../src/resource/text/error-message');
 
 var uniformData = require('../../src/util/uniform-data/uniform-data');
 /*------------------Function----------------------*/
-function isUserAuthenticated(req,res,next){
 
-   
-    if(req.isAuthenticated()){
+//Check if the user is authenticated
+function isUserAuthenticated(req, res, next) {
+
+
+    if (req.isAuthenticated()) {
 
         next();
     }
-    else{       
-       
-        res.redirect(303,'notlogedIn');
+    else {
+
+        res.redirect(303, '/user_api/v1/notlogedIn');
     }
 }
-/*-------------------------------------------------*/
+
+//Save the new user
 api.post('/user', (req, res) => {
 
     const bcrypt = require('bcrypt-nodejs');
@@ -179,7 +182,8 @@ api.post('/user', (req, res) => {
     }
 });
 
-api.put('/user',isUserAuthenticated, (req, res) => {
+//Update the user information
+api.put('/user', isUserAuthenticated, (req, res) => {
 
 
     let responseClass = require('../../src/communication/entity/response');
@@ -274,7 +278,8 @@ api.put('/user',isUserAuthenticated, (req, res) => {
     }
 });
 
-api.get('/user',isUserAuthenticated, (req, res) => {
+// Get the user information
+api.get('/user', isUserAuthenticated, (req, res) => {
 
 
     let responseClass = require('../../src/communication/entity/response');
@@ -282,12 +287,12 @@ api.get('/user',isUserAuthenticated, (req, res) => {
 
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-   
+
     let columns = 'userName name lastName studentNumber';
 
-    let User = require('../../model/user/user');   
+    let User = require('../../model/user/user');
 
-    let findQuery = User.findOne({'_id':req.user._id}, columns);
+    let findQuery = User.findOne({ '_id': req.user._id }, columns);
 
     findQuery.exec(function (err, user) {
 
@@ -327,7 +332,8 @@ api.get('/user',isUserAuthenticated, (req, res) => {
     });
 });
 
-api.get('/userDetail',isUserAuthenticated, (req, res) => {
+// Get the user detailed information
+api.get('/userDetail', isUserAuthenticated, (req, res) => {
 
 
     let responseClass = require('../../src/communication/entity/response');
@@ -336,13 +342,13 @@ api.get('/userDetail',isUserAuthenticated, (req, res) => {
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
-   
+
     let columns = 'userName name lastName studentNumber registerationDate email gender ' +
         'cellphone province birthDate skillScore';
 
-    let User = require('../../model/user/user');    
+    let User = require('../../model/user/user');
 
-    let findQuery = User.findOne({'_id':req.user._id}, columns);
+    let findQuery = User.findOne({ '_id': req.user._id }, columns);
 
     findQuery.exec(function (err, user) {
 
@@ -383,6 +389,250 @@ api.get('/userDetail',isUserAuthenticated, (req, res) => {
     });
 });
 
+//Update the email
+api.put('/user/email', isUserAuthenticated, (req, res) => {
+
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+
+    let userValidationClass = require('../../src/util/validation/user-validation');
+    let userValidation = new userValidationClass();
+
+    let errorMessages = userValidation.validateUpdateEmail(req.body.newEmail);
+
+    if (errorMessages != null && errorMessages.length !== 0) {
+
+        response.serverValidations = errorMessages;
+        res.json({ response: response });
+        return;
+    }
+    else {
+
+        let userId = req.user._id;
+        let newEmail = req.body.newEmail;
+
+        let User = require('../../model/user/user');
+        let countQuery = User.countDocuments({ email: newEmail, _id: { $ne: userId } });
+
+        countQuery.exec(function (countErr, count) {
+
+            if (!countErr) {
+
+                // The email has not been taken already!
+                if (count === 0) {
+
+                    let findQuery = User.findOne({ _id: userId }, 'email');
+
+                    findQuery.exec(function (findErr, user) {
+
+                        if (!findErr) {
+
+                            if (user) {
+
+                                //Replace the new email with the old one
+                                user.email = newEmail;
+                                user.save(function (saveErr, savedUser) {
+
+                                    if (!saveErr) {
+
+                                        response.isSuccessful = true;
+                                        res.json({ response: response });
+                                        return;
+                                    }
+                                    else {
+
+                                        let exceptionHandler =
+                                            require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                                        let message = exceptionHandler.tryGetErrorMessage(saveErr);
+
+                                        if (message != null)
+                                            response.serverValidations.push(message);
+                                        else
+                                            response.serverValidations.push(errorResource.Err0000());
+
+                                        res.json({ response: response });
+                                        return;
+                                    }
+                                })
+                            }
+                            else {
+
+                            }
+                        }
+                        else {
+
+                            let exceptionHandler =
+                                require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                            let message = exceptionHandler.tryGetErrorMessage(findErr);
+
+                            if (message != null)
+                                response.serverValidations.push(message);
+                            else
+                                response.serverValidations.push(errorResource.Err0000());
+
+                            res.json({ response: response });
+                            return;
+                        }
+
+                    });
+
+                }
+                else {
+
+                    response.serverValidations.push(errorResource.ErrBu0013());
+                    res.json({response:response});
+                    return;
+                }
+
+            }
+            else {
+
+                let exceptionHandler =
+                    require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                let message = exceptionHandler.tryGetErrorMessage(countErr);
+
+                if (message != null)
+                    response.serverValidations.push(message);
+                else
+                    response.serverValidations.push(errorResource.Err0000());
+
+                res.json({ response: response });
+                return;
+            }
+        });
+    }
+
+});
+
+
+//Change the password
+api.put('/user/password', isUserAuthenticated, (req, res) => {
+
+    let responseClass = require('../../src/communication/entity/response');
+    let response = new responseClass();
+    response.isSuccessful = false;
+    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+
+    let userValidationClass = require('../../src/util/validation/user-validation');
+    let userValidation = new userValidationClass();
+
+    let errorMessages = userValidation.validateChangePassword(req.body.oldPassword
+        , req.body.newPassword, req.body.repeatedNewPassword);
+
+    if (errorMessages != null && errorMessages.length != 0) {
+
+        response.serverValidations = errorMessages;
+        res.json({ response: response });
+        return;
+    }
+    else {
+
+        let User = require('../../model/user/user');
+        let findQury = User.findOne({ _id: req.user._id }, 'password');
+
+        findQury.exec(function (findErr, user) {
+
+            if (!findErr) {
+
+                if (user && user.password) {
+
+                    user.checkPassword(req.body.oldPassword, function (checkPassErr, isMatch) {
+
+                        if (!checkPassErr) {
+
+                            if (isMatch) {
+
+                                const bcrypt = require('bcrypt-nodejs');
+                                bcrypt.hash(req.body.newPassword, bcrypt.genSaltSync(5), null, function (bcryptError, hash) {
+
+                                    if (!bcryptError) {
+
+                                        //Replase old password with the new,encrypted one!
+                                        user.password = hash;
+
+                                        //Save the new password
+                                        user.save(function (saveErr, savedUser) {
+
+                                            if (!saveErr) {
+
+                                                response.isSuccessful = true;
+                                                res.json({ response: response });
+                                                return;
+                                            }
+                                            else {
+
+                                                let exceptionHandler =
+                                                    require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                                                let message = exceptionHandler.tryGetErrorMessage(saveErr);
+
+                                                if (message != null)
+                                                    response.serverValidations.push(message);
+                                                else
+                                                    response.serverValidations.push(errorResource.Err0000());
+
+                                                res.json({ response: response });
+                                                return;
+
+                                            }
+                                        });
+                                    }
+                                    else {
+
+                                        response.serverValidations.push(errorResource.Err0000());
+                                        res.json({ response: response });
+                                        return;
+                                    }
+                                });
+                            }
+                            else {
+
+                                response.serverValidations.push(errorResource.ErrBu0021());
+                                res.json({ response: response });
+                                return;
+                            }
+                        }
+                        else {
+
+                            response.serverValidations.push(errorResource.Err0000());
+                            res.json({ response: response });
+                            return;
+                        }
+
+                    });
+                }
+                else {
+
+                    response.serverValidations.push(errorResource.ErrBu0010());
+                    res.json({ response: response });
+                    return;
+                }
+            }
+            else {
+
+                let exceptionHandler =
+                    require('../../src/util/mongo-handler/mongo-exception-handler');
+
+                let message = exceptionHandler.tryGetErrorMessage(findErr);
+
+                if (message != null)
+                    response.serverValidations.push(message);
+                else
+                    response.serverValidations.push(errorResource.Err0000());
+
+                res.json({ response: response });
+                return;
+            }
+        });
+    }
+});
+
+/*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
 
     successRedirect: 'successfulLogin',
@@ -390,7 +640,7 @@ api.post('/user/login', passport.authenticate('login', {
 }));
 
 api.get('/user/successfulLogin', (req, res) => {
-    
+
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
 
@@ -402,7 +652,7 @@ api.get('/user/successfulLogin', (req, res) => {
 });
 
 api.get('/user/failedLogin', (req, res) => {
-    
+
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
 
@@ -420,18 +670,18 @@ api.get('/user/logout', (req, res) => {
     res.redirect('logedout');
 });
 
-api.get('/user/logedout',(req,res)=>{
+api.get('/user/logedout', (req, res) => {
 
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
     response.isSuccessful = true;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
-    res.json({response:response});
+    res.json({ response: response });
     return res;
 });
 
-api.get('/notlogedIn',(req,res)=>{
+api.get('/notlogedIn', (req, res) => {
 
     let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
@@ -439,7 +689,7 @@ api.get('/notlogedIn',(req,res)=>{
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
     response.serverValidations.push(errorResource.ErrBu0017());
 
-    res.json({response:response});
+    res.json({ response: response });
     return res;
 });
 

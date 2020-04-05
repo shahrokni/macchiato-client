@@ -49,6 +49,38 @@ class UserValidation {
         return errorMessages;        
     }
 
+    validateChangePassword(oldPassword,newPassword,repeatNewPassword){
+
+        let errorMessages = [];
+
+        if(newPassword == null || newPassword===undefined || this.checkPasswordFunc(newPassword)===false){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0018());
+        }
+
+        if(repeatNewPassword==null || repeatNewPassword===undefined || this.checkPasswordFunc(repeatNewPassword)===false){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0019());
+        }
+
+        if(repeatNewPassword !== newPassword){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0020());
+        }
+
+        return errorMessages;
+    }
+
+    validateUpdateEmail(newEmail){
+
+        let errorMessages = [];
+
+        if(this.checkEmailFormatFunc(newEmail)===false){
+
+            errorMessages.push(this.ErrorMessage.ErrBu0003());
+        }
+        return errorMessages;
+    }
 
     /*userDetail: UserDetail - output: String Array*/
     validateUpdateData(userDetail) {
