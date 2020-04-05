@@ -1,3 +1,5 @@
+Current Development State : Testing the user_service & user_api functionalities!
+
 Features: 
 
 F-03.28.2020.1: Create a service for updating user information. – [OK]
@@ -19,7 +21,6 @@ F-04.03.2020.1: Develop a logout service. - [OK]
 F-04.03.2020.2: Develop a service for updating users Emails. - [OK]
 
 F-04.04.2020.1: Develop a service for changing users' passwords. - [OK]
-
 
 
 Bugs: 
@@ -53,5 +54,7 @@ B-04.03.2020.1: Student number must be eliminated from update service.-[OK]
 B-04.03.2020.2: Get/user must return data to the authenticated user. The filter must be displaced with req.user.-[OK]
 
 B-04.03.2020.3: Get/userDetail must return data to the authenticated user. The filter must be displaced with req.user.-[OK]
+
+B-04.05.2020.1: After the operation is done, the connection needs to get closed - 
 
 
