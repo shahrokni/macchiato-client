@@ -1,9 +1,6 @@
 var passport = require('passport');
 /*--------------------------------------------------*/
 var mongoose = require('mongoose');
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
 /*----------------------------------------------------*/
 var express = require('express');
 const bodyParser = require('body-parser');
@@ -274,8 +271,8 @@ api.put('/user', isUserAuthenticated, (req, res) => {
 });
 
 // Get the user information
-api.get('/user', isUserAuthenticated, (req, res) => {
-   
+api.get('/user', isUserAuthenticated, (req, res) => {   
+
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
@@ -293,20 +290,20 @@ api.get('/user', isUserAuthenticated, (req, res) => {
             //Query has been excuted successfully
             response.isSuccessful = true;
 
-            if (user) {
+            if (user) {              
 
                 response.outputJson = user;
                 res.json({ response: response });
                 return;
             }
-            else {
+            else {               
 
                 res.json({ response: response });
                 return;
             }
         }
         else {
-
+           
             let exceptionHandler =
                 require('../../src/util/mongo-handler/mongo-exception-handler');
 

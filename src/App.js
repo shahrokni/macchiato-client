@@ -12,16 +12,14 @@ function App() {
 
   useEffect(() => {
    
-    
     let service = new UserService();
     let user = new User();
     user.userName = 'test1';
-    user.password = 'ES6isthebest@!123';
+    user.password = 'C#8isthebest@!123';
     service.signIn(user, function (response) {    
       
       console.log(response);
-    });
-   
+    });    
   });
 
 

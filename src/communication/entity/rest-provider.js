@@ -1,7 +1,7 @@
 export default class RestProvider{
 
     static getTimeoutDuration(){
-        return 1500;
+        return 3500;
     }
     
     static createInstance(timeout){
