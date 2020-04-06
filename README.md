@@ -34,6 +34,8 @@ F-04.06.2020.5: Develop a service for Setting Message Read flag - []
 
 F-04.06.2020.6: Develop a service for Getting the count of all unread messages - []
 
+F-04.06.2020.7: Develop a service for Getting AboutUs information - []
+
 
 Bugs: 
 
