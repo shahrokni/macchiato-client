@@ -58,6 +58,6 @@ B-04.03.2020.3: Get/userDetail must return data to the authenticated user. The f
 
 B-04.05.2020.1: After the operation is done, the connection needs to get closed - []
 
-B-04.06.2020.1: user-api must be refined. - []
+B-04.06.2020.1: user-api must be refined. - [OK]
 
 
