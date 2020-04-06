@@ -24,6 +24,17 @@ F-04.04.2020.1: Develop a service for changing users' passwords. - [OK]
 
 F-04.06.2020.1: Unit tests must be completed for all functionalities of the user-api. - []
 
+F-04.06.2020.2: Develop a service for Getting messages - []
+
+F-04.06.2020.3: Develop a service for Getting a message - []
+
+F-04.06.2020.4: Develop a service for deleting a message - []
+
+F-04.06.2020.5: Develop a service for Setting Message Read flag - []
+
+F-04.06.2020.6: Develop a service for Getting the count of all unread messages - []
+
+
 Bugs: 
 
 03.18.2020.1: Signup validation method does not work properly. -  [OK]
