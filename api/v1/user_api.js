@@ -11,7 +11,8 @@ const bodyParser = require('body-parser');
 var api = express.Router();
 api.use(bodyParser.json());
 /*--------------------------------------------------*/
-
+var responseClass = require('../../src/communication/entity/response');
+var userValidationClass = require('../../src/util/validation/user-validation');
 var dateUtilModule = require('../../src/util/date-util/date-util');
 var errorResource = require('../../src/resource/text/error-message');
 
@@ -37,13 +38,10 @@ api.post('/user', (req, res) => {
 
     const bcrypt = require('bcrypt-nodejs');
 
-    let responseClass = require('../../src/communication/entity/response');
     let response = new responseClass();
-
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-
-    let userValidationClass = require('../../src/util/validation/user-validation');
+   
     let userValidation = new userValidationClass();
 
     //unifrom data before the operation is done
@@ -184,14 +182,11 @@ api.post('/user', (req, res) => {
 
 //Update the user information
 api.put('/user', isUserAuthenticated, (req, res) => {
-
-
-    let responseClass = require('../../src/communication/entity/response');
+    
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-
-    let userValidationClass = require('../../src/util/validation/user-validation');
+   
     let userValidation = new userValidationClass();
 
     let receivedData = uniformData.uniformUserDetail(req.body);
@@ -280,11 +275,8 @@ api.put('/user', isUserAuthenticated, (req, res) => {
 
 // Get the user information
 api.get('/user', isUserAuthenticated, (req, res) => {
-
-
-    let responseClass = require('../../src/communication/entity/response');
+   
     let response = new responseClass();
-
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
@@ -334,11 +326,8 @@ api.get('/user', isUserAuthenticated, (req, res) => {
 
 // Get the user detailed information
 api.get('/userDetail', isUserAuthenticated, (req, res) => {
-
-
-    let responseClass = require('../../src/communication/entity/response');
+ 
     let response = new responseClass();
-
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
@@ -391,13 +380,11 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
 
 //Update the email
 api.put('/user/email', isUserAuthenticated, (req, res) => {
-
-    let responseClass = require('../../src/communication/entity/response');
+   
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-
-    let userValidationClass = require('../../src/util/validation/user-validation');
+  
     let userValidation = new userValidationClass();
 
     let errorMessages = userValidation.validateUpdateEmail(req.body.newEmail);
@@ -512,13 +499,11 @@ api.put('/user/email', isUserAuthenticated, (req, res) => {
 
 //Change the password
 api.put('/user/password', isUserAuthenticated, (req, res) => {
-
-    let responseClass = require('../../src/communication/entity/response');
+   
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-
-    let userValidationClass = require('../../src/util/validation/user-validation');
+   
     let userValidation = new userValidationClass();
 
     let errorMessages = userValidation.validateChangePassword(req.body.oldPassword
@@ -640,10 +625,8 @@ api.post('/user/login', passport.authenticate('login', {
 }));
 
 api.get('/user/successfulLogin', (req, res) => {
-
-    let responseClass = require('../../src/communication/entity/response');
+   
     let response = new responseClass();
-
     response.isSuccessful = true;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
 
@@ -652,10 +635,8 @@ api.get('/user/successfulLogin', (req, res) => {
 });
 
 api.get('/user/failedLogin', (req, res) => {
-
-    let responseClass = require('../../src/communication/entity/response');
+   
     let response = new responseClass();
-
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
     response.serverValidations.push(errorResource.ErrBu0016());
@@ -671,8 +652,7 @@ api.get('/user/logout', (req, res) => {
 });
 
 api.get('/user/logedout', (req, res) => {
-
-    let responseClass = require('../../src/communication/entity/response');
+  
     let response = new responseClass();
     response.isSuccessful = true;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
@@ -682,8 +662,7 @@ api.get('/user/logedout', (req, res) => {
 });
 
 api.get('/notlogedIn', (req, res) => {
-
-    let responseClass = require('../../src/communication/entity/response');
+  
     let response = new responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = dateUtilModule.getCurrentDateTime();
