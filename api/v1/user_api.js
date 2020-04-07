@@ -7,14 +7,9 @@ const bodyParser = require('body-parser');
 /*-------------------------------------------------*/
 var api = express.Router();
 api.use(bodyParser.json());
-/*--------------------------------------------------*/
-var responseClass = require('../../src/communication/entity/response');
+/*----------------VARIABLES------------------*/
 var userValidationClass = require('../../src/util/validation/user-validation');
-var dateUtilModule = require('../../src/util/date-util/date-util');
-var errorResource = require('../../src/resource/text/error-message');
-
-var uniformData = require('../../src/util/uniform-data/uniform-data');
-/*------------------Function----------------------*/
+/*------------------FUNCTIONS----------------------*/
 
 //Check if the user is authenticated
 function isUserAuthenticated(req, res, next) {
@@ -35,14 +30,14 @@ api.post('/user', (req, res) => {
 
     const bcrypt = require('bcrypt-nodejs');
 
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
    
     let userValidation = new userValidationClass();
 
     //unifrom data before the operation is done
-    let receivedData = uniformData.uniformUserDetail(req.body);
+    let receivedData = this.uniformData.uniformUserDetail(req.body);
 
     let errorMessages = userValidation.validateSignUpData(receivedData);
 
@@ -66,7 +61,7 @@ api.post('/user', (req, res) => {
         });
 
         //Set the first part of student number
-        newUser.studentNumber = dateUtilModule.getCompactCurrentDate();
+        newUser.studentNumber = this.dateUtilModule.getCompactCurrentDate();
 
         let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
         newUser.skillScore.push(new SkillScore());
@@ -81,7 +76,7 @@ api.post('/user', (req, res) => {
                 //Check wether the chosen username has already been taken by another user
                 if (user) {
 
-                    response.serverValidations.push(errorResource.ErrBu0009());
+                    response.serverValidations.push(this.errorResource.ErrBu0009());
                     res.json({ response: response });
                     return;
                 }
@@ -96,17 +91,14 @@ api.post('/user', (req, res) => {
 
                             User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } }, function (countErr, count) {
 
-                                if (countErr) {
+                                if (countErr) {                                    
 
-                                    let exceptionHandler =
-                                        require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                                    let message = exceptionHandler.tryGetErrorMessage(countErr);
+                                    let message = this.dbExceptionHandler.tryGetErrorMessage(countErr);
 
                                     if (message != null)
                                         response.serverValidations.push(message);
                                     else
-                                        response.serverValidations.push(errorResource.Err0000());
+                                        response.serverValidations.push(this.errorResource.Err0000());
 
                                     res.json({ response: response });
                                     return;
@@ -120,17 +112,14 @@ api.post('/user', (req, res) => {
                                     //Save the new user
                                     newUser.save(function (err, user) {
 
-                                        if (err) {
+                                        if (err) {                                           
 
-                                            let exceptionHandler =
-                                                require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                                            let message = exceptionHandler.tryGetErrorMessage(err);
+                                            let message = this.dbExceptionHandler.tryGetErrorMessage(err);
 
                                             if (message != null)
                                                 response.serverValidations.push(message);
                                             else
-                                                response.serverValidations.push(errorResource.Err0000());
+                                                response.serverValidations.push(this.errorResource.Err0000());
 
                                             res.json({ response: response });
                                             return;
@@ -151,24 +140,21 @@ api.post('/user', (req, res) => {
                         }
                         else {
 
-                            response.serverValidations.push(errorResource.Err0000());
+                            response.serverValidations.push(this.errorResource.Err0000());
                             res.json({ response: response });
                             return;
                         }
                     })
                 }
             }
-            else {
+            else {                
 
-                let exceptionHandler =
-                    require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                let message = exceptionHandler.tryGetErrorMessage(queryError);
+                let message = this.dbExceptionHandler.tryGetErrorMessage(queryError);
 
                 if (message != null)
                     response.serverValidations.push(message);
                 else
-                    response.serverValidations.push(errorResource.Err0000());
+                    response.serverValidations.push(this.errorResource.Err0000());
 
                 res.json({ response: response });
                 return;
@@ -180,13 +166,13 @@ api.post('/user', (req, res) => {
 //Update the user information
 api.put('/user', isUserAuthenticated, (req, res) => {
     
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
    
     let userValidation = new userValidationClass();
 
-    let receivedData = uniformData.uniformUserDetail(req.body);
+    let receivedData = this.uniformData.uniformUserDetail(req.body);
     let errorMessages = userValidation.validateUpdateData(receivedData);
 
     if (errorMessages != null && errorMessages.length != 0) {
@@ -227,17 +213,14 @@ api.put('/user', isUserAuthenticated, (req, res) => {
                             res.json({ response: response });
                             return;
                         }
-                        else {
+                        else {                          
 
-                            let exceptionHandler =
-                                require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                            let message = exceptionHandler.tryGetErrorMessage(saveErr);
+                            let message = this.dbExceptionHandler.tryGetErrorMessage(saveErr);
 
                             if (message != null)
                                 response.serverValidations.push(message);
                             else
-                                response.serverValidations.push(errorResource.Err0000());
+                                response.serverValidations.push(this.errorResource.Err0000());
 
                             res.json({ response: response });
                             return;
@@ -246,22 +229,19 @@ api.put('/user', isUserAuthenticated, (req, res) => {
                 }
                 else {
 
-                    response.serverValidations.push(errorResource.ErrBu0010());
+                    response.serverValidations.push(this.errorResource.ErrBu0010());
                     res.json({ response: response });
                     return;
                 }
             }
-            else {
+            else {              
 
-                let exceptionHandler =
-                    require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                let message = exceptionHandler.tryGetErrorMessage(findErr);
+                let message = this.dbExceptionHandler.tryGetErrorMessage(findErr);
 
                 if (message != null)
                     response.serverValidations.push(message);
                 else
-                    response.serverValidations.push(errorResource.Err0000());
+                    response.serverValidations.push(this.errorResource.Err0000());
 
                 res.json({ response: response });
                 return;
@@ -273,9 +253,9 @@ api.put('/user', isUserAuthenticated, (req, res) => {
 // Get the user information
 api.get('/user', isUserAuthenticated, (req, res) => {   
 
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
 
     let columns = 'userName name lastName studentNumber';
 
@@ -302,17 +282,14 @@ api.get('/user', isUserAuthenticated, (req, res) => {
                 return;
             }
         }
-        else {
-           
-            let exceptionHandler =
-                require('../../src/util/mongo-handler/mongo-exception-handler');
+        else {            
 
-            let message = exceptionHandler.tryGetErrorMessage(err);
+            let message = this.dbExceptionHandler.tryGetErrorMessage(err);
 
             if (message != null)
                 response.serverValidations.push(message);
             else
-                response.serverValidations.push(errorResource.Err0000());
+                response.serverValidations.push(this.errorResource.Err0000());
 
             res.json({ response: response });
             return;
@@ -324,9 +301,9 @@ api.get('/user', isUserAuthenticated, (req, res) => {
 // Get the user detailed information
 api.get('/userDetail', isUserAuthenticated, (req, res) => {
  
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
 
 
     let columns = 'userName name lastName studentNumber registerationDate email gender ' +
@@ -355,18 +332,14 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
                 return;
             }
         }
-        else {
+        else {         
 
-
-            let exceptionHandler =
-                require('../../src/util/mongo-handler/mongo-exception-handler');
-
-            let message = exceptionHandler.tryGetErrorMessage(err);
+            let message = this.dbExceptionHandler.tryGetErrorMessage(err);
 
             if (message != null)
                 response.serverValidations.push(message);
             else
-                response.serverValidations.push(errorResource.Err0000());
+                response.serverValidations.push(this.errorResource.Err0000());
 
             res.json({ response: response });
             return;
@@ -378,9 +351,9 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
 //Update the email
 api.put('/user/email', isUserAuthenticated, (req, res) => {
    
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
   
     let userValidation = new userValidationClass();
 
@@ -425,17 +398,14 @@ api.put('/user/email', isUserAuthenticated, (req, res) => {
                                         res.json({ response: response });
                                         return;
                                     }
-                                    else {
+                                    else {                                       
 
-                                        let exceptionHandler =
-                                            require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                                        let message = exceptionHandler.tryGetErrorMessage(saveErr);
+                                        let message = this.dbExceptionHandler.tryGetErrorMessage(saveErr);
 
                                         if (message != null)
                                             response.serverValidations.push(message);
                                         else
-                                            response.serverValidations.push(errorResource.Err0000());
+                                            response.serverValidations.push(this.errorResource.Err0000());
 
                                         res.json({ response: response });
                                         return;
@@ -446,17 +416,14 @@ api.put('/user/email', isUserAuthenticated, (req, res) => {
 
                             }
                         }
-                        else {
+                        else {                         
 
-                            let exceptionHandler =
-                                require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                            let message = exceptionHandler.tryGetErrorMessage(findErr);
+                            let message = this.dbExceptionHandler.tryGetErrorMessage(findErr);
 
                             if (message != null)
                                 response.serverValidations.push(message);
                             else
-                                response.serverValidations.push(errorResource.Err0000());
+                                response.serverValidations.push(this.errorResource.Err0000());
 
                             res.json({ response: response });
                             return;
@@ -467,23 +434,20 @@ api.put('/user/email', isUserAuthenticated, (req, res) => {
                 }
                 else {
 
-                    response.serverValidations.push(errorResource.ErrBu0013());
+                    response.serverValidations.push(this.errorResource.ErrBu0013());
                     res.json({response:response});
                     return;
                 }
 
             }
-            else {
+            else {         
 
-                let exceptionHandler =
-                    require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                let message = exceptionHandler.tryGetErrorMessage(countErr);
+                let message = this.dbExceptionHandler.tryGetErrorMessage(countErr);
 
                 if (message != null)
                     response.serverValidations.push(message);
                 else
-                    response.serverValidations.push(errorResource.Err0000());
+                    response.serverValidations.push(this.errorResource.Err0000());
 
                 res.json({ response: response });
                 return;
@@ -497,9 +461,9 @@ api.put('/user/email', isUserAuthenticated, (req, res) => {
 //Change the password
 api.put('/user/password', isUserAuthenticated, (req, res) => {
    
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
    
     let userValidation = new userValidationClass();
 
@@ -546,17 +510,14 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
                                                 res.json({ response: response });
                                                 return;
                                             }
-                                            else {
+                                            else {                                            
 
-                                                let exceptionHandler =
-                                                    require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                                                let message = exceptionHandler.tryGetErrorMessage(saveErr);
+                                                let message = this.dbExceptionHandler.tryGetErrorMessage(saveErr);
 
                                                 if (message != null)
                                                     response.serverValidations.push(message);
                                                 else
-                                                    response.serverValidations.push(errorResource.Err0000());
+                                                    response.serverValidations.push(this.errorResource.Err0000());
 
                                                 res.json({ response: response });
                                                 return;
@@ -566,7 +527,7 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
                                     }
                                     else {
 
-                                        response.serverValidations.push(errorResource.Err0000());
+                                        response.serverValidations.push(this.errorResource.Err0000());
                                         res.json({ response: response });
                                         return;
                                     }
@@ -574,14 +535,14 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
                             }
                             else {
 
-                                response.serverValidations.push(errorResource.ErrBu0021());
+                                response.serverValidations.push(this.errorResource.ErrBu0021());
                                 res.json({ response: response });
                                 return;
                             }
                         }
                         else {
 
-                            response.serverValidations.push(errorResource.Err0000());
+                            response.serverValidations.push(this.errorResource.Err0000());
                             res.json({ response: response });
                             return;
                         }
@@ -590,22 +551,19 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
                 }
                 else {
 
-                    response.serverValidations.push(errorResource.ErrBu0010());
+                    response.serverValidations.push(this.errorResource.ErrBu0010());
                     res.json({ response: response });
                     return;
                 }
             }
-            else {
+            else {     
 
-                let exceptionHandler =
-                    require('../../src/util/mongo-handler/mongo-exception-handler');
-
-                let message = exceptionHandler.tryGetErrorMessage(findErr);
+                let message = this.dbExceptionHandler.tryGetErrorMessage(findErr);
 
                 if (message != null)
                     response.serverValidations.push(message);
                 else
-                    response.serverValidations.push(errorResource.Err0000());
+                    response.serverValidations.push(this.errorResource.Err0000());
 
                 res.json({ response: response });
                 return;
@@ -623,9 +581,9 @@ api.post('/user/login', passport.authenticate('login', {
 
 api.get('/user/successfulLogin', (req, res) => {
    
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = true;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
 
     res.json({ response: response });
     return;
@@ -633,10 +591,10 @@ api.get('/user/successfulLogin', (req, res) => {
 
 api.get('/user/failedLogin', (req, res) => {
    
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-    response.serverValidations.push(errorResource.ErrBu0016());
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
+    response.serverValidations.push(this.errorResource.ErrBu0016());
 
     res.json({ response: response });
     return;
@@ -650,9 +608,9 @@ api.get('/user/logout', (req, res) => {
 
 api.get('/user/logedout', (req, res) => {
   
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = true;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
 
     res.json({ response: response });
     return res;
@@ -660,10 +618,10 @@ api.get('/user/logedout', (req, res) => {
 
 api.get('/notlogedIn', (req, res) => {
   
-    let response = new responseClass();
+    let response = new this.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = dateUtilModule.getCurrentDateTime();
-    response.serverValidations.push(errorResource.ErrBu0017());
+    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
+    response.serverValidations.push(this.errorResource.ErrBu0017());
 
     res.json({ response: response });
     return res;

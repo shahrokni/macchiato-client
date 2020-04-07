@@ -7,19 +7,24 @@ import User from './entity/user/user';
 import { Province } from '../src/entity/global/province';
 import { Gender } from './entity/user/gender';
 import {UserFilter} from '../src/entity/user/user-filter';
+import UserMessageService from '../src/service/user-message-service/user-message-service';
+import UserMessage from '../src/entity/user-message/user-message';
 
 function App() {
 
   useEffect(() => {
    
-    let service = new UserService();
-    let user = new User();
-    user.userName = 'test1';
-    user.password = 'C#8isthebest@!123';
-    service.signIn(user, function (response) {    
-      
+    let userMessageService = new UserMessageService();
+    let userMessage = new UserMessage();
+    userMessage.senderId = '202003290';
+    userMessage.receiverId = '5e89e72915823b25507e1f21';
+    userMessage.sentDate = Date.now();
+    userMessage.title = 'Happy New Year Everyone!';
+    userMessage.text = "I'd like to thank al of you for being friendly and supportive ... ";
+
+    userMessageService.addMessageTEST(userMessage,function(response){
       console.log(response);
-    });    
+    })
   });
 
 

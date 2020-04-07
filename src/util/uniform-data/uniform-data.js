@@ -1,6 +1,6 @@
 function uniformUserDetail(userDetail) {
 
-    uniformUserDetail = {
+    uniformUserDetailObj = {
 
         userName: (userDetail.userName.trim()).toLowerCase(),
         name: (userDetail.name.trim()).toLowerCase(),
@@ -14,17 +14,18 @@ function uniformUserDetail(userDetail) {
         studentNumber : userDetail.studentNumber
     };
 
-    if(uniformUserDetail.name){
+    if(uniformUserDetailObj.name){
 
-        uniformUserDetail.name = uniformUserDetail.name[0].toUpperCase() +
-        uniformUserDetail.name.substring(1,(uniformUserDetail.name.length));
+        uniformUserDetailObj.name = uniformUserDetailObj.name[0].toUpperCase() +
+        uniformUserDetailObj.name.substring(1,(uniformUserDetailObj.name.length));
     }
 
-    if(uniformUserDetail.lastName){
+    if(uniformUserDetailObj.lastName){
 
-        uniformUserDetail.lastName = uniformUserDetail.lastName[0].toUpperCase() +
-        uniformUserDetail.lastName.substring(1,(uniformUserDetail.lastName.length));
+        uniformUserDetailObj.lastName = uniformUserDetailObj.lastName[0].toUpperCase() +
+        uniformUserDetailObj.lastName.substring(1,(uniformUserDetailObj.lastName.length));
     }
-    return uniformUserDetail;
+    return uniformUserDetailObj;
 }
 module.exports.uniformUserDetail = uniformUserDetail;
+
