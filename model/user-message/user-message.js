@@ -6,6 +6,7 @@ var userMessageSchema = mongoose.Schema({
     receiverId:{type:mongoose.Schema.Types.String,require:true},
     sentDate:{type:mongoose.Schema.Types.Date,require:true},
     isRead:{type:mongoose.Schema.Types.Boolean,require:true, default:false},
+    isAdvertisement:{type:mongoose.Schema.Types.Boolean,default:false},
     title:{type:mongoose.Schema.Types.String,require:true},
     text:{type:mongoose.Schema.Types.String,require:true}
 });

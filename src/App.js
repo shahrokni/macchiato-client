@@ -19,8 +19,8 @@ function App() {
     userMessage.senderId = '202003290';
     userMessage.receiverId = '5e89e72915823b25507e1f21';
     userMessage.sentDate = Date.now();
-    userMessage.title = 'Happy New Year Everyone!';
-    userMessage.text = "I'd like to thank al of you for being friendly and supportive ... ";
+    userMessage.title = 'We are going to extend our application';
+    userMessage.text = "From January 1st we will be extending our application ";
 
     userMessageService.addMessageTEST(userMessage,function(response){
       console.log(response);
