@@ -1,7 +1,5 @@
 var passport = require('passport');
-/*--------------------------------------------------*/
 var mongoose = require('mongoose');
-/*----------------------------------------------------*/
 var express = require('express');
 const bodyParser = require('body-parser');
 /*-------------------------------------------------*/
@@ -581,9 +579,9 @@ api.post('/user/login', passport.authenticate('login', {
 
 api.get('/user/successfulLogin', (req, res) => {
    
-    let response = new this.responseClass();
+    let response = new global.responseClass();
     response.isSuccessful = true;
-    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
     res.json({ response: response });
     return;
@@ -591,10 +589,10 @@ api.get('/user/successfulLogin', (req, res) => {
 
 api.get('/user/failedLogin', (req, res) => {
    
-    let response = new this.responseClass();
+    let response = new global.responseClass();
     response.isSuccessful = false;
-    response.operationTimestamp = this.dateUtilModule.getCurrentDateTime();
-    response.serverValidations.push(this.errorResource.ErrBu0016());
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    response.serverValidations.push(global.errorResource.ErrBu0016());
 
     res.json({ response: response });
     return;

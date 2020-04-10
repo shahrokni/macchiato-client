@@ -5,11 +5,19 @@ class ErrorMessage{
     }
 
     static Err0001(){
-        return "Server returned erro!";
+        return "Server returned error!";
     }
 
     static Err0002() {
         return "Something went wrong! Please try again or call the administration!";
+    }
+
+    static Err0003(){
+        return "The inappropriate request was prevented!";
+    }
+
+    static Err0004(){
+        return "The Related document was not found!";
     }
     /*------------------------------------------------------------ */
 
@@ -135,6 +143,11 @@ class ErrorMessage{
     static ErrBu0021(){
 
         return "The old password that you have entered is not correct!";
+    }
+    //advertisment
+    static ErrBu0022(){
+
+        return "Advertisment cannot be deleted by the applicaition users!"
     }
 }
 module.exports = ErrorMessage;

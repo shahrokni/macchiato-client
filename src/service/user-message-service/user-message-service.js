@@ -7,10 +7,13 @@ export default class UserMessageService {
     constructor() {
 
         this.dateUtil = require('../../util/date-util/date-util');
-        this.userMessageValidationClass = require('../../')
     }
 
     getAllMessages(page, callBack) {
+
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
 
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
@@ -24,16 +27,16 @@ export default class UserMessageService {
             })
             .catch(function (err) {
 
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             });
     }
 
     getMessage(messageId, callBack) {
+
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
 
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
@@ -45,10 +48,6 @@ export default class UserMessageService {
         })
             .catch(function (err) {
 
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             });
@@ -56,9 +55,12 @@ export default class UserMessageService {
 
     deleteMessage(messageId, callBack) {
 
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
-        restInstance.delete('user_message_api/v1/message', { messageId: messageId }).then(function (res) {
+        restInstance.delete('user_message_api/v1/message', {params:{ messageId: messageId }}).then(function (res) {
 
             let responseUtil = require('../../util/response-util/response-util');
             let serverResponse = responseUtil.extractResponse(res);
@@ -66,16 +68,16 @@ export default class UserMessageService {
         })
             .catch(function (err) {
 
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             });
     }
 
     setReadFlag(messageId, callBack) {
+
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
 
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
@@ -87,16 +89,16 @@ export default class UserMessageService {
         })
             .catch(function (err) {
 
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             });
     }
 
     countUnreadMessages(callBack) {
+
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
 
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
@@ -106,11 +108,7 @@ export default class UserMessageService {
             let serverResponse = responseUtil.extractResponse(res);
             callBack(serverResponse);
         })
-            .catch(function (err) {
-
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+            .catch(function (err) {               
 
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);

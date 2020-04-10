@@ -13,18 +13,47 @@ import UserMessage from '../src/entity/user-message/user-message';
 function App() {
 
   useEffect(() => {
-   
-    let userMessageService = new UserMessageService();
-    let userMessage = new UserMessage();
-    userMessage.senderId = '202003290';
-    userMessage.receiverId = '5e89e72915823b25507e1f21';
-    userMessage.sentDate = Date.now();
-    userMessage.title = 'We are going to extend our application';
-    userMessage.text = "From January 1st we will be extending our application ";
-
-    userMessageService.addMessageTEST(userMessage,function(response){
+    
+    let service = new UserMessageService();
+    service.getAllMessages(0,(response)=>{
       console.log(response);
     })
+
+    // let service = new UserMessageService();
+    // service.deleteMessage('5e8f8089685647114cbd1af7',(response)=>{
+    //   console.log(response);
+    // });
+
+    // let service = new UserService();
+    // let user = new User();
+    // user.userName = 'test1';
+    // user.password = 'C#8isthebest@!123';
+    // service.signIn(user, function (response) {    
+      
+    //   console.log(response);
+    // });
+
+  //  let service = new UserMessageService();
+  //  service.setReadFlag('5e8f8089685647114cbd1af7',(response)=>{
+
+  //   console.log(response);
+  //  });
+
+  // let service = new UserMessageService();
+  // service.countUnreadMessages((response)=>{
+  //   console.log(response);
+  // });
+
+  // let service = new UserMessageService();
+  // let userMessage = new UserMessage();
+  // userMessage.receiverId = '5e80ba37b582861d888fa276';
+  // userMessage.title = 'Second Sample';
+  // userMessage.text = 'This is the second sample message';
+  // userMessage.sentDate = Date.now();
+  // userMessage.senderId = 'XXX';
+  // service.addMessageTEST(userMessage,(response)=>{
+  //   console.log(response);
+  // });
   });
 
 
