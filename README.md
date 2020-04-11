@@ -2,7 +2,7 @@ Current Development State : Testing the user_service & user_api functionalities!
 
 Refactor:
 
-R-04.10.2020.1: user_api must be refactroed. A controller needs to be added to the project. - []
+R-04.10.2020.1: user_api must be refactroed. A controller needs to be added to the project. - [OK]
 
 Features: 
 
