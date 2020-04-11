@@ -1,7 +1,10 @@
 export default class PaymentItem {
 
     constructor() {
-        this.date = new Date();
+
+        this.transactionDate = new Date();
         this.amount = 0;
+        this.description = '';
+        this.isGift = false;
     }
 }
