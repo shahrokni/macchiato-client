@@ -77,4 +77,6 @@ B-04.05.2020.1: After the operation is done, the connection needs to get closed 
 
 B-04.06.2020.1: user-api must be refined. - [OK]
 
+B-04.11.2020.1: Sine the user can eliminate the email, the empty emails must excluded from searching process. - []
+
 
