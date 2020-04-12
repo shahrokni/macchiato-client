@@ -20,6 +20,7 @@ global.dateUtilModule = require('./src/util/date-util/date-util');
 global.errorResource = require('./src/resource/text/error-message');
 global.dbExceptionHandler = require('./src/util/mongo-handler/mongo-exception-handler');
 global.uniformData = require('./src/util/uniform-data/uniform-data');
+global.systemMessages = require('./src/resource/text/system-message');
 /*--------------------------------------------------*/
 const app = express();
 setupMongoose();

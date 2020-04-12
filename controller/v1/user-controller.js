@@ -101,15 +101,33 @@ function registerUser(userDetail, done) {
                                         }
                                         else {
 
-                                            //TODO: After the user is saved,
-                                            // A welocme message must be sent!
                                             response.isSuccessful = true;
                                             user._id = hiddenData;
                                             user.password = hiddenData;
                                             response.outputJson = user;
 
-                                            done(response);
+                                            let accountControler =
+                                                require('../../administrator_controller/v1/administrator_financial_account_controller');
 
+                                            //Initiate a financial account
+                                            accountControler.initiateUserFinancialAccount(user._id, (accountResponse) => {
+
+                                                //Send a message
+                                                let messageController =
+                                                    require('../../administrator_controller/v1/administrator_user_message_controller');
+
+                                                let message = {
+                                                    'receiverId': user._id,
+                                                    'senderId': 'Administrator',
+                                                    'title': global.systemMessages.welcomeTitle,
+                                                    'text': global.systemMessages.welcomeMessage
+                                                };
+                                                messageController.sendMessage(message, (messageResponse) => {
+
+                                                    done(response);
+                                                });
+                                            });
+                                            done(response);
                                         }
                                     });
                                 }
@@ -141,7 +159,7 @@ function registerUser(userDetail, done) {
 }
 module.exports.registerUser = registerUser;
 
-function updateUserInformation(userDetail,studentNumber, done) {
+function updateUserInformation(userDetail, studentNumber, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -352,9 +370,9 @@ function updateUserEmail(newEmail, userId, done) {
                                 });
                             }
                             else {
-                                
+
                                 response.isSuccessful = false;
-                                response.serverValidations.push(global.errorResource. Err0004());
+                                response.serverValidations.push(global.errorResource.Err0004());
                             }
                         }
                         else {
@@ -393,13 +411,13 @@ function updateUserEmail(newEmail, userId, done) {
 }
 module.exports.updateUserEmail = updateUserEmail;
 
-function changeUserPassword(oldPassword,newPassword,repeatedNewPassword,userId,done){
-    
-    let response = new global.responseClass();    
+function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userId, done) {
+
+    let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    let userValidation = new userValidationClass();    
-    let errorMessages = userValidation.validateChangePassword(oldPassword,newPassword,repeatedNewPassword);
+    let userValidation = new userValidationClass();
+    let errorMessages = userValidation.validateChangePassword(oldPassword, newPassword, repeatedNewPassword);
 
     if (errorMessages != null && errorMessages.length != 0) {
 
@@ -407,9 +425,9 @@ function changeUserPassword(oldPassword,newPassword,repeatedNewPassword,userId,d
         response.serverValidations = errorMessages;
         done(response);
     }
-    else{
+    else {
 
-        let findQury = User.findOne({ _id:userId }, 'password');
+        let findQury = User.findOne({ _id: userId }, 'password');
         findQury.exec(function (findErr, user) {
 
             if (!findErr) {
@@ -439,7 +457,7 @@ function changeUserPassword(oldPassword,newPassword,repeatedNewPassword,userId,d
                                                 response.outputJson = savedUser
                                                 done(response);
                                             }
-                                            else {                                            
+                                            else {
 
                                                 response.isSuccessful = false;
                                                 let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
@@ -448,7 +466,7 @@ function changeUserPassword(oldPassword,newPassword,repeatedNewPassword,userId,d
                                                     response.serverValidations.push(message);
                                                 else
                                                     response.serverValidations.push(global.errorResource.Err0000());
-                                                done(reponse);                                              
+                                                done(reponse);
 
                                             }
                                         });
@@ -472,7 +490,7 @@ function changeUserPassword(oldPassword,newPassword,repeatedNewPassword,userId,d
 
                             response.isSuccessful = false;
                             response.serverValidations.push(global.errorResource.Err0000());
-                            done(response);                            
+                            done(response);
                         }
                     });
                 }
@@ -483,7 +501,7 @@ function changeUserPassword(oldPassword,newPassword,repeatedNewPassword,userId,d
                     done(response);
                 }
             }
-            else {     
+            else {
 
                 response.isSuccessful = false;
                 let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
