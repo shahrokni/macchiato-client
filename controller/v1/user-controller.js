@@ -1,5 +1,5 @@
 var userValidationClass = require('../../src/util/validation/user-validation');
-let User = require('../../model/user/user');
+var User = require('../../model/user/user');
 var mongoose = require('mongoose');
 /*-----------------------------------------*/
 const salt = 10;
@@ -119,6 +119,7 @@ function registerUser(userDetail, done) {
                                                 let message = {
                                                     'receiverId': user._id,
                                                     'senderId': 'Administrator',
+                                                    'sentDate': Date.now(),
                                                     'title': global.systemMessages.welcomeTitle,
                                                     'text': global.systemMessages.welcomeMessage
                                                 };
