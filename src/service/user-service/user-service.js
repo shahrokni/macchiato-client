@@ -58,9 +58,7 @@ export default class UserService {
 
     /*userDetial: UserDetail - output: Response*/
     signUp(userDetail, callBack) {
-
-
-        //Validattion
+       
         let UserValidationClass = require('../../util/validation/user-validation');
         let validator = new UserValidationClass();
 
@@ -107,8 +105,7 @@ export default class UserService {
             callBack(response);
         }
         else {
-
-            //let bcrypt = require('bcrypt-nodejs');
+           
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
             restInstance.post('user_api/v1/user/login', { username: user.userName, password: user.password })

@@ -27,7 +27,7 @@ function initiateUserFinancialAccount(userId,done){
 
                 let newAccount = new financialAccount();
                 newAccount.userId = userId;
-                newAccount.initAmount = staticAccountSettings.initAmount;
+                newAccount.currentBalance = staticAccountSettings.initAmount;
 
                 let paymentItemSchema = require('../../model/financial-account/payment-item');
                 let PaymentItem = mongoose.model('PaymentItem',paymentItemSchema);

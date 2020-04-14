@@ -14,10 +14,20 @@ function App() {
 
   useEffect(() => {
     
-    let service = new UserMessageService();
-    service.getAllMessages(0,(response)=>{
+    let userDetail = new UserDetail();
+    userDetail.name= 'Mahmoud';
+    userDetail.lastName = 'Shahrokni';
+    userDetail.userName = 'idiot123';
+    userDetail.password = '123456';
+    userDetail.province = Province.Khuzestan;
+    let service = new UserService();
+    service.signUp(userDetail,(response)=>{
       console.log(response);
-    })
+    });
+    // let service = new UserMessageService();
+    // service.getAllMessages(0,(response)=>{
+    //   console.log(response);
+    // })
 
     // let service = new UserMessageService();
     // service.deleteMessage('5e8f8089685647114cbd1af7',(response)=>{

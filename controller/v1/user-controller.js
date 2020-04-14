@@ -14,7 +14,6 @@ function registerUser(userDetail, done) {
 
     let userValidation = new userValidationClass();
 
-
     //Unifrom data before the the data is saved in database
     let receivedData = global.uniformData.uniformUserDetail(userDetail);
 
@@ -123,10 +122,7 @@ function registerUser(userDetail, done) {
                                                     'title': global.systemMessages.welcomeTitle,
                                                     'text': global.systemMessages.welcomeMessage
                                                 };
-                                                messageController.sendMessage(message, (messageResponse) => {
-
-                                                    done(response);
-                                                });
+                                                messageController.sendMessage(message,(response)=>{});
                                             });
                                             done(response);
                                         }
