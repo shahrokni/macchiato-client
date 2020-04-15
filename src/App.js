@@ -17,11 +17,12 @@ function App() {
     let userDetail = new UserDetail();
     userDetail.name= 'Mahmoud';
     userDetail.lastName = 'Shahrokni';
-    userDetail.userName = 'idiot123';
-    userDetail.password = '123456';
+    userDetail.gender = Gender.Male;
+    userDetail.cellphone = '09126104851';
     userDetail.province = Province.Khuzestan;
+    userDetail.birthDate = Date.now();
     let service = new UserService();
-    service.signUp(userDetail,(response)=>{
+    service.update(userDetail,(response)=>{
       console.log(response);
     });
     // let service = new UserMessageService();
@@ -36,8 +37,8 @@ function App() {
 
     // let service = new UserService();
     // let user = new User();
-    // user.userName = 'test1';
-    // user.password = 'C#8isthebest@!123';
+    // user.userName = 'idiot123';
+    // user.password = '123456';
     // service.signIn(user, function (response) {    
       
     //   console.log(response);

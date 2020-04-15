@@ -195,9 +195,8 @@ function updateUserInformation(userDetail, studentNumber, done) {
 
                         if (!saveErr) {
 
-                            response.isSuccessful = true;
-                            user._id = hiddenData;
-                            user.password = hiddenData;
+                            response.isSuccessful = true;                            
+                            savedUser.password = hiddenData;
                             response.outputJson = savedUser;
                             done(response);
                         }
@@ -328,7 +327,7 @@ function updateUserEmail(newEmail, userId, done) {
     }
     else {
 
-        let countQuery = User.countDocuments({ email: newEmail, _id: { $ne: userId } });
+        let countQuery = User.countDocuments({ $and:[{email: newEmail},{email:{$ne:''}}], _id: { $ne: userId } });
         countQuery.exec(function (countErr, count) {
 
             if (!countErr) {
