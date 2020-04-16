@@ -19,6 +19,11 @@ class ErrorMessage{
     static Err0004(){
         return "The Related document was not found!";
     }
+
+    static Err005(){
+
+        return "The sent parameters are not valid!";
+    }
     /*------------------------------------------------------------ */
 
     //studentNumber

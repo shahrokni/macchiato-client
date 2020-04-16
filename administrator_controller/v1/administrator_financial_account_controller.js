@@ -1,76 +1,191 @@
 var financialAccount = require('../../model/financial-account/financial-account');
 var mongoose = require('mongoose');
-const staticAccountSettings = {initAmount:3000};
+const staticAccountSettings = { initAmount: 3000, paymentType: ['Deposit', 'Withdraw'] };
 /*------------------------------------------------------------------------------*/
-function findFinancialAccountByUserId(userId,done){
 
-    let findQuery = financialAccount.findOne({userId:userId});
+function createFinancialAccount(userId, done) {
 
-    findQuery.exec((findErr,account)=>{
+    findFinancialAccountByUserId(userId, (findErr, account) => {
 
-        done(findErr,account);
-    });    
+        if (!findErr) {
+
+            //Ever user have only one account
+            if (!account) {
+
+                let newAccount = new financialAccount();
+                newAccount.userId = userId;
+                newAccount.currentBalance = 0;
+                newAccount.save((savErr, savedAccount) => {
+
+                    if (!savErr) {
+
+                        done(null, savedAccount);
+                    }
+                    else {
+
+                        done(saveErr, null);
+                    }
+                });
+
+            }
+            else {
+
+                done(global.errorResource.Err0004(), null);
+            }
+        }
+        else {
+
+            done(findErr, null);
+        }
+
+    });
+
+}
+
+function depositMoney(account, paymentItem, done) {
+
+    if (account && account.userId && paymentItem) {
+
+        findFinancialAccountByUserId(account.userId, (findErr, fetchedAccount) => {
+
+            if (!findErr) {
+
+                if (fetchedAccount) {
+
+                    paymentItem.paymentType = staticAccountSettings.paymentType[0];
+                    fetchedAccount.currentBalance += paymentItem.amount;
+                    fetchedAccount.paymentItems.push(paymentItem);
+                    fetchedAccount.save((saveErr, savedAccount) => {
+
+                        if (!saveErr) {
+
+                            done(null, savedAccount);
+                        }
+                        else {
+
+                            done(saveErr, null);
+                        }
+                    });
+                }
+                else {
+
+                    done(global.errorResource.Err0004(), null);
+                }
+            }
+            else {
+
+                done(findErr, null);
+            }
+        });
+    }
+    else {
+
+        done(global.errorResource.Err005(), null);
+    }
+}
+
+function withdrawMoney(account, paymentItem, done) {
+
+    if (account && account.userId && paymentItem) {
+
+        findFinancialAccountByUserId(account.userId, (findErr, fetchedAccount) => {
+
+            if (!findErr) {
+
+                if (fetchedAccount) {
+
+                    paymentItem.paymentType = staticAccountSettings.paymentType[1];
+                    fetchedAccount.currentBalance -= paymentItem.amount;
+                    fetchedAccount.paymentItems.push(paymentItem);
+                    fetchedAccount.save((saveErr, savedAccount) => {
+
+                        if (!saveErr) {
+
+                            done(null, savedAccount);
+                        }
+                        else {
+
+                            done(saveErr, null);
+                        }
+                    });
+                }
+                else {
+
+                    done(global.errorResource.Err0004(), null);
+                }
+            }
+            else {
+
+                done(findErr, null);
+            }
+        });
+    }
+    else {
+
+        done(global.errorResource.Err005(), null);
+    }
+}
+
+function findFinancialAccountByUserId(userId, done) {
+
+    let findQuery = financialAccount.findOne({ userId: userId });
+
+    findQuery.exec((findErr, account) => {
+
+        done(findErr, account);
+    });
 }
 /*---------------------EXPORTED FUNCTIONS---------------------------------------*/
 
 //Create a financial account for a recent registered user
-function initiateUserFinancialAccount(userId,done){
+function initiateUserFinancialAccount(userId, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    findFinancialAccountByUserId(userId,(findErr,account)=>{
+    createFinancialAccount(userId, (creationErr, createdAccount) => {
 
-        if(!findErr){
+        if (!creationErr) {
 
-            if(!account){
-
-                let newAccount = new financialAccount();
-                newAccount.userId = userId;
-                newAccount.currentBalance = staticAccountSettings.initAmount;
+            if (createdAccount) {
 
                 let paymentItemSchema = require('../../model/financial-account/payment-item');
-                let PaymentItem = mongoose.model('PaymentItem',paymentItemSchema);
-                let paymentItem= new PaymentItem();
+                let PaymentItem = mongoose.model('PaymentItem', paymentItemSchema);
+                let paymentItem = new PaymentItem();
                 paymentItem.transactionDate = Date.now();
                 paymentItem.amount = staticAccountSettings.initAmount;
                 paymentItem.description = 'Initial asset!';
                 paymentItem.isGift = true;
-                newAccount.paymentItems.push(paymentItem);
-                
-                newAccount.save((saveErr,account)=>{
 
-                    if(!saveErr){
+                depositMoney(createdAccount,paymentItem,(depositErr,depositedAccount)=>{
 
-                        if(account){
+                    if(!depositErr){
 
-                            response.isSuccessful = true;                            
-                            done(account);
-                        }
-                        else{
-
-                            response.isSuccessful = false;
-                            done(response);
-                        }
+                        response.isSuccessful = true;
+                        response.outputJson = depositedAccount;
+                        done(response);
                     }
                     else{
 
                         response.isSuccessful = false;
-                        done(response)
-                    }                    
+                        done(response);
+                    }
                 });
             }
-            else{
+            else {
 
                 response.isSuccessful = false;
                 done(response);
             }
         }
-        else{
+        else {
 
             response.isSuccessful = false;
             done(response);
         }
     });
+
+  
+
 }
 module.exports.initiateUserFinancialAccount = initiateUserFinancialAccount;

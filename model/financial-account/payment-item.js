@@ -5,6 +5,7 @@ var paymentItemSchema = mongoose.Schema({
     transactionDate:{type:mongoose.Schema.Types.Date, require:true},
     amount:{type:mongoose.Schema.Types.Number,require:true},
     description : {type:mongoose.Schema.Types.String},
-    isGift:{type:mongoose.Schema.Types.Boolean, require:true, default:false}
+    isGift:{type:mongoose.Schema.Types.Boolean, require:true, default:false},
+    paymentType: { type:mongoose.Schema.Types.String, require:true}
 });
 module.exports = paymentItemSchema;

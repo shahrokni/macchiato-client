@@ -14,57 +14,18 @@ function App() {
 
   useEffect(() => {
     
-    let userDetail = new UserDetail();
-    userDetail.name= 'Mahmoud';
-    userDetail.lastName = 'Shahrokni';
-    userDetail.gender = Gender.Male;
-    userDetail.cellphone = '09126104851';
-    userDetail.province = Province.Khuzestan;
-    userDetail.birthDate = Date.now();
     let service = new UserService();
-    service.update(userDetail,(response)=>{
+
+    let user = new UserDetail();
+    user.userName = 'English.Learner';
+    user.password = '123456';
+    user.name = 'Mahmoud';
+    user.lastName = 'shahrokni';
+    user.province = Province.Khuzestan;
+    
+    service.signUp(user,(response)=>{
       console.log(response);
     });
-    // let service = new UserMessageService();
-    // service.getAllMessages(0,(response)=>{
-    //   console.log(response);
-    // })
-
-    // let service = new UserMessageService();
-    // service.deleteMessage('5e8f8089685647114cbd1af7',(response)=>{
-    //   console.log(response);
-    // });
-
-    // let service = new UserService();
-    // let user = new User();
-    // user.userName = 'idiot123';
-    // user.password = '123456';
-    // service.signIn(user, function (response) {    
-      
-    //   console.log(response);
-    // });
-
-  //  let service = new UserMessageService();
-  //  service.setReadFlag('5e8f8089685647114cbd1af7',(response)=>{
-
-  //   console.log(response);
-  //  });
-
-  // let service = new UserMessageService();
-  // service.countUnreadMessages((response)=>{
-  //   console.log(response);
-  // });
-
-  // let service = new UserMessageService();
-  // let userMessage = new UserMessage();
-  // userMessage.receiverId = '5e80ba37b582861d888fa276';
-  // userMessage.title = 'Second Sample';
-  // userMessage.text = 'This is the second sample message';
-  // userMessage.sentDate = Date.now();
-  // userMessage.senderId = 'XXX';
-  // service.addMessageTEST(userMessage,(response)=>{
-  //   console.log(response);
-  // });
   });
 
 
