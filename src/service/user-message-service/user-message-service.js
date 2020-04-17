@@ -113,27 +113,5 @@ export default class UserMessageService {
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             });
-    }
-
-    // TODO THIS METHOD MUST BE ELIMINATED!!!
-    addMessageTEST(message, callBack) {
-
-        let response = new Response();
-        response.isSuccessful = false;
-        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
-        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-        restInstance.post('user_message_api/v1/message', message).then(function (res) {
-
-            let responseUtil = require('../../util/response-util/response-util');
-            let serverResponse = responseUtil.extractResponse(res);
-            callBack(serverResponse);
-        })
-            .catch(function (err) {
-
-                response.clientValidations.push(ErrorMessages.Err0000());
-                callBack(response);
-            });
-    }
+    }    
 }

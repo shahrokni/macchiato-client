@@ -14,16 +14,10 @@ function App() {
 
   useEffect(() => {
     
-    let service = new UserService();
-
-    let user = new UserDetail();
-    user.userName = 'English.Learner';
-    user.password = '123456';
-    user.name = 'Mahmoud';
-    user.lastName = 'shahrokni';
-    user.province = Province.Khuzestan;
+    let service = new UserMessageService();
     
-    service.signUp(user,(response)=>{
+    
+    service.deleteMessage("5e98c5280dc8fa0cf0d8f468",(response)=>{
       console.log(response);
     });
   });
