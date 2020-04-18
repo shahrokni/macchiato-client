@@ -11,7 +11,9 @@ export class Question {
         this.creationDate = undefined;
         this.questionType = QuestionType.NotSet;
         this.answerTime = 0;
-        this.useage = [];        
+        this.score2Asset = false;
+        this.score = 0;
+        this.usage = [];        
         this.genre = [];
         this.hashtag= [];
     }

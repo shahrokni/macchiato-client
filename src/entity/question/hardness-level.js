@@ -1,6 +1,7 @@
 export {HardnessLevel};
 
 const HardnessLevel = Object.freeze({
+    
     NotSet : 'NotSet',
     Basic : 'Basic',
     Easy : 'Easy',

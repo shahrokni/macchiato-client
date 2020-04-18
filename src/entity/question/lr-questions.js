@@ -1,4 +1,4 @@
-export class LRQuestion {
+export class LRQuestion extends Question {
 
     constructor() {
 
