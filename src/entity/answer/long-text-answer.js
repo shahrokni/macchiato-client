@@ -1,3 +1,6 @@
-export class LongTextAnswer extends Answer{
+import { SWAnswer } from "./sw-answer";
 
+export class LongTextAnswer extends SWAnswer{
+
+    
 }

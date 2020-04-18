@@ -1,3 +1,5 @@
-export class VoiceAnswer extends Answer{
+import { SWAnswer } from "./sw-answer";
+
+export class VoiceAnswer extends SWAnswer{
 
 }

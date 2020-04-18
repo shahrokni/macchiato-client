@@ -1,13 +1,11 @@
-import { Question } from "./question";
-import { Answer } from "../answer/answer";
+import { SWAnswer } from "../answer/sw-answer";
+import { SWQuestion } from "./sw-question";
 
-export class VisualQuestion extends Question{
+export class VisualQuestion extends SWQuestion{
 
     constructor(){
-
-        this.context="";
-        this.imageLink = "";      
-        this.questionItems=[];
-        this.answer=new Answer();
+        
+        this.imageLink = '';      
+        this.answer=new SWAnswer();
     }
 }
