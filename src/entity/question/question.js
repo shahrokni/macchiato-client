@@ -4,12 +4,15 @@ import { QuestionType } from "./question-type";
 export class Question {
 
     constructor(){
+        
         this.id = 0;
         this.title = "";
         this.hardnesLevel = HardnessLevel.NotSet;
-        this.creationDate = new Date();
-        this.questionTpe = QuestionType.NotSet;
-        /* Word Array */
-        this.hashtag= new Array();
+        this.creationDate = undefined;
+        this.questionType = QuestionType.NotSet;
+        this.answerTime = 0;
+        this.useage = [];        
+        this.genre = [];
+        this.hashtag= [];
     }
 }

@@ -1,8 +1,9 @@
 export {Genre};
 
 const Genre = Object.freeze({
+
     NotSet : 'NotSet',
-    Ordinary : 'Ordinary',
+    General : 'General',
     Science : 'Science',
     Astronomy : 'Astronomy',
     Legislative : 'Legislative',

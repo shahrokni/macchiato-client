@@ -1,10 +1,11 @@
 import { Question } from "./question";
 
-
+/* Is used for both slang and vocab */
 export class VocabQuestion extends Question{
 
     constructor(){
-        /*Question Item*/
-        this.questionItems= new Array();
+        
+        this.blankContext = "";
+        this.answerItems = [];
     }
 }

@@ -1,13 +1,9 @@
-import { Question } from "./question";
+import { LRQuestion } from "./lr-questions";
 
-export class ReadingQuestion extends Question{
+export class ReadingQuestion extends LRQuestion{
 
     constructor(){
 
-        this.context="";
-        this.imageLink="";
-        /*QuestionItem Array*/
-        this.questionItems=new Array();
-    }   
-  
+        this.context="";      
+    } 
 }
