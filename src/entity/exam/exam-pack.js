@@ -1,8 +1,28 @@
-export class ExamPack{
+import { ExamType } from "./exam-type";
 
-    constructor(){
+export class ExamPack {
+
+    constructor() {
 
         this.questions = [];
-        this.examType = undefined;
+        this.examType = ExamType.NotSet;       
+        this.date = undefined;
+        this.title = '';
+    }
+
+    getExamDuration() {
+
+        let duration = 0;
+
+        if (this.questions && this.questions.length > 0) {
+
+            for (let i = 0; i < this.questions.length; i++) {
+
+                duration+=this.questions[i].answerTime;
+            }
+
+            return duration;
+        }
+        return duration;
     }
 }
