@@ -7,5 +7,6 @@ const QuestionType = Object.freeze({
     Listening :'Listening',
     Writing : 'Writing',
     Slang: 'Slang',
-    Vocab : 'Vocab'
+    Vocab : 'Vocab',
+    Visual:'Visual'
 })

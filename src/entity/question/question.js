@@ -7,14 +7,14 @@ export class Question {
         
         this.id = 0;
         this.title = "";
-        this.hardnesLevel = HardnessLevel.NotSet;
+        this.hardnes = HardnessLevel.NotSet;
         this.creationDate = undefined;
-        this.questionType = QuestionType.NotSet;
-        this.answerTime = 0;
+        this.type = QuestionType.NotSet;
+        this.answerDuration = 0;
         this.score2Asset = false;
         this.score = 0;
         this.usage = [];        
         this.genre = [];
-        this.hashtag= [];
+        this.hashtags= [];
     }
 }

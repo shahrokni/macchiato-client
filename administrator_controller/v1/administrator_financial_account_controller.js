@@ -80,7 +80,7 @@ function depositMoney(account, paymentItem, done) {
     }
     else {
 
-        done(global.errorResource.Err005(), null);
+        done(global.errorResource.Err0005(), null);
     }
 }
 
@@ -122,7 +122,7 @@ function withdrawMoney(account, paymentItem, done) {
     }
     else {
 
-        done(global.errorResource.Err005(), null);
+        done(global.errorResource.Err0005(), null);
     }
 }
 

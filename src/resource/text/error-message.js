@@ -20,9 +20,14 @@ class ErrorMessage{
         return "The Related document was not found!";
     }
 
-    static Err005(){
+    static Err0005(){
 
         return "The sent parameters are not valid!";
+    }
+
+    static Err0006(){
+
+        return "Database error has occurred!";
     }
     /*------------------------------------------------------------ */
 
