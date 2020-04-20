@@ -10,6 +10,7 @@ var session = require('express-session');
 
 var userApiRouter = require('./api/v1/user_api');
 var userMessageApiRouter = require('./api/v1/user_message_api');
+var adminQuestionApiRouter = require('./administrator_api/v1/adminstrator_question_api');
 
 /*---------------GLOBAL AND COMMON VARIABLES---------------------*/
 //Please notice that the following common and global variables are used by all apis.
@@ -41,6 +42,7 @@ app.use(passport.session());
 /*----------------- ROUTERS----------------*/
 app.use('/user_api/v1', userApiRouter);
 app.use('/user_message_api/v1',userMessageApiRouter);
+app.use('/admin_question_api/v1/',adminQuestionApiRouter);
 /*----------------- -----------------------*/
 
 

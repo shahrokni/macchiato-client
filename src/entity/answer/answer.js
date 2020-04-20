@@ -1,7 +1,7 @@
 
 import { AnswerType } from './answer-type';
 
-export class Answer {
+export default class Answer {
 
     constructor() {
         

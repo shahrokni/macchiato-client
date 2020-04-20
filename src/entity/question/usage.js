@@ -1,9 +1,9 @@
-export {HardnessLevel};
+export {Usage};
 
 const Usage = Object.freeze({
 
     NotSet : 'NotSet',
-    Basic : 'Mock',
-    Easy : 'Level',
-    Moderate : 'Practice',  
+    Mock : 'Mock',
+    Level : 'Level',
+    Practice : 'Practice',  
 })

@@ -1,7 +1,7 @@
 import { HardnessLevel } from "./hardness-level";
 import { QuestionType } from "./question-type";
 
-export class Question {
+export default class Question {
 
     constructor(){
         

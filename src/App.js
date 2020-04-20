@@ -9,17 +9,52 @@ import { Gender } from './entity/user/gender';
 import {UserFilter} from '../src/entity/user/user-filter';
 import UserMessageService from '../src/service/user-message-service/user-message-service';
 import UserMessage from '../src/entity/user-message/user-message';
-
+import QuestionService from './service/question-service/question-service';
+import ReadingQuestion from './entity/question/reading-question';
+import { HardnessLevel } from './entity/question/hardness-level';
+import { QuestionType } from './entity/question/question-type';
+import { Usage } from './entity/question/usage';
+import { Genre } from './entity/question/genre';
+import Answer from './entity/answer/answer';
+import { AnswerType } from './entity/answer/answer-type';
 function App() {
 
   useEffect(() => {
     
-    let service = new UserMessageService();
+    let service = new QuestionService();
+    let question = new ReadingQuestion();
+
+    question.title = 'Read the following paragraph and answer the questions';
+    question.hardness = HardnessLevel.Easy;
+    question.type = QuestionType.Reading;
+    question.answerDuration = 10000;
+    question.score2Asset = false;
+    question.score = 100;
+    question.usage.push(Usage.Practice);
+    question.genre.push(Genre.General);
+    question.hashtags.push('water');
+    question.questionItems.push('How can we drink water?');
+    question.context = 'Water is an inorganic, transparent, tasteless, odorless, and nearly colorless chemical substance, ...';
+
+    let answer = new Answer();
+    answer.answerType = AnswerType.Text;
+    answer.correctAnswer = 'with a glass';
     
-    
-    service.deleteMessage("5e98c5280dc8fa0cf0d8f468",(response)=>{
+    let answer2 = new Answer();
+    answer2.answerType = AnswerType.MultipleChoice;
+    answer2.multipleChoice.push('Liquid');
+    answer2.multipleChoice.push('Ice');
+    answer2.multipleChoice.push('Sludge');
+    answer2.multipleChoice.push('Cloud');
+
+    question.answerItems.push(answer);
+    question.answerItems.push(answer2);
+    console.log(question);
+    service.addNewReadingQuestion(question,(response)=>{
       console.log(response);
     });
+
+
   });
 
 

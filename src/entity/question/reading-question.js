@@ -1,9 +1,10 @@
 import { LRQuestion } from "./lr-questions";
 
-export class ReadingQuestion extends LRQuestion{
+export default class ReadingQuestion extends LRQuestion{
 
     constructor(){
 
+        super();
         this.context="";      
     } 
 }
