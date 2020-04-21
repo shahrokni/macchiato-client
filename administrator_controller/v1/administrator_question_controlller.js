@@ -5,7 +5,7 @@ var answerSchema = require('../../model/answer/answer');
 var mongoose = require('mongoose');
 /*-----------------------------------------------------*/
 
-function generateNextQueryNumber() {
+async function generateNextQueryNumber() {
 
 }
 
@@ -29,13 +29,14 @@ async function createReadinQuestion(question) {
     newQuestion.usage = question.usage;
     newQuestion.genre = question.genre;
     newQuestion.hashtags = question.hashtags;
-    await newQuestion.save(opt);
-    await session.commitTransaction();
+    await newQuestion.save(opt);    
+    await session.commitTransaction();    
     session.endSession();
 
    }
    catch(err){
-       console.log(err);
+
+    console.log(err);
     await session.abortTransaction();
     session.endSession();
     // throw error; 
@@ -43,12 +44,11 @@ async function createReadinQuestion(question) {
 }
 
 
-async function addNewReadingQuestion(question, done) {
+function addNewReadingQuestion(question, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
-    await createReadinQuestion(question);
+    createReadinQuestion(question);
 
 }
 module.exports.addNewReadingQuestion = addNewReadingQuestion;
