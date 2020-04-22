@@ -39,13 +39,14 @@ function App() {
     let answer = new Answer();
     answer.answerType = AnswerType.Text;
     answer.correctAnswer = 'with a glass';
-    
+    console.log(answer);
     let answer2 = new Answer();
     answer2.answerType = AnswerType.MultipleChoice;
     answer2.multipleChoice.push('Liquid');
     answer2.multipleChoice.push('Ice');
     answer2.multipleChoice.push('Sludge');
     answer2.multipleChoice.push('Cloud');
+    answer2.correctAnswer = 'Cloud';
 
     question.answerItems.push(answer);
     question.answerItems.push(answer2);

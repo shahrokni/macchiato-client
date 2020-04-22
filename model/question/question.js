@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 /*----------------------------------------*/
 var questionSchema = mongoose.Schema({
 
-    questionNumber:{type:mongoose.Schema.Types.String,/*require:true, unique:true*/},
+    number:{type:mongoose.Schema.Types.String,require:true, unique:true},
     title:{type:mongoose.Schema.Types.String, required:true},
     hardness:{type:mongoose.Schema.Types.String, required:true},
     creationDate:{type:mongoose.Schema.Types.Date, required:true},
