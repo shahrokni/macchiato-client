@@ -7,10 +7,11 @@ adminQuestionApi.use(bodyParser.json());
 /*-------------------------------*/
 adminQuestionApi.post('/question/reading',(req,res)=>{
 
-    questionController.addNewReadingQuestion(req.body,(response)=>{
+    questionController.addNewReadingQuestion(req.body).then(()=>{
 
-        res.json({response:response});
-        return;
+    })
+    .catch((reason)=>{
+
     });
 });
 module.exports = adminQuestionApi;

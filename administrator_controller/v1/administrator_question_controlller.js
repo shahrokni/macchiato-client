@@ -20,7 +20,7 @@ async function generateNextQueryNumber(questionType) {
 
     switch (questionType) {
 
-        case 'Reading' :
+        case 'Reading':
             questionNumber += reading;
             break;
         case 'Listening':
@@ -44,21 +44,21 @@ async function generateNextQueryNumber(questionType) {
     }
 
     await Question.Question.countDocuments({ 'number': '^' + questionNumber })
-    .then((countedQuestions)=>{
+        .then((countedQuestions) => {
 
-        let newNumber = startNumber + countedQuestions;
-        questionNumber += newNumber;                
-    })
-    .catch((reason)=>{
+            let newNumber = startNumber + countedQuestions;
+            questionNumber += newNumber;
+        })
+        .catch((reason) => {
 
-        console.log(reason);
-        throw global.errorResource.ErrBu0023();
-    });        
+            console.log(reason);
+            throw global.errorResource.ErrBu0023();
+        });
 
     return questionNumber;
 }
 
-async function createBaseQuestionPart(question,sessionOption){
+async function createBaseQuestionPart(question, sessionOption) {
 
     let baseQuestionId = '';
 
@@ -74,20 +74,21 @@ async function createBaseQuestionPart(question,sessionOption){
     newQuestion.genre = question.genre;
     newQuestion.hashtags = question.hashtags;
     newQuestion.number = await generateNextQueryNumber(question.type);
-    
-    await newQuestion.save(sessionOption).then((savedBaseQuestion)=>{
 
-        baseQuestionId =  savedBaseQuestion._id;
+    await newQuestion.save(sessionOption).then((savedBaseQuestion) => {
+
+        baseQuestionId = savedBaseQuestion._id;
     })
-    .catch((reason)=>{
-        
-        throw global.errorResource.ErrBu0024();
-    });
+        .catch((reason) => {
+
+            console.log(reason);
+            throw global.errorResource.ErrBu0024();
+        });
 
     return baseQuestionId;
 }
 
-async function createLRQuestionPart(question,sessionOption){
+async function createLRQuestionPart(question, sessionOption) {
 
     let lrQuestionNumber = '';
     let newlrQuestion = new LRQuestion.LRQuestion();
@@ -95,29 +96,79 @@ async function createLRQuestionPart(question,sessionOption){
 
     //Add answer items
     question.answerItems.forEach(answeritem => {
-        
-        let answerModel = mongoose.model('AnswerItem',answerSchema);
-        let newAnswerItem = new answerModel();        
+
+        let answerModel = mongoose.model('AnswerItem', answerSchema);
+        let newAnswerItem = new answerModel();
         newAnswerItem.answerType = answeritem.answerType;
         newAnswerItem.correctAnswer = answeritem.correctAnswer;
 
-        if(answeritem.multipleChoice && answeritem.multipleChoice.length>0){
+        if (answeritem.multipleChoice && answeritem.multipleChoice.length > 0) {
 
-            newAnswerItem.multipleChoice= answeritem.multipleChoice;
+            newAnswerItem.multipleChoice = answeritem.multipleChoice;
         }
         newlrQuestion.answerItems.push(newAnswerItem);
     });
 
-    await newlrQuestion.save(sessionOption).then((savedLRQuestion)=>{
+    await newlrQuestion.save(sessionOption).then((savedLRQuestion) => {
 
         lrQuestionNumber = savedLRQuestion._id;
     })
-    .catch((reason)=>{       
-        
-       throw global.errorResource.ErrBu0024();
-    });   
+        .catch((reason) => {
+
+            console.log(reason);
+            throw global.errorResource.ErrBu0024();
+        });
 
     return lrQuestionNumber;
+}
+
+async function createReadingQuestionPart(question, opt) {
+
+    let readinQuestionId = '';
+    let readingQuestion = new ReadingQuestion.ReadingQuestion();
+    readingQuestion.context = question.context;
+
+    await readingQuestion.save(opt).then((savedReadingQuestion) => {
+
+        readinQuestionId = savedReadingQuestion._id
+    }).catch((reason) => {
+
+        console.log(reason);
+        throw global.errorResource.ErrBu0024();
+    });
+
+    return readingQuestion;
+}
+
+async function connectBase2LR(baseId, lRId, opt) {
+
+    try {
+
+        let baseQuestion = await Question.Question.findById(baseId, null, opt);
+        baseQuestion.lrQuestion = lRId;
+        await baseQuestion.save(opt);
+    }
+    catch (exception) {
+
+        throw global.errorResource.ErrBu0024();
+    }
+
+}
+
+async function connectLR2Reading(lRId, readingId, opt) {
+
+    try {
+
+        let lRQuestion = await LRQuestion.LRQuestion.findById(lRId, null, opt);
+        lRQuestion.readingQuestion = readingId;
+        await lRQuestion.save(opt);
+    }
+    catch (exception) {
+
+        console.log(exception);
+        throw global.errorResource.ErrBu0024();
+    }
+
 }
 
 async function createReadinQuestion(question) {
@@ -127,8 +178,11 @@ async function createReadinQuestion(question) {
     try {
 
         const opt = { session };
-        let newBaseQuestionId  = await createBaseQuestionPart(question,opt);
-        let newLRQuestionId = await createLRQuestionPart(question,opt);        
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newLRQuestionId = await createLRQuestionPart(question, opt);
+        let newReadingQuestionId = await createReadingQuestionPart(question, opt);
+        await connectBase2LR(newBaseQuestionId, newLRQuestionId, opt);
+        await connectLR2Reading(newLRQuestionId, newReadingQuestionId, opt);
 
         //Commit transaction and end session
         await session.commitTransaction();
@@ -141,6 +195,7 @@ async function createReadinQuestion(question) {
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
+        throw exception;
     }
 }
 
@@ -149,6 +204,8 @@ async function addNewReadingQuestion(question) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
     await createReadinQuestion(question);
+    
 }
 module.exports.addNewReadingQuestion = addNewReadingQuestion;
