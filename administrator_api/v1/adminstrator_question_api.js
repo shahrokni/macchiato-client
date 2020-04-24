@@ -23,4 +23,17 @@ adminQuestionApi.post('/question/listening',(req,res)=>{
 
     });
 });
+
+adminQuestionApi.post('/question/writing',(req,res)=>{
+
+    questionController.addNewWritingQuestion(req.body)
+    .then(()=>{
+
+    })
+    .catch((reason)=>{
+
+    });
+})
+
+
 module.exports = adminQuestionApi;

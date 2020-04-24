@@ -1,5 +1,6 @@
 var Question = require('../../model/question/question');
 var LRQuestion = require('../../model/question/lr-question');
+var SWQuestion = require('../../model/question/sw-question');
 var ReadingQuestion = require('../../model/question/reading-question');
 var ListeningQuestion = require('../../model/question/listening-question');
 var answerSchema = require('../../model/answer/answer');
@@ -89,6 +90,27 @@ async function createBaseQuestionPart(question, sessionOption) {
     return baseQuestionId;
 }
 
+async function createSWQuestionPart(question, sessionOption){
+
+    let swQuestionId = '';
+    let newSWQuestion = new SWQuestion.SWQuestion();
+    newSWQuestion.questionItems = question.questionItems;
+    newSWQuestion.cost = question.cost;
+    newSWQuestion.context = question.context;
+
+    await newSWQuestion.save(sessionOption)
+    .then((savedSWQuestion)=>{
+
+        swQuestionId = savedSWQuestion._id;
+    })
+    .catch((exception)=>{
+
+        console.log(exception);
+        throw global.errorResource.ErrBu0024();
+    });
+
+    return swQuestionId;
+}
 async function createLRQuestionPart(question, sessionOption) {
 
     let lrQuestionNumber = '';
@@ -263,6 +285,47 @@ async function createListeningQuestion(question) {
         throw exception;
     }
 }
+
+async function connectBase2SW(baseQuestionId,sWQuestionId,opt){
+
+    try{
+
+        let baseQuestion = await Question.Question.findById(baseQuestionId,null,opt);
+        baseQuestion.swQuestion = sWQuestionId;        
+        await baseQuestion.save(opt);
+    }
+    catch(exception){
+
+        console.log(exception);
+        throw global.errorResource.ErrBu0024();
+    }
+}
+
+async function createWritingQuestion(question) {
+    
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try{
+
+        const opt = {session};
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newSWQuestionId = await createSWQuestionPart(question,opt);
+        await connectBase2SW(newBaseQuestionId,newSWQuestionId,opt);
+
+         //commit the transaction and end the session
+         await session.commitTransaction();
+         session.endSession();
+    }
+    catch(exception){
+
+        console.log(exception);
+        //Abort transaction and end session
+        await session.abortTransaction();
+        session.endSession();
+        throw exception;
+    }
+}
 /*---------------------- EXPOSED FUNCTIONS--------------------------*/
 async function addNewReadingQuestion(question) {
 
@@ -281,3 +344,12 @@ async function addNewListeningQuestion(question) {
     await createListeningQuestion(question);
 }
 module.exports.addNewListeningQuestion = addNewListeningQuestion;
+
+async function addNewWritingQuestion(question){
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    await createWritingQuestion(question);
+}
+module.exports.addNewWritingQuestion = addNewWritingQuestion;

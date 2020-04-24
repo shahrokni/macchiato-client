@@ -18,41 +18,30 @@ import { Genre } from './entity/question/genre';
 import Answer from './entity/answer/answer';
 import { AnswerType } from './entity/answer/answer-type';
 import {ListeningQuestion} from './entity/question/listening-question';
+import {WritingQuestion} from './entity/question/writing-question';
+
 function App() {
 
   useEffect(() => {
     
     let service = new QuestionService();
-    let question = new ListeningQuestion();
+    let question = new WritingQuestion();
 
-    question.title = 'Listen to the audio file and answer the following questions accordingly';
-    question.hardness = HardnessLevel.Moderate;
-    question.type = QuestionType.Listening;
-    question.answerDuration = 15000;
+    question.title = 'Read the question and write an essay.';
+    question.hardness = HardnessLevel.Hard;
+    question.type = QuestionType.Writing;
+    question.answerDuration = 600000;
     question.score2Asset = false;
-    question.score = 200;
-    question.usage.push(Usage.Mock);
-    question.usage.push(Usage.Level);
+    question.score = 0;
+    question.usage.push(Usage.Mock);    
     question.genre.push(Genre.General);
-    question.hashtags.push('Car');
-    question.questionItems.push('How can we dismantle a car engine?');   
+    question.hashtags.push('Pub');
+    question.questionItems.push('When do you want to leave the pub?');   
+    question.cost=120000;
+    question.context = 'While some people believe that ..., others say ...';
 
-    let answer = new Answer();
-    answer.answerType = AnswerType.Text;
-    answer.correctAnswer = 'with a wrench';
-    console.log(answer);
-    let answer2 = new Answer();
-    answer2.answerType = AnswerType.MultipleChoice;
-    answer2.multipleChoice.push('Wrench');
-    answer2.multipleChoice.push('Saw');
-    answer2.multipleChoice.push('Hammer');
-    answer2.multipleChoice.push('Bolt');
-    answer2.correctAnswer = 'Wrench';
-
-    question.answerItems.push(answer);
-    question.answerItems.push(answer2);
     console.log(question);
-    service.addNewListeningQuestion(question,(response)=>{
+    service.addNewWritingQuestion(question,(response)=>{
       console.log(response);
     });
 

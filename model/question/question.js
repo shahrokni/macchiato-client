@@ -13,7 +13,8 @@ var questionSchema = mongoose.Schema({
     usage:[mongoose.Schema.Types.String],
     genre:[mongoose.Schema.Types.String],
     hashtags:[mongoose.Schema.Types.String],
-    lrQuestion:{type:mongoose.Schema.Types.ObjectId, ref:'lrQuestion'}
+    lrQuestion:{type:mongoose.Schema.Types.ObjectId, ref:'lrquestions'},
+    swQuestion:{type:mongoose.Schema.Types.String, ref:'swquestions'}
 });
 var Question = mongoose.model('Question',questionSchema);
 module.exports.Question = Question;
