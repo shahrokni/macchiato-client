@@ -1,11 +1,11 @@
-import { SWAnswer } from "../answer/sw-answer";
-import { SWQuestion } from "./sw-question";
+import { SWQuestion } from './sw-question';
+import {AnswerType} from '../answer/answer-type';
 
 export class VisualQuestion extends SWQuestion{
 
     constructor(){
         
-        this.imageLink = '';      
-        this.answer=new SWAnswer();
+        this.imageFileName = '';      
+        this.answerType=AnswerType.NotSet;
     }
 }

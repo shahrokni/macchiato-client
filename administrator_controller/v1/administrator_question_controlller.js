@@ -326,6 +326,11 @@ async function createWritingQuestion(question) {
         throw exception;
     }
 }
+
+async function createVisualQuestion(question){
+    
+    //TODO: F-04.24.2020.7
+}
 /*---------------------- EXPOSED FUNCTIONS--------------------------*/
 async function addNewReadingQuestion(question) {
 
@@ -353,3 +358,12 @@ async function addNewWritingQuestion(question){
     await createWritingQuestion(question);
 }
 module.exports.addNewWritingQuestion = addNewWritingQuestion;
+
+async function addNewVisualQuestion(question){
+    
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    await createVisualQuestion(question);
+}
+module.exports.addNewVisualQuestion = addNewVisualQuestion;

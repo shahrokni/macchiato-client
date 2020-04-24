@@ -35,5 +35,8 @@ adminQuestionApi.post('/question/writing',(req,res)=>{
     });
 })
 
+adminQuestionApi.post('/question/visual',(req,res)=>{
+    
+})
 
 module.exports = adminQuestionApi;
