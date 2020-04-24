@@ -5,6 +5,7 @@ export class ListeningQuestion extends LRQuestion {
 
     constructor() {
 
-        this.audioLink = "";       
+        super();
+        this.audioFileName = '';       
     }
 }

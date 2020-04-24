@@ -14,4 +14,13 @@ adminQuestionApi.post('/question/reading',(req,res)=>{
 
     });
 });
+
+adminQuestionApi.post('/question/listening',(req,res)=>{
+
+    questionController.addNewListeningQuestion(req.body)
+    .then(()=>{})
+    .catch((reason)=>{
+
+    });
+});
 module.exports = adminQuestionApi;

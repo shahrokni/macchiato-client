@@ -1,6 +1,7 @@
 var Question = require('../../model/question/question');
 var LRQuestion = require('../../model/question/lr-question');
 var ReadingQuestion = require('../../model/question/reading-question');
+var ListeningQuestion = require('../../model/question/listening-question');
 var answerSchema = require('../../model/answer/answer');
 var mongoose = require('mongoose');
 /*-----------------------------------------------------*/
@@ -175,6 +176,7 @@ async function createReadinQuestion(question) {
 
     const session = await mongoose.startSession();
     session.startTransaction();
+
     try {
 
         const opt = { session };
@@ -191,7 +193,6 @@ async function createReadinQuestion(question) {
     catch (exception) {
 
         console.log(exception);
-
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -199,6 +200,69 @@ async function createReadinQuestion(question) {
     }
 }
 
+async function connectLR2Listening(lRId, listeningId, opt) {
+
+    try {
+
+        let lRQuestion = await LRQuestion.LRQuestion.findById(lRId, null, opt);
+        lRQuestion.listeningQuestion = listeningId;
+        await lRQuestion.save(opt);
+    }
+    catch (exception) {
+
+        console.log(exception);
+        throw global.errorResource.ErrBu0024();
+    }
+}
+
+async function createListeningQuestionPart(newLRQuestionId, sessionOption) {
+
+    let newListeningQuestionId = '';
+    const fileType = '.mp3'
+    let listeningQuestion = new ListeningQuestion.ListeningQuestion();
+    listeningQuestion.audioFileName = newLRQuestionId + fileType;
+    await listeningQuestion.save(sessionOption)
+        .then((savedListeningQuestion) => {
+
+            newListeningQuestionId = savedListeningQuestion._id;
+        })
+        .catch((exception) => {
+
+            console.log(exception);
+            throw global.errorResource.ErrBu0024();
+        });
+
+    return newListeningQuestionId;
+}
+
+async function createListeningQuestion(question) {
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+
+        const opt = { session };
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newLRQuestionId = await createLRQuestionPart(question, opt);
+        let newListeningQuestionId = await createListeningQuestionPart(newLRQuestionId, opt);
+        await connectBase2LR(newBaseQuestionId, newLRQuestionId, opt);
+        await connectLR2Listening(newLRQuestionId, newListeningQuestionId, opt);
+
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+
+    }
+    catch (exception) {
+
+        console.log(exception);
+        //Abort transaction and end session
+        await session.abortTransaction();
+        session.endSession();
+        throw exception;
+    }
+}
 /*---------------------- EXPOSED FUNCTIONS--------------------------*/
 async function addNewReadingQuestion(question) {
 
@@ -206,6 +270,14 @@ async function addNewReadingQuestion(question) {
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
     await createReadinQuestion(question);
-    
 }
 module.exports.addNewReadingQuestion = addNewReadingQuestion;
+
+async function addNewListeningQuestion(question) {
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    
+    await createListeningQuestion(question);
+}
+module.exports.addNewListeningQuestion = addNewListeningQuestion;

@@ -28,4 +28,26 @@ export default class QuestionService{
             callBack(response);
         });
     }
+
+    addNewListeningQuestion(listeningQuestion,callBack){
+
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+
+        restInstance.post('admin_question_api/v1/question/listening',listeningQuestion)
+        .then((res)=>{
+
+            let responseUtil = require('../../util/response-util/response-util');
+            let serverResponse = responseUtil.extractResponse(res);
+            callBack(serverResponse);
+        })
+        .catch((err)=>{
+
+            response.clientValidations.push(ErrorMessages.Err0000());
+            callBack(response);
+        });
+
+    }
 }

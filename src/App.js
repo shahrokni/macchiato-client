@@ -17,41 +17,42 @@ import { Usage } from './entity/question/usage';
 import { Genre } from './entity/question/genre';
 import Answer from './entity/answer/answer';
 import { AnswerType } from './entity/answer/answer-type';
+import {ListeningQuestion} from './entity/question/listening-question';
 function App() {
 
   useEffect(() => {
     
     let service = new QuestionService();
-    let question = new ReadingQuestion();
+    let question = new ListeningQuestion();
 
-    question.title = 'Read the following paragraph and answer the questions';
-    question.hardness = HardnessLevel.Easy;
-    question.type = QuestionType.Reading;
-    question.answerDuration = 10000;
+    question.title = 'Listen to the audio file and answer the following questions accordingly';
+    question.hardness = HardnessLevel.Moderate;
+    question.type = QuestionType.Listening;
+    question.answerDuration = 15000;
     question.score2Asset = false;
-    question.score = 100;
-    question.usage.push(Usage.Practice);
+    question.score = 200;
+    question.usage.push(Usage.Mock);
+    question.usage.push(Usage.Level);
     question.genre.push(Genre.General);
-    question.hashtags.push('water');
-    question.questionItems.push('How can we drink water?');
-    question.context = 'Water is an inorganic, transparent, tasteless, odorless, and nearly colorless chemical substance, ...';
+    question.hashtags.push('Car');
+    question.questionItems.push('How can we dismantle a car engine?');   
 
     let answer = new Answer();
     answer.answerType = AnswerType.Text;
-    answer.correctAnswer = 'with a glass';
+    answer.correctAnswer = 'with a wrench';
     console.log(answer);
     let answer2 = new Answer();
     answer2.answerType = AnswerType.MultipleChoice;
-    answer2.multipleChoice.push('Liquid');
-    answer2.multipleChoice.push('Ice');
-    answer2.multipleChoice.push('Sludge');
-    answer2.multipleChoice.push('Cloud');
-    answer2.correctAnswer = 'Cloud';
+    answer2.multipleChoice.push('Wrench');
+    answer2.multipleChoice.push('Saw');
+    answer2.multipleChoice.push('Hammer');
+    answer2.multipleChoice.push('Bolt');
+    answer2.correctAnswer = 'Wrench';
 
     question.answerItems.push(answer);
     question.answerItems.push(answer2);
     console.log(question);
-    service.addNewReadingQuestion(question,(response)=>{
+    service.addNewListeningQuestion(question,(response)=>{
       console.log(response);
     });
 
