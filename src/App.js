@@ -19,29 +19,29 @@ import Answer from './entity/answer/answer';
 import { AnswerType } from './entity/answer/answer-type';
 import {ListeningQuestion} from './entity/question/listening-question';
 import {WritingQuestion} from './entity/question/writing-question';
-
+import {VisualQuestion} from './entity/question/visual-question'
 function App() {
 
   useEffect(() => {
     
     let service = new QuestionService();
-    let question = new WritingQuestion();
+    let question = new VisualQuestion();
 
-    question.title = 'Read the question and write an essay.';
-    question.hardness = HardnessLevel.Hard;
-    question.type = QuestionType.Writing;
+    question.title = 'Take a look at and describe the folllowing';
+    question.hardness = HardnessLevel.Moderate;
+    question.type = QuestionType.Visual;
     question.answerDuration = 600000;
     question.score2Asset = false;
     question.score = 0;
     question.usage.push(Usage.Mock);    
     question.genre.push(Genre.General);
-    question.hashtags.push('Pub');
-    question.questionItems.push('When do you want to leave the pub?');   
-    question.cost=120000;
-    question.context = 'While some people believe that ..., others say ...';
-
+    question.hashtags.push('Plato');
+    question.questionItems.push('What is a plato?');   
+    question.cost=40000;
+    question.context = 'The following picture shows a plato ...';
+    question.answerType = AnswerType.Voice;
     console.log(question);
-    service.addNewWritingQuestion(question,(response)=>{
+    service.addNewVisualQuestion(question,(response)=>{
       console.log(response);
     });
 

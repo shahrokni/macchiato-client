@@ -3,6 +3,7 @@ var LRQuestion = require('../../model/question/lr-question');
 var SWQuestion = require('../../model/question/sw-question');
 var ReadingQuestion = require('../../model/question/reading-question');
 var ListeningQuestion = require('../../model/question/listening-question');
+var VisualQuestion = require('../../model/question/visual-question');
 var answerSchema = require('../../model/answer/answer');
 var mongoose = require('mongoose');
 /*-----------------------------------------------------*/
@@ -90,7 +91,7 @@ async function createBaseQuestionPart(question, sessionOption) {
     return baseQuestionId;
 }
 
-async function createSWQuestionPart(question, sessionOption){
+async function createSWQuestionPart(question, sessionOption) {
 
     let swQuestionId = '';
     let newSWQuestion = new SWQuestion.SWQuestion();
@@ -99,15 +100,15 @@ async function createSWQuestionPart(question, sessionOption){
     newSWQuestion.context = question.context;
 
     await newSWQuestion.save(sessionOption)
-    .then((savedSWQuestion)=>{
+        .then((savedSWQuestion) => {
 
-        swQuestionId = savedSWQuestion._id;
-    })
-    .catch((exception)=>{
+            swQuestionId = savedSWQuestion._id;
+        })
+        .catch((exception) => {
 
-        console.log(exception);
-        throw global.errorResource.ErrBu0024();
-    });
+            console.log(exception);
+            throw global.errorResource.ErrBu0024();
+        });
 
     return swQuestionId;
 }
@@ -286,15 +287,15 @@ async function createListeningQuestion(question) {
     }
 }
 
-async function connectBase2SW(baseQuestionId,sWQuestionId,opt){
+async function connectBase2SW(baseQuestionId, sWQuestionId, opt) {
 
-    try{
+    try {
 
-        let baseQuestion = await Question.Question.findById(baseQuestionId,null,opt);
-        baseQuestion.swQuestion = sWQuestionId;        
+        let baseQuestion = await Question.Question.findById(baseQuestionId, null, opt);
+        baseQuestion.swQuestion = sWQuestionId;
         await baseQuestion.save(opt);
     }
-    catch(exception){
+    catch (exception) {
 
         console.log(exception);
         throw global.errorResource.ErrBu0024();
@@ -302,22 +303,22 @@ async function connectBase2SW(baseQuestionId,sWQuestionId,opt){
 }
 
 async function createWritingQuestion(question) {
-    
+
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    try{
+    try {
 
-        const opt = {session};
+        const opt = { session };
         let newBaseQuestionId = await createBaseQuestionPart(question, opt);
-        let newSWQuestionId = await createSWQuestionPart(question,opt);
-        await connectBase2SW(newBaseQuestionId,newSWQuestionId,opt);
+        let newSWQuestionId = await createSWQuestionPart(question, opt);
+        await connectBase2SW(newBaseQuestionId, newSWQuestionId, opt);
 
-         //commit the transaction and end the session
-         await session.commitTransaction();
-         session.endSession();
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
     }
-    catch(exception){
+    catch (exception) {
 
         console.log(exception);
         //Abort transaction and end session
@@ -327,10 +328,71 @@ async function createWritingQuestion(question) {
     }
 }
 
-async function createVisualQuestion(question){
-    
-    //TODO: F-04.24.2020.7
+async function createVisualQuestion(question) {
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const opt = { session };
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newSWQuestionId = await createSWQuestionPart(question, opt);
+        let newVisualQuestionId = await createVisualQuestionPart(question, newSWQuestionId, opt);
+        await connectBase2SW(newBaseQuestionId, newSWQuestionId, opt);
+        await connectSw2Visual(newSWQuestionId, newVisualQuestionId, opt);
+
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+    }
+    catch (exception) {
+
+        console.log(exception);
+        //Abort transaction and end session
+        await session.abortTransaction();
+        session.endSession();
+        throw exception;
+    }
 }
+async function createVisualQuestionPart(question, swQuestionId, opt) {
+
+    let newVisualQuestionId = '';
+    let fileType = '.png';
+    let visualQuestion = new VisualQuestion.VisualQuestion();
+    visualQuestion.imageFileName = swQuestionId + fileType;
+    visualQuestion.answerType = question.answerType;
+    await visualQuestion.save(opt)
+        .then((savedVisualQuestion) => {
+
+            newVisualQuestionId = savedVisualQuestion._id;
+        })
+        .catch((exception) => {
+
+            console.log(exception);
+            throw global.errorResource.ErrBu0024();
+        });
+
+    return newVisualQuestionId;
+}
+
+async function connectSw2Visual(swQuestionId, visualQuestionId, opt) {
+
+    try {
+
+        let swQuestion = await SWQuestion.SWQuestion.findById(swQuestionId, null, opt);
+        swQuestion.visualQuestion = visualQuestionId;
+        await swQuestion.save(opt);
+    }
+    catch (exception) {
+
+        console.log(exception);
+        throw global.errorResource.ErrBu0024();
+    }
+}
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
 /*---------------------- EXPOSED FUNCTIONS--------------------------*/
 async function addNewReadingQuestion(question) {
 
@@ -340,17 +402,17 @@ async function addNewReadingQuestion(question) {
     await createReadinQuestion(question);
 }
 module.exports.addNewReadingQuestion = addNewReadingQuestion;
-
+//--------------------------------------------------------------
 async function addNewListeningQuestion(question) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-    
+
     await createListeningQuestion(question);
 }
 module.exports.addNewListeningQuestion = addNewListeningQuestion;
-
-async function addNewWritingQuestion(question){
+//---------------------------------------------------------------
+async function addNewWritingQuestion(question) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -358,9 +420,9 @@ async function addNewWritingQuestion(question){
     await createWritingQuestion(question);
 }
 module.exports.addNewWritingQuestion = addNewWritingQuestion;
+//-------------------------------------------------------------
+async function addNewVisualQuestion(question) {
 
-async function addNewVisualQuestion(question){
-    
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 

@@ -5,6 +5,7 @@ export class VisualQuestion extends SWQuestion{
 
     constructor(){
         
+        super();
         this.imageFileName = '';      
         this.answerType=AnswerType.NotSet;
     }

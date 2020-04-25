@@ -37,6 +37,13 @@ adminQuestionApi.post('/question/writing',(req,res)=>{
 
 adminQuestionApi.post('/question/visual',(req,res)=>{
     
+    questionController.addNewVisualQuestion(req.body)
+    .then(()=>{
+
+    })
+    .catch((reason)=>{
+
+    });
 })
 
 module.exports = adminQuestionApi;
