@@ -19,17 +19,18 @@ import Answer from './entity/answer/answer';
 import { AnswerType } from './entity/answer/answer-type';
 import {ListeningQuestion} from './entity/question/listening-question';
 import {WritingQuestion} from './entity/question/writing-question';
-import {VisualQuestion} from './entity/question/visual-question'
+import {VisualQuestion} from './entity/question/visual-question';
+import {SpeakingQuestion} from './entity/question/speaking-question';
 function App() {
 
   useEffect(() => {
     
     let service = new QuestionService();
-    let question = new VisualQuestion();
+    let question = new SpeakingQuestion();
 
     question.title = 'Take a look at and describe the folllowing';
     question.hardness = HardnessLevel.Moderate;
-    question.type = QuestionType.Visual;
+    question.type = QuestionType.Speaking;
     question.answerDuration = 600000;
     question.score2Asset = false;
     question.score = 0;
@@ -41,7 +42,7 @@ function App() {
     question.context = 'The following picture shows a plato ...';
     question.answerType = AnswerType.Voice;
     console.log(question);
-    service.addNewVisualQuestion(question,(response)=>{
+    service.addNewS(question,(response)=>{
       console.log(response);
     });
 

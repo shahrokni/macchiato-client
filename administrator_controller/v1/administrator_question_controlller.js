@@ -389,6 +389,33 @@ async function connectSw2Visual(swQuestionId, visualQuestionId, opt) {
         throw global.errorResource.ErrBu0024();
     }
 }
+
+async function createSpeakingQuestion(question){
+    
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try{
+
+        const opt = { session };
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newSWQuestionId = await createSWQuestionPart(question, opt);
+        await connectBase2SW(newBaseQuestionId, newSWQuestionId, opt);
+
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+
+    }
+    catch(exception){
+
+        console.log(exception);
+        //Abort transaction and end session
+        await session.abortTransaction();
+        session.endSession();
+        throw exception;
+    }
+}
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
@@ -429,3 +456,13 @@ async function addNewVisualQuestion(question) {
     await createVisualQuestion(question);
 }
 module.exports.addNewVisualQuestion = addNewVisualQuestion;
+//-------------------------------------------------------------
+async function addNewSpeakingQuestion(question){
+    
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    await createSpeakingQuestion(question);
+}
+module.exports.addNewSpeakingQuestion = addNewSpeakingQuestion;
+//--------------------------------------------------------------

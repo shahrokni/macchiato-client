@@ -35,6 +35,17 @@ adminQuestionApi.post('/question/writing',(req,res)=>{
     });
 })
 
+adminQuestionApi.post('/question/speaking',(req,res)=>{
+
+    questionController.addNewSpeakingQuestion(req.body)
+    .then(()=>{
+
+    })
+    .catch((reason)=>{
+
+    });
+});
+
 adminQuestionApi.post('/question/visual',(req,res)=>{
     
     questionController.addNewVisualQuestion(req.body)
