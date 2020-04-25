@@ -416,6 +416,11 @@ async function createSpeakingQuestion(question){
         throw exception;
     }
 }
+
+async function createVocabQuestion(question){
+    //TODO: F-04.24.2020.9
+}
+
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
@@ -466,3 +471,12 @@ async function addNewSpeakingQuestion(question){
 }
 module.exports.addNewSpeakingQuestion = addNewSpeakingQuestion;
 //--------------------------------------------------------------
+async function addNewVocabQuestion(question){
+    
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    await createVocabQuestion(question);
+}
+module.exports.addNewVocabQuestion = addNewVocabQuestion;
+//------------------------------------------------------------

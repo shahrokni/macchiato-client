@@ -5,7 +5,7 @@ export class VocabQuestion extends Question{
 
     constructor(){
         
-        this.blankContext = "";
+        this.context = "";
         this.answerItems = [];
     }
 }

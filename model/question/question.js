@@ -14,7 +14,8 @@ var questionSchema = mongoose.Schema({
     genre:[mongoose.Schema.Types.String],
     hashtags:[mongoose.Schema.Types.String],
     lrQuestion:{type:mongoose.Schema.Types.ObjectId, ref:'lrquestions'},
-    swQuestion:{type:mongoose.Schema.Types.String, ref:'swquestions'}
+    swQuestion:{type:mongoose.Schema.Types.ObjectId, ref:'swquestions'},
+    vocabSlangQuestion:{type:mongoose.Schema.Types.ObjectId, ref:'vocabslangquestions'}
 });
 var Question = mongoose.model('Question',questionSchema);
 module.exports.Question = Question;
