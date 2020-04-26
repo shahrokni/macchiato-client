@@ -57,4 +57,15 @@ adminQuestionApi.post('/question/visual',(req,res)=>{
     });
 })
 
+adminQuestionApi.post('/question/vocab',(req,res)=>{
+
+    questionController.addNewVocabQuestion(req.body)
+    .then(()=>{
+
+    })
+    .catch((reason)=>{
+
+    });
+});
+
 module.exports = adminQuestionApi;

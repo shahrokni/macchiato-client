@@ -21,28 +21,33 @@ import {ListeningQuestion} from './entity/question/listening-question';
 import {WritingQuestion} from './entity/question/writing-question';
 import {VisualQuestion} from './entity/question/visual-question';
 import {SpeakingQuestion} from './entity/question/speaking-question';
+import { queries } from '@testing-library/react';
+import {VocabQuestion} from './entity/question/vocab-question';
 function App() {
 
   useEffect(() => {
     
     let service = new QuestionService();
-    let question = new SpeakingQuestion();
+    let question = new VocabQuestion();
 
-    question.title = 'Take a look at and describe the folllowing';
-    question.hardness = HardnessLevel.Moderate;
-    question.type = QuestionType.Speaking;
-    question.answerDuration = 600000;
-    question.score2Asset = false;
-    question.score = 0;
-    question.usage.push(Usage.Mock);    
+    question.title = 'Fill the blank space with proper answers.';
+    question.hardness = HardnessLevel.Easy;
+    question.type = QuestionType.Vocab;
+    question.answerDuration = 50000;
+    question.score2Asset = true;
+    question.score = 100;
+    question.usage.push(Usage.Level);    
     question.genre.push(Genre.General);
-    question.hashtags.push('Plato');
-    question.questionItems.push('What is a plato?');   
-    question.cost=40000;
-    question.context = 'The following picture shows a plato ...';
-    question.answerType = AnswerType.Voice;
+    question.hashtags.push('Egypt');   
+    question.context = '...Pyramids in Egypet are known for their ... shape';
+    let answer = new Answer();
+    answer.answerType = AnswerType.Text;
+    answer.correctAnswer = 'Mighty';
+    question.answerItems.push(answer) ;
+
+
     console.log(question);
-    service.addNewS(question,(response)=>{
+    service.addNewVocabSlangQuestion(question,(response)=>{
       console.log(response);
     });
 

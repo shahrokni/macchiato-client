@@ -4,6 +4,7 @@ var SWQuestion = require('../../model/question/sw-question');
 var ReadingQuestion = require('../../model/question/reading-question');
 var ListeningQuestion = require('../../model/question/listening-question');
 var VisualQuestion = require('../../model/question/visual-question');
+var VocabSlangQuestion = require('../../model/question/vocab-slang-question');
 var answerSchema = require('../../model/answer/answer');
 var mongoose = require('mongoose');
 /*-----------------------------------------------------*/
@@ -390,12 +391,12 @@ async function connectSw2Visual(swQuestionId, visualQuestionId, opt) {
     }
 }
 
-async function createSpeakingQuestion(question){
-    
+async function createSpeakingQuestion(question) {
+
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    try{
+    try {
 
         const opt = { session };
         let newBaseQuestionId = await createBaseQuestionPart(question, opt);
@@ -407,7 +408,7 @@ async function createSpeakingQuestion(question){
         session.endSession();
 
     }
-    catch(exception){
+    catch (exception) {
 
         console.log(exception);
         //Abort transaction and end session
@@ -417,10 +418,78 @@ async function createSpeakingQuestion(question){
     }
 }
 
-async function createVocabQuestion(question){
-    //TODO: F-04.24.2020.9
+async function createVocabQuestion(question) {
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+
+        const opt = { session };
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newVocabSlangQuestionId = await createVocabSlangQuestionPart(question, opt);
+        await connectBase2VocabSlang(newBaseQuestionId, newVocabSlangQuestionId, opt);
+
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+    }
+    catch (exception) {
+
+        console.log(exception);
+        //Abort transaction and end session
+        await session.abortTransaction();
+        session.endSession();
+        throw exception;
+    }
 }
 
+async function createVocabSlangQuestionPart(question,opt){
+
+    let newVocabSlangQuestionId = '';
+    let newVocabSlangQuestion = new VocabSlangQuestion.VocabSlangQuestion();
+    newVocabSlangQuestion.context = question.context;
+
+    question.answerItems.forEach(item=>{
+
+        let AnswerItem = mongoose.model('AnswerItem',answerSchema);
+        let newAnswerItem = new AnswerItem();
+        newAnswerItem.answerType = item.answerType;
+        newAnswerItem.correctAnswer = item.correctAnswer;
+
+        if(item.multipleChoice && item.multipleChoice.length>0){
+            newAnswerItem.multipleChoice = item.multipleChoice;
+        }
+        newVocabSlangQuestion.answerItems.push(newAnswerItem);
+    });
+
+    await newVocabSlangQuestion.save(opt)
+    .then((savedVocab)=>{
+        newVocabSlangQuestionId = savedVocab._id;
+    })
+    .catch((exception)=>{
+
+        console.log(exception);
+        throw global.errorResource.ErrBu0024();
+    });
+
+    return newVocabSlangQuestionId;
+}
+
+async function connectBase2VocabSlang(baseQuestionId, vocabSlangQuestionId, opt) {
+
+    try {
+        baseQuestion = await Question.Question.findById(baseQuestionId, null, opt);
+        baseQuestion.vocabSlangQuestion = vocabSlangQuestionId;
+        await baseQuestion.save(opt);
+    }
+    catch (exception) {
+
+        console.log(exception);
+        throw exception;
+    }
+
+}
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
@@ -462,8 +531,8 @@ async function addNewVisualQuestion(question) {
 }
 module.exports.addNewVisualQuestion = addNewVisualQuestion;
 //-------------------------------------------------------------
-async function addNewSpeakingQuestion(question){
-    
+async function addNewSpeakingQuestion(question) {
+
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
@@ -471,8 +540,8 @@ async function addNewSpeakingQuestion(question){
 }
 module.exports.addNewSpeakingQuestion = addNewSpeakingQuestion;
 //--------------------------------------------------------------
-async function addNewVocabQuestion(question){
-    
+async function addNewVocabQuestion(question) {
+
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
