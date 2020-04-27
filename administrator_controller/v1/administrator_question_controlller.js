@@ -54,8 +54,7 @@ async function generateNextQueryNumber(questionType) {
             questionNumber += newNumber;
         })
         .catch((reason) => {
-
-            console.log(reason);
+           
             throw global.errorResource.ErrBu0023();
         });
 
@@ -86,7 +85,6 @@ async function createBaseQuestionPart(question, sessionOption) {
     })
         .catch((reason) => {
 
-            console.log(reason);
             throw global.errorResource.ErrBu0024();
         });
 
@@ -107,8 +105,7 @@ async function createSWQuestionPart(question, sessionOption) {
             swQuestionId = savedSWQuestion._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+           
             throw global.errorResource.ErrBu0024();
         });
 
@@ -140,8 +137,7 @@ async function createLRQuestionPart(question, sessionOption) {
         lrQuestionNumber = savedLRQuestion._id;
     })
         .catch((reason) => {
-
-            console.log(reason);
+           
             throw global.errorResource.ErrBu0024();
         });
 
@@ -158,8 +154,7 @@ async function createReadingQuestionPart(question, opt) {
 
         readinQuestionId = savedReadingQuestion._id
     }).catch((reason) => {
-
-        console.log(reason);
+       
         throw global.errorResource.ErrBu0024();
     });
 
@@ -190,8 +185,7 @@ async function connectLR2Reading(lRId, readingId, opt) {
         await lRQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+       
         throw global.errorResource.ErrBu0024();
     }
 
@@ -216,8 +210,7 @@ async function createReadinQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+      
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -234,8 +227,7 @@ async function connectLR2Listening(lRId, listeningId, opt) {
         await lRQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+      
         throw global.errorResource.ErrBu0024();
     }
 }
@@ -252,8 +244,7 @@ async function createListeningQuestionPart(newLRQuestionId, sessionOption) {
             newListeningQuestionId = savedListeningQuestion._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+          
             throw global.errorResource.ErrBu0024();
         });
 
@@ -281,7 +272,7 @@ async function createListeningQuestion(question) {
     }
     catch (exception) {
 
-        console.log(exception);
+       
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -298,8 +289,7 @@ async function connectBase2SW(baseQuestionId, sWQuestionId, opt) {
         await baseQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+       
         throw global.errorResource.ErrBu0024();
     }
 }
@@ -321,8 +311,7 @@ async function createWritingQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+      
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -348,8 +337,7 @@ async function createVisualQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+       
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -369,8 +357,7 @@ async function createVisualQuestionPart(question, swQuestionId, opt) {
             newVisualQuestionId = savedVisualQuestion._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+           
             throw global.errorResource.ErrBu0024();
         });
 
@@ -386,8 +373,7 @@ async function connectSw2Visual(swQuestionId, visualQuestionId, opt) {
         await swQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+      
         throw global.errorResource.ErrBu0024();
     }
 }
@@ -411,7 +397,7 @@ async function createSpeakingQuestion(question) {
     }
     catch (exception) {
 
-        console.log(exception);
+     
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -436,8 +422,7 @@ async function createVocabQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+       
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -469,8 +454,7 @@ async function createVocabSlangQuestionPart(question, opt) {
             newVocabSlangQuestionId = savedVocab._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+        
             throw global.errorResource.ErrBu0024();
         });
 
@@ -485,8 +469,7 @@ async function connectBase2VocabSlang(baseQuestionId, vocabSlangQuestionId, opt)
         await baseQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+     
         throw exception;
     }
 
