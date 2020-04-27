@@ -5,67 +5,65 @@ var express = require('express');
 var adminQuestionApi = express.Router();
 adminQuestionApi.use(bodyParser.json());
 /*-------------------------------*/
-adminQuestionApi.post('/question/reading',(req,res)=>{
+adminQuestionApi.post('/question/reading', async (req,res)=>{
 
-    questionController.addNewReadingQuestion(req.body).then(()=>{
+    questionController.addNewReadingQuestion(req.body).then((response)=>{
 
-    })
-    .catch((reason)=>{
-
-    });
+        res.json({ response: response });
+        return res;
+    });   
 });
 
-adminQuestionApi.post('/question/listening',(req,res)=>{
+adminQuestionApi.post('/question/listening', async (req,res)=>{
 
     questionController.addNewListeningQuestion(req.body)
-    .then(()=>{})
-    .catch((reason)=>{
+    .then((response)=>{
 
+        res.json({ response: response });
+        return res;
     });
+    
 });
 
-adminQuestionApi.post('/question/writing',(req,res)=>{
+adminQuestionApi.post('/question/writing', async (req,res)=>{
 
     questionController.addNewWritingQuestion(req.body)
-    .then(()=>{
+    .then((response)=>{
 
-    })
-    .catch((reason)=>{
-
-    });
+        res.json({ response: response });
+        return res;
+    });   
 })
 
-adminQuestionApi.post('/question/speaking',(req,res)=>{
+adminQuestionApi.post('/question/speaking', async (req,res)=>{
 
     questionController.addNewSpeakingQuestion(req.body)
-    .then(()=>{
+    .then((response)=>{
 
-    })
-    .catch((reason)=>{
-
-    });
+        res.json({ response: response });
+        return res;
+    });    
 });
 
-adminQuestionApi.post('/question/visual',(req,res)=>{
+adminQuestionApi.post('/question/visual', async (req,res)=>{
     
     questionController.addNewVisualQuestion(req.body)
-    .then(()=>{
+    .then((response)=>{
 
-    })
-    .catch((reason)=>{
-
-    });
+        res.json({ response: response });
+        return res;
+    });    
 })
 
-adminQuestionApi.post('/question/vocab',(req,res)=>{
-
-    questionController.addNewVocabQuestion(req.body)
-    .then(()=>{
-
-    })
-    .catch((reason)=>{
-
-    });
+adminQuestionApi.post('/question/vocab', async (req,res)=>{
+   
+    await questionController.addNewVocabQuestion(req.body)
+    .then((response)=>{        
+       
+        res.json({ response: response });
+        return res;
+    });    
+   
 });
 
 module.exports = adminQuestionApi;

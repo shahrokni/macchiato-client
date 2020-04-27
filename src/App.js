@@ -30,7 +30,7 @@ function App() {
     let service = new QuestionService();
     let question = new VocabQuestion();
 
-    question.title = 'Fill the blank space with proper answers.';
+    question.title = 'Fill the blank space with proper answers.3';
     question.hardness = HardnessLevel.Easy;
     question.type = QuestionType.Vocab;
     question.answerDuration = 50000;

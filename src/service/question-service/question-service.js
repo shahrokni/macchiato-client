@@ -123,7 +123,7 @@ export default class QuestionService{
 
         restInstance.post('admin_question_api/v1/question/vocab',vocabSlangQuestion)
         .then((res)=>{
-
+            
             let responseUtil = require('../../util/response-util/response-util');
             let serverResponse = responseUtil.extractResponse(res);
             callBack(serverResponse);

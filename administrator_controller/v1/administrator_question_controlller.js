@@ -47,7 +47,7 @@ async function generateNextQueryNumber(questionType) {
             break;
     }
 
-    await Question.Question.countDocuments({ 'number': '^' + questionNumber })
+    await Question.Question.countDocuments({ 'number': { $regex: '^' + questionNumber } })
         .then((countedQuestions) => {
 
             let newNumber = startNumber + countedQuestions;
@@ -58,6 +58,7 @@ async function generateNextQueryNumber(questionType) {
             console.log(reason);
             throw global.errorResource.ErrBu0023();
         });
+
 
     return questionNumber;
 }
@@ -444,34 +445,34 @@ async function createVocabQuestion(question) {
     }
 }
 
-async function createVocabSlangQuestionPart(question,opt){
+async function createVocabSlangQuestionPart(question, opt) {
 
     let newVocabSlangQuestionId = '';
     let newVocabSlangQuestion = new VocabSlangQuestion.VocabSlangQuestion();
     newVocabSlangQuestion.context = question.context;
 
-    question.answerItems.forEach(item=>{
+    question.answerItems.forEach(item => {
 
-        let AnswerItem = mongoose.model('AnswerItem',answerSchema);
+        let AnswerItem = mongoose.model('AnswerItem', answerSchema);
         let newAnswerItem = new AnswerItem();
         newAnswerItem.answerType = item.answerType;
         newAnswerItem.correctAnswer = item.correctAnswer;
 
-        if(item.multipleChoice && item.multipleChoice.length>0){
+        if (item.multipleChoice && item.multipleChoice.length > 0) {
             newAnswerItem.multipleChoice = item.multipleChoice;
         }
         newVocabSlangQuestion.answerItems.push(newAnswerItem);
     });
 
     await newVocabSlangQuestion.save(opt)
-    .then((savedVocab)=>{
-        newVocabSlangQuestionId = savedVocab._id;
-    })
-    .catch((exception)=>{
+        .then((savedVocab) => {
+            newVocabSlangQuestionId = savedVocab._id;
+        })
+        .catch((exception) => {
 
-        console.log(exception);
-        throw global.errorResource.ErrBu0024();
-    });
+            console.log(exception);
+            throw global.errorResource.ErrBu0024();
+        });
 
     return newVocabSlangQuestionId;
 }
@@ -500,7 +501,17 @@ async function addNewReadingQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createReadinQuestion(question);
+    await createReadinQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewReadingQuestion = addNewReadingQuestion;
 //--------------------------------------------------------------
@@ -509,7 +520,17 @@ async function addNewListeningQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createListeningQuestion(question);
+    await createListeningQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewListeningQuestion = addNewListeningQuestion;
 //---------------------------------------------------------------
@@ -518,7 +539,17 @@ async function addNewWritingQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createWritingQuestion(question);
+    await createWritingQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewWritingQuestion = addNewWritingQuestion;
 //-------------------------------------------------------------
@@ -527,7 +558,17 @@ async function addNewVisualQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createVisualQuestion(question);
+    await createVisualQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewVisualQuestion = addNewVisualQuestion;
 //-------------------------------------------------------------
@@ -536,7 +577,17 @@ async function addNewSpeakingQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createSpeakingQuestion(question);
+    await createSpeakingQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewSpeakingQuestion = addNewSpeakingQuestion;
 //--------------------------------------------------------------
@@ -545,7 +596,17 @@ async function addNewVocabQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createVocabQuestion(question);
+    await createVocabQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewVocabQuestion = addNewVocabQuestion;
 //------------------------------------------------------------
