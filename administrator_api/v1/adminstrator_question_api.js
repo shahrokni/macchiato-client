@@ -1,10 +1,10 @@
 var questionController = require('../../administrator_controller/v1/administrator_question_controlller');
-/*-------------------------------*/
+/*----------------------------------------*/
 const bodyParser = require('body-parser');
 var express = require('express');
 var adminQuestionApi = express.Router();
 adminQuestionApi.use(bodyParser.json());
-/*-------------------------------*/
+/*----------------------------------------*/
 adminQuestionApi.post('/question/reading', async (req,res)=>{
 
     await questionController.addNewReadingQuestion(req.body).then((response)=>{
