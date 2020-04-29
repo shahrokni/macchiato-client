@@ -23,8 +23,7 @@ async function registerUser(userDetail) {
         response.serverValidations = errorMessages;
         return Promise.resolve(response);
     }
-
-    let SkillScoreSchema = require('../../model/user/skill-score');
+ 
     let newUser = new User({
         userName: receivedData.userName,       
     });
@@ -36,17 +35,19 @@ async function registerUser(userDetail) {
         province: receivedData.province
     });
 
-    
+    let SkillScoreSchema = require('../../model/user/skill-score');
+    let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
+
     //Set the first part of the student number
     newUserDetail.studentNumber = global.dateUtilModule.getCompactCurrentDate();
-    let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
+    //Add a SkillScore subdocument    
     newUserDetail.skillScore.push(new SkillScore());
 
     let query = User.findOne({ 'userName': receivedData.userName }, 'userName');
     await query.exec().then((foundUser) => {
 
         //Check wether the chosen username has already been taken by another user!
-        if (user) {
+        if (foundUser) {
 
             response.isSuccessful = false;
             response.serverValidations.push(global.errorResource.ErrBu0009());
@@ -56,13 +57,7 @@ async function registerUser(userDetail) {
         .catch((exception) => {
 
             response.isSuccessful = false;
-            let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
-
-            if (message != null)
-                response.serverValidations.push(message);
-            else
-                response.serverValidations.push(global.errorResource.Err0000());
-
+            response.serverValidations.push(global.errorResource.Err0000());
             return Promise(response);
         });
 
@@ -79,19 +74,14 @@ async function registerUser(userDetail) {
             })
                 .catch((exception) => {
 
-                    response.isSuccessful = false;
-                    let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
-
-                    if (message != null)
-                        response.serverValidations.push(message);
-                    else
-                        response.serverValidations.push(global.errorResource.Err0000());
-
+                    response.isSuccessful = false;                
+                    response.serverValidations.push(global.errorResource.Err0000());
                     return Promise.resolve(response);
-                })
+                });
 
             //Add the second part of the student number                                    
             newUser.studentNumber += countedItem;
+
             //Create a session and start a transaction. ALL-OR-NONE OPERATION!
             const session = await mongoose.startSession();
             session.startTransaction();
@@ -107,27 +97,91 @@ async function registerUser(userDetail) {
                     newUserId = savedUser._id;
                 })
                     .catch((exception)=>{
-
-                        response.isSuccessful = false;
-                        let message = global.dbExceptionHandler.tryGetErrorMessage(err);
-
+                       
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                         if (message != null)
-                            response.serverValidations.push(message);
+                            throw message;
                         else
-                            response.serverValidations.push(global.errorResource.Err0000());
-                        return Promise.resolve(response);
+                            throw global.errorResource.Err0000();                        
                     });
                 
+                    await newUserDetail.save(opt)
+                    .then((savedUserDetail)=>{
+
+                        newUserDetailId = savedUserDetail._id;
+                    })
+                    .catch((exception)=>{
+                        
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
+                        if (message != null)
+                            throw message;
+                        else
+                            throw global.errorResource.Err0000();                        
+                    });
+                    
+                     //Initiate a financial account
+                    let accountControler =
+                    require('../../administrator_controller/v1/administrator_financial_account_controller');
+                    await accountControler.initiateUserFinancialAccount(newUserDetailId,opt);
+
+                    //Send a message
+                    let messageController =
+                    require('../../administrator_controller/v1/administrator_user_message_controller');
+                    let message = {
+                        'receiverId': newUserDetailId,
+                        'senderId': 'Administrator',
+                        'sentDate': Date.now(),
+                        'title': global.systemMessages.welcomeTitle,
+                        'text': global.systemMessages.welcomeMessage
+                    };
+
+                    await messageController.sendMessage(message,opt);
+                    
+                    let findQuery = User.findById(newUserId,null,opt);
+                    await findQuery.exec().then((foundNewUser)=>{
+
+                        foundNewUser.userDetail = newUserDetailId;
+                        //Connect user to userDetail
+                        await foundNewUser.save(opt)                        
+                        .catch((exception)=>{
+
+                            throw global.errorResource.Err0000();
+                        });
+                    })
+                    .catch((exception)=>{
+                        
+                        throw global.errorResource.Err0000();
+                    });
+
+                     //commit the transaction and end the session
+                    await session.commitTransaction();
+                    session.endSession();
+                    response.isSuccessful = true;
+                    receivedData.password = hiddenData;
+                    response.outputJson = receivedData;    
+                    return Promise.resolve(response);
                 
             }
             catch(exception){
 
+                await session.abortTransaction();
+                session.endSession();
+
+                response.isSuccessful = false;
+                response.serverValidations.push(exception);
+                return Promise.resolve(response);
             }
         }
+        else{
+          
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0000());
+            return Promise.resolve(response);
+        }
     });
-
 }
 module.exports.registerUser = registerUser;
+//---------------------------------------------------------------------------------------
 
 function updateUserInformation(userDetail, studentNumber, done) {
 

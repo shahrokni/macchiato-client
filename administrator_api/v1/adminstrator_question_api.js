@@ -62,8 +62,7 @@ adminQuestionApi.post('/question/vocab', async (req,res)=>{
        
         res.json({ response: response });
         return res;
-    });    
-   
+    });  
 });
 
 module.exports = adminQuestionApi;

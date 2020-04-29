@@ -1,6 +1,6 @@
 var UserMessage = require('../../model/user-message/user-message');
 /*-------------------EXPOSED FUNCTION--------------------------*/
-function sendMessage(message,done){
+function sendMessage(message,opt){
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();

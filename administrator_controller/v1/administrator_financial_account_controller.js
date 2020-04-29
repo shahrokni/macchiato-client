@@ -138,7 +138,7 @@ function findFinancialAccountByUserId(userId, done) {
 /*---------------------EXPORTED FUNCTIONS---------------------------------------*/
 
 //Create a financial account for a recent registered user
-function initiateUserFinancialAccount(userId, done) {
+async function initiateUserFinancialAccount(userId, sessionOpt) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
