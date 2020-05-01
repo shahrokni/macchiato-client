@@ -70,7 +70,7 @@ async function registerUser(userDetail) {
     let hash = bcrypt.hashSync(receivedData.password, bcrypt.genSaltSync(salt));
 
     newUser.password = hash;
-    let countQuery = User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } });
+    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber': { $regex: '^' + newUserDetail.studentNumber } });
     let countedItem;
 
     try {
@@ -93,7 +93,7 @@ async function registerUser(userDetail) {
     
     //Add the second part of the student number    
     newUserDetail.studentNumber += countedItem; 
-
+    
     //Create a session and start a transaction. ALL-OR-NONE OPERATION!
     const session = await mongoose.startSession();
     session.startTransaction();
