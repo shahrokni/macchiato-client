@@ -23,9 +23,9 @@ async function registerUser(userDetail) {
         response.serverValidations = errorMessages;
         return Promise.resolve(response);
     }
- 
+
     let newUser = new User({
-        userName: receivedData.userName,       
+        userName: receivedData.userName,
     });
 
     let newUserDetail = new UserDetail.UserDetail({
@@ -44,22 +44,28 @@ async function registerUser(userDetail) {
     newUserDetail.skillScore.push(new SkillScore());
 
     let query = User.findOne({ 'userName': receivedData.userName }, 'userName');
-    await query.exec().then((foundUser) => {
 
-        //Check wether the chosen username has already been taken by another user!
-        if (foundUser) {
+    try {
 
-            response.isSuccessful = false;
-            response.serverValidations.push(global.errorResource.ErrBu0009());
-            return Promise.resolve(response);
-        }
-    })
-        .catch((exception) => {
+        await query.exec().then((foundUser) => {
 
-            response.isSuccessful = false;
-            response.serverValidations.push(global.errorResource.Err0000());
-            return Promise(response);
-        });
+            //Check wether the chosen username has already been taken by another user!
+            if (foundUser) {
+
+                throw global.errorResource.ErrBu0009();
+            }
+        })
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+    }
+    catch (exception) {
+
+        response.isSuccessful = false;
+        response.serverValidations.push(exception);
+        return Promise.resolve(response);
+    }
 
     bcrypt.hash(receivedData.password, bcrypt.genSaltSync(salt), null, function (bcryptError, hash) {
 
@@ -67,17 +73,25 @@ async function registerUser(userDetail) {
 
             newUser.password = hash;
             let countQuery = User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } });
-            let countedItem = 0 ;
-            await countQuery.exec().then((count) => {
+            let countedItem = 0;
 
-                countedItem = count;
-            })
-                .catch((exception) => {
+            try {
 
-                    response.isSuccessful = false;                
-                    response.serverValidations.push(global.errorResource.Err0000());
-                    return Promise.resolve(response);
-                });
+                await countQuery.exec().then((count) => {
+
+                    countedItem = count;
+                })
+                    .catch((exception) => {
+
+                        throw global.errorResource.Err0000();
+                    });
+            }
+            catch (exception) {
+
+                response.isSuccessful = false;
+                response.serverValidations.push(exception);
+                return Promise.resolve(response);
+            }
 
             //Add the second part of the student number                                    
             newUser.studentNumber += countedItem;
@@ -85,84 +99,90 @@ async function registerUser(userDetail) {
             //Create a session and start a transaction. ALL-OR-NONE OPERATION!
             const session = await mongoose.startSession();
             session.startTransaction();
-            try{
+
+            try {
 
                 let newUserId = '';
                 let newUserDetailId = '';
 
-                const opt = {session};
+                const opt = { session };
                 await newUser.save(opt)
-                .then((savedUser)=>{
+                    .then((savedUser) => {
 
-                    newUserId = savedUser._id;
-                })
-                    .catch((exception)=>{
-                       
+                        newUserId = savedUser._id;
+                    })
+                    .catch((exception) => {
+
                         let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                         if (message != null)
                             throw message;
                         else
-                            throw global.errorResource.Err0000();                        
+                            throw global.errorResource.Err0000();
                     });
-                
-                    await newUserDetail.save(opt)
-                    .then((savedUserDetail)=>{
+
+                await newUserDetail.save(opt)
+                    .then((savedUserDetail) => {
 
                         newUserDetailId = savedUserDetail._id;
                     })
-                    .catch((exception)=>{
-                        
+                    .catch((exception) => {
+
                         let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                         if (message != null)
                             throw message;
                         else
-                            throw global.errorResource.Err0000();                        
-                    });
-                    
-                     //Initiate a financial account
-                    let accountControler =
-                    require('../../administrator_controller/v1/administrator_financial_account_controller');
-                    await accountControler.initiateUserFinancialAccount(newUserDetailId,opt);
-
-                    //Send a message
-                    let messageController =
-                    require('../../administrator_controller/v1/administrator_user_message_controller');
-                    let message = {
-                        'receiverId': newUserDetailId,
-                        'senderId': 'Administrator',
-                        'sentDate': Date.now(),
-                        'title': global.systemMessages.welcomeTitle,
-                        'text': global.systemMessages.welcomeMessage
-                    };
-
-                    await messageController.sendMessage(message,opt);
-                    
-                    let findQuery = User.findById(newUserId,null,opt);
-                    await findQuery.exec().then((foundNewUser)=>{
-
-                        foundNewUser.userDetail = newUserDetailId;
-                        //Connect user to userDetail
-                        await foundNewUser.save(opt)                        
-                        .catch((exception)=>{
-
                             throw global.errorResource.Err0000();
-                        });
-                    })
-                    .catch((exception)=>{
-                        
+                    });
+
+                //Initiate a financial account
+                let accountControler =
+                    require('../../administrator_controller/v1/administrator_financial_account_controller');
+                await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
+                .catch((exception)=>{
+                    
+                    throw global.errorResource.Err0000();
+                })
+
+                //Send a welcome message!
+                let messageController =
+                    require('../../administrator_controller/v1/administrator_user_message_controller');                
+
+                await messageController.sendInitialMessage(newUserDetailId, opt)
+                .catch((exception)=>{
+
+                    throw global.errorResource.Err0000();
+                });
+
+                let findQuery = User.findById(newUserId, null, opt);
+                let foundNewUser;
+                
+                await findQuery.exec().then((newUser) => {
+
+                    foundNewUser = newUser;
+                })
+                    .catch((exception) => {
+
                         throw global.errorResource.Err0000();
                     });
 
-                     //commit the transaction and end the session
-                    await session.commitTransaction();
-                    session.endSession();
-                    response.isSuccessful = true;
-                    receivedData.password = hiddenData;
-                    response.outputJson = receivedData;    
-                    return Promise.resolve(response);
-                
+                foundNewUser.userDetail = newUserDetailId;
+                //Connect user to userDetail
+                await foundNewUser.save(opt)
+                    .catch((exception) => {
+
+                        throw global.errorResource.Err0000();
+                    });
+
+                //commit the transaction and end the session
+                await session.commitTransaction();
+                session.endSession();
+                response.isSuccessful = true;
+                receivedData.password = hiddenData;
+                response.outputJson = receivedData;
+                return Promise.resolve(response);
+
             }
-            catch(exception){
+            catch (exception) {
 
                 await session.abortTransaction();
                 session.endSession();
@@ -172,8 +192,8 @@ async function registerUser(userDetail) {
                 return Promise.resolve(response);
             }
         }
-        else{
-          
+        else {
+
             response.isSuccessful = false;
             response.serverValidations.push(global.errorResource.Err0000());
             return Promise.resolve(response);
