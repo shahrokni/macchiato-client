@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var SkillScoreSchema = require('./skill-score');
 /*---------------------------------*/
 var userDetailSchema = mongoose.Schema({
 

@@ -24,10 +24,10 @@ function isUserAuthenticated(req, res, next) {
 
 //Save the new user
 api.post('/user', async (req, res) => {
-
+    
     await userController.registerUser(req.body)
     .then((response)=>{
-
+               
         res.json({response:response});
         return;
     });   

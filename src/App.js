@@ -27,27 +27,16 @@ function App() {
 
   useEffect(() => {
     
-    let service = new QuestionService();
-    let question = new VocabQuestion();
+    let service = new UserService();
+    let user = new UserDetail();
 
-    question.title = 'Fill the blank space with proper answers.3';
-    question.hardness = HardnessLevel.Easy;
-    question.type = QuestionType.Vocab;
-    question.answerDuration = 50000;
-    question.score2Asset = true;
-    question.score = 100;
-    question.usage.push(Usage.Level);    
-    question.genre.push(Genre.General);
-    question.hashtags.push('Egypt');   
-    question.context = '...Pyramids in Egypet are known for their ... shape';
-    let answer = new Answer();
-    answer.answerType = AnswerType.Text;
-    answer.correctAnswer = 'Mighty';
-    question.answerItems.push(answer) ;
+    user.userName = 'm.shahrokni';
+    user.lastName = 'shahrokni';
+    user.name = 'mahmood';
+    user.password = 'AustraliaDream@!123';
+    user.province = Province.Khuzestan;
 
-
-    console.log(question);
-    service.addNewVocabSlangQuestion(question,(response)=>{
+    service.signUp(user,(response)=>{
       console.log(response);
     });
 

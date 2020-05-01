@@ -67,138 +67,130 @@ async function registerUser(userDetail) {
         return Promise.resolve(response);
     }
 
-    bcrypt.hash(receivedData.password, bcrypt.genSaltSync(salt), null, function (bcryptError, hash) {
+    let hash = bcrypt.hashSync(receivedData.password, bcrypt.genSaltSync(salt));
 
-        if (!bcryptError) {
+    newUser.password = hash;
+    let countQuery = User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } });
+    let countedItem;
 
-            newUser.password = hash;
-            let countQuery = User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } });
-            let countedItem = 0;
+    try {
 
-            try {
+        await countQuery.exec().then((count) => {
 
-                await countQuery.exec().then((count) => {
+            countedItem = count;
+        })
+            .catch((exception) => {
 
-                    countedItem = count;
-                })
-                    .catch((exception) => {
+                throw global.errorResource.Err0000();
+            });
+    }
+    catch (exception) {
 
-                        throw global.errorResource.Err0000();
-                    });
-            }
-            catch (exception) {
+        response.isSuccessful = false;
+        response.serverValidations.push(exception);
+        return Promise.resolve(response);
+    }
+    
+    //Add the second part of the student number    
+    newUserDetail.studentNumber += countedItem; 
 
-                response.isSuccessful = false;
-                response.serverValidations.push(exception);
-                return Promise.resolve(response);
-            }
+    //Create a session and start a transaction. ALL-OR-NONE OPERATION!
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-            //Add the second part of the student number                                    
-            newUser.studentNumber += countedItem;
+    try {
 
-            //Create a session and start a transaction. ALL-OR-NONE OPERATION!
-            const session = await mongoose.startSession();
-            session.startTransaction();
+        let newUserId = '';
+        let newUserDetailId = '';
 
-            try {
+        const opt = { session };
+        await newUser.save(opt)
+            .then((savedUser) => {
 
-                let newUserId = '';
-                let newUserDetailId = '';
+                newUserId = savedUser._id;
+            })
+            .catch((exception) => {
 
-                const opt = { session };
-                await newUser.save(opt)
-                    .then((savedUser) => {
-
-                        newUserId = savedUser._id;
-                    })
-                    .catch((exception) => {
-
-                        let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
-                        if (message != null)
-                            throw message;
-                        else
-                            throw global.errorResource.Err0000();
-                    });
-
-                await newUserDetail.save(opt)
-                    .then((savedUserDetail) => {
-
-                        newUserDetailId = savedUserDetail._id;
-                    })
-                    .catch((exception) => {
-
-                        let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
-                        if (message != null)
-                            throw message;
-                        else
-                            throw global.errorResource.Err0000();
-                    });
-
-                //Initiate a financial account
-                let accountControler =
-                    require('../../administrator_controller/v1/administrator_financial_account_controller');
-                await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
-                .catch((exception)=>{
-                    
+                let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
+                if (message != null)
+                    throw message;
+                else
                     throw global.errorResource.Err0000();
-                })
+            });
 
-                //Send a welcome message!
-                let messageController =
-                    require('../../administrator_controller/v1/administrator_user_message_controller');                
+        await newUserDetail.save(opt)
+            .then((savedUserDetail) => {
 
-                await messageController.sendInitialMessage(newUserDetailId, opt)
-                .catch((exception)=>{
+                newUserDetailId = savedUserDetail._id;
+            })
+            .catch((exception) => {
 
+                let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
+                if (message != null)
+                    throw message;
+                else
                     throw global.errorResource.Err0000();
-                });
+            });
 
-                let findQuery = User.findById(newUserId, null, opt);
-                let foundNewUser;
-                
-                await findQuery.exec().then((newUser) => {
+        //Initiate a financial account
+        let accountControler =
+            require('../../administrator_controller/v1/administrator_financial_account_controller');
+       
+        await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
+            .catch((exception) => {              
+               
+                throw global.errorResource.Err0000();
+            });
 
-                    foundNewUser = newUser;
-                })
-                    .catch((exception) => {
+        //Send a welcome message!
+        let messageController =
+            require('../../administrator_controller/v1/administrator_user_message_controller');
 
-                        throw global.errorResource.Err0000();
-                    });
+        
+        await messageController.sendInitialMessage(newUserDetailId, opt)
+            .catch((exception) => {
 
-                foundNewUser.userDetail = newUserDetailId;
-                //Connect user to userDetail
-                await foundNewUser.save(opt)
-                    .catch((exception) => {
+                throw global.errorResource.Err0000();
+            });
+        
+        let findQuery = User.findById(newUserId, null, opt);
+        let foundNewUser;
 
-                        throw global.errorResource.Err0000();
-                    });
+        await findQuery.exec().then((newUser) => {
 
-                //commit the transaction and end the session
-                await session.commitTransaction();
-                session.endSession();
-                response.isSuccessful = true;
-                receivedData.password = hiddenData;
-                response.outputJson = receivedData;
-                return Promise.resolve(response);
+            foundNewUser = newUser;
+        })
+            .catch((exception) => {
 
-            }
-            catch (exception) {
+                throw global.errorResource.Err0000();
+            });
 
-                await session.abortTransaction();
-                session.endSession();
+        foundNewUser.userDetail = newUserDetailId;
+        //Connect user to userDetail
+        await foundNewUser.save(opt)
+            .catch((exception) => {
 
-                response.isSuccessful = false;
-                response.serverValidations.push(exception);
-                return Promise.resolve(response);
-            }
-        }
-        else {
+                throw global.errorResource.Err0000();
+            });
 
-            response.isSuccessful = false;
-            response.serverValidations.push(global.errorResource.Err0000());
-            return Promise.resolve(response);
-        }
-    });
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+        response.isSuccessful = true;
+        receivedData.password = hiddenData;
+        response.outputJson = receivedData;
+        return Promise.resolve(response);
+
+    }
+    catch (exception) {        
+       
+        await session.abortTransaction();
+        session.endSession();
+
+        response.isSuccessful = false;
+        response.serverValidations.push(exception);
+        return Promise.resolve(response);
+    }
 }
 module.exports.registerUser = registerUser;
 //---------------------------------------------------------------------------------------

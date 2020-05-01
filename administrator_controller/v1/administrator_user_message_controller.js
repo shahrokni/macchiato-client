@@ -11,7 +11,7 @@ async function sendInitialMessage(userId,sessionOption){
     userMessage.title = global.systemMessages.welcomeTitle;
     userMessage.text =  global.systemMessages.welcomeMessage;
     
-    await userMessage.save(sessionOption);    
+    await userMessage.save(sessionOption);
     return Promise.resolve();
 }
 module.exports.sendInitialMessage = sendInitialMessage;

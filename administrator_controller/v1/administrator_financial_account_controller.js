@@ -92,7 +92,7 @@ function withdrawMoney(account, paymentItem, done) {
 
 //Create a financial account for a recent registered user
 async function initiateUserFinancialAccount(userId, sessionOption) {
-
+    
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     let financialAccount = undefined;
@@ -108,7 +108,7 @@ async function initiateUserFinancialAccount(userId, sessionOption) {
         accountId = createdAccount._id;
     })
     .catch((exception)=>{
-
+      
         let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
         if (message != null)
             throw message;
@@ -127,19 +127,21 @@ async function initiateUserFinancialAccount(userId, sessionOption) {
     
     let findAccountQuesry = FinancialAccount.findById(accountId,null,sessionOption);
     await findAccountQuesry.exec()
-    .then((fetchedAccount)=>{
+    .then(async (fetchedAccount)=>{
 
         fetchedAccount.currentBalance += paymentItem.amount;
         fetchedAccount.paymentItems.push(paymentItem);
-        await fetchedAccount.save(opt).then((updatedAccount)=>{
+        await fetchedAccount.save(sessionOption).then((updatedAccount)=>{
 
             financialAccount = updatedAccount;
         })
         .catch((exception)=>{
+           
             throw exception;
         })
     })
     .catch((exception)=>{
+       
         throw global.errorResource.Err0000();
     });
 }
