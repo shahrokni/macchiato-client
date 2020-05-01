@@ -33,7 +33,7 @@ function App() {
     user.userName = 'mina.monshi1';
     user.lastName = 'monsh';
     user.name = 'Mina';
-    user.password = 'KilanDream@!123';
+    user.password = '*****';
     user.province = Province.Isfahan;
 
     service.signUp(user,(response)=>{
