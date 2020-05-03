@@ -126,23 +126,31 @@ async function initiateUserFinancialAccount(userId, sessionOption) {
     paymentItem.paymentType = staticAccountSettings.paymentType[0];
     
     let findAccountQuesry = FinancialAccount.findById(accountId,null,sessionOption);
-    await findAccountQuesry.exec()
-    .then(async (fetchedAccount)=>{
 
-        fetchedAccount.currentBalance += paymentItem.amount;
-        fetchedAccount.paymentItems.push(paymentItem);
-        await fetchedAccount.save(sessionOption).then((updatedAccount)=>{
+    try{
 
-            financialAccount = updatedAccount;
+        await findAccountQuesry.exec()
+        .then(async (fetchedAccount)=>{
+    
+            fetchedAccount.currentBalance += paymentItem.amount;
+            fetchedAccount.paymentItems.push(paymentItem);
+            await fetchedAccount.save(sessionOption).then((updatedAccount)=>{
+    
+                financialAccount = updatedAccount;
+            })
+            .catch((exception)=>{
+               
+                throw exception;
+            })
         })
         .catch((exception)=>{
            
             throw exception;
-        })
-    })
-    .catch((exception)=>{
-       
-        throw global.errorResource.Err0000();
-    });
+        });
+    }
+    catch(exception){
+
+        return Promise.reject( global.errorResource.Err0000())
+    }
 }
 module.exports.initiateUserFinancialAccount = initiateUserFinancialAccount;

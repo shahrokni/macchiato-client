@@ -1,6 +1,6 @@
 var UserMessage = require('../../model/user-message/user-message');
 /*-------------------EXPOSED FUNCTION--------------------------*/
-async function sendInitialMessage(userId,sessionOption){
+async function sendInitialMessage(userId, sessionOption) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -9,14 +9,20 @@ async function sendInitialMessage(userId,sessionOption){
     userMessage.receiverId = userId;
     userMessage.sentDate = Date.now();
     userMessage.title = global.systemMessages.welcomeTitle;
-    userMessage.text =  global.systemMessages.welcomeMessage;
-    
-    await userMessage.save(sessionOption);
-    return Promise.resolve();
+    userMessage.text = global.systemMessages.welcomeMessage;
+
+    try {
+        await userMessage.save(sessionOption);
+        return Promise.resolve();
+    }
+    catch(exception){
+
+        return Promise.reject(exception);
+    }
 }
 module.exports.sendInitialMessage = sendInitialMessage;
 
-async function sendMessage(message){
+async function sendMessage(message) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -29,17 +35,17 @@ async function sendMessage(message){
     userMessage.text = message.text;
 
     userMessage.save()
-    .then((savedMessage)=>{
+        .then((savedMessage) => {
 
-        response.isSuccessful = true;
-        response.outputJson = savedMessage;
-        return Promise.resolve(response);
-    })
-    .catch((saveException)=>{
+            response.isSuccessful = true;
+            response.outputJson = savedMessage;
+            return Promise.resolve(response);
+        })
+        .catch((saveException) => {
 
-        response.isSuccessful = false;
-        response.serverValidations.push(global.errorResource.Err0000());
-        return Promise.resolve(response);
-    });        
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0000());
+            return Promise.resolve(response);
+        });
 }
 module.exports.sendMessage = sendMessage; 

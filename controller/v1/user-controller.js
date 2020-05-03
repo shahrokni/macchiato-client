@@ -139,7 +139,7 @@ async function registerUser(userDetail) {
         await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
             .catch((exception) => {              
                
-                throw global.errorResource.Err0000();
+                throw exception;
             });
 
         //Send a welcome message!
@@ -215,7 +215,7 @@ function updateUserInformation(userDetail, studentNumber, done) {
     else {
 
         // Firts, find the user using the student number
-        User.findOne({ studentNumber: studentNumber }, function (findErr, user) {
+        UserDetail.UserDetail.findOne({ studentNumber: studentNumber }, function (findErr, user) {
 
             if (!findErr) {
 
@@ -277,42 +277,7 @@ function updateUserInformation(userDetail, studentNumber, done) {
 }
 module.exports.updateUserInformation = updateUserInformation;
 
-function getUserInformation(userId, done) {
-
-    let response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
-    let columns = 'userName name lastName studentNumber';
-    let findQuery = User.findOne({ '_id': userId }, columns);
-
-    findQuery.exec(function (err, user) {
-
-        if (!err) {
-
-            response.isSuccessful = true;
-
-            if (user) {
-
-                response.outputJson = user;
-            }
-            done(response);
-        }
-        else {
-
-            response.isSuccessful = false;
-            let message = global.dbExceptionHandler.tryGetErrorMessage(err);
-
-            if (message != null)
-                response.serverValidations.push(message);
-            else
-                response.serverValidations.push(global.errorResource.Err0000());
-
-            done(response);
-        }
-    });
-}
-module.exports.getUserInformation = getUserInformation;
-
+//TODO : MUST BE CHANGED
 function getDetailedUserInformation(userId, done) {
 
     let response = new global.responseClass();
@@ -321,7 +286,7 @@ function getDetailedUserInformation(userId, done) {
     let columns = 'userName name lastName studentNumber registerationDate email gender ' +
         'cellphone province birthDate skillScore';
 
-    let findQuery = User.findOne({ '_id': userId }, columns);
+    let findQuery = UserDetail.UserDetail.findOne({ '_id': userId }, columns);
 
     findQuery.exec(function (err, user) {
 
@@ -351,6 +316,7 @@ function getDetailedUserInformation(userId, done) {
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 
+//TODO: MUST BE CHANGED!
 function updateUserEmail(newEmail, userId, done) {
 
     let response = new global.responseClass();
