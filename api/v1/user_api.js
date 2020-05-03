@@ -37,7 +37,7 @@ api.post('/user', async (req, res) => {
 //Update the user information
 api.put('/user', isUserAuthenticated, (req, res) => {
 
-    userController.updateUserInformation(req.body, req.user.studentNumber, (response) => {
+    userController.updateUserInformation(req.body, req.user._id, (response) => {
 
         res.json({ response: response });
         return;

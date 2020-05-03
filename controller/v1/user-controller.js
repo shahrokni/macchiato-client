@@ -1,3 +1,9 @@
+//NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
+//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS ALSO BEEN USED IN SOME SCENARIOS!
+//NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
+//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS ALSO BEEN USED IN SOME SCENARIOS!
+//NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
+
 var userValidationClass = require('../../src/util/validation/user-validation');
 var User = require('../../model/user/user');
 var UserDetail = require('../../model/user/user-detail');
@@ -90,10 +96,10 @@ async function registerUser(userDetail) {
         response.serverValidations.push(exception);
         return Promise.resolve(response);
     }
-    
+
     //Add the second part of the student number    
-    newUserDetail.studentNumber += countedItem; 
-    
+    newUserDetail.studentNumber += countedItem;
+
     //Create a session and start a transaction. ALL-OR-NONE OPERATION!
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -135,10 +141,10 @@ async function registerUser(userDetail) {
         //Initiate a financial account
         let accountControler =
             require('../../administrator_controller/v1/administrator_financial_account_controller');
-       
+
         await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
-            .catch((exception) => {              
-               
+            .catch((exception) => {
+
                 throw exception;
             });
 
@@ -146,13 +152,13 @@ async function registerUser(userDetail) {
         let messageController =
             require('../../administrator_controller/v1/administrator_user_message_controller');
 
-        
+
         await messageController.sendInitialMessage(newUserDetailId, opt)
             .catch((exception) => {
 
                 throw global.errorResource.Err0000();
             });
-        
+
         let findQuery = User.findById(newUserId, null, opt);
         let foundNewUser;
 
@@ -182,8 +188,8 @@ async function registerUser(userDetail) {
         return Promise.resolve(response);
 
     }
-    catch (exception) {        
-       
+    catch (exception) {
+
         await session.abortTransaction();
         session.endSession();
 
@@ -195,7 +201,7 @@ async function registerUser(userDetail) {
 module.exports.registerUser = registerUser;
 //---------------------------------------------------------------------------------------
 
-function updateUserInformation(userDetail, studentNumber, done) {
+function updateUserInformation(userDetail, userId, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -214,96 +220,105 @@ function updateUserInformation(userDetail, studentNumber, done) {
     }
     else {
 
-        // Firts, find the user using the student number
-        UserDetail.UserDetail.findOne({ studentNumber: studentNumber }, function (findErr, user) {
+        User.findById(userId, (findByIdErr, foundUser) => {
 
-            if (!findErr) {
+            if (!findByIdErr) {
 
-                if (user) {
+                let userDetailId = foundUser.userDetail;
 
-                    //Set sent data
-                    user.name = receivedData.name;
-                    user.lastName = receivedData.lastName;
-                    user.gender = receivedData.gender;
-                    user.cellphone = receivedData.cellphone;
-                    user.province = receivedData.province;
-                    user.birthDate = receivedData.birthDate;
+                UserDetail.UserDetail.findById(userDetailId, function (findErr, foundUserDetail) {
 
-                    //Save the instance and return it to the client
-                    user.save(function (saveErr, savedUser) {
+                    if (!findErr) {
 
-                        if (!saveErr) {
+                        if (foundUserDetail) {
 
-                            response.isSuccessful = true;
-                            savedUser.password = hiddenData;
-                            response.outputJson = savedUser;
-                            done(response);
+                            //Set sent data
+                            foundUserDetail.name = receivedData.name;
+                            foundUserDetail.lastName = receivedData.lastName;
+                            foundUserDetail.gender = receivedData.gender;
+                            foundUserDetail.cellphone = receivedData.cellphone;
+                            foundUserDetail.province = receivedData.province;
+                            foundUserDetail.birthDate = receivedData.birthDate;
+
+                            //Save the instance and return it to the client
+                            foundUserDetail.save(function (saveErr, savedUserDetail) {
+
+                                if (!saveErr) {
+
+                                    response.isSuccessful = true;
+                                    savedUserDetail.password = hiddenData;
+                                    response.outputJson = savedUserDetail;
+                                    done(response);
+                                }
+                                else {
+
+                                    response.isSuccessful = false;
+                                    let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
+
+                                    if (message != null)
+                                        response.serverValidations.push(message);
+                                    else
+                                        response.serverValidations.push(global.errorResource.Err0000());
+
+                                    done(response);
+                                }
+                            });
                         }
                         else {
 
                             response.isSuccessful = false;
-                            let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
-
-                            if (message != null)
-                                response.serverValidations.push(message);
-                            else
-                                response.serverValidations.push(global.errorResource.Err0000());
-
+                            response.serverValidations.push(global.errorResource.ErrBu0010());
                             done(response);
                         }
-                    });
-                }
-                else {
+                    }
+                    else {
 
-                    response.isSuccessful = false;
-                    response.serverValidations.push(global.errorResource.ErrBu0010());
-                    done(response);
-                }
+                        response.isSuccessful = false;
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
+
+                        if (message != null)
+                            response.serverValidations.push(message);
+                        else
+                            response.serverValidations.push(global.errorResource.Err0000());
+
+                        done(response);
+                    }
+                });
             }
             else {
 
                 response.isSuccessful = false;
-                let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
-
-                if (message != null)
-                    response.serverValidations.push(message);
-                else
-                    response.serverValidations.push(global.errorResource.Err0000());
-
+                response.serverValidations.push(global.errorResource.ErrBu0010());
                 done(response);
             }
-        })
+        });
+
     }
 }
 module.exports.updateUserInformation = updateUserInformation;
 
-//TODO : MUST BE CHANGED
 function getDetailedUserInformation(userId, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    let columns = 'userName name lastName studentNumber registerationDate email gender ' +
-        'cellphone province birthDate skillScore';
+    let userFindQuery = User.findOne({ _id: userId })
+        .populate('userDetail');
 
-    let findQuery = UserDetail.UserDetail.findOne({ '_id': userId }, columns);
+    userFindQuery.exec((userFindErr, fetchedUserDetail) => {
 
-    findQuery.exec(function (err, user) {
+        if (!userFindErr) {
 
-        if (!err) {
-            //Query has been excuted successfully
             response.isSuccessful = true;
-
-            if (user) {
-
-                response.outputJson = user;
-            }
-            done(response);
+            fetchedUserDetail.password = hiddenData;
+            fetchedUserDetail._id = hiddenData;
+            response.outputJson = fetchedUserDetail;
+            done(response)
         }
         else {
 
             response.isSuccessful = false;
-            let message = global.dbExceptionHandler.tryGetErrorMessage(err);
+            let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
 
             if (message != null)
                 response.serverValidations.push(message);
@@ -312,11 +327,12 @@ function getDetailedUserInformation(userId, done) {
 
             done(reponse);
         }
+
     });
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 
-//TODO: MUST BE CHANGED!
+
 function updateUserEmail(newEmail, userId, done) {
 
     let response = new global.responseClass();
@@ -332,62 +348,53 @@ function updateUserEmail(newEmail, userId, done) {
     }
     else {
 
-        let countQuery = User.countDocuments({ $and: [{ email: newEmail }, { email: { $ne: '' } }], _id: { $ne: userId } });
-        countQuery.exec(function (countErr, count) {
+        let findUserQuery = User.findOne({ _id: userId }, 'userdetails');
+        findUserQuery.exec((findUserErr, foundUser) => {
 
-            if (!countErr) {
+            if (!findUserErr) {
 
-                // The email has not been taken!
-                if (count === 0) {
+                let userDetailId = foundUser.userDetail;
+                //Check whther the email has already 
+                let countRedundantQuery = UserDetail.UserDetail
+                    .countDocuments({ email: newEmail, _id: { $ne: userDetailId } });
 
-                    let findQuery = User.findOne({ _id: userId }, 'email');
-                    findQuery.exec(function (findErr, user) {
+                if (countRedundantQuery === 0) {
 
-                        if (!findErr) {
+                    UserDetail.UserDetail.findById(userDetailId, (findUserDetailErr, fetchedUserDetail) => {
 
-                            if (user) {
+                        if (!findUserDetailErr) {
 
-                                //Replace the new email with the old one
-                                user.email = newEmail;
-                                user.save(function (saveErr, savedUser) {
+                            fetchedUserDetail.email = newEmail;
+                            fetchedUserDetail.save((saveErr, savedUserDetail) => {
 
-                                    if (!saveErr) {
+                                if (!saveErr) {
 
-                                        response.isSuccessful = true;
-                                        response.outputJson = savedUser;
-                                        done(response);
-                                    }
-                                    else {
+                                    response.isSuccessful = true;
+                                    savedUserDetail._id = hiddenData;
+                                    savedUserDetail.password = hiddenData;
+                                    response.outputJson = savedUserDetail;
+                                    done(response);
+                                }
+                                else {
 
-                                        response.isSuccessful = false;
-                                        let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
+                                    response.isSuccessful = false;
+                                    let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
 
-                                        if (message != null)
-                                            response.serverValidations.push(message);
-                                        else
-                                            response.serverValidations.push(global.errorResource.Err0000());
-                                        done(response);
-                                    }
-                                });
-                            }
-                            else {
-
-                                response.isSuccessful = false;
-                                response.serverValidations.push(global.errorResource.Err0004());
-                            }
+                                    if (message != null)
+                                        response.serverValidations.push(message);
+                                    else
+                                        response.serverValidations.push(global.errorResource.Err0000());
+                                    done(response);
+                                }
+                            });
                         }
                         else {
 
                             response.isSuccessful = false;
-                            let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
-
-                            if (message != null)
-                                response.serverValidations.push(message);
-                            else
-                                response.serverValidations.push(global.errorResource.Err0000());
+                            response.serverValidations.push(global.errorResource.Err0000());
                             done(response);
                         }
-                    });
+                    }).exec();
                 }
                 else {
 
@@ -399,15 +406,10 @@ function updateUserEmail(newEmail, userId, done) {
             else {
 
                 response.isSuccessful = false;
-                let message = global.dbExceptionHandler.tryGetErrorMessage(countErr);
-
-                if (message != null)
-                    response.serverValidations.push(message);
-                else
-                    response.serverValidations.push(global.errorResource.Err0000());
+                response.serverValidations.push(global.errorResource.Err0000());
                 done(response);
             }
-        });
+        })
     }
 }
 module.exports.updateUserEmail = updateUserEmail;
