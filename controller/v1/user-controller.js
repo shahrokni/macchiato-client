@@ -60,14 +60,10 @@ async function registerUser(userDetail) {
 
                 throw global.errorResource.ErrBu0009();
             }
-        })
-            .catch((exception) => {
-
-                throw global.errorResource.Err0000();
-            });
+        });       
     }
     catch (exception) {
-
+        
         response.isSuccessful = false;
         response.serverValidations.push(exception);
         return Promise.resolve(response);
@@ -145,7 +141,7 @@ async function registerUser(userDetail) {
         await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
             .catch((exception) => {
 
-                throw exception;
+                throw global.errorResource.Err0000();
             });
 
         //Send a welcome message!
