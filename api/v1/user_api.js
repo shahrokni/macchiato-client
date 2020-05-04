@@ -44,16 +44,6 @@ api.put('/user', isUserAuthenticated, (req, res) => {
     });
 });
 
-// Get the user information
-api.get('/user', isUserAuthenticated, (req, res) => {
-
-
-    userController.getUserInformation(req.user._id, (response) => {
-        res.json({ response: response });
-        return;
-    });
-});
-
 // Get the detailed user information
 api.get('/userDetail', isUserAuthenticated, (req, res) => {
 

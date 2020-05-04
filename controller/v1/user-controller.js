@@ -325,7 +325,7 @@ function updateUserInformation(userDetail, userId, done) {
     }
 }
 module.exports.updateUserInformation = updateUserInformation;
-
+//------------------------------------------------------------------
 function getDetailedUserInformation(userId, done) {
 
     let response = new global.responseClass();
@@ -339,13 +339,27 @@ function getDetailedUserInformation(userId, done) {
         if (!userFindErr) {
 
             response.isSuccessful = true;
-            fetchedUserDetail.password = hiddenData;
-            fetchedUserDetail._id = hiddenData;
-            response.outputJson = fetchedUserDetail;
+            responseObj = {
+                userName : fetchedUserDetail.userName,
+                userDetail : {
+                    name : fetchedUserDetail.userDetail.name,
+                    lastName : fetchedUserDetail.userDetail.lastName,
+                    studentNumber : fetchedUserDetail.userDetail.studentNumber,
+                    registerationDate : fetchedUserDetail.userDetail.registerationDate,
+                    email : fetchedUserDetail.userDetail.email,
+                    gender : fetchedUserDetail.userDetail.gender,
+                    cellphone : fetchedUserDetail.userDetail.cellphone,
+                    province : fetchedUserDetail.userDetail.province,
+                    birthDate : fetchedUserDetail.userDetail.birthDate,
+                    skillScore : fetchedUserDetail.userDetail.skillScore,
+                    id: fetchedUserDetail.userDetail._id
+                }
+            }
+            response.outputJson = responseObj;
             done(response)
         }
         else {
-
+          
             response.isSuccessful = false;
             let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
 
@@ -354,7 +368,7 @@ function getDetailedUserInformation(userId, done) {
             else
                 response.serverValidations.push(global.errorResource.Err0000());
 
-            done(reponse);
+            done(response);
         }
 
     });

@@ -10,28 +10,6 @@ export default class UserService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    /*output:Response*/
-    getUser(callBack) {
-
-        let response = new Response();
-        response.isSuccessful = false;
-        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
-        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-        restInstance.get('user_api/v1/user').then(function (res) {
-
-            let responseUtil = require('../../util/response-util/response-util');
-            let serverResponse = responseUtil.extractResponse(res);
-            callBack(serverResponse);
-        })
-            .catch(function (err) {
-
-                response.setClientValidations(ErrorMessages.Err0000());
-                callBack(response);
-            });
-    }
-
     getUserDetail(callBack) {
 
         let response = new Response();

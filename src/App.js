@@ -46,15 +46,19 @@ function App() {
     // });
 
     // let user = new User();
-    // user.password = '45678';
+    // user.password = '12345';
     // user.userName = 'thin_student';
     // service.signIn(user,(response)=>{
     //   console.log(response);
     // })
 
-    service.changePassword('45678','12345','12345',(response)=>{
+    service.getUserDetail((response)=>{
       console.log(response);
     })
+
+    // service.changePassword('45678','12345','12345',(response)=>{
+    //   console.log(response);
+    // })
 
   });
 
