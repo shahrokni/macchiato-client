@@ -1,7 +1,7 @@
 //NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
-//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS ALSO BEEN USED IN SOME SCENARIOS!
+//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS BEEN USED IN SOME SCENARIOS!
 //NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
-//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS ALSO BEEN USED IN SOME SCENARIOS!
+//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS BEEN USED IN SOME SCENARIOS!
 //NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
 
 var userValidationClass = require('../../src/util/validation/user-validation');
@@ -178,18 +178,41 @@ async function registerUser(userDetail) {
 
                 throw global.errorResource.Err0000();
             });
+        
+        //Fetch and return the saved user    
+        let userDetailObject;
+        let fetchFinalResultQuery = UserDetail.UserDetail
+        .findById(newUserDetailId,null,opt);
 
+        await fetchFinalResultQuery.exec()
+        .then((fetchedUser)=>{
+
+            userDetailObject = {
+                userName: receivedData.userName,
+                name : fetchedUser.name,
+                lastName : fetchedUser.lastName,
+                studentNumber : fetchedUser.studentNumber,
+                registerationDate : fetchedUser.registerationDate,
+                province : fetchedUser.province
+            }
+           
+        })
+        .catch((exception)=>{
+           
+            throw global.errorResource.Err0000();
+        });
+        
         //commit the transaction and end the session
         await session.commitTransaction();
         session.endSession();
-        response.isSuccessful = true;
-        receivedData.password = hiddenData;
-        response.outputJson = receivedData;
+        response.isSuccessful = true;       
+        response.outputJson = userDetailObject;
         return Promise.resolve(response);
 
     }
     catch (exception) {
-
+        
+        console.log(exception);
         await session.abortTransaction();
         session.endSession();
 

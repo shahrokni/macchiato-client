@@ -30,11 +30,11 @@ function App() {
     let service = new UserService();
     let user = new UserDetail();
 
-    user.userName = 'mina.monshi1';
-    user.lastName = 'monsh';
-    user.name = 'Mina';
-    user.password = '*****';
-    user.province = Province.Isfahan;
+    user.userName = 'thin_student';
+    user.lastName = 'behdad';
+    user.name = 'moodi';
+    user.password = '12345';
+    user.province = Province.RazaviKhorsan;
 
     service.signUp(user,(response)=>{
       console.log(response);
