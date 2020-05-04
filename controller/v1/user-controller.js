@@ -500,8 +500,11 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
                                             if (!saveErr) {
 
                                                 response.isSuccessful = true;
-                                                savedUser.password = hiddenData;
-                                                response.outputJson = savedUser
+                                                responseObj = {
+                                                    password:hiddenData
+                                                }
+
+                                                response.outputJson = responseObj
                                                 done(response);
                                             }
                                             else {

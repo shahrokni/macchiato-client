@@ -37,20 +37,24 @@ function App() {
     // user.birthDate = Date.now();
     // user.province = Province.SouthKhorasan;
 
-    service.updateEmail('behdad.horny@gmail.com',(response)=>{
-      console.log(response);
-    });
+    // service.updateEmail('behdad.horny@gmail.com',(response)=>{
+    //   console.log(response);
+    // });
 
     // service.logOut((response)=>{
     //   console.log(response);
     // });
 
     // let user = new User();
-    // user.password = '12345';
-    // user.userName = 'happy_student';
+    // user.password = '45678';
+    // user.userName = 'thin_student';
     // service.signIn(user,(response)=>{
     //   console.log(response);
     // })
+
+    service.changePassword('45678','12345','12345',(response)=>{
+      console.log(response);
+    })
 
   });
 
