@@ -52,9 +52,9 @@ function App() {
     //   console.log(response);
     // })
 
-    service.getUserDetail((response)=>{
-      console.log(response);
-    })
+    // service.getUserDetail((response)=>{
+    //   console.log(response);
+    // })
 
     // service.changePassword('45678','12345','12345',(response)=>{
     //   console.log(response);

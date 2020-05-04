@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
     userName: { type: mongoose.Schema.Types.String, required: true, unique: true },
     password: { type: mongoose.Schema.Types.String, required: true },
     userDetail: {type:mongoose.Schema.Types.ObjectId, ref:'UserDetail'},
-    administrator : {type:mongoose.Schema.Types.ObjectId, ref:'administrators'}
+    administrator : {type:mongoose.Schema.Types.ObjectId, ref:'Administrator'}
 });
 
 //Check password
