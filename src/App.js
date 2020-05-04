@@ -28,18 +28,29 @@ function App() {
   useEffect(() => {
     
     let service = new UserService();
-    let user = new UserDetail();
+    // let user = new UserDetail();
+    
+    // user.lastName = 'behdad';
+    // user.name = 'modi';
+    // user.cellphone = '09123568756';
+    // user.gender = Gender.Male;
+    // user.birthDate = Date.now();
+    // user.province = Province.SouthKhorasan;
 
-    user.userName = 'thin_student';
-    user.lastName = 'behdad';
-    user.name = 'moodi';
-    user.password = '12345';
-    user.province = Province.RazaviKhorsan;
-
-    service.signUp(user,(response)=>{
+    service.updateEmail('behdad.horny@gmail.com',(response)=>{
       console.log(response);
     });
 
+    // service.logOut((response)=>{
+    //   console.log(response);
+    // });
+
+    // let user = new User();
+    // user.password = '12345';
+    // user.userName = 'happy_student';
+    // service.signIn(user,(response)=>{
+    //   console.log(response);
+    // })
 
   });
 
