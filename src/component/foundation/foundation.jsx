@@ -1,9 +1,21 @@
 import React from 'react';
-export default class Foundation extends React.Component{
+import Background from '../background/background';
+import Curtain from '../curtain/curtain';
+import MenuBar from '../menu-bar/menu-bar';
+export default class Foundation extends React.Component {
 
-    render(){
+    render() {
+        return (
 
-        return  <h1>Hello English Macchiato!</h1>;
-        
+            <React.Fragment>
+                <Background />
+                <MenuBar />
+                <div id='mainContainer' className='fullSize absolute'>
+                    <h1>Hello World!</h1>
+                </div>
+                <Curtain />
+            </React.Fragment>
+        );
+
     }
 }
