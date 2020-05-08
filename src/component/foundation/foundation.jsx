@@ -11,8 +11,8 @@ export default class Foundation extends React.Component {
             <React.Fragment>
                 <Background />
                 <MenuBar />
-                <div id='mainContainer' className='fullSize absolute'>
-                    <h1>Hello World!</h1>
+                <div id='mainContainer' className='fullSize absolute' style={{zIndex:0}}>
+                   {/*  */}
                 </div>
                 <Curtain />
             </React.Fragment>

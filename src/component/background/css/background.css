@@ -1,7 +1,37 @@
-
-@media only screen and (min-width: 768px) {
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
     #mainWallpaper{
 
+        max-height:100%;
+        width: auto;    
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    #mainWallpaper{
+
+        max-width: 100%;
+        height: auto; 
+    }
+}
+
+/*Mobile and Tablet square shape*/
+@media only screen and (max-width:767){
+
+    #mainWallpaper{
+
+        max-height:100%;
+        width: auto;    
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) {   
+
+    /*------------------*/
+    #mainWallpaper{
+        all:initial;
+        all:unset;
         max-width: 100%;
         height: auto;
     }

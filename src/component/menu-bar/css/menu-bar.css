@@ -1,0 +1,54 @@
+/*Mobile and Tablet Portrait*/
+
+@media only screen and (max-width:767px) and (orientation: portrait){
+   
+    #menuBar{
+
+        width: 100%;
+        height: 8vh;
+        background-color: #FFFFFF;
+        box-shadow: 0 3px 6px #00000029;
+       
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+   
+    #menuBar{
+
+        width: 4vw;
+        height:100vh;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        opacity: 0.7;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+    }
+}
+
+@media only screen and (max-width:767){
+
+    #menuBar{
+        
+        width: 4vw;
+        height:100vh;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        opacity: 0.7;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) {   
+
+    #menuBar{
+
+        width: 4vw;
+        height:100vh;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        opacity: 0.7;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+    }
+   
+} 
