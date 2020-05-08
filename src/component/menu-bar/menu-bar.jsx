@@ -1,13 +1,14 @@
 import React from 'react';
 import './css/menu-bar.css'
-export default class MenuBar extends React.Component{
+import MenuBtn from '../menu-btn/menu-btn'
+export default class MenuBar extends React.Component {
 
-    render(){
+    render() {
 
-        return(
+        return (
 
-            <div id="menuBar" style={{zIndex:1}}>
-
+            <div id="menuBar" style={{ zIndex: 1 }}>
+                <MenuBtn />
             </div>
         );
     }
