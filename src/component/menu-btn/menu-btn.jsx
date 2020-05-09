@@ -6,7 +6,7 @@ export default class MenuBtn extends React.Component{
         return (
 
             <div id="menuBtn" className="absolute">
-                <i class="material-icons pointer absolute">menu</i>
+                <i className="material-icons pointer absolute">menu</i>
             </div>
         );
     }
