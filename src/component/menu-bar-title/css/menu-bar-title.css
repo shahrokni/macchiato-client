@@ -1,5 +1,6 @@
 #menuBarTitle{
-    font-family:Montserrat-Medium;
+    font-family:Ubuntu-B;
+    color:#D9183B;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){

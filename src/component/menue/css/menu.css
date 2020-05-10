@@ -1,0 +1,44 @@
+#menuDrawer{
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+
+    #menuDrawer{
+
+        width: 100vw;
+        height: 92vh;
+        top: 8vh;
+        /*left:-100vw;*/       
+        background-color: rgba(255,255,255,0.5);  
+        z-index: 1;
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    #menuDrawer{
+
+        width: 40vw;
+        height: 100vh;   
+        top: 0;     
+        /*left:-100vw;*/       
+        background-color: rgba(255,255,255,0.5);  
+        z-index: 0;
+    }
+}
+@media only screen and (max-width:767){
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) {  
+
+    #menuDrawer{
+
+        width: 30vw;
+        height: 100vh;   
+        top: 0;     
+        /*left:-100vw;*/       
+        background-color: rgba(255,255,255,0.5);  
+        z-index: 0;
+    }
+}
