@@ -1,4 +1,5 @@
 import React from 'react';
+import {loadComponent} from '../../util/client-router/client-router';
 import './css/foundation.css'
 import Background from '../background/background';
 import Curtain from '../curtain/curtain';
