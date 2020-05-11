@@ -16,9 +16,15 @@
     }   
     .menuRowBtnTitle{
         margin-top: 3%;
+        margin-left:2%;
     }
     .menuRowBtnIcon{
         margin-top: 2%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 6px;
+        padding: 3px;
     }
 }
 /*Mobile and Tablet Landscape*/

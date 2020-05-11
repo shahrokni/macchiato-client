@@ -4,6 +4,15 @@ import MenuRowBtn from './menu-row-btn';
 
 export default class Menu extends React.Component{
 
+    constructor(props){
+
+        super(props);
+        this.state = {countNewMessages:0}
+    }
+    componentDidMount(){
+        //TODO: service call for getting the count of new messages!
+        this.setState({countNewMessages:21});
+    }
     render(){
         let rowBtns = this.generateRowBtns();
         let classes = "absolute "+this.props.isClosed;
@@ -16,7 +25,7 @@ export default class Menu extends React.Component{
     }
 
     generateRowBtns(){
-
+        
         let rowBtns = [];        
         rowBtns.push(<MenuRowBtn icon='home' title='Home Page' key='1' />);
         rowBtns.push(<MenuRowBtn icon='g_translate' title='Language Level' key='2' />);
@@ -30,7 +39,7 @@ export default class Menu extends React.Component{
         rowBtns.push(<MenuRowBtn icon='bar_chart' title='Your reports' key='10' />);
         rowBtns.push(<MenuRowBtn icon='person_outline' title='Your Account' key='11' />);
         rowBtns.push(<MenuRowBtn icon='account_balance_wallet' title='Your wallet' key='12' />);        
-        rowBtns.push(<MenuRowBtn icon='email' title='Your messages' key='13' />);
+        rowBtns.push(<MenuRowBtn icon='email' title='Your messages' newMessages={this.state.countNewMessages} key='13' />);
         rowBtns.push(<MenuRowBtn icon='info' title='About' key='14' />);
 
         return rowBtns;

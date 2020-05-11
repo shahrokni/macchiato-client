@@ -6,7 +6,7 @@ export default class MenuBtn extends React.Component{
         return (
 
             <div id="menuBtn" className="absolute" onClick={this.props.menuBtnEventHandler}>
-                <i className="material-icons pointer absolute">menu</i>
+                <i className="material-icons pointer absolute">{this.props.menuBtnIcon}</i>
             </div>
         );
     }
