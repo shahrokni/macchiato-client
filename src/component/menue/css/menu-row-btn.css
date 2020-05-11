@@ -29,8 +29,41 @@
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
+    .menuRowBtn{
+        height:6.99%;
+        width: 100%;
+        float: left;
+        margin-left:4vw;
+    }   
+    .menuRowBtnTitle{
+      font-size: 8pt;
+      margin-top: 4%;
+      margin-left:1%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 6px;       
+        padding: 3px;
+    }    
 }
 @media only screen and (max-width:767){
 }
 @media only screen and (min-width: 768px) {  
+    .menuRowBtn{
+        height:7.14%;
+        width: 100%;
+        margin-left: 4.5vw;
+        box-sizing: border-box;
+        padding-top: 1vw;
+        float: left;
+    }   
+    .menuRowBtnTitle{
+        margin-top: 1%;
+        margin-left:2%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 0;       
+        padding: 3px;
+    }    
 }

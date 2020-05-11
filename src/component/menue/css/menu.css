@@ -41,6 +41,25 @@
         background-color: rgba(255,255,255,0.5);  
         z-index: 0;
     }
+
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-40vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-40vw;}
+    }
 }
 @media only screen and (max-width:767){
 }
@@ -50,10 +69,28 @@
 
     #menuDrawer{
 
-        width: 30vw;
-        height: 100vh;   
-        top: 0;                 
+        width: 40vw;
+        height: 100vh;
+        top:0;       
         background-color: rgba(255,255,255,0.5);  
         z-index: 0;
+    }  
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-40vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-40vw;}
     }
 }
