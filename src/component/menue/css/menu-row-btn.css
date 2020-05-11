@@ -11,7 +11,7 @@
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
     .menuRowBtn{
-        height:7.69%;
+        height:7.14%;
         width: 100%;
     }   
     .menuRowBtnTitle{

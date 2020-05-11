@@ -8,10 +8,27 @@
 
         width: 100vw;
         height: 92vh;
-        top: 8vh;
-        /*left:-100vw;*/       
+        top: 8vh;          
         background-color: rgba(255,255,255,0.5);  
         z-index: 1;
+    }
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-100vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-100vw;}
     }
 }
 /*Mobile and Tablet Landscape*/
@@ -20,8 +37,7 @@
 
         width: 40vw;
         height: 100vh;   
-        top: 0;     
-        /*left:-100vw;*/       
+        top: 0;                   
         background-color: rgba(255,255,255,0.5);  
         z-index: 0;
     }
@@ -36,8 +52,7 @@
 
         width: 30vw;
         height: 100vh;   
-        top: 0;     
-        /*left:-100vw;*/       
+        top: 0;                 
         background-color: rgba(255,255,255,0.5);  
         z-index: 0;
     }
