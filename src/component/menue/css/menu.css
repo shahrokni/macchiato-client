@@ -61,7 +61,10 @@
         to{left:-40vw;}
     }
 }
-@media only screen and (max-width:767){
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768) and (orientation: portrait){
+
 }
 
 /*DESKTOP*/

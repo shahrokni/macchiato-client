@@ -27,17 +27,9 @@
     }
 }
 
-@media only screen and (max-width:767){
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768) and (orientation: portrait){
 
-    #menuBar{
-        
-        width: 4vw;
-        height:100vh;
-        background: #FFFFFF 0% 0% no-repeat padding-box;
-        opacity: 0.7;
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
-    }
 }
 
 /*DESKTOP*/
