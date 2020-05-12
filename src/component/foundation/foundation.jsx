@@ -5,6 +5,9 @@ import Background from '../background/background';
 import Curtain from '../curtain/curtain';
 import MenuBar from '../menu-bar/menu-bar';
 import Menu from '../menue/menu';
+import MainContainer from '../main-container/main-container';
+
+
 export default class Foundation extends React.Component {
 
     constructor(props) {
@@ -31,9 +34,7 @@ export default class Foundation extends React.Component {
                 <Background />
                 <MenuBar menuBtnIcon={this.state.menuBtnIcon} menuBtnEventHandler={this.menuBtnEventHandler} />
                 <Menu isClosed={this.state.menuClosed} />
-                { /*<div id='mainContainer' className='fullSize absolute' style={{zIndex:0}}>
-                   
-                </div>*/}
+                <MainContainer/>
                 <Curtain />
             </React.Fragment>
         );

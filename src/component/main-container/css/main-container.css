@@ -1,0 +1,36 @@
+#mainContainer{
+    z-index: -1;  
+    box-sizing: border-box;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    #mainContainer{
+        width: 100vw;
+        height: 92vh;
+        top: 8vh;
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    #mainContainer{
+        width: 96vw;
+        height: 100vh;
+        left: 4vw;
+    }
+}
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    #mainContainer{
+        width: 100vw;
+        height: 92vh;
+        top: 8vh;
+    }
+}
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) { 
+    #mainContainer{
+        width: 96vw;
+        height: 100vh;
+        left: 4vw;
+    }
+}
