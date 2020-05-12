@@ -50,6 +50,22 @@
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
+    .menuRowBtn{
+        height:7.14%;
+        width: 100%;
+    }   
+    .menuRowBtnTitle{
+        margin-top: 3%;
+        margin-left:2%;
+    }
+    .menuRowBtnIcon{
+        margin-top: 2%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 20px;
+        padding: 3px;
+    }
 }
 
 /*DESKTOP*/

@@ -29,6 +29,13 @@
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
+    #menuBar{
+
+        width: 100%;
+        height: 8vh;
+        background-color: #FFFFFF;
+        box-shadow: 0 3px 6px #00000029;       
+    }
 }
 
 /*DESKTOP*/

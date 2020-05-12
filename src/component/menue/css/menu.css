@@ -63,8 +63,34 @@
 }
 
 /*iphonX, ipad, ipad pro*/
-@media only screen and (min-width: 768) and (orientation: portrait){
+@media only screen and (min-width: 768px) and (orientation: portrait){
 
+    #menuDrawer{
+
+        width: 100vw;
+        height: 92vh;
+        top: 8vh;          
+        background-color: rgba(255,255,255,0.5);  
+        z-index: 1;
+    }
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-100vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-100vw;}
+    }
 }
 
 /*DESKTOP*/
@@ -77,6 +103,7 @@
         top:0;       
         background-color: rgba(255,255,255,0.5);  
         z-index: 0;
+        overflow: hidden;
     }  
     .menuOpen{
         animation-name: menuOpenAnim;
