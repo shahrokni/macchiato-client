@@ -1,5 +1,4 @@
 import React from 'react';
-import {loadComponent} from '../../util/component-loader/component-loader';
 import './css/foundation.css'
 import Background from '../background/background';
 import Curtain from '../curtain/curtain';
@@ -7,14 +6,20 @@ import MenuBar from '../menu-bar/menu-bar';
 import Menu from '../menue/menu';
 import MainContainer from '../main-container/main-container';
 
-
 export default class Foundation extends React.Component {
 
     constructor(props) {
 
         super(props);
         this.menuBtnEventHandler = this.menuBtnEventHandler.bind(this);
-        this.state = { menuClosed: 'menuClosed',menuBtnIcon:'menu' };
+        this.menuRowBtnEventHandler = this.menuRowBtnEventHandler.bind(this);
+        this.state = { menuClosed: 'menuClosed',menuBtnIcon:'menu',currenInnerViewId:undefined};
+    }
+
+    menuRowBtnEventHandler(e){
+        let btnId  = e.target.id;
+        this.setState({currenInnerViewId:btnId,
+            menuClosed: 'menuClosed',menuBtnIcon:'menu'});
     }
 
     menuBtnEventHandler() {
@@ -33,8 +38,8 @@ export default class Foundation extends React.Component {
             <React.Fragment>
                 <Background />
                 <MenuBar menuBtnIcon={this.state.menuBtnIcon} menuBtnEventHandler={this.menuBtnEventHandler} />
-                <Menu isClosed={this.state.menuClosed} />
-                <MainContainer/>
+                <Menu menuRowBtnEventHandler={this.menuRowBtnEventHandler} isClosed={this.state.menuClosed} />
+                <MainContainer innerViewtId={this.state.currenInnerViewId}/>                    
                 <Curtain />
             </React.Fragment>
         );

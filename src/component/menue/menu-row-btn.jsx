@@ -2,15 +2,17 @@ import React from 'react';
 import './css/menu-row-btn.css';
 
 export default class MenuRowBtn extends React.Component {
+   
 
     render() {
         return (
 
             <div className="menuRowBtn">
                 <div className="menuRowBtnIcon">
-                    <i className="material-icons-outlined pointer">{this.props.icon}</i>
+                    <i className="material-icons-outlined">{this.props.icon}</i>
                 </div>
-                <div className="menuRowBtnTitle">
+                <div className="menuRowBtnTitle" id={this.props.name}
+                 onClick={this.props.menuRowBtnEventHandler}>
                     {this.props.title}
                 </div>
                 {this.props.newMessages > 0 &&
