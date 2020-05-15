@@ -3,7 +3,7 @@ import './css/foundation.css'
 import Background from '../background/background';
 import Curtain from '../curtain/curtain';
 import MenuBar from '../menu-bar/menu-bar';
-import Menu from '../menue/menu';
+import Menu from '../menu/menu';
 import MainContainer from '../main-container/main-container';
 
 export default class Foundation extends React.Component {
@@ -15,7 +15,9 @@ export default class Foundation extends React.Component {
         this.menuRowBtnEventHandler = this.menuRowBtnEventHandler.bind(this);
         this.state = { menuClosed: 'menuClosed',menuBtnIcon:'menu',currenInnerViewId:undefined};
     }
-
+    componentDidMount(){
+        //Home Page
+    }
     menuRowBtnEventHandler(e){
         let btnId  = e.target.id;
         this.setState({currenInnerViewId:btnId,

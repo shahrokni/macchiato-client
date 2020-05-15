@@ -5,7 +5,7 @@ export default class RegisterView extends React.Component{
       
     render(){
         return (
-            <h1>Hello!</h1>
+            <h1>Register View!</h1>
         );     
     }
 }
