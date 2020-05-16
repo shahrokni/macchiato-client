@@ -5,6 +5,12 @@ import Curtain from '../curtain/curtain';
 import MenuBar from '../menu-bar/menu-bar';
 import Menu from '../menu/menu';
 import MainContainer from '../main-container/main-container';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
 export default class Foundation extends React.Component {
 
@@ -13,24 +19,22 @@ export default class Foundation extends React.Component {
         super(props);
         this.menuBtnEventHandler = this.menuBtnEventHandler.bind(this);
         this.menuRowBtnEventHandler = this.menuRowBtnEventHandler.bind(this);
-        this.state = { menuClosed: 'menuClosed',menuBtnIcon:'menu',currenInnerViewId:undefined};
+        this.state = { menuClosed: 'menuClosed', menuBtnIcon: 'menu' };
     }
-    componentDidMount(){
+    componentDidMount() {
         //Home Page
     }
-    menuRowBtnEventHandler(e){
-        let btnId  = e.target.id;
-        this.setState({currenInnerViewId:btnId,
-            menuClosed: 'menuClosed',menuBtnIcon:'menu'});
+    menuRowBtnEventHandler() {
+        this.setState({ menuClosed: 'menuClosed', menuBtnIcon: 'menu' });
     }
 
     menuBtnEventHandler() {
 
         if (this.state.menuClosed === 'menuClosed') {
-            this.setState({ menuClosed: 'menuOpen',menuBtnIcon:'highlight_off'});            
+            this.setState({ menuClosed: 'menuOpen', menuBtnIcon: 'highlight_off' });
         }
         else {
-            this.setState({ menuClosed: 'menuClosed',menuBtnIcon:'menu' });
+            this.setState({ menuClosed: 'menuClosed', menuBtnIcon: 'menu' });
         }
     }
 
@@ -39,9 +43,11 @@ export default class Foundation extends React.Component {
 
             <React.Fragment>
                 <Background />
-                <MenuBar menuBtnIcon={this.state.menuBtnIcon} menuBtnEventHandler={this.menuBtnEventHandler} />
-                <Menu menuRowBtnEventHandler={this.menuRowBtnEventHandler} isClosed={this.state.menuClosed} />
-                <MainContainer innerViewtId={this.state.currenInnerViewId}/>                    
+                <Router>
+                    <MenuBar menuBtnIcon={this.state.menuBtnIcon} menuBtnEventHandler={this.menuBtnEventHandler} />
+                    <Menu menuRowBtnEventHandler={this.menuRowBtnEventHandler} isClosed={this.state.menuClosed} />
+                    <MainContainer />
+                </Router>
                 <Curtain />
             </React.Fragment>
         );

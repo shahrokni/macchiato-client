@@ -1,5 +1,8 @@
 import React from 'react';
 import './css/menu-row-btn.css';
+import {  
+    Link
+  } from "react-router-dom";
 
 export default class MenuRowBtn extends React.Component {
    
@@ -13,14 +16,15 @@ export default class MenuRowBtn extends React.Component {
                 </div>
                 <div className="menuRowBtnTitle" id={this.props.name}
                  onClick={this.props.menuRowBtnEventHandler}>
-                    {this.props.title}
+                     <Link to='/home'>{this.props.title}</Link>                   
                 </div>
                 {this.props.newMessages > 0 &&
                     <div className="menuRowBtnTitle newMsgCount"
                         style={{ backgroundColor: '#D9183B', color: '#FFFFFF' }}>
                         {this.props.newMessages}
-                    </div>
-                }
+                    </div>                 
+                }   
+                        
             </div>
         );
     }

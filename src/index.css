@@ -10,7 +10,9 @@ h1,h2,h3,h4,h5{
   padding: 0;
   color: black;
 }
-
+a{
+  all:unset;
+}
 @font-face {
   font-family: Montserrat-Black;
   src: url(./resource/font/Montserrat-Black.ttf);
