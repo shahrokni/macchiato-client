@@ -1,5 +1,5 @@
 import React from 'react';
-export default class MessageBoxView extends React {
+export default class MessageBoxView extends React.Component {
 
     render() {
         return (

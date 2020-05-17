@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class WalletView extends React{
+export default class WalletView extends React.Component{
 
     render(){
         return (

@@ -1,5 +1,5 @@
 import React from 'react'
-export class MockTestsView extends React{
+export default class MockTestsView extends React.Component{
 
     render(){
         return (

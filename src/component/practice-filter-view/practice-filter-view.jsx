@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class PracticeFilterView extends React{
+export default class PracticeFilterView extends React.Component{
 
     render(){
 

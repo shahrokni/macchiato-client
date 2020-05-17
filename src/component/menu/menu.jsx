@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/menu.css';
 import MenuRowBtn from './menu-row-btn';
-import {appGeneralInfo} from '../../../setup-general-information';
+import {appGeneralInfo} from '../../setup-general-information';
 
 export default class Menu extends React.Component{
 

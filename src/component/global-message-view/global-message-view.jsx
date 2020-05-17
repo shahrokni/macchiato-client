@@ -1,4 +1,6 @@
-export default class GlobalMessageView extends React{
+import React from 'react';
+
+export default class GlobalMessageView extends React.Component{
 
     render (){
         return (

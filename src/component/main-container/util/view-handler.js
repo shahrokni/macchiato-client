@@ -14,7 +14,7 @@ export default class ViewHandler {
         }
         if(currentLocatin === appGeneralInfo.mainMenuItems.languageLevel){
             //TODO
-            const GlobalMessageView = React.lazy(()=>import('../../global-message-view/globa-message-view'));
+            const GlobalMessageView = React.lazy(()=>import('../../global-message-view/global-message-view'));
             return <GlobalMessageView/>
         }
         if(currentLocatin === appGeneralInfo.mainMenuItems.mockTests){
