@@ -16,7 +16,7 @@ export default class MenuRowBtn extends React.Component {
                 </div>
                 <div className="menuRowBtnTitle" id={this.props.name}
                  onClick={this.props.menuRowBtnEventHandler}>
-                     <Link to='/home'>{this.props.title}</Link>                   
+                     <Link to={'/'+this.props.name}>{this.props.title}</Link>                   
                 </div>
                 {this.props.newMessages > 0 &&
                     <div className="menuRowBtnTitle newMsgCount"
