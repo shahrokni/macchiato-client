@@ -1,6 +1,7 @@
 import React from 'react';
 import './css/main-container.css';
 import { Switch, Route} from "react-router-dom";
+import ViewHandler from './util/view-handler.js';
 
 export default class MainContainer extends React.Component {
 
@@ -10,9 +11,10 @@ export default class MainContainer extends React.Component {
             <div id='mainContainer' className='absolute'>
                 <React.Suspense fallback={<h3>Loading ...</h3>}>
                     <Switch>
+                        {/* CATCH ALL POSSIBLE ROUTES! */}
                         <Route>
                             {
-                                this.retrieveView()
+                                ViewHandler.retrieveView()
                             }
                         </Route>
                     </Switch>
@@ -21,12 +23,5 @@ export default class MainContainer extends React.Component {
         );
     }
 
-    retrieveView() {      
-       
-        console.log(window.location.href);
-        if ('homePage') {
-            const HomePageView = React.lazy(() => import('../homepage-view/homepage-view.jsx'));
-            return <HomePageView />
-        }
-    }
+    
 }
