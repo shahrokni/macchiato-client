@@ -1,5 +1,4 @@
-#mainContainer{
-    z-index: -1;  
+#mainContainer{  
     box-sizing: border-box;
 }
 /*Mobile and Tablet Portrait*/
@@ -8,6 +7,7 @@
         width: 100vw;
         height: 92vh;
         top: 8vh;
+        z-index: 0;
     }
 }
 /*Mobile and Tablet Landscape*/
@@ -16,6 +16,7 @@
         width: 96vw;
         height: 100vh;
         left: 4vw;
+        z-index: -1;
     }
 }
 /*iphonX, ipad, ipad pro*/
@@ -24,6 +25,7 @@
         width: 100vw;
         height: 92vh;
         top: 8vh;
+        z-index: 0;
     }
 }
 /*DESKTOP*/
@@ -32,5 +34,6 @@
         width: 96vw;
         height: 100vh;
         left: 4vw;
+        z-index: -1;  
     }
 }

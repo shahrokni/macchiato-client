@@ -9,7 +9,7 @@ export default class MenuBar extends React.Component {
 
         return (
 
-            <div id="menuBar" style={{ zIndex: 1 }}>
+            <div id="menuBar" style={{ zIndex: 1 }} >
                 <MenuBtn menuBtnIcon = {this.props.menuBtnIcon} menuBtnEventHandler = {this.props.menuBtnEventHandler} />
                 <MenuBarTitle/>
             </div>

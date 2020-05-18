@@ -1,8 +1,6 @@
 import React from 'react';
 import './css/menu-row-btn.css';
-import {  
-    Link
-  } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export default class MenuRowBtn extends React.Component {
    

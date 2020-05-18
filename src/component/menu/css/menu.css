@@ -1,5 +1,6 @@
 #menuDrawer{
     background: #FFFFFF 0% 0% no-repeat padding-box;
+    background-color: rgba(255,255,255,0.8);  
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
@@ -8,8 +9,7 @@
 
         width: 100vw;
         height: 92vh;
-        top: 8vh;          
-        background-color: rgba(255,255,255,0.5);  
+        top: 8vh;      
         z-index: 1;
     }
     .menuOpen{
@@ -37,8 +37,7 @@
 
         width: 40vw;
         height: 100vh;   
-        top: 0;                   
-        background-color: rgba(255,255,255,0.5);  
+        top: 0;                          
         z-index: 0;
     }
 
@@ -69,8 +68,7 @@
 
         width: 100vw;
         height: 92vh;
-        top: 8vh;          
-        background-color: rgba(255,255,255,0.5);  
+        top: 8vh;                 
         z-index: 1;
     }
     .menuOpen{
@@ -100,8 +98,7 @@
 
         width: 40vw;
         height: 100vh;
-        top:0;       
-        background-color: rgba(255,255,255,0.5);  
+        top:0;            
         z-index: 0;
         overflow: hidden;
     }  

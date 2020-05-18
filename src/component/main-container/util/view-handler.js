@@ -3,7 +3,7 @@ import React from 'react';
 
 export default class ViewHandler {
 
-    static retrieveView(){
+    static retrieveView(){        
         
         let windowUrl = window.location.href;        
         let currentLocatin = (windowUrl.split(appGeneralInfo.baseUrl))[1];
