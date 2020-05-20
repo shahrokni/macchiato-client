@@ -11,8 +11,7 @@ export default class MainContainer extends React.Component {
         this.innerLinkClickEventHandler = this.innerLinkClickEventHandler.bind(this);
     }
 
-    innerLinkClickEventHandler(){     
-        //AUTH  
+    innerLinkClickEventHandler(){              
         this.setState({recreatComponent:true});
     }
 
