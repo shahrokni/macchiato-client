@@ -1,6 +1,7 @@
 #mainContainer{  
     box-sizing: border-box;
     overflow: hidden;
+    overflow-y: auto;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){

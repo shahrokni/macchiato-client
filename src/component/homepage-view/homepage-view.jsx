@@ -8,7 +8,7 @@ export default class HomePage extends React.Component{
 
    render(){
        return (
-           <div className='fullSize-width flex-container flex-column'
+           <div className='fullSize-width flex-container flex-column absolute'
            style={{minHeight:'100%'}}>
                <WelcomeBox/>
                <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice}/>
