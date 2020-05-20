@@ -11,14 +11,14 @@ export default class HomePage extends React.Component{
            <div className='fullSize-width flex-container flex-column'
            style={{minHeight:'100%'}}>
                <WelcomeBox/>
-               <HomepageLink title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice}/>
-               <HomepageLink title='Listening practice' name={appGeneralInfo.mainMenuItems.listeningPractice}/>
-               <HomepageLink title='Reading practice' name={appGeneralInfo.mainMenuItems.readingPractice}/>
-               <HomepageLink title='Writing practice' name={appGeneralInfo.mainMenuItems.writingPractice}/>
-               <HomepageLink title='Speaking practice' name={appGeneralInfo.mainMenuItems.speakingPractice}/>
-               <HomepageLink title='Slang practice' name={appGeneralInfo.mainMenuItems.slangPractice}/>
-               <HomepageLink title='Language level test' name={appGeneralInfo.mainMenuItems.languageLevel}/>
-               <HomepageLink title='English mock test' name={appGeneralInfo.mainMenuItems.mockTests}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Listening practice' name={appGeneralInfo.mainMenuItems.listeningPractice}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Reading practice' name={appGeneralInfo.mainMenuItems.readingPractice}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Writing practice' name={appGeneralInfo.mainMenuItems.writingPractice}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Speaking practice' name={appGeneralInfo.mainMenuItems.speakingPractice}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Slang practice' name={appGeneralInfo.mainMenuItems.slangPractice}/>
+               <HomepageLink linkClick={this.props.linkClick} title='Language level test' name={appGeneralInfo.mainMenuItems.languageLevel}/>
+               <HomepageLink linkClick={this.props.linkClick} title='English mock test' name={appGeneralInfo.mainMenuItems.mockTests}/>
            </div>
        );
    }

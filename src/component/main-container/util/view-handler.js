@@ -3,14 +3,14 @@ import React from 'react';
 
 export default class ViewHandler {
 
-    static retrieveView(){        
+    static retrieveView(innerLinkClickEventHandler){        
         
         let windowUrl = window.location.href;        
         let currentLocatin = (windowUrl.split(appGeneralInfo.baseUrl))[1];
         
         if (currentLocatin === appGeneralInfo.mainMenuItems.homePage) {
             const HomePageView = React.lazy(() => import('../../homepage-view/homepage-view'));
-            return <HomePageView />
+            return <HomePageView  linkClick={innerLinkClickEventHandler}/>
         }
         if(currentLocatin === appGeneralInfo.mainMenuItems.languageLevel){
             //TODO

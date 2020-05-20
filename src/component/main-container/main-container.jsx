@@ -5,6 +5,16 @@ import ViewHandler from './util/view-handler.js';
 
 export default class MainContainer extends React.Component {
 
+    constructor(props){
+        super(props);   
+        this.state = {recreatComponent:true}     
+        this.innerLinkClickEventHandler = this.innerLinkClickEventHandler.bind(this);
+    }
+
+    innerLinkClickEventHandler(){       
+        this.setState({recreatComponent:true});
+    }
+
     render() {
         return (
 
@@ -14,7 +24,7 @@ export default class MainContainer extends React.Component {
                         {/* CATCH ALL POSSIBLE ROUTES! */}
                         <Route>
                             {
-                                ViewHandler.retrieveView()
+                                ViewHandler.retrieveView(this.innerLinkClickEventHandler)                                
                             }
                         </Route>
                     </Switch>
