@@ -22,4 +22,16 @@
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape){
 
+    .welcomeBox{
+        width:98%;
+        margin-left:1%;
+        padding:10px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        color: #707070;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 5px;
+        font-family: Ubuntu-R;
+    }
 }

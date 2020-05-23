@@ -1,3 +1,6 @@
+.homepageLinkTitle{
+    font-family:Montserrat-SemiBold;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
     .homepageLinkBtn{
@@ -14,13 +17,8 @@
     .homepageLinkIcon{         
         float: right;
         margin-top: -23px;
-    } 
-    .hompageLinkIcon{
-        color:#D9183B;;
-    }
-    .homepageLinkTitle{
-        font-family:Montserrat-SemiBold;
-    }
+        color:#D9183B;
+    }   
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
@@ -31,4 +29,26 @@
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape){
 
+    .homepageLinkBtn{
+        width:20%;
+        margin-left:10%;
+        padding-left:5px;
+        padding-right: 5px;
+        padding-top: 35px;
+        padding-bottom: 35px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;        
+        border-radius: 5px;
+        cursor:pointer;
+        box-shadow: 0 3px 6px #00000029;
+    }
+    .homepageLinkIcon{         
+        float: right;
+        margin-top: -20px;
+        color:#D9183B;
+    }   
+    .homepageLinkTitle{
+        margin-left: 5px;
+    }
 }

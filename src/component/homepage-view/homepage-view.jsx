@@ -6,7 +6,7 @@ import { appGeneralInfo } from '../../setup-general-information';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import ViewHandler from '../main-container/util/view-handler';
 import UserService from '../../service/user-service/user-service';
-
+import HomepageViewLogo from './homepage-view-logo';
 export default class HomePage extends React.Component {
 
     constructor(props) {
@@ -17,17 +17,17 @@ export default class HomePage extends React.Component {
 
     componentDidMount() {
 
-        let service = new UserService();        
-        service.isUserAuthenticated((serverResponse)=>{
+        let service = new UserService();
+        service.isUserAuthenticated((serverResponse) => {
 
             let responseUtil = require('../../util/response-util/response-util');
-            
-            if(responseUtil.isAuthenticated(serverResponse)===true){
 
-                this.setState({isAuthenticated:AuthenticationState.Authenticated});
+            if (responseUtil.isAuthenticated(serverResponse) === true) {
+
+                this.setState({ isAuthenticated: AuthenticationState.Authenticated });
             }
-            else{
-                this.setState({isAuthenticated:AuthenticationState.NotAuthenticated});
+            else {
+                this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated });
             }
         });
     }
@@ -38,21 +38,23 @@ export default class HomePage extends React.Component {
         return (
 
             <React.Fragment>
-                {isUserAuthenticated===AuthenticationState.Authenticated &&
-                    <div className='fullSize-width flex-container flex-column absolute'
-                        style={{ minHeight: '100%' }}>
+                {isUserAuthenticated === AuthenticationState.Authenticated &&
+                    <div id='homePageContainer'>
                         <WelcomeBox text="Welcome Amir Tahmasebi!" />
-                        <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice} />
-                        <HomepageLink linkClick={this.props.linkClick} title='Listening practice' name={appGeneralInfo.mainMenuItems.listeningPractice} />
-                        <HomepageLink linkClick={this.props.linkClick} title='Reading practice' name={appGeneralInfo.mainMenuItems.readingPractice} />
-                        <HomepageLink linkClick={this.props.linkClick} title='Writing practice' name={appGeneralInfo.mainMenuItems.writingPractice} />
-                        <HomepageLink linkClick={this.props.linkClick} title='Speaking practice' name={appGeneralInfo.mainMenuItems.speakingPractice} />
-                        <HomepageLink linkClick={this.props.linkClick} title='Slang practice' name={appGeneralInfo.mainMenuItems.slangPractice} />
-                        <HomepageLink linkClick={this.props.linkClick} title='Language level test' name={appGeneralInfo.mainMenuItems.languageLevel} />
-                        <HomepageLink linkClick={this.props.linkClick} title='English mock test' name={appGeneralInfo.mainMenuItems.mockTests} />
+                        <HomepageViewLogo />
+                        <div id='homePageLinksContainer'>
+                            <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice} />
+                            <HomepageLink linkClick={this.props.linkClick} title='Listening practice' name={appGeneralInfo.mainMenuItems.listeningPractice} />
+                            <HomepageLink linkClick={this.props.linkClick} title='Reading practice' name={appGeneralInfo.mainMenuItems.readingPractice} />
+                            <HomepageLink linkClick={this.props.linkClick} title='Writing practice' name={appGeneralInfo.mainMenuItems.writingPractice} />
+                            <HomepageLink linkClick={this.props.linkClick} title='Speaking practice' name={appGeneralInfo.mainMenuItems.speakingPractice} />
+                            <HomepageLink linkClick={this.props.linkClick} title='Slang practice' name={appGeneralInfo.mainMenuItems.slangPractice} />
+                            <HomepageLink linkClick={this.props.linkClick} title='Language level test' name={appGeneralInfo.mainMenuItems.languageLevel} />
+                            <HomepageLink linkClick={this.props.linkClick} title='English mock tests' name={appGeneralInfo.mainMenuItems.mockTests} />
+                        </div>
                     </div>
                 }
-                {isUserAuthenticated===AuthenticationState.NotAuthenticated &&
+                {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
                         {ViewHandler.retrievRegisterView()}
                     </React.Suspense>
