@@ -2,12 +2,35 @@ import Response from '../../communication/entity/response';
 import RestProvider from '../../communication/entity/rest-provider';
 import ErrorMessages from '../../resource/text/error-message';
 
+
 export default class UserService {
 
 
     constructor() {
 
         this.dateUtil = require('../../util/date-util/date-util');
+    }
+
+    isUserAuthenticated(callBack) {
+
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+
+        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+
+        restInstance.get('user_api/v1/user/isAuthenticated').then((res) => {
+
+            let responseUtil = require('../../util/response-util/response-util');
+            let serverResponse = responseUtil.extractResponse(res);
+            callBack(serverResponse);
+        })
+            .catch((err) => {
+                console.log(err);
+                response.clientValidations.push(ErrorMessages.Err0000());
+                callBack(response);
+            })
+
     }
 
     getUserDetail(callBack) {
@@ -36,7 +59,7 @@ export default class UserService {
 
     /*userDetial: UserDetail - output: Response*/
     signUp(userDetail, callBack) {
-       
+
         let UserValidationClass = require('../../util/validation/user-validation');
         let validator = new UserValidationClass();
 
@@ -55,14 +78,14 @@ export default class UserService {
 
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
-            restInstance.post('user_api/v1/user', userDetail).then(function (res) {                
-               
+            restInstance.post('user_api/v1/user', userDetail).then(function (res) {
+
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
                 callBack(serverResponse);
             })
                 .catch(function (err) {
-                   
+
                     response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
                     callBack(response);
                 });
@@ -83,7 +106,7 @@ export default class UserService {
             callBack(response);
         }
         else {
-           
+
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
             restInstance.post('user_api/v1/user/login', { username: user.userName, password: user.password })
@@ -94,7 +117,7 @@ export default class UserService {
                     callBack(serverResponse);
                 })
                 .catch(function (err) {
-                   
+
                     response.clientValidations.push(ErrorMessages.Err0000());
                     callBack(response);
                 });
@@ -159,7 +182,7 @@ export default class UserService {
 
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
-            restInstance.put('user_api/v1/user/email', {'newEmail':newEmail}).then(function (res) {
+            restInstance.put('user_api/v1/user/email', { 'newEmail': newEmail }).then(function (res) {
 
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
@@ -196,7 +219,7 @@ export default class UserService {
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
             restInstance.put('user_api/v1/user/password', {
-                
+
                 'oldPassword': oldPassword,
                 'newPassword': newPassword,
                 'repeatedNewPassword': repeatedNewPassword

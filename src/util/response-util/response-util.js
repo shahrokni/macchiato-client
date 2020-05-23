@@ -29,3 +29,8 @@ function extractResponse(obj){
     }
 }
 module.exports.extractResponse = extractResponse;
+
+function isAuthenticated(serverResponse){
+    console.log(serverResponse);
+}
+module.exports.isAuthenticated = isAuthenticated;

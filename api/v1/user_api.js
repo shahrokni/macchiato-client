@@ -75,6 +75,17 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
         return;
     });
 });
+
+api.get('/user/isAuthenticated',isUserAuthenticated,(req,res)=>{
+
+    let response = new global.responseClass();
+    response.isSuccessful = true;
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    res.json({ response: response });
+    return;
+});
+
 /*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
 
