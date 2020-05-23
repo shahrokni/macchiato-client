@@ -38,7 +38,7 @@ function isAuthenticated(serverResponse){
 
             if(serverResponse.serverValidations[0]===errorResource.ErrBu0017()){
                
-                return false;
+                return true;
             }
         }
     }
