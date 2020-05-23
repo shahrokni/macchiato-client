@@ -31,6 +31,17 @@ function extractResponse(obj){
 module.exports.extractResponse = extractResponse;
 
 function isAuthenticated(serverResponse){
-    console.log(serverResponse);
+   
+    let errorResource = require('../../resource/text/error-message');
+    if(serverResponse.isSuccessful===false){
+        if(serverResponse.serverValidations){
+
+            if(serverResponse.serverValidations[0]===errorResource.ErrBu0017()){
+               
+                return false;
+            }
+        }
+    }
+    return true;
 }
 module.exports.isAuthenticated = isAuthenticated;
