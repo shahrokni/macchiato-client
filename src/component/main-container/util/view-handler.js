@@ -87,10 +87,18 @@ export default class ViewHandler {
         }
     }
 
-    static retrievGlobalMessage(){
+    static retrievGlobalMessageView(){
 
         const GlobalMessageView = 
         React.lazy(()=>import('../../global-message-view/global-message-view'));
         return <GlobalMessageView/>
+    }
+
+    static retrievRegisterView(){
+
+        const RegisterView = 
+        React.lazy(()=>import('../../register-view/register-view.jsx'));        
+        return <RegisterView/>
+        
     }
 }

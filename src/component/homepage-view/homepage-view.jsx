@@ -6,6 +6,7 @@ import { appGeneralInfo } from '../../setup-general-information';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import ViewHandler from '../main-container/util/view-handler';
 import UserService from '../../service/user-service/user-service';
+
 export default class HomePage extends React.Component {
 
     constructor(props) {
@@ -13,7 +14,7 @@ export default class HomePage extends React.Component {
         super(props);
         this.state = { isAuthenticated: AuthenticationState.NotSet };
     }
-    
+
     componentDidMount() {
 
         let service = new UserService();        
@@ -53,7 +54,7 @@ export default class HomePage extends React.Component {
                 }
                 {isUserAuthenticated===AuthenticationState.NotAuthenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
-                        {ViewHandler.retrievGlobalMessage()}
+                        {ViewHandler.retrievRegisterView()}
                     </React.Suspense>
                 }
             </React.Fragment>

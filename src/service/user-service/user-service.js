@@ -25,8 +25,7 @@ export default class UserService {
             let serverResponse = responseUtil.extractResponse(res);
             callBack(serverResponse);
         })
-            .catch((err) => {
-                console.log(err);
+            .catch((err) => {              
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             })
