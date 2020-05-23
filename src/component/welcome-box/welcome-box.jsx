@@ -5,7 +5,7 @@ export default class WelcomeBox extends React.Component{
     render(){
         return (
             <div className="welcomeBox">
-                Welcom, Amir Tahmasebi!
+                {this.props.text}
             </div>
         )
     }

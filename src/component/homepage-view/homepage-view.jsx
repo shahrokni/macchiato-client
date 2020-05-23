@@ -1,5 +1,5 @@
 import React from 'react';
-import WelcomeBox from './welcome-box';
+import WelcomeBox from '../welcome-box/welcome-box';
 import HomepageLink from './homepage-link';
 import './css/homepage-view.css';
 import { appGeneralInfo } from '../../setup-general-information';
@@ -41,7 +41,7 @@ export default class HomePage extends React.Component {
                 {isUserAuthenticated===AuthenticationState.Authenticated &&
                     <div className='fullSize-width flex-container flex-column absolute'
                         style={{ minHeight: '100%' }}>
-                        <WelcomeBox />
+                        <WelcomeBox text="Welcome Amir Tahmasebi!" />
                         <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice} />
                         <HomepageLink linkClick={this.props.linkClick} title='Listening practice' name={appGeneralInfo.mainMenuItems.listeningPractice} />
                         <HomepageLink linkClick={this.props.linkClick} title='Reading practice' name={appGeneralInfo.mainMenuItems.readingPractice} />
