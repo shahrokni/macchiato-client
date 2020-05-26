@@ -2,6 +2,7 @@ import React from 'react';
 import './css/homepage-link.css';
 import { Link } from "react-router-dom";
 export default class HomepageLink extends React.Component {
+   
     render() {
         return (
             <div className="homepageLinkBtn" onClick={this.props.linkClick}>
