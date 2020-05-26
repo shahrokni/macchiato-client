@@ -5,8 +5,8 @@ export default class HomepageLink extends React.Component {
    
     render() {
         return (
-            <div className="homepageLinkBtn" onClick={this.props.linkClick}>
-                <div className="homepageLinkTitle fitContent">
+            <div className="homepageLinkBtn" >
+                <div className="homepageLinkTitle fitContent" onClick={this.props.linkClick}>
                     <Link to={'/' + this.props.name}>
                         {this.props.title}
                     </Link>

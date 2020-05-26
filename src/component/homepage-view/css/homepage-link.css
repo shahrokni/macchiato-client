@@ -1,5 +1,6 @@
 .homepageLinkTitle{
     font-family:Montserrat-SemiBold;
+    cursor: pointer;
 }
 .homepageLinkBtn:hover{
     color:#FFFFFF;
@@ -18,8 +19,7 @@
         margin-top: 20px;
         background-color: #FFFFFF;
         box-sizing: border-box;        
-        border-radius: 5px;
-        cursor:pointer;
+        border-radius: 5px;       
         box-shadow: 0 3px 6px #00000029;
     }
     .homepageLinkIcon{         
@@ -47,8 +47,7 @@
         margin-top: 20px;
         background-color: #FFFFFF;
         box-sizing: border-box;        
-        border-radius: 5px;
-        cursor:pointer;
+        border-radius: 5px;      
         box-shadow: 0 3px 6px #00000029;
     }
     .homepageLinkIcon{         
