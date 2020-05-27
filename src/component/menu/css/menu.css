@@ -38,7 +38,7 @@
         width: 40vw;
         height: 100vh;   
         top: 0;                          
-        z-index: 0;
+        z-index: 2;
     }
 
     .menuOpen{
