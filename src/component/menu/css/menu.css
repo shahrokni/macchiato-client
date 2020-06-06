@@ -1,0 +1,123 @@
+#menuDrawer{
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    background-color: rgba(255,255,255,0.8);  
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+
+    #menuDrawer{
+
+        width: 100vw;
+        height: 92vh;
+        top: 8vh;      
+        z-index: 1;
+    }
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-100vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-100vw;}
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    #menuDrawer{
+
+        width: 40vw;
+        height: 100vh;   
+        top: 0;                          
+        z-index: 2;
+    }
+
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-40vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-40vw;}
+    }
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+
+    #menuDrawer{
+
+        width: 100vw;
+        height: 92vh;
+        top: 8vh;                 
+        z-index: 1;
+    }
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-100vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-100vw;}
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) {  
+
+    #menuDrawer{
+
+        width: 40vw;
+        height: 100vh;
+        top:0;            
+        z-index: 2;
+        overflow: hidden;
+    }  
+    .menuOpen{
+        animation-name: menuOpenAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuClosed{
+        animation-name: menuClosedAnim;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes menuOpenAnim{
+        from{left:-40vw;}
+        to{left:0;}
+    }
+    @keyframes menuClosedAnim{
+        from{left:0}
+        to{left:-40vw;}
+    }
+}

@@ -1,0 +1,86 @@
+.homepageLinkTitle{
+    font-family:Montserrat-SemiBold;
+    cursor: pointer;
+}
+.homepageLinkBtn:hover{
+    color:#FFFFFF;
+    background-color: #D9183B;
+}
+.homepageLinkBtn:hover div{
+    color:#FFFFFF;
+    background-color: #D9183B;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .homepageLinkBtn{
+        width:80%;
+        margin-left:10%;
+        padding:30px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;        
+        border-radius: 5px;       
+        box-shadow: 0 3px 6px #00000029;
+    }
+    .homepageLinkIcon{         
+        float: right;
+        margin-top: -23px;
+        color:#D9183B;
+    }   
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+      .homepageLinkBtn{
+        width:20%;
+        margin-left:5%;
+        padding-left:2px;
+        padding-right: 2px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;        
+        border-radius: 5px;      
+        box-shadow: 0 3px 6px #00000029;
+    }
+    .homepageLinkIcon{         
+        display: none;
+    }   
+    .homepageLinkTitle{
+        white-space: nowrap; 
+        width: 100%;
+        height: 100%;
+        font-size: 12px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+}
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape){
+
+    .homepageLinkBtn{
+        width:20%;
+        margin-left:10%;
+        padding-left:5px;
+        padding-right: 5px;
+        padding-top: 35px;
+        padding-bottom: 35px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;        
+        border-radius: 5px;      
+        box-shadow: 0 3px 6px #00000029;
+    }
+    .homepageLinkIcon{         
+        float: right;
+        margin-top: -20px;
+        color:#D9183B;
+    }   
+    .homepageLinkTitle{
+        margin-left: 5px;
+    }
+}

@@ -1,0 +1,90 @@
+.menuRowBtnTitle{
+    width: fit-content;
+    font-family: Montserrat-SemiBold;
+    float: left;   
+    cursor: pointer;
+}
+.menuRowBtnIcon{
+    width: fit-content;
+    float: left;  
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .menuRowBtn{
+        height:7.14%;
+        width: 100%;
+    }   
+    .menuRowBtnTitle{
+        margin-top: 3%;
+        margin-left:2%;
+    }
+    .menuRowBtnIcon{
+        margin-top: 2%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 6px;
+        padding: 3px;
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    .menuRowBtn{
+        height:6.99%;
+        width: 100%;
+        float: left;
+        margin-left:4vw;
+    }   
+    .menuRowBtnTitle{
+      font-size: 8pt;
+      margin-top: 4%;
+      margin-left:1%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 6px;       
+        padding: 3px;
+    }    
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+
+    .menuRowBtn{
+        height:7.14%;
+        width: 100%;
+    }   
+    .menuRowBtnTitle{
+        margin-top: 3%;
+        margin-left:2%;
+    }
+    .menuRowBtnIcon{
+        margin-top: 2%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 20px;
+        padding: 3px;
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) {  
+    .menuRowBtn{
+        height:7.14%;
+        width: 100%;
+        margin-left: 4.5vw;
+        box-sizing: border-box;
+        padding-top: 1vw;
+        float: left;
+    }   
+    .menuRowBtnTitle{
+        margin-top: 1%;
+        margin-left:2%;
+    }
+    .newMsgCount{
+        border-radius: 15px;
+        margin-top: 0;       
+        padding: 3px;
+    }    
+}

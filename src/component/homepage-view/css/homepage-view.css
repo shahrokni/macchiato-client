@@ -1,0 +1,39 @@
+#homePageLinksContainer{
+    display: flex;
+}
+#homePageContainer{
+   
+    position: absolute;
+    min-height: 100%;
+    width:100%;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){   
+
+    #homePageLinksContainer{       
+        flex-direction: column;
+        width: 100%;
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    #homePageLinksContainer{     
+        flex-wrap: wrap;  
+        flex-direction: row;
+        width: 80%;
+        margin-left: 10%;
+    }   
+}
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+}
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape){
+
+    #homePageLinksContainer{     
+        flex-wrap: wrap;  
+        flex-direction: row;
+        width: 80%;
+        margin-left: 10%;
+    }   
+}

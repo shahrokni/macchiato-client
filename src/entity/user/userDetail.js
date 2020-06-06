@@ -6,7 +6,11 @@ import {Province} from '../global/province';
 export class UserDetail extends User {
 
     constructor() {
+
         super();
+        this.name = "";
+        this.lastName = "";
+        this.studentNumber = "";
         this.registerationDate = new Date();
         this.email = "";
         this.birthDate = undefined;

@@ -4,6 +4,7 @@ var SWQuestion = require('../../model/question/sw-question');
 var ReadingQuestion = require('../../model/question/reading-question');
 var ListeningQuestion = require('../../model/question/listening-question');
 var VisualQuestion = require('../../model/question/visual-question');
+var VocabSlangQuestion = require('../../model/question/vocab-slang-question');
 var answerSchema = require('../../model/answer/answer');
 var mongoose = require('mongoose');
 /*-----------------------------------------------------*/
@@ -46,17 +47,17 @@ async function generateNextQueryNumber(questionType) {
             break;
     }
 
-    await Question.Question.countDocuments({ 'number': '^' + questionNumber })
+    await Question.Question.countDocuments({ 'number': { $regex: '^' + questionNumber } })
         .then((countedQuestions) => {
 
             let newNumber = startNumber + countedQuestions;
             questionNumber += newNumber;
         })
         .catch((reason) => {
-
-            console.log(reason);
+           
             throw global.errorResource.ErrBu0023();
         });
+
 
     return questionNumber;
 }
@@ -84,7 +85,6 @@ async function createBaseQuestionPart(question, sessionOption) {
     })
         .catch((reason) => {
 
-            console.log(reason);
             throw global.errorResource.ErrBu0024();
         });
 
@@ -105,8 +105,7 @@ async function createSWQuestionPart(question, sessionOption) {
             swQuestionId = savedSWQuestion._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+           
             throw global.errorResource.ErrBu0024();
         });
 
@@ -138,8 +137,7 @@ async function createLRQuestionPart(question, sessionOption) {
         lrQuestionNumber = savedLRQuestion._id;
     })
         .catch((reason) => {
-
-            console.log(reason);
+           
             throw global.errorResource.ErrBu0024();
         });
 
@@ -156,8 +154,7 @@ async function createReadingQuestionPart(question, opt) {
 
         readinQuestionId = savedReadingQuestion._id
     }).catch((reason) => {
-
-        console.log(reason);
+       
         throw global.errorResource.ErrBu0024();
     });
 
@@ -188,8 +185,7 @@ async function connectLR2Reading(lRId, readingId, opt) {
         await lRQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+       
         throw global.errorResource.ErrBu0024();
     }
 
@@ -214,8 +210,7 @@ async function createReadinQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+      
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -232,8 +227,7 @@ async function connectLR2Listening(lRId, listeningId, opt) {
         await lRQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+      
         throw global.errorResource.ErrBu0024();
     }
 }
@@ -250,8 +244,7 @@ async function createListeningQuestionPart(newLRQuestionId, sessionOption) {
             newListeningQuestionId = savedListeningQuestion._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+          
             throw global.errorResource.ErrBu0024();
         });
 
@@ -279,7 +272,7 @@ async function createListeningQuestion(question) {
     }
     catch (exception) {
 
-        console.log(exception);
+       
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -296,8 +289,7 @@ async function connectBase2SW(baseQuestionId, sWQuestionId, opt) {
         await baseQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+       
         throw global.errorResource.ErrBu0024();
     }
 }
@@ -319,8 +311,7 @@ async function createWritingQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+      
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -346,8 +337,7 @@ async function createVisualQuestion(question) {
         session.endSession();
     }
     catch (exception) {
-
-        console.log(exception);
+       
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -367,8 +357,7 @@ async function createVisualQuestionPart(question, swQuestionId, opt) {
             newVisualQuestionId = savedVisualQuestion._id;
         })
         .catch((exception) => {
-
-            console.log(exception);
+           
             throw global.errorResource.ErrBu0024();
         });
 
@@ -384,18 +373,17 @@ async function connectSw2Visual(swQuestionId, visualQuestionId, opt) {
         await swQuestion.save(opt);
     }
     catch (exception) {
-
-        console.log(exception);
+      
         throw global.errorResource.ErrBu0024();
     }
 }
 
-async function createSpeakingQuestion(question){
-    
+async function createSpeakingQuestion(question) {
+
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    try{
+    try {
 
         const opt = { session };
         let newBaseQuestionId = await createBaseQuestionPart(question, opt);
@@ -407,9 +395,9 @@ async function createSpeakingQuestion(question){
         session.endSession();
 
     }
-    catch(exception){
+    catch (exception) {
 
-        console.log(exception);
+     
         //Abort transaction and end session
         await session.abortTransaction();
         session.endSession();
@@ -417,10 +405,75 @@ async function createSpeakingQuestion(question){
     }
 }
 
-async function createVocabQuestion(question){
-    //TODO: F-04.24.2020.9
+async function createVocabQuestion(question) {
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+
+        const opt = { session };
+        let newBaseQuestionId = await createBaseQuestionPart(question, opt);
+        let newVocabSlangQuestionId = await createVocabSlangQuestionPart(question, opt);
+        await connectBase2VocabSlang(newBaseQuestionId, newVocabSlangQuestionId, opt);
+
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+    }
+    catch (exception) {
+       
+        //Abort transaction and end session
+        await session.abortTransaction();
+        session.endSession();
+        throw exception;
+    }
 }
 
+async function createVocabSlangQuestionPart(question, opt) {
+
+    let newVocabSlangQuestionId = '';
+    let newVocabSlangQuestion = new VocabSlangQuestion.VocabSlangQuestion();
+    newVocabSlangQuestion.context = question.context;
+
+    question.answerItems.forEach(item => {
+
+        let AnswerItem = mongoose.model('AnswerItem', answerSchema);
+        let newAnswerItem = new AnswerItem();
+        newAnswerItem.answerType = item.answerType;
+        newAnswerItem.correctAnswer = item.correctAnswer;
+
+        if (item.multipleChoice && item.multipleChoice.length > 0) {
+            newAnswerItem.multipleChoice = item.multipleChoice;
+        }
+        newVocabSlangQuestion.answerItems.push(newAnswerItem);
+    });
+
+    await newVocabSlangQuestion.save(opt)
+        .then((savedVocab) => {
+            newVocabSlangQuestionId = savedVocab._id;
+        })
+        .catch((exception) => {
+        
+            throw global.errorResource.ErrBu0024();
+        });
+
+    return newVocabSlangQuestionId;
+}
+
+async function connectBase2VocabSlang(baseQuestionId, vocabSlangQuestionId, opt) {
+
+    try {
+        baseQuestion = await Question.Question.findById(baseQuestionId, null, opt);
+        baseQuestion.vocabSlangQuestion = vocabSlangQuestionId;
+        await baseQuestion.save(opt);
+    }
+    catch (exception) {
+     
+        throw exception;
+    }
+
+}
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
 /*------------------------------------------------------------------*/
@@ -431,7 +484,17 @@ async function addNewReadingQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createReadinQuestion(question);
+    await createReadinQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewReadingQuestion = addNewReadingQuestion;
 //--------------------------------------------------------------
@@ -440,7 +503,17 @@ async function addNewListeningQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createListeningQuestion(question);
+    await createListeningQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewListeningQuestion = addNewListeningQuestion;
 //---------------------------------------------------------------
@@ -449,7 +522,17 @@ async function addNewWritingQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createWritingQuestion(question);
+    await createWritingQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewWritingQuestion = addNewWritingQuestion;
 //-------------------------------------------------------------
@@ -458,25 +541,55 @@ async function addNewVisualQuestion(question) {
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createVisualQuestion(question);
+    await createVisualQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewVisualQuestion = addNewVisualQuestion;
 //-------------------------------------------------------------
-async function addNewSpeakingQuestion(question){
-    
+async function addNewSpeakingQuestion(question) {
+
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createSpeakingQuestion(question);
+    await createSpeakingQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewSpeakingQuestion = addNewSpeakingQuestion;
 //--------------------------------------------------------------
-async function addNewVocabQuestion(question){
-    
+async function addNewVocabQuestion(question) {
+
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    await createVocabQuestion(question);
+    await createVocabQuestion(question).then(() => {
+
+        response.isSuccessful = true;
+    })
+        .catch((reason) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(reason);
+        });
+
+    return Promise.resolve(response);
 }
 module.exports.addNewVocabQuestion = addNewVocabQuestion;
 //------------------------------------------------------------

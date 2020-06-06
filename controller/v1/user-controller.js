@@ -1,162 +1,226 @@
+//NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
+//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS BEEN USED IN SOME SCENARIOS!
+//NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
+//NOTE2: PROMISE BASE (ASYNC/AWAIT) APPROACH HAS BEEN USED IN SOME SCENARIOS!
+//NOTE1: I USED OLD CALL BACK APPROACH IN SOME SCENARIOS TO SHOW THAT I CAN HANDLE ALL STYLES OF CODING!
+
 var userValidationClass = require('../../src/util/validation/user-validation');
 var User = require('../../model/user/user');
+var UserDetail = require('../../model/user/user-detail');
 var mongoose = require('mongoose');
 /*-----------------------------------------*/
 const salt = 10;
 const hiddenData = '***';
 /*-----------------------------------------*/
 
-function registerUser(userDetail, done) {
+async function registerUser(userDetail) {
 
     const bcrypt = require('bcrypt-nodejs');
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
     let userValidation = new userValidationClass();
-
     //Unifrom data before the the data is saved in database
     let receivedData = global.uniformData.uniformUserDetail(userDetail);
-
     let errorMessages = userValidation.validateSignUpData(receivedData);
 
     if (errorMessages != null && errorMessages.length != 0) {
 
+        response.isSuccessful = false;
         response.serverValidations = errorMessages;
-        done(response);
+        return Promise.resolve(response);
     }
-    else {
 
-        let SkillScoreSchema = require('../../model/user/skill-score');
+    let newUser = new User({
+        userName: receivedData.userName,
+    });
 
-        let newUser = new User({
-            userName: receivedData.userName,
-            name: receivedData.name,
-            lastName: receivedData.lastName,
-            registerationDate: Date.now(),
-            province: receivedData.province
-        });
+    let newUserDetail = new UserDetail.UserDetail({
+        name: receivedData.name,
+        lastName: receivedData.lastName,
+        registerationDate: Date.now(),
+        province: receivedData.province
+    });
 
-        //Set the first part of the student number
-        newUser.studentNumber = global.dateUtilModule.getCompactCurrentDate();
+    let SkillScoreSchema = require('../../model/user/skill-score');
+    let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
 
-        let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
-        newUser.skillScore.push(new SkillScore());
+    //Set the first part of the student number
+    newUserDetail.studentNumber = global.dateUtilModule.getCompactCurrentDate();
+    //Add a SkillScore subdocument    
+    newUserDetail.skillScore.push(new SkillScore());
 
-        let query = User.findOne({ 'userName': receivedData.userName }, 'userName');
-        query.exec(function (queryError, user) {
+    let query = User.findOne({ 'userName': receivedData.userName }, 'userName');
 
-            if (!queryError) {
+    try {
 
-                //Check wether the chosen username has already been taken by another user!
-                if (user) {
+        await query.exec().then((foundUser) => {
 
-                    response.isSuccessful = false;
-                    response.serverValidations.push(global.errorResource.ErrBu0009());
-                    done(response)
-                }
-                else {
+            //Check wether the chosen username has already been taken by another user!
+            if (foundUser) {
 
-                    //Encrypt the user's password
-                    bcrypt.hash(receivedData.password, bcrypt.genSaltSync(salt), null, function (bcryptError, hash) {
-
-                        if (!bcryptError) {
-
-                            newUser.password = hash;
-                            User.countDocuments({ 'studentNumber': { $regex: '^' + newUser.studentNumber } }, function (countErr, count) {
-
-                                if (countErr) {
-
-                                    response.isSuccessful = false;
-
-                                    let message = global.dbExceptionHandler.tryGetErrorMessage(countErr);
-
-                                    if (message != null)
-                                        response.serverValidations.push(message);
-                                    else
-                                        response.serverValidations.push(global.errorResource.Err0000());
-
-                                    done(response);
-
-                                }
-                                else {
-
-                                    //Add the second part of the student number                                    
-                                    newUser.studentNumber += count;
-
-                                    //Save the new user
-                                    newUser.save(function (saveErr, user) {
-
-                                        if (saveErr) {
-
-                                            response.isSuccessful = false;
-                                            let message = global.dbExceptionHandler.tryGetErrorMessage(err);
-
-                                            if (message != null)
-                                                response.serverValidations.push(message);
-                                            else
-                                                response.serverValidations.push(global.errorResource.Err0000());
-
-                                            done(response)
-                                        }
-                                        else {
-
-                                            response.isSuccessful = true;
-                                            user._id = hiddenData;
-                                            user.password = hiddenData;
-                                            response.outputJson = user;
-
-                                            let accountControler =
-                                                require('../../administrator_controller/v1/administrator_financial_account_controller');
-
-                                            //Initiate a financial account
-                                            accountControler.initiateUserFinancialAccount(user._id, (accountResponse) => {
-
-                                                //Send a message
-                                                let messageController =
-                                                    require('../../administrator_controller/v1/administrator_user_message_controller');
-
-                                                let message = {
-                                                    'receiverId': user._id,
-                                                    'senderId': 'Administrator',
-                                                    'sentDate': Date.now(),
-                                                    'title': global.systemMessages.welcomeTitle,
-                                                    'text': global.systemMessages.welcomeMessage
-                                                };
-                                                messageController.sendMessage(message,(response)=>{});
-                                            });
-                                            done(response);
-                                        }
-                                    });
-                                }
-                            }).exec();
-                        }
-                        else {
-
-                            response.isSuccessful = false;
-                            response.serverValidations.push(global.errorResource.Err0000());
-                            done(response);
-                        }
-                    });
-                }
+                throw global.errorResource.ErrBu0009();
             }
-            else {
+        });
+    }
+    catch (exception) {
 
-                response.isSuccessful = false;
-                let message = global.dbExceptionHandler.tryGetErrorMessage(queryError);
+        response.isSuccessful = false;
+        response.serverValidations.push(exception);
+        return Promise.resolve(response);
+    }
 
+    let hash = bcrypt.hashSync(receivedData.password, bcrypt.genSaltSync(salt));
+
+    newUser.password = hash;
+    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber': { $regex: '^' + newUserDetail.studentNumber } });
+    let countedItem;
+
+    try {
+
+        await countQuery.exec().then((count) => {
+
+            countedItem = count;
+        })
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+    }
+    catch (exception) {
+
+        response.isSuccessful = false;
+        response.serverValidations.push(exception);
+        return Promise.resolve(response);
+    }
+
+    //Add the second part of the student number    
+    newUserDetail.studentNumber += countedItem;
+
+    //Create a session and start a transaction. ALL-OR-NONE OPERATION!
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+
+        let newUserId = '';
+        let newUserDetailId = '';
+
+        const opt = { session };
+        await newUser.save(opt)
+            .then((savedUser) => {
+
+                newUserId = savedUser._id;
+            })
+            .catch((exception) => {
+
+                let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                 if (message != null)
-                    response.serverValidations.push(message);
+                    throw message;
                 else
-                    response.serverValidations.push(global.errorResource.Err0000());
+                    throw global.errorResource.Err0000();
+            });
 
-                done(response);
-            }
-        });
+        await newUserDetail.save(opt)
+            .then((savedUserDetail) => {
+
+                newUserDetailId = savedUserDetail._id;
+            })
+            .catch((exception) => {
+
+                let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
+                if (message != null)
+                    throw message;
+                else
+                    throw global.errorResource.Err0000();
+            });
+
+        //Initiate a financial account
+        let accountControler =
+            require('../../administrator_controller/v1/administrator_financial_account_controller');
+
+        await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+
+        //Send a welcome message!
+        let messageController =
+            require('../../administrator_controller/v1/administrator_user_message_controller');
+
+
+        await messageController.sendInitialMessage(newUserDetailId, opt)
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+
+        let findQuery = User.findById(newUserId, null, opt);
+        let foundNewUser;
+
+        await findQuery.exec().then((newUser) => {
+
+            foundNewUser = newUser;
+        })
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+
+        foundNewUser.userDetail = newUserDetailId;
+        //Connect user to userDetail
+        await foundNewUser.save(opt)
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+
+        //Fetch and return the saved user    
+        let userDetailObject;
+        let fetchFinalResultQuery = UserDetail.UserDetail
+            .findById(newUserDetailId, null, opt);
+
+        await fetchFinalResultQuery.exec()
+            .then((fetchedUser) => {
+
+                userDetailObject = {
+                    userName: receivedData.userName,
+                    name: fetchedUser.name,
+                    lastName: fetchedUser.lastName,
+                    studentNumber: fetchedUser.studentNumber,
+                    registerationDate: fetchedUser.registerationDate,
+                    province: fetchedUser.province
+                }
+
+            })
+            .catch((exception) => {
+
+                throw global.errorResource.Err0000();
+            });
+
+        //commit the transaction and end the session
+        await session.commitTransaction();
+        session.endSession();
+        response.isSuccessful = true;
+        response.outputJson = userDetailObject;
+        return Promise.resolve(response);
+
+    }
+    catch (exception) {
+
+        console.log(exception);
+        await session.abortTransaction();
+        session.endSession();
+
+        response.isSuccessful = false;
+        response.serverValidations.push(exception);
+        return Promise.resolve(response);
     }
 }
 module.exports.registerUser = registerUser;
+//---------------------------------------------------------------------------------------
 
-function updateUserInformation(userDetail, studentNumber, done) {
+function updateUserInformation(userDetail, userId, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -175,142 +239,142 @@ function updateUserInformation(userDetail, studentNumber, done) {
     }
     else {
 
-        // Firts, find the user using the student number
-        User.findOne({ studentNumber: studentNumber }, function (findErr, user) {
+        User.findById(userId, (findByIdErr, foundUser) => {
 
-            if (!findErr) {
+            if (!findByIdErr) {
 
-                if (user) {
+                let userDetailId = foundUser.userDetail;
 
-                    //Set sent data
-                    user.name = receivedData.name;
-                    user.lastName = receivedData.lastName;
-                    user.gender = receivedData.gender;
-                    user.cellphone = receivedData.cellphone;
-                    user.province = receivedData.province;
-                    user.birthDate = receivedData.birthDate;
+                UserDetail.UserDetail.findById(userDetailId, function (findErr, foundUserDetail) {
 
-                    //Save the instance and return it to the client
-                    user.save(function (saveErr, savedUser) {
+                    if (!findErr) {
 
-                        if (!saveErr) {
+                        if (foundUserDetail) {
 
-                            response.isSuccessful = true;                            
-                            savedUser.password = hiddenData;
-                            response.outputJson = savedUser;
-                            done(response);
+                            //Set sent data
+                            foundUserDetail.name = receivedData.name;
+                            foundUserDetail.lastName = receivedData.lastName;
+                            foundUserDetail.gender = receivedData.gender;
+                            foundUserDetail.cellphone = receivedData.cellphone;
+                            foundUserDetail.province = receivedData.province;
+                            foundUserDetail.birthDate = receivedData.birthDate;
+
+                            //Save the instance and return it to the client
+                            foundUserDetail.save(function (saveErr, savedUserDetail) {
+
+                                if (!saveErr) {
+
+                                    response.isSuccessful = true;
+
+                                    userDetailObj = {
+                                        name: savedUserDetail.name,
+                                        lastName: savedUserDetail.lastName,
+                                        studentNumber: savedUserDetail.studentNumber,
+                                        registerationDate: savedUserDetail.registerationDate,
+                                        gender: savedUserDetail.gender,
+                                        cellphone: savedUserDetail.cellphone,
+                                        province: savedUserDetail.province,
+                                        birthDate: savedUserDetail.birthDate,
+                                    }
+                                    response.outputJson = userDetailObj;
+                                    done(response);
+                                }
+                                else {
+
+                                    response.isSuccessful = false;
+                                    let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
+
+                                    if (message != null)
+                                        response.serverValidations.push(message);
+                                    else
+                                        response.serverValidations.push(global.errorResource.Err0000());
+
+                                    done(response);
+                                }
+                            });
                         }
                         else {
 
                             response.isSuccessful = false;
-                            let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
-
-                            if (message != null)
-                                response.serverValidations.push(message);
-                            else
-                                response.serverValidations.push(global.errorResource.Err0000());
-
+                            response.serverValidations.push(global.errorResource.ErrBu0010());
                             done(response);
                         }
-                    });
-                }
-                else {
+                    }
+                    else {
 
-                    response.isSuccessful = false;
-                    response.serverValidations.push(global.errorResource.ErrBu0010());
-                    done(response);
-                }
+                        response.isSuccessful = false;
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
+
+                        if (message != null)
+                            response.serverValidations.push(message);
+                        else
+                            response.serverValidations.push(global.errorResource.Err0000());
+
+                        done(response);
+                    }
+                });
             }
             else {
 
                 response.isSuccessful = false;
-                let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
-
-                if (message != null)
-                    response.serverValidations.push(message);
-                else
-                    response.serverValidations.push(global.errorResource.Err0000());
-
+                response.serverValidations.push(global.errorResource.ErrBu0010());
                 done(response);
             }
-        })
+        });
+
     }
 }
 module.exports.updateUserInformation = updateUserInformation;
-
-function getUserInformation(userId, done) {
-
-    let response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
-    let columns = 'userName name lastName studentNumber';
-    let findQuery = User.findOne({ '_id': userId }, columns);
-
-    findQuery.exec(function (err, user) {
-
-        if (!err) {
-
-            response.isSuccessful = true;
-
-            if (user) {
-
-                response.outputJson = user;
-            }
-            done(response);
-        }
-        else {
-
-            response.isSuccessful = false;
-            let message = global.dbExceptionHandler.tryGetErrorMessage(err);
-
-            if (message != null)
-                response.serverValidations.push(message);
-            else
-                response.serverValidations.push(global.errorResource.Err0000());
-
-            done(response);
-        }
-    });
-}
-module.exports.getUserInformation = getUserInformation;
-
+//------------------------------------------------------------------
 function getDetailedUserInformation(userId, done) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    let columns = 'userName name lastName studentNumber registerationDate email gender ' +
-        'cellphone province birthDate skillScore';
+    let userFindQuery = User.findOne({ _id: userId })
+        .populate('userDetail');
 
-    let findQuery = User.findOne({ '_id': userId }, columns);
+    userFindQuery.exec((userFindErr, fetchedUserDetail) => {
 
-    findQuery.exec(function (err, user) {
+        if (!userFindErr) {
 
-        if (!err) {
-            //Query has been excuted successfully
             response.isSuccessful = true;
-
-            if (user) {
-
-                response.outputJson = user;
+            responseObj = {
+                userName : fetchedUserDetail.userName,
+                userDetail : {
+                    name : fetchedUserDetail.userDetail.name,
+                    lastName : fetchedUserDetail.userDetail.lastName,
+                    studentNumber : fetchedUserDetail.userDetail.studentNumber,
+                    registerationDate : fetchedUserDetail.userDetail.registerationDate,
+                    email : fetchedUserDetail.userDetail.email,
+                    gender : fetchedUserDetail.userDetail.gender,
+                    cellphone : fetchedUserDetail.userDetail.cellphone,
+                    province : fetchedUserDetail.userDetail.province,
+                    birthDate : fetchedUserDetail.userDetail.birthDate,
+                    skillScore : fetchedUserDetail.userDetail.skillScore,
+                    id: fetchedUserDetail.userDetail._id
+                }
             }
-            done(response);
+            response.outputJson = responseObj;
+            done(response)
         }
         else {
-
+          
             response.isSuccessful = false;
-            let message = global.dbExceptionHandler.tryGetErrorMessage(err);
+            let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
 
             if (message != null)
                 response.serverValidations.push(message);
             else
                 response.serverValidations.push(global.errorResource.Err0000());
 
-            done(reponse);
+            done(response);
         }
+
     });
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
+//---------------------------------------------------------------------
 
 function updateUserEmail(newEmail, userId, done) {
 
@@ -327,86 +391,87 @@ function updateUserEmail(newEmail, userId, done) {
     }
     else {
 
-        let countQuery = User.countDocuments({ $and:[{email: newEmail},{email:{$ne:''}}], _id: { $ne: userId } });
-        countQuery.exec(function (countErr, count) {
+        let findUserQuery = User.findOne({ _id: userId }, 'userDetail');
+        findUserQuery.exec((findUserErr, foundUser) => {
 
-            if (!countErr) {
+            if (!findUserErr) {
 
-                // The email has not been taken!
-                if (count === 0) {
+                let userDetailId = foundUser.userDetail;
+                //Check whther the email has already been taken
+                UserDetail.UserDetail
+                    .countDocuments({ email: newEmail, _id: { $ne: userDetailId } })
+                    .exec((countErr, countRedundantQuery) => {
 
-                    let findQuery = User.findOne({ _id: userId }, 'email');
-                    findQuery.exec(function (findErr, user) {
+                        if (!countErr) {
 
-                        if (!findErr) {
+                            if (countRedundantQuery === 0) {
 
-                            if (user) {
+                                UserDetail.UserDetail.findById(userDetailId, (findUserDetailErr, fetchedUserDetail) => {
 
-                                //Replace the new email with the old one
-                                user.email = newEmail;
-                                user.save(function (saveErr, savedUser) {
+                                    if (!findUserDetailErr) {
 
-                                    if (!saveErr) {
+                                        fetchedUserDetail.email = newEmail;
+                                        fetchedUserDetail.save((saveErr, savedUserDetail) => {
 
-                                        response.isSuccessful = true;
-                                        response.outputJson = savedUser;
-                                        done(response);
+                                            if (!saveErr) {
+
+                                                response.isSuccessful = true;
+                                                userDetailObj = {
+                                                    studenNumber: savedUserDetail.studentNumber,
+                                                    email: savedUserDetail.email,
+                                                }
+
+                                                response.outputJson = userDetailObj;
+                                                done(response);
+                                            }
+                                            else {
+
+                                                response.isSuccessful = false;
+                                                let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
+
+                                                if (message != null)
+                                                    response.serverValidations.push(message);
+                                                else
+                                                    response.serverValidations.push(global.errorResource.Err0000());
+                                                done(response);
+                                            }
+                                        });
                                     }
                                     else {
 
                                         response.isSuccessful = false;
-                                        let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
-
-                                        if (message != null)
-                                            response.serverValidations.push(message);
-                                        else
-                                            response.serverValidations.push(global.errorResource.Err0000());
+                                        response.serverValidations.push(global.errorResource.Err0000());
                                         done(response);
                                     }
-                                });
+                                }).exec();
                             }
                             else {
 
                                 response.isSuccessful = false;
-                                response.serverValidations.push(global.errorResource.Err0004());
+                                response.serverValidations.push(global.errorResource.ErrBu0013());
+                                done(response);
                             }
                         }
                         else {
 
                             response.isSuccessful = false;
-                            let message = global.dbExceptionHandler.tryGetErrorMessage(findErr);
-
-                            if (message != null)
-                                response.serverValidations.push(message);
-                            else
-                                response.serverValidations.push(global.errorResource.Err0000());
+                            response.serverValidations.push(global.errorResource.Err0000());
                             done(response);
                         }
-                    });
-                }
-                else {
 
-                    response.isSuccessful = false;
-                    response.serverValidations.push(global.errorResource.ErrBu0013());
-                    done(response);
-                }
+                    });
             }
             else {
 
                 response.isSuccessful = false;
-                let message = global.dbExceptionHandler.tryGetErrorMessage(countErr);
-
-                if (message != null)
-                    response.serverValidations.push(message);
-                else
-                    response.serverValidations.push(global.errorResource.Err0000());
+                response.serverValidations.push(global.errorResource.Err0000());
                 done(response);
             }
-        });
+        })
     }
 }
 module.exports.updateUserEmail = updateUserEmail;
-
+//---------------------------------------------------------
 function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userId, done) {
 
     let response = new global.responseClass();
@@ -449,8 +514,11 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
                                             if (!saveErr) {
 
                                                 response.isSuccessful = true;
-                                                savedUser.password = hiddenData;
-                                                response.outputJson = savedUser
+                                                responseObj = {
+                                                    password:hiddenData
+                                                }
+
+                                                response.outputJson = responseObj
                                                 done(response);
                                             }
                                             else {

@@ -1,6 +1,28 @@
 var UserMessage = require('../../model/user-message/user-message');
 /*-------------------EXPOSED FUNCTION--------------------------*/
-function sendMessage(message,done){
+async function sendInitialMessage(userId, sessionOption) {
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    let userMessage = new UserMessage();
+    userMessage.senderId = 'Administrator';
+    userMessage.receiverId = userId;
+    userMessage.sentDate = Date.now();
+    userMessage.title = global.systemMessages.welcomeTitle;
+    userMessage.text = global.systemMessages.welcomeMessage;
+
+    try {
+        await userMessage.save(sessionOption);
+        return Promise.resolve();
+    }
+    catch(exception){
+
+        return Promise.reject(exception);
+    }
+}
+module.exports.sendInitialMessage = sendInitialMessage;
+
+async function sendMessage(message) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -12,20 +34,18 @@ function sendMessage(message,done){
     userMessage.title = message.title;
     userMessage.text = message.text;
 
-    userMessage.save((saveErr,sentMessage)=>{
-
-        if(!saveErr){
+    userMessage.save()
+        .then((savedMessage) => {
 
             response.isSuccessful = true;
-            response.outputJson = sentMessage;
-            done(response);
-        }
-        else{
+            response.outputJson = savedMessage;
+            return Promise.resolve(response);
+        })
+        .catch((saveException) => {
 
             response.isSuccessful = false;
             response.serverValidations.push(global.errorResource.Err0000());
-            done(response);
-        }
-    });
+            return Promise.resolve(response);
+        });
 }
 module.exports.sendMessage = sendMessage; 

@@ -23,33 +23,22 @@ function isUserAuthenticated(req, res, next) {
 }
 
 //Save the new user
-api.post('/user', (req, res) => {
-
-
-    userController.registerUser(req.body, (response) => {
-
-        res.json({ response: response });
+api.post('/user', async (req, res) => {
+    
+    await userController.registerUser(req.body)
+    .then((response)=>{
+               
+        res.json({response:response});
         return;
-    });
-
+    });   
 });
 
 
 //Update the user information
 api.put('/user', isUserAuthenticated, (req, res) => {
 
-    userController.updateUserInformation(req.body, req.user.studentNumber, (response) => {
+    userController.updateUserInformation(req.body, req.user._id, (response) => {
 
-        res.json({ response: response });
-        return;
-    });
-});
-
-// Get the user information
-api.get('/user', isUserAuthenticated, (req, res) => {
-
-
-    userController.getUserInformation(req.user._id, (response) => {
         res.json({ response: response });
         return;
     });
@@ -86,6 +75,17 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
         return;
     });
 });
+
+api.get('/user/isAuthenticated',isUserAuthenticated,(req,res)=>{
+
+    let response = new global.responseClass();
+    response.isSuccessful = true;
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    res.json({ response: response });
+    return;
+});
+
 /*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
 

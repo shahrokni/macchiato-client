@@ -1,0 +1,40 @@
+#menuBarTitle{
+    font-family:Ubuntu-B;
+    color:#D9183B;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    
+    #menuBarTitle{
+
+        width: fit-content;
+        height: 7vw;
+        left: 12vw;
+        top: 4vw;        
+    }
+}
+
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    #menuBarTitle{
+        display: none;
+    }
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    #menuBarTitle{
+
+        width: fit-content;
+        height: 7vw;
+        left: 12vw;
+        top: 3vw;        
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) {   
+    #menuBarTitle{
+        display:none
+    }
+}
