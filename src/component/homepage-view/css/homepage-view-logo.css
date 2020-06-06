@@ -39,6 +39,9 @@
 }
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
+    #homepageViewLogo{
+        display: none;
+    }
 }
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape){

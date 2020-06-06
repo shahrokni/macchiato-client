@@ -31,6 +31,18 @@
 }
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
+    .welcomeBox{
+        width:80%;
+        margin-left:10%;
+        padding:10px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        color: #707070;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 5px;
+        font-family: Ubuntu-R;
+    }
 }
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape){
