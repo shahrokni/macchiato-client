@@ -26,10 +26,6 @@
 }
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
-    #homePageLinksContainer{       
-        flex-direction: column;
-        width: 100%;
-    }
 }
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape){
