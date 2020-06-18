@@ -58,6 +58,21 @@
 }
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
+    .homepageLinkBtn{
+        width:80%;
+        margin-left:10%;
+        padding:30px;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;        
+        border-radius: 5px;       
+        box-shadow: 0 3px 6px #00000029;
+    }
+    .homepageLinkIcon{         
+        float: right;
+        margin-top: -23px;
+        color:#D9183B;
+    }   
 }
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape){
@@ -81,6 +96,12 @@
         color:#D9183B;
     }   
     .homepageLinkTitle{
+        margin-left: 5px;        
+        width: 90%;
+        white-space: nowrap; 
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-left: 5px;
     }
 }

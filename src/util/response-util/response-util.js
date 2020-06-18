@@ -34,11 +34,12 @@ function isAuthenticated(serverResponse){
    
     let errorResource = require('../../resource/text/error-message');
     if(serverResponse.isSuccessful===false){
+
         if(serverResponse.serverValidations){
 
             if(serverResponse.serverValidations[0]===errorResource.ErrBu0017()){
                
-                return true;
+                return false;
             }
         }
     }
