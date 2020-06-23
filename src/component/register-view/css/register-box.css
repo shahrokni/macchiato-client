@@ -102,33 +102,37 @@
         background-repeat:   no-repeat;
         background-position: center center; 
         background-image: url('../../../../src/resource/image/logo.png');
-        position: relative;        
-        top: 5%;
-        left:15px;        
+        float: left;        
+        margin-top: 3%;
+        margin-left:15px;        
     }
     .registerBoxSoftwareName{
-        font-family: Ubuntu-B;
+        font-family: Ubuntu-B;       
         font-size: 28px;
         width: 100%;
-        position: relative;
-        height: 7.5%;
-        top: 8%;
+        height:13%;
+        float:left;      
         text-align: center;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .registerBoxSolgan{
         font-family: Ubuntu-R;        
         font-size: 16px;
-        width: 100%;
-        position: relative;
-        height:7.5%;
-        top:8%;
+        width: 100%;       
+        height:10%;
+        float: left;
         text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .registerBoxBtnBox{
         width: 100%;
-        position: relative;
-        height: 15%;        
-        top:10%;
+        float: left;
+        height: 15%;      
         display: flex;
         flex-direction: row;
     }
@@ -141,7 +145,7 @@
         box-shadow: 0 3px 6px #00000029;
         text-align: center;
         box-sizing: border-box;
-        padding-top: 15px;
+        padding-top: 3%;
     }
     #registerBoxSignUpBtn{
         margin-left: 5%;
