@@ -9,6 +9,66 @@
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
 
+    .registerBox{
+        position: relative;
+        width: 80vw;
+        height: 75vh;        
+        left:9vw;
+        top:1vh;
+        border-radius: 5px;       
+    }
+
+    .registerBoxLog{
+        width: 68%;
+        height: 43%;
+        background-size:     contain;                      
+        background-repeat:   no-repeat;
+        background-position: center center; 
+        background-image: url('../../../../src/resource/image/logo.png');
+        position: relative;       
+        left:16vw;        
+    }
+    .registerBoxSoftwareName{
+        font-family: Ubuntu-B;
+        font-size: 28px;
+        width: 100%;
+        position: relative;     
+        text-align: center;
+    }
+    .registerBoxSolgan{
+        font-family: Ubuntu-R;        
+        font-size: 16px;
+        width: 100%;
+        position: relative;       
+        text-align: center;
+        color: #707070;
+    }
+
+    .registerBoxBtnBox{
+        width: 100%;
+        position: relative;
+        height: 15%;        
+        top:10%;
+        display: flex;
+        flex-direction: column;
+    }
+    .registerBoxBtn{
+        font-family: Ubuntu-R;
+        height: 50%;
+        width: 100%;      
+        cursor: pointer;       
+        border-radius: 5px;
+        box-shadow: 0 3px 6px #00000029;
+        text-align: center;
+        box-sizing: border-box;
+        padding-top: 5px;
+    }
+    #registerBoxSignUpBtn{
+        margin-top: 2%;
+    }
+    #registerBoxSignInBtn{
+       margin-top: 2%;
+    }
   
 }
 /*Mobile and Tablet Landscape*/
@@ -44,8 +104,7 @@
         background-image: url('../../../../src/resource/image/logo.png');
         position: relative;        
         top: 5%;
-        left:15px;
-        
+        left:15px;        
     }
     .registerBoxSoftwareName{
         font-family: Ubuntu-B;
