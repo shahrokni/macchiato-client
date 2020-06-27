@@ -148,6 +148,75 @@
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
+    .registerBox{
+        position: relative;
+        width: 60vw;
+        height: 60vw;        
+        left:20vw;
+        top:10vh;
+        border-radius: 5px;
+        background-color: rgba(255,255,255,0.5);
+    }
+
+    .registerBoxLog{
+        width: 100%;
+        height: 60%;
+        background-size:     contain;                      
+        background-repeat:   no-repeat;
+        background-position: center center; 
+        background-image: url('../../../../src/resource/image/logo.png');
+        float: left;        
+        margin-top: 3%;
+        margin-left:15px;        
+    }
+    .registerBoxSoftwareName{
+        font-family: Ubuntu-B;       
+        font-size: 45px;
+        width: 100%;
+        height:13%;
+        float:left;      
+        text-align: center;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .registerBoxSolgan{
+        font-family: Ubuntu-R;        
+        font-size: 30px;
+        width: 100%;       
+        height:10%;
+        float: left;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .registerBoxBtnBox{
+        width: 100%;
+        float: left;
+        height: 15%;      
+        display: flex;
+        flex-direction: row;
+    }
+    .registerBoxBtn{
+        font-family: Ubuntu-R;
+        height: 80%;
+        width: 42%;      
+        cursor: pointer;       
+        border-radius: 5px;
+        box-shadow: 0 3px 6px #00000029;
+        text-align: center;
+        box-sizing: border-box;
+        padding-top: 4%;
+        font-size: 25px;
+    }
+    #registerBoxSignUpBtn{
+        margin-left: 5%;
+    }
+    #registerBoxSignInBtn{
+       margin-left: 7%;
+    }
 
 }
 
