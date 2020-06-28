@@ -6,6 +6,12 @@
     background-color: #FFFFFF;
     color: #D9183B;
 }
+.registerBoxBtn>a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
 
@@ -55,8 +61,7 @@
     .registerBoxBtn{
         font-family: Ubuntu-R;
         height: 50%;
-        width: 100%;      
-        cursor: pointer;       
+        width: 100%;           
         border-radius: 5px;
         box-shadow: 0 3px 6px #00000029;
         text-align: center;
@@ -129,8 +134,7 @@
     .registerBoxBtn{
         font-family: Ubuntu-R;
         height: 80%;
-        width: 42%;      
-        cursor: pointer;       
+        width: 42%;              
         border-radius: 5px;
         box-shadow: 0 3px 6px #00000029;
         text-align: center;
@@ -202,8 +206,7 @@
     .registerBoxBtn{
         font-family: Ubuntu-R;
         height: 80%;
-        width: 42%;      
-        cursor: pointer;       
+        width: 42%;                    
         border-radius: 5px;
         box-shadow: 0 3px 6px #00000029;
         text-align: center;
@@ -278,7 +281,6 @@
         font-family: Ubuntu-R;
         height: 80%;
         width: 42%;      
-        cursor: pointer;       
         border-radius: 5px;
         box-shadow: 0 3px 6px #00000029;
         text-align: center;
