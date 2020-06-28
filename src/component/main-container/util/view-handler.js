@@ -60,30 +60,47 @@ export default class ViewHandler {
             React.lazy(()=>import('../../practice-filter-view/practice-filter-view'));
             return <PracticeFilterView/>;
         }
-        if(currentLocatin === appGeneralInfo.mainMenuItems.reports){            
+        if(currentLocatin === appGeneralInfo.mainMenuItems.reports){     
+
             const ReportsView = 
             React.lazy(()=>import('../../reports-view/reports-view'));
             return <ReportsView/>;
         }
-        if(currentLocatin === appGeneralInfo.mainMenuItems.account){            
+        if(currentLocatin === appGeneralInfo.mainMenuItems.account){  
+
             const AccountView = 
             React.lazy(()=>import('../../account-view/account-view'));
             return <AccountView/>;
         }
-        if(currentLocatin === appGeneralInfo.mainMenuItems.wallet){            
+        if(currentLocatin === appGeneralInfo.mainMenuItems.wallet){       
+
             const WalletView = 
             React.lazy(()=>import('../../wallet-view/wallet-view'));
             return <WalletView/>;
         }
-        if(currentLocatin === appGeneralInfo.mainMenuItems.messages){            
+        if(currentLocatin === appGeneralInfo.mainMenuItems.messages){      
+
             const MessagesView = 
             React.lazy(()=>import('../../message-box-view/message-box-view'));
             return <MessagesView/>;
         }
-        if(currentLocatin === appGeneralInfo.mainMenuItems.about){            
+        if(currentLocatin === appGeneralInfo.mainMenuItems.about){  
+
             const AboutView = 
             React.lazy(()=>import('../../about-view/about-view'));
             return <AboutView/>;
+        }
+        if(currentLocatin === appGeneralInfo.views.sigin){
+
+            const SignInView= 
+            React.lazy(()=>import('../../sign-in-view/sign-in-view'));
+            return <SignInView/>
+        }
+        if(currentLocatin === appGeneralInfo.views.signup){
+
+            const SignUpView = 
+            React.lazy(()=>import('../../sign-up-view/sign-up-view'));
+            return <SignUpView/>
         }
     }
 
@@ -94,11 +111,11 @@ export default class ViewHandler {
         return <GlobalMessageView/>
     }
 
-    static retrievRegisterView(){
+    static retrievRegisterView(innerLinkClickEventHandler){
 
         const RegisterView = 
         React.lazy(()=>import('../../register-view/register-view.jsx'));        
-        return <RegisterView/>
+        return <RegisterView linkClick={innerLinkClickEventHandler}/>
         
     }
 }

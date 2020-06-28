@@ -15,6 +15,10 @@ const appGeneralInfo = {
         wallet:'wallet',
         messages:'messages',
         about:'about'
+    },
+    views:{
+        sigin:'signin',
+        signup:'signup'
     }
 }
 
