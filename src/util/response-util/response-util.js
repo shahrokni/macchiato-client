@@ -1,4 +1,4 @@
-function extractResponse(obj){
+function extractResponse(obj) {
 
     let errorResource = require('../../resource/text/error-message');
     let dateUtil = require('../date-util/date-util');
@@ -9,40 +9,51 @@ function extractResponse(obj){
     response.operationTimestamp = dateUtil.getCurrentDateTime();
     response.clientValidations = errorResource.Err0000();
 
-    if('data' in obj){
+    if ('data' in obj) {
 
         let data = obj['data'];
 
-        if('response' in data){
+        if ('response' in data) {
 
             let response = data['response'];
             return response;
         }
-        else{
+        else {
 
             return response;
         }
     }
-    else{
+    else {
 
         return response;
     }
 }
 module.exports.extractResponse = extractResponse;
 
-function isAuthenticated(serverResponse){
-   
+function isAuthenticated(serverResponse) {
+
     let errorResource = require('../../resource/text/error-message');
-    if(serverResponse.isSuccessful===false){
+    let authenticationStateObj = require('../../entity/global/authentication-state');
+    let authenticationState = authenticationStateObj.AuthenticationState;
+    
+    if (serverResponse.isSuccessful === false) {
 
-        if(serverResponse.serverValidations){
+        if (serverResponse.serverValidations) {
 
-            if(serverResponse.serverValidations[0]===errorResource.ErrBu0017()){
-               
-                return false;
+            if (serverResponse.serverValidations[0] === errorResource.ErrBu0017()) {
+                  
+                return authenticationState.NotAuthenticated;
+            }
+            else if(serverResponse.clientValidations[0] === errorResource.Err0000()){
+                
+                return authenticationState.CommunicationError;
+            }
+            else{
+                
+                return authenticationState.CommunicationError;
             }
         }
     }
-    return true;
+    return authenticationState.Authenticated;
 }
 module.exports.isAuthenticated = isAuthenticated;

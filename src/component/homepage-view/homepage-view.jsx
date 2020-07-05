@@ -21,14 +21,20 @@ export default class HomePage extends React.Component {
         service.isUserAuthenticated((serverResponse) => {
 
             let responseUtil = require('../../util/response-util/response-util');
-
-            if (responseUtil.isAuthenticated(serverResponse) === true) {
+            
+            if (responseUtil.isAuthenticated(serverResponse) === AuthenticationState.Authenticated) {
 
                 this.setState({ isAuthenticated: AuthenticationState.Authenticated });
             }
-            else {
+            else if(responseUtil.isAuthenticated(serverResponse) === AuthenticationState.NotAuthenticated) {
+               
                 this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated });
             }
+            else if(responseUtil.isAuthenticated(serverResponse) === AuthenticationState.CommunicationError){                
+                
+                this.setState({isAuthenticated:AuthenticationState.CommunicationError});
+            }
+            
         });
     }
 
@@ -57,6 +63,11 @@ export default class HomePage extends React.Component {
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
                         {ViewHandler.retrievRegisterView(this.props.linkClick)}
+                    </React.Suspense>
+                }
+                {isUserAuthenticated === AuthenticationState.CommunicationError &&
+                    <React.Suspense fallback={<h3>Loading ...</h3>}>
+                        {ViewHandler.retrievGlobalMessageView()}
                     </React.Suspense>
                 }
             </React.Fragment>

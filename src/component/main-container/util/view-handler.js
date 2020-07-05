@@ -20,8 +20,9 @@ export default class ViewHandler {
             return store.getState().currentComponent;
         }
 
+        //Keep the new location in the container
         store.dispatch(changeCurrentLocation(currentLocatin));
-        console.log(currentLocatin);
+       
 
         if (currentLocatin === appGeneralInfo.mainMenuItems.homePage) {
             const HomePageView = React.lazy(() => import('../../homepage-view/homepage-view'));
@@ -124,6 +125,7 @@ export default class ViewHandler {
 
     static retrievGlobalMessageView() {
 
+        //TODO: Parameters?!
         const GlobalMessageView =
             React.lazy(() => import('../../global-message-view/global-message-view'));
         return <GlobalMessageView />
