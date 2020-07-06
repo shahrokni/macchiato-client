@@ -1,10 +1,20 @@
 import React from 'react';
 import './css/sign-in-view.css';
+import SigInLogo from './sign-in-logo';
+import SignInWhiteBox from './sign-in-white-box';
+import WelcomeBox from '../welcome-box/welcome-box';
 
-export default class SignInView extends React.Component{
+export default class SignInView extends React.Component {
     render() {
         return (
-            <h1>Sign In</h1>
+            <React.Fragment>
+                <WelcomeBox text="Welcome to English Macchiato" />
+                <div className="signInViewContainer">
+
+                    <SigInLogo />
+                    <SignInWhiteBox />
+                </div>
+            </React.Fragment>
         )
     }
 }
