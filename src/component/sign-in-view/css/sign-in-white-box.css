@@ -1,6 +1,6 @@
 /*ALL DEVICES*/
 .signInWhiteBoxContainer{
-    background-color: #FFFFFF;
+    background-color: rgba(255,255,255,0.7);
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
@@ -25,8 +25,16 @@
         float: left;       
         width: 100%;
         border-radius: 5px;
-        box-shadow: 0px 6px 12px #70707029;
-        opacity: 0.7;
+        box-shadow: 0px 6px 12px #70707029;     
+    }
+
+    /*Material UI text field control*/
+    .MuiTextField-root{
+
+        width: 90%;
+        float: left;
+        margin-top: 10px !important;
+        margin-left: 5% !important;
     }
 
 } 

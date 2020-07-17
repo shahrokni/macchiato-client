@@ -6,7 +6,7 @@ export default class FrogotPassword extends React.Component{
     render(){
         return (
             //TODO
-            <a>Forgot Password</a>
+            <a>Forgot Password?</a>
         )
     }
 }
