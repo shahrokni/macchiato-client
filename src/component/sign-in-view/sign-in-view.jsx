@@ -12,7 +12,7 @@ export default class SignInView extends React.Component {
                 <div className="signInViewContainer">
 
                     <SigInLogo />
-                    <SignInWhiteBox />
+                    <SignInWhiteBox linkClick={this.props.linkClick} />
                 </div>
             </React.Fragment>
         )

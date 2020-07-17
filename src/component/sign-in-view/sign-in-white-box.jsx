@@ -9,6 +9,9 @@ import ErrorMessage from '../../resource/text/error-message';
 
 export default class SignInWhiteBox extends React.Component {
 
+    //If the user is already signed in
+    //Do not show this page
+    //Instead redirect to the homepage!
     constructor(props) {
 
         super(props);
@@ -52,11 +55,11 @@ export default class SignInWhiteBox extends React.Component {
 
                 <div className="signInOptions">
                     <RememberMe />
-                    <ForgotPassword />
+                    <ForgotPassword linkClick={this.props.linkClick}/>
                 </div>
 
                 <SimpleBtn text={'Sign in'} action={this.signInAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
-                <SignUpLink />
+                <SignUpLink  linkClick={this.props.linkClick}/>
             </div>
         )
     }

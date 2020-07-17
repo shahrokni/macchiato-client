@@ -1,6 +1,6 @@
 /*ALL DEVICES*/
 .signInWhiteBoxContainer{
-    background-color: rgba(255,255,255,0.7);
+    background-color: rgba(255,255,255,0.8);
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
@@ -36,5 +36,9 @@
         margin-top: 10px !important;
         margin-left: 5% !important;
     }
-
+    .signInOptions{
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
 } 

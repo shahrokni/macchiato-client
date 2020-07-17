@@ -6,8 +6,8 @@ export default class RememberMe extends React.Component{
     render(){
         return (
             <React.Fragment>
-                 <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
                  <div className="rememberMe">Remember Me</div>
+                 <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />                 
             </React.Fragment>
         )
     }

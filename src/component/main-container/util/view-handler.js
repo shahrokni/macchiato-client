@@ -110,7 +110,7 @@ export default class ViewHandler {
 
             const SignInView =
                 React.lazy(() => import('../../sign-in-view/sign-in-view'));
-            createdComponent = <SignInView />
+            createdComponent = <SignInView linkClick={innerLinkClickEventHandler}/>
         }
         if (currentLocatin === appGeneralInfo.views.signup) {
 
