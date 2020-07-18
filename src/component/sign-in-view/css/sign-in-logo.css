@@ -45,10 +45,13 @@
         float: left;
         width: 32vw;
     }
-    .signInLogoPicture{
-        background-color: black;
+    .signInLogoPicture{        
         width: 8vw;
         height:8vw;
         float: left;
+        background-image: url('../../../../src/resource/image/logo.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 } 

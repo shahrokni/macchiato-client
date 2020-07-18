@@ -4,6 +4,11 @@
     box-sizing: border-box;
     border-radius: 5px;
 }
+.simpleBtnPrimaryStyle{
+    background-color: #D9183B;
+    color: #FFFFFF;
+    font-family:  Montserrat-Medium;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
 
@@ -23,7 +28,7 @@
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  {   
 
-    .simpleBtn{
+    .simpleBtn {
         padding: 15px;        
     }
 } 
