@@ -18,7 +18,8 @@ const appGeneralInfo = {
     },
     views:{
         sigin:'signin',
-        signup:'signup'
+        signup:'signup',
+        forgotPassword:'forgotpassword'
     }
 }
 

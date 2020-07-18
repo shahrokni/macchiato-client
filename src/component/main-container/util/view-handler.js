@@ -119,6 +119,13 @@ export default class ViewHandler {
             createdComponent = <SignUpView />
         }
 
+        if(currentLocatin === appGeneralInfo.views.forgotPassword){
+
+            const ForgotPassword = 
+                React.lazy(()=>import('../../forgot-password-view/forgot-password-view'));
+            
+                createdComponent = <ForgotPassword/>
+        }
         store.dispatch(keepCurrentComponent(createdComponent));
         return createdComponent;
     }
