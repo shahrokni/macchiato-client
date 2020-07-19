@@ -10,11 +10,12 @@ export default class SignInView extends React.Component {
 
         super(props);
 
-        signinViewModel = {
+        this.signinViewModel = {
             username: undefined,
             password: undefined
         }
     }
+    
     render() {
         return (
             <React.Fragment>
@@ -36,6 +37,6 @@ export default class SignInView extends React.Component {
     }
 
     validateSigninViewModel(){
-        
+
     }
 }
