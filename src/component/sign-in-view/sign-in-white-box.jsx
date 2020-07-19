@@ -43,9 +43,9 @@ export default class SignInWhiteBox extends React.Component {
         return (
             <div className="signInWhiteBoxContainer">
 
-                <TextField
+                <TextField                
                 error={this.state.validationState.userNameValidation.isValid}
-                helperText={this.state.validationState.userNameValidation.errorMessage}
+                helperText={this.state.validationState.userNameValidation.errorMessage}                
                 id="signInUsernameTxtField" label="Username" variant="outlined" />
 
                 <TextField
@@ -58,21 +58,9 @@ export default class SignInWhiteBox extends React.Component {
                     <ForgotPassword linkClick={this.props.linkClick}/>
                 </div>
 
-                <SimpleBtn text={'Sign in'} action={this.signInAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
+                <SimpleBtn text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
                 <SignUpLink  linkClick={this.props.linkClick}/>
             </div>
         )
-    }
-
-    signInAction() {
-
-    }
-
-    validateUsernameTextField() {
-      
-    }
-
-    validatePasswordTextField(){
-
     }
 }

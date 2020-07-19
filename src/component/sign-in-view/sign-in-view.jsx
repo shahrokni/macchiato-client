@@ -5,6 +5,16 @@ import SignInWhiteBox from './sign-in-white-box';
 import WelcomeBox from '../welcome-box/welcome-box';
 
 export default class SignInView extends React.Component {
+
+    constructor(props) {
+
+        super(props);
+
+        signinViewModel = {
+            username: undefined,
+            password: undefined
+        }
+    }
     render() {
         return (
             <React.Fragment>
@@ -12,9 +22,20 @@ export default class SignInView extends React.Component {
                 <div className="signInViewContainer">
 
                     <SigInLogo />
-                    <SignInWhiteBox linkClick={this.props.linkClick} />
+                    <SignInWhiteBox
+                        signinViewModel = {this.signinViewModel}
+                        signinAction={this.signin}
+                        linkClick={this.props.linkClick} />
                 </div>
             </React.Fragment>
         )
+    }
+
+    signin() {
+
+    }
+
+    validateSigninViewModel(){
+        
     }
 }

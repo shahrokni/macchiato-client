@@ -10,7 +10,9 @@ export default class SimpleBtn extends React.Component {
             btnStyle = 'simpleBtnSecondaryStyle';
         }
         return (
-            <div className={'simpleBtn ' + btnStyle}
+            <div
+                onClick = {this.props.action} 
+                className={'simpleBtn ' + btnStyle}
                 style={{
                     width: this.props.simpleStyle.size,
                     textAlign: this.props.simpleStyle.textAlign,
