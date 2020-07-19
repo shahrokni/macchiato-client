@@ -6,6 +6,7 @@ import './css/sign-in-white-box.css';
 import SimpleBtn from '../simple-btn/simple-btn';
 import TextField from '@material-ui/core/TextField';
 import ErrorMessage from '../../resource/text/error-message';
+import { checkUserName, checkStrongPassword } from '../../util/regex/string-regex';
 
 export default class SignInWhiteBox extends React.Component {
 
@@ -15,19 +16,13 @@ export default class SignInWhiteBox extends React.Component {
     constructor(props) {
 
         super(props);
+        this.parentViewModel = props.signinViewModel;    
 
         this.state = {
-            validationState: {
-                userNameValidation: {
-                    isValid: true,
-                    errorMessage: ErrorMessage.ErrBu0004()
-                },
-                passwordValidation: {
-                    isValid: true,
-                    errorMessage: ErrorMessage.ErrBu0006()
-                }
-            }
-        }
+        isUsernameValid:false, 
+        isPasswordValid:false,
+        usernameErrorMessage:undefined,
+        passwordErrorMessage:undefined}
     }
 
     render() {
@@ -43,14 +38,20 @@ export default class SignInWhiteBox extends React.Component {
         return (
             <div className="signInWhiteBoxContainer">
 
-                <TextField                
-                error={this.state.validationState.userNameValidation.isValid}
-                helperText={this.state.validationState.userNameValidation.errorMessage}                
+                <TextField   
+                onChange={(e)=>{
+                   this.trackUsernameChange(this,e);
+                }}        
+                error={!this.state.isUsernameValid}
+                helperText={this.state.usernameErrorMessage}                
                 id="signInUsernameTxtField" label="Username" variant="outlined" />
 
                 <TextField
-                error={this.state.validationState.passwordValidation.isValid}
-                helperText={this.state.validationState.passwordValidation.errorMessage}
+                onChange={(e)=>{
+                    this.trackPasswordChange(this,e)
+                }}
+                error={!this.state.isPasswordValid}
+                helperText={this.state.passwordErrorMessage}
                 id="signInPasswordTxtField" label="Password" type="password" variant="outlined" />
 
                 <div className="signInOptions">
@@ -62,5 +63,31 @@ export default class SignInWhiteBox extends React.Component {
                 <SignUpLink  linkClick={this.props.linkClick}/>
             </div>
         )
+    }
+    
+    trackUsernameChange(invoker,e){
+        
+        invoker.parentViewModel.username = e.target.value;
+        let isValid = checkUserName(invoker.parentViewModel.username);
+
+        (isValid===false) ? invoker.enableUsernameWarning(invoker,true):invoker. enableUsernameWarning(invoker,false);
+    }
+
+    trackPasswordChange(invoker,e){
+
+        invoker.parentViewModel.password = e.target.value;
+        let isValid = checkStrongPassword(invoker.parentViewModel.password);
+        (isValid===false)? invoker.enablePasswordWarning(invoker,true):invoker.enablePasswordWarning(invoker,false);
+    }
+
+    enableUsernameWarning(invoker,isEnabled){
+        
+        (isEnabled===true)?invoker.setState({isUsernameValid:false,usernameErrorMessage:ErrorMessage.ErrBu0004()}):
+        invoker.setState({isUsernameValid:true,usernameErrorMessage:""});
+    }    
+
+    enablePasswordWarning(invoker,isEnabled){
+        (isEnabled===true)?invoker.setState({isPasswordValid:false,passwordErrorMessage:ErrorMessage.ErrBu0006()}):
+        invoker.setState({isPasswordValid:true,passwordErrorMessage:""});
     }
 }

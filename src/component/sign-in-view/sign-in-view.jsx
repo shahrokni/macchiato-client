@@ -25,15 +25,18 @@ export default class SignInView extends React.Component {
                     <SigInLogo />
                     <SignInWhiteBox
                         signinViewModel = {this.signinViewModel}
-                        signinAction={this.signin}
+                        signinAction={()=>{
+                            this.signin(this)
+                        }}
                         linkClick={this.props.linkClick} />
                 </div>
             </React.Fragment>
         )
     }
 
-    signin() {
+    signin(invoker) {
 
+        alert(invoker.signinViewModel.username);
     }
 
     validateSigninViewModel(){
