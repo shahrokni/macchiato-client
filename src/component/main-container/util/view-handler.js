@@ -5,7 +5,7 @@ import {
     keepCurrentComponent
 } from '../../../util/state-management-handler/actions';
 import store from '../../../util/state-management-handler/store';
-import { createStore } from 'redux';
+
 
 export default class ViewHandler {
 

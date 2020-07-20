@@ -2,6 +2,7 @@ import React from 'react';
 import RememberMe from './remember-me';
 import ForgotPassword from './forgot-password';
 import SignUpLink from './sign-up-link';
+import SigninMessage from './sign-in-message';
 import './css/sign-in-white-box.css';
 import SimpleBtn from '../simple-btn/simple-btn';
 import TextField from '@material-ui/core/TextField';
@@ -58,7 +59,8 @@ export default class SignInWhiteBox extends React.Component {
                     <RememberMe />
                     <ForgotPassword linkClick={this.props.linkClick}/>
                 </div>
-
+                
+                <SigninMessage siginmessage = {this.props.siginmessage}/>
                 <SimpleBtn text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
                 <SignUpLink  linkClick={this.props.linkClick}/>
             </div>
