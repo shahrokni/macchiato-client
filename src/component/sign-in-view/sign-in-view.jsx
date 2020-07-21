@@ -6,6 +6,10 @@ import WelcomeBox from '../welcome-box/welcome-box';
 import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import ViewHandler from '../main-container/util/view-handler';
+import GlobalMessageViewModel from '../global-message-view/view-model/global-message-view-model';
+import {GlobalMessageType} from '../global-message-view/view-model/global-message-type';
+import ErrorMessage from '../../resource/text/error-message';
+import { appGeneralInfo } from '../../setup-general-information';
 
 export default class SignInView extends React.Component {
 
@@ -71,9 +75,10 @@ export default class SignInView extends React.Component {
                     </React.Suspense>
                 }
                 {isUserAuthenticated === AuthenticationState.CommunicationError &&
-                    <React.Suspense fallback={<h3>Loading ...</h3>}>
-                        {/* TODO */}
-                        {ViewHandler.retrievGlobalMessageView()}
+                    <React.Suspense fallback={<h3>Loading ...</h3>}>                        
+                        {
+                            ViewHandler.retrievGlobalMessageView(this.getCommiunicationErrorMessage())
+                        }
                     </React.Suspense>
                 }
             </React.Fragment>
@@ -87,5 +92,16 @@ export default class SignInView extends React.Component {
 
     validateSigninViewModel() {
 
+    }
+
+    getCommiunicationErrorMessage(){
+
+        let globalMessage = new GlobalMessageViewModel();
+        globalMessage.text = ErrorMessage.Err0000()+' Please try again!';
+        globalMessage.type = GlobalMessageType.Error;
+        globalMessage.title = 'Something went wrong!'
+        globalMessage.redirect.link = '/'+appGeneralInfo.views.sigin;
+        globalMessage.redirect.text = 'Try again!'
+        return globalMessage;
     }
 }

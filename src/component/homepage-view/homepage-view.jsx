@@ -62,6 +62,7 @@ export default class HomePage extends React.Component {
                 }
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
+                        {/*BUG*/}
                         {ViewHandler.retrievRegisterView(this.props.linkClick)}
                     </React.Suspense>
                 }

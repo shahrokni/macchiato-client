@@ -130,12 +130,11 @@ export default class ViewHandler {
         return createdComponent;
     }
 
-    static retrievGlobalMessageView() {
-
-        //TODO: Parameters?!
+    static retrievGlobalMessageView(globalMessageobject) {
+        
         const GlobalMessageView =
             React.lazy(() => import('../../global-message-view/global-message-view'));
-        return <GlobalMessageView />
+        return <GlobalMessageView globalMessageObject = {globalMessageobject} />
     }
 
     static retrievRegisterView(innerLinkClickEventHandler) {
