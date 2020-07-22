@@ -6,10 +6,8 @@ import WelcomeBox from '../welcome-box/welcome-box';
 import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import ViewHandler from '../main-container/util/view-handler';
-import GlobalMessageViewModel from '../global-message-view/view-model/global-message-view-model';
-import {GlobalMessageType} from '../global-message-view/view-model/global-message-type';
-import ErrorMessage from '../../resource/text/error-message';
-import { appGeneralInfo } from '../../setup-general-information';
+import CommonGlobalMessages from '../../resource/text/common-global-messages';
+import User from '../../entity/user/user';
 
 export default class SignInView extends React.Component {
 
@@ -27,8 +25,8 @@ export default class SignInView extends React.Component {
 
     componentDidMount() {
 
-        let service = new UserService();
-        service.isUserAuthenticated((serverResponse) => {
+        let userService = new UserService();
+        userService.isUserAuthenticated((serverResponse) => {
 
             let responseUtil = require('../../util/response-util/response-util');
 
@@ -77,7 +75,7 @@ export default class SignInView extends React.Component {
                 {isUserAuthenticated === AuthenticationState.CommunicationError &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>                        
                         {
-                            ViewHandler.retrievGlobalMessageView(this.getCommiunicationErrorMessage())
+                            ViewHandler.retrievGlobalMessageView(CommonGlobalMessages.getCommunicationErrorMessage())
                         }
                     </React.Suspense>
                 }
@@ -87,21 +85,13 @@ export default class SignInView extends React.Component {
 
     signin(invoker) {
 
-        alert(invoker.signinViewModel);
+        let userService = new UserService();
+        let user = new User();
+        user.userName = invoker.signinViewModel.username;
+        user.password = invoker.signinViewModel.password;
+        userService.signIn(user,(serverResponse)=>{
+
+        });        
     }
-
-    validateSigninViewModel() {
-
-    }
-
-    getCommiunicationErrorMessage(){
-
-        let globalMessage = new GlobalMessageViewModel();
-        globalMessage.text = ErrorMessage.Err0000()+' Please try again!';
-        globalMessage.type = GlobalMessageType.Error;
-        globalMessage.title = 'Something went wrong!'
-        globalMessage.redirect.link = '/'+appGeneralInfo.views.sigin;
-        globalMessage.redirect.text = 'Try again!'
-        return globalMessage;
-    }
+   
 }
