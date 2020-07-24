@@ -5,9 +5,8 @@ import SignInWhiteBox from './sign-in-white-box';
 import WelcomeBox from '../welcome-box/welcome-box';
 import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
-import ViewHandler from '../main-container/util/view-handler';
-import CommonGlobalMessages from '../../resource/text/common-global-messages';
 import User from '../../entity/user/user';
+import { appGeneralInfo } from '../../setup-general-information';
 
 export default class SignInView extends React.Component {
 
@@ -69,13 +68,24 @@ export default class SignInView extends React.Component {
                 }
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
-                        {/* TODO */}
+                        <div style={{ visibility: 'hidden' }}>
+                            {
+                                window.location.href = appGeneralInfo.baseUrl+
+                                appGeneralInfo.mainMenuItems.homePage
+                            }
+                        </div>
                     </React.Suspense>
                 }
                 {isUserAuthenticated === AuthenticationState.CommunicationError &&
-                    <React.Suspense fallback={<h3>Loading ...</h3>}>                        
+                    <React.Suspense fallback={<h3>Loading ...</h3>}>
                         {
-                            ViewHandler.retrievGlobalMessageView(CommonGlobalMessages.getCommunicationErrorMessage())
+                            /*Redirect to Global View Message*/
+                            <div style={{ visibility: 'hidden' }}>
+                                {
+                                    window.location.href = appGeneralInfo.baseUrl +
+                                    appGeneralInfo.views.globalMessage
+                                }
+                            </div>
                         }
                     </React.Suspense>
                 }
@@ -89,9 +99,9 @@ export default class SignInView extends React.Component {
         let user = new User();
         user.userName = invoker.signinViewModel.username;
         user.password = invoker.signinViewModel.password;
-        userService.signIn(user,(serverResponse)=>{
+        userService.signIn(user, (serverResponse) => {
 
-        });        
+        });
     }
-   
+
 }
