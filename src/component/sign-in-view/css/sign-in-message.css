@@ -1,5 +1,9 @@
 /*ALL DEVICES*/
-
+.signinMessageBox{
+    color: #D9183B;
+    font-family: Montserrat-Medium;
+    font-size: 12px;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
 
@@ -18,5 +22,9 @@
 
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  {   
-    
+    .signinMessageBox{
+        width: 80%;
+        float: left;
+        margin-left: 5%;
+    }
 } 

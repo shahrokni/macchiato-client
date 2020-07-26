@@ -14,7 +14,7 @@ export default class SignInView extends React.Component {
 
         super(props);
 
-        this.state = { sigingmessage: '', isAuthenticated: AuthenticationState.NotSet };
+        this.state = { siginmessage: '', isAuthenticated: AuthenticationState.NotSet };
 
         this.signinViewModel = {
             username: undefined,
@@ -57,7 +57,7 @@ export default class SignInView extends React.Component {
                         <div className="signInViewContainer">
                             <SigInLogo />
                             <SignInWhiteBox
-                                siginmessage={this.state.sigingmessage}
+                                siginmessage={this.state.siginmessage}
                                 signinViewModel={this.signinViewModel}
                                 signinAction={() => {
                                     this.signin(this)
@@ -94,13 +94,39 @@ export default class SignInView extends React.Component {
     }
 
     signin(invoker) {
-
+      
         let userService = new UserService();
         let user = new User();
         user.userName = invoker.signinViewModel.username;
         user.password = invoker.signinViewModel.password;
-        userService.signIn(user, (serverResponse) => {
+        userService.signIn(user, (response) => {
 
+            
+            if(response.isSuccessful===true){
+
+                //TODO: Get the user Information and put it in the context
+                //TODO: Remember me check!
+                //TODO: It must work with Enter key
+                //TOOD: Clear error message when the sigin in button is hit again
+                this.setState({isAuthenticated:AuthenticationState.Authenticated});
+            }else{
+                
+                let errorMessage = '';
+
+                if(response.serverValidations.length!=0){   
+                    
+                    //Check if server encounters any error
+                    errorMessage = response.serverValidations[0];
+                }
+                else if(response.clientValidations.length!=0){
+                    
+                    // Check if the client encounters any error
+                    errorMessage = response.clientValidations[0];
+                }
+
+                this.setState({isAuthenticated:AuthenticationState.NotAuthenticated,
+                    siginmessage: errorMessage});
+            }
         });
     }
 

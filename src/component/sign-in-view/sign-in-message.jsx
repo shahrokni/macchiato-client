@@ -8,8 +8,8 @@ export default function SigninMessage(props) {
 
     const [message, setMessage] = useState('');
 
-    useEffect(() => {
-        setMessage(props.message);
+    useEffect(() => {        
+        setMessage(props.siginmessage);
     });
 
     if (message) {

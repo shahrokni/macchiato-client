@@ -33,7 +33,7 @@ export default class ViewHandler {
         if (currentLocatin === appGeneralInfo.mainMenuItems.languageLevel) {
             //TODO
             const GlobalMessageView = React.lazy(() => import('../../global-message-view/global-message-view'));
-            createdComponent = <GlobalMessageView />;
+            createdComponent = <GlobalMessageView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /* Mock Tests */
@@ -41,7 +41,7 @@ export default class ViewHandler {
 
             const MockTestsView =
                 React.lazy(() => import('../../mock-tests-view/mock-tests-view'));
-            createdComponent = <MockTestsView />;
+            createdComponent = <MockTestsView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Vocabulary Practice*/
@@ -50,7 +50,7 @@ export default class ViewHandler {
             //TODO
             const PracticeFilterView =
                 React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView />;
+            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Listening Practice*/
@@ -58,7 +58,7 @@ export default class ViewHandler {
             //TODO
             const PracticeFilterView =
                 React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView />;
+            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Reading Practice*/
@@ -66,7 +66,7 @@ export default class ViewHandler {
             //TODO
             const PracticeFilterView =
                 React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView />;
+            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Writing Practice*/
@@ -74,7 +74,7 @@ export default class ViewHandler {
             //TODO
             const PracticeFilterView =
                 React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView />;
+            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Speaking Practice*/
@@ -82,7 +82,7 @@ export default class ViewHandler {
             //TODO
             const PracticeFilterView =
                 React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView />;
+            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Slang Practice*/
@@ -90,7 +90,7 @@ export default class ViewHandler {
             //TODO
             const PracticeFilterView =
                 React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView />;
+            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /* Reports */
@@ -98,7 +98,7 @@ export default class ViewHandler {
 
             const ReportsView =
                 React.lazy(() => import('../../reports-view/reports-view'));
-            createdComponent = <ReportsView />;
+            createdComponent = <ReportsView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Account*/
@@ -106,7 +106,7 @@ export default class ViewHandler {
 
             const AccountView =
                 React.lazy(() => import('../../account-view/account-view'));
-            createdComponent = <AccountView />;
+            createdComponent = <AccountView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Wallet*/
@@ -114,7 +114,7 @@ export default class ViewHandler {
 
             const WalletView =
                 React.lazy(() => import('../../wallet-view/wallet-view'));
-            createdComponent = <WalletView />;
+            createdComponent = <WalletView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Message*/
@@ -122,7 +122,7 @@ export default class ViewHandler {
 
             const MessagesView =
                 React.lazy(() => import('../../message-box-view/message-box-view'));
-            createdComponent = <MessagesView />;
+            createdComponent = <MessagesView  linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*About*/
@@ -130,7 +130,7 @@ export default class ViewHandler {
 
             const AboutView =
                 React.lazy(() => import('../../about-view/about-view'));
-            createdComponent = <AboutView />;
+            createdComponent = <AboutView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Sign in */
@@ -146,7 +146,7 @@ export default class ViewHandler {
 
             const SignUpView =
                 React.lazy(() => import('../../sign-up-view/sign-up-view'));
-            createdComponent = <SignUpView />
+            createdComponent = <SignUpView linkClick={innerLinkClickEventHandler}/>
         }
 
         /*Forgot password*/
@@ -155,7 +155,7 @@ export default class ViewHandler {
             const ForgotPassword =
                 React.lazy(() => import('../../forgot-password-view/forgot-password-view'));
 
-            createdComponent = <ForgotPassword />
+            createdComponent = <ForgotPassword linkClick={innerLinkClickEventHandler}/>
         }
 
         /* Global message view */
@@ -164,7 +164,7 @@ export default class ViewHandler {
             const GlobalMessageView =
                 React.lazy(() => import('../../global-message-view/global-message-view'));
 
-            createdComponent = <GlobalMessageView/>
+            createdComponent = <GlobalMessageView linkClick={innerLinkClickEventHandler}/>
         }
 
         /* Register view */
@@ -173,7 +173,7 @@ export default class ViewHandler {
             const RegisterView = 
                 React.lazy(()=>import('../../register-view/register-view'));
             
-            createdComponent = <RegisterView />
+            createdComponent = <RegisterView linkClick={innerLinkClickEventHandler}/>
         }
 
         store.dispatch(keepCurrentComponent(createdComponent));
