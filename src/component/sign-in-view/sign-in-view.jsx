@@ -7,6 +7,8 @@ import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import User from '../../entity/user/user';
 import { appGeneralInfo } from '../../setup-general-information';
+import store from '../../util/state-management-handler/store';
+import {keepUserInformation} from '../../util/state-management-handler/actions';
 
 export default class SignInView extends React.Component {
 
@@ -53,7 +55,7 @@ export default class SignInView extends React.Component {
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
 
                     <React.Fragment>
-                        <WelcomeBox text="Welcome to English Macchiato" />
+                        <WelcomeBox/>
                         <div className="signInViewContainer">
                             <SigInLogo />
                             <SignInWhiteBox
@@ -103,12 +105,16 @@ export default class SignInView extends React.Component {
 
             
             if(response.isSuccessful===true){
+                
+                let getUserService = new UserService();                
+                //Get the user Information and put it in the context
+                getUserService.getUserDetail((fetchedUser)=>{
 
-                //TODO: Get the user Information and put it in the context
-                //TODO: Remember me check!
-                //TODO: It must work with Enter key
-                //TOOD: Clear error message when the sigin in button is hit again
-                this.setState({isAuthenticated:AuthenticationState.Authenticated});
+                    console.log(fetchedUser);
+                    store.dispatch(keepUserInformation(fetchedUser));
+                    this.setState({isAuthenticated:AuthenticationState.Authenticated});                    
+                });                
+                
             }else{
                 
                 let errorMessage = '';
@@ -126,8 +132,11 @@ export default class SignInView extends React.Component {
 
                 this.setState({isAuthenticated:AuthenticationState.NotAuthenticated,
                     siginmessage: errorMessage});
+                return;
             }
         });
+
+        this.setState({isAuthenticated:AuthenticationState.NotAuthenticated,siginmessage:''});
     }
 
 }

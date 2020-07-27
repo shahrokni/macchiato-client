@@ -8,7 +8,7 @@ export default class RegisterView extends React.Component {
         return (
 
             <div className='fullSize absolute'>
-                <WelcomeBox text="Welcome to English Macchiato!" />
+                <WelcomeBox />
                 <RegisterBox linkClick ={this.props.linkClick}/>
             </div>
         );

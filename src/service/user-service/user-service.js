@@ -34,7 +34,7 @@ export default class UserService {
     }
 
     getUserDetail(callBack) {
-
+       
         let response = new Response();
         response.isSuccessful = false;
         response.operationTimestamp = this.dateUtil.getCurrentDateTime();

@@ -46,7 +46,7 @@ export default class HomePage extends React.Component {
             <React.Fragment>
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
                     <div id='homePageContainer'>
-                        <WelcomeBox text="Welcome Amir Tahmasebi!" />
+                        <WelcomeBox />
                         <HomepageViewLogo />
                         <div id='homePageLinksContainer'>
                             <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice} />
