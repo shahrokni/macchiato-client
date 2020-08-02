@@ -11,6 +11,6 @@ export function keepCurrentComponent(component){
     return {type:KEEP_CURRENT_COMPONENT, component:component};
 }
 
-export function keepUserInformation(user){
-    return {type:KEEP_USER_INFORMATION, user:user}
+export function keepUserInformation(user){   
+    return {type:KEEP_USER_INFORMATION, currentUser:user}
 }

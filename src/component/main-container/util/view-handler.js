@@ -175,7 +175,7 @@ export default class ViewHandler {
             
             createdComponent = <RegisterView linkClick={innerLinkClickEventHandler}/>
         }
-
+               
         store.dispatch(keepCurrentComponent(createdComponent));
         return createdComponent;
     }

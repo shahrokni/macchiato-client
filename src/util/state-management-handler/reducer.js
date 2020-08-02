@@ -26,10 +26,10 @@ function keepCurrentComponent(state = '', action) {
 }
 
 function keepUserInformation(state = '', action) {
-
+    
     switch (action.type) {
         case KEEP_USER_INFORMATION:
-            return action.user;
+            return action.currentUser;
         default:
             return state;
     }
@@ -37,6 +37,6 @@ function keepUserInformation(state = '', action) {
 const combinedReducers = combineReducers({
     location: changeCurrentLocation,
     currentComponent: keepCurrentComponent,
-    user: keepUserInformation
+    currentUser: keepUserInformation
 });
 export default combinedReducers;

@@ -2,27 +2,21 @@ import React from 'react';
 import './css/welcome-box.css';
 import store from '../../util/state-management-handler/store';
 
-export default class WelcomeBox extends React.Component{
+export default class WelcomeBox extends React.Component {
 
-    constructor(props){
-
+    constructor(props) {
         super(props);
-        this.state = {welcomeMessage:'Welcome to English Macchiato!'};
     }
 
-    componentDidMount(){
+    render() {
 
-        let userDetail = store.getState().user;        
-        if(userDetail){
-
-            this.setState({welcomeMessage:'Welcome '+userDetail.name+' '+userDetail.lastName+'!'});
-        }
-    }   
-
-    render(){
+        const defaultWelcomeMessage = 'Welcome to English Macchiato!'
         return (
             <div className="welcomeBox">
-              {this.state.welcomeMessage}
+                {(store.getState().currentUser) ?
+                    'Welcome ' + store.getState().currentUser.name + ' '
+                    + store.getState().currentUser.lastName
+                    : defaultWelcomeMessage}
             </div>
         )
     }

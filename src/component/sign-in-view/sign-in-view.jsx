@@ -8,7 +8,8 @@ import { AuthenticationState } from '../../entity/global/authentication-state';
 import User from '../../entity/user/user';
 import { appGeneralInfo } from '../../setup-general-information';
 import store from '../../util/state-management-handler/store';
-import {keepUserInformation} from '../../util/state-management-handler/actions';
+import { keepUserInformation } from '../../util/state-management-handler/actions';
+
 
 export default class SignInView extends React.Component {
 
@@ -55,7 +56,7 @@ export default class SignInView extends React.Component {
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
 
                     <React.Fragment>
-                        <WelcomeBox/>
+                        <WelcomeBox />
                         <div className="signInViewContainer">
                             <SigInLogo />
                             <SignInWhiteBox
@@ -72,7 +73,7 @@ export default class SignInView extends React.Component {
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
                         <div style={{ visibility: 'hidden' }}>
                             {
-                                window.location.href = appGeneralInfo.baseUrl+
+                                window.location.href = appGeneralInfo.baseUrl +
                                 appGeneralInfo.mainMenuItems.homePage
                             }
                         </div>
@@ -96,47 +97,51 @@ export default class SignInView extends React.Component {
     }
 
     signin(invoker) {
-      
+       
         let userService = new UserService();
         let user = new User();
         user.userName = invoker.signinViewModel.username;
         user.password = invoker.signinViewModel.password;
+
         userService.signIn(user, (response) => {
 
-            
-            if(response.isSuccessful===true){
-                
-                let getUserService = new UserService();                
-                //Get the user Information and put it in the context
-                getUserService.getUserDetail((fetchedUser)=>{
+            if (response.isSuccessful === true) {
 
-                    console.log(fetchedUser);
-                    store.dispatch(keepUserInformation(fetchedUser));
-                    this.setState({isAuthenticated:AuthenticationState.Authenticated});                    
-                });                
-                
-            }else{
-                
+                //Get the user Information and put it in the context
+                userService.getUserDetail((fetchedUser) => {
+
+                    invoker.setCurrentApplicationUser(fetchedUser).then(                       
+                        invoker.setState({ isAuthenticated: AuthenticationState.Authenticated })                                       
+                    );
+                });
+
+            } else {
+
                 let errorMessage = '';
 
-                if(response.serverValidations.length!=0){   
-                    
+                if (response.serverValidations.length != 0) {
+
                     //Check if server encounters any error
                     errorMessage = response.serverValidations[0];
                 }
-                else if(response.clientValidations.length!=0){
-                    
+                else if (response.clientValidations.length != 0) {
+
                     // Check if the client encounters any error
                     errorMessage = response.clientValidations[0];
                 }
 
-                this.setState({isAuthenticated:AuthenticationState.NotAuthenticated,
-                    siginmessage: errorMessage});
+                this.setState({
+                    isAuthenticated: AuthenticationState.NotAuthenticated,
+                    siginmessage: errorMessage
+                });
                 return;
             }
         });
-
-        this.setState({isAuthenticated:AuthenticationState.NotAuthenticated,siginmessage:''});
+        this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated, siginmessage: '' });
     }
 
+    //BUG*
+    async setCurrentApplicationUser(currentUser) {
+        await store.dispatch(keepUserInformation(currentUser.outputJson.userDetail));
+    }
 }

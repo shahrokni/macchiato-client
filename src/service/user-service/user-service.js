@@ -26,7 +26,7 @@ export default class UserService {
             callBack(serverResponse);
         })
             .catch((err) => {
-                               
+
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             })
@@ -34,7 +34,7 @@ export default class UserService {
     }
 
     getUserDetail(callBack) {
-       
+
         let response = new Response();
         response.isSuccessful = false;
         response.operationTimestamp = this.dateUtil.getCurrentDateTime();
