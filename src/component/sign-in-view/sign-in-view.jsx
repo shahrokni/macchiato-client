@@ -21,7 +21,8 @@ export default class SignInView extends React.Component {
 
         this.signinViewModel = {
             username: undefined,
-            password: undefined
+            password: undefined,
+            rememberMe:undefined
         }
     }
 
@@ -106,7 +107,7 @@ export default class SignInView extends React.Component {
         userService.signIn(user, (response) => {
 
             if (response.isSuccessful === true) {
-
+                
                 //Get the user Information and put it in the context
                 userService.getUserDetail((fetchedUser) => {
 
