@@ -24,6 +24,8 @@ export default class SignInView extends React.Component {
             password: undefined,
             rememberMe:undefined
         }
+
+        this.isSigninDisable = false;
     }
 
     componentDidMount() {
@@ -99,6 +101,12 @@ export default class SignInView extends React.Component {
 
     signin(invoker) {
        
+        /* THE SIGNIN PROCESS IS NOT FINISHED YET */
+        /* THIS CONDITION LOCKS THE SIGNIN BUSTTON */
+        if(invoker.isSigninDisable===true)
+            return;
+        this.isSigninDisable = true;
+
         let userService = new UserService();
         let user = new User();
         user.userName = invoker.signinViewModel.username;
@@ -131,11 +139,14 @@ export default class SignInView extends React.Component {
                     errorMessage = response.clientValidations[0];
                 }
 
+                /* LET SIGNIN BUTTON FREE */
+                this.isSigninDisable = false;
+
                 this.setState({
                     isAuthenticated: AuthenticationState.NotAuthenticated,
                     siginmessage: errorMessage
                 });
-                return;
+                
             }
         });
         this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated, siginmessage: '' });

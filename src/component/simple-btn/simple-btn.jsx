@@ -10,8 +10,10 @@ export default class SimpleBtn extends React.Component {
             btnStyle = 'simpleBtnSecondaryStyle';
         }
         return (
-            <div
+            <button
+                type='button'
                 onClick = {this.props.action} 
+                /*TODO: ON KEY PRESSED SIGNIN ACTION...*/
                 className={'simpleBtn ' + btnStyle}
                 style={{
                     width: this.props.simpleStyle.size,
@@ -21,7 +23,7 @@ export default class SimpleBtn extends React.Component {
                     float: this.props.simpleStyle.float
                 }}>
                 {this.props.text}
-            </div>
+            </button>
         )
     }
 }

@@ -3,6 +3,7 @@
     cursor: pointer;
     box-sizing: border-box;
     border-radius: 5px;
+    border-style: none;
 }
 .simpleBtnPrimaryStyle{
     background-color: #D9183B;
