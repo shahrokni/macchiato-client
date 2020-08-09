@@ -7,9 +7,6 @@ import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import User from '../../entity/user/user';
 import { appGeneralInfo } from '../../setup-general-information';
-import store from '../../util/state-management-handler/store';
-import { keepUserInformation } from '../../util/state-management-handler/actions';
-
 
 export default class SignInView extends React.Component {
 
@@ -22,7 +19,7 @@ export default class SignInView extends React.Component {
         this.signinViewModel = {
             username: undefined,
             password: undefined,
-            rememberMe:undefined
+            rememberMe: undefined
         }
 
         this.isSigninDisable = false;
@@ -100,10 +97,10 @@ export default class SignInView extends React.Component {
     }
 
     signin(invoker) {
-       
+
         /* THE SIGNIN PROCESS IS NOT FINISHED YET */
         /* THIS CONDITION LOCKS THE SIGNIN BUSTTON */
-        if(invoker.isSigninDisable===true)
+        if (invoker.isSigninDisable === true)
             return;
         this.isSigninDisable = true;
 
@@ -115,14 +112,8 @@ export default class SignInView extends React.Component {
         userService.signIn(user, (response) => {
 
             if (response.isSuccessful === true) {
-                
-                //Get the user Information and put it in the context
-                userService.getUserDetail((fetchedUser) => {
 
-                    invoker.setCurrentApplicationUser(fetchedUser).then(                       
-                        invoker.setState({ isAuthenticated: AuthenticationState.Authenticated })                                       
-                    );
-                });
+                invoker.setState({ isAuthenticated: AuthenticationState.Authenticated });
 
             } else {
 
@@ -146,14 +137,9 @@ export default class SignInView extends React.Component {
                     isAuthenticated: AuthenticationState.NotAuthenticated,
                     siginmessage: errorMessage
                 });
-                
+
             }
         });
         this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated, siginmessage: '' });
-    }
-
-    //BUG*
-    async setCurrentApplicationUser(currentUser) {
-        await store.dispatch(keepUserInformation(currentUser.outputJson.userDetail));
-    }
+    }    
 }
