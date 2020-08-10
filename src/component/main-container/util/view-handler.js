@@ -13,7 +13,7 @@ export default class ViewHandler {
 
         let createdComponent = undefined;
         let windowUrl = window.location.href;
-        let currentLocatin = (windowUrl.split(appGeneralInfo.baseUrl))[1];
+        let currentLocatin = (windowUrl.split(appGeneralInfo.baseUrl))[1];        
 
         //Do not reload views, if the address has not been changed!
         if (store.getState().location === currentLocatin) {

@@ -72,9 +72,9 @@ export default class SignInView extends React.Component {
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
                         <div style={{ visibility: 'hidden' }}>
-                            {
-                                window.location.href = appGeneralInfo.baseUrl +
-                                appGeneralInfo.mainMenuItems.homePage
+                            {                                
+                                (window.location.href = appGeneralInfo.baseUrl +
+                                appGeneralInfo.mainMenuItems.homePage)
                             }
                         </div>
                     </React.Suspense>
@@ -97,11 +97,12 @@ export default class SignInView extends React.Component {
     }
 
     signin(invoker) {
-
+        
         /* THE SIGNIN PROCESS IS NOT FINISHED YET */
         /* THIS CONDITION LOCKS THE SIGNIN BUSTTON */
         if (invoker.isSigninDisable === true)
             return;
+
         this.isSigninDisable = true;
 
         let userService = new UserService();
@@ -113,7 +114,14 @@ export default class SignInView extends React.Component {
 
             if (response.isSuccessful === true) {
 
-                invoker.setState({ isAuthenticated: AuthenticationState.Authenticated });
+                userService.getUserDetail((response)=>{                   
+                   
+                    /* KEEP USER INFORMATION IN LOCAL STORAGE */                    
+                    window.localStorage.setItem('userName',response.outputJson.userDetail.name); 
+                    window.localStorage.setItem('userLastName',response.outputJson.userDetail.lastName);                   
+                    invoker.setState({ isAuthenticated: AuthenticationState.Authenticated });
+                });
+                
 
             } else {
 
@@ -139,7 +147,6 @@ export default class SignInView extends React.Component {
                 });
 
             }
-        });
-        this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated, siginmessage: '' });
+        });        
     }    
 }

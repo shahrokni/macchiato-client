@@ -27,8 +27,9 @@ function keepCurrentComponent(state = '', action) {
 
 function keepUserInformation(state = '', action) {
     
+    
     switch (action.type) {
-        case KEEP_USER_INFORMATION:
+        case KEEP_USER_INFORMATION:            
             return action.currentUser;
         default:
             return state;
