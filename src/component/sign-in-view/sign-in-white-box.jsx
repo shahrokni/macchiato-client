@@ -63,7 +63,7 @@ export default class SignInWhiteBox extends React.Component {
 
                 <SigninMessage siginmessage={this.props.siginmessage} />
                 {/* SIGN IN BUTTON */}
-                <SimpleBtn text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
+                <SimpleBtn ref={this.props.signinButtonRef} text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
                 <SignUpLink linkClick={this.props.linkClick} />
             </div>
         )

@@ -11,8 +11,8 @@ export default class WelcomeBox extends React.Component {
     componentDidMount() {
 
         const defaultWelcomeMessage = 'Welcome to English Macchiato!';
-        const name = window.localStorage.getItem('userName');   
-        const lastName = window.localStorage.getItem('userLastName');
+        const name = window.sessionStorage.getItem('userName');   
+        const lastName = window.sessionStorage.getItem('userLastName');
 
              
         if (name && lastName)
