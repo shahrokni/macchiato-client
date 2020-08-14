@@ -11,6 +11,7 @@ export default class SimpleBtn extends React.Component {
         }
         return (
             <button
+                ref = {this.props.buttonRef}
                 type='button'
                 onClick = {this.props.action} 
                 /*TODO: ON KEY PRESSED SIGNIN ACTION...*/

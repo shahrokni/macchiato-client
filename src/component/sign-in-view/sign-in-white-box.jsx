@@ -9,7 +9,19 @@ import TextField from '@material-ui/core/TextField';
 import ErrorMessage from '../../resource/text/error-message';
 import { checkUserName, checkStrongPassword } from '../../util/regex/string-regex';
 
-export default class SignInWhiteBox extends React.Component {
+export const SignInWhiteBox = React.forwardRef((props, ref) => (
+
+    <SigninWhiteBoxClass 
+        buttonRef={ref.btnRef} 
+        messageRef = {ref.messageRef}
+        signinViewModel = {props.signinViewModel}
+        linkClick = {props.linkClick}
+        signinAction = {props.signinAction}
+        siginmessage = {props.siginmessage}
+    />
+));
+
+class SigninWhiteBoxClass extends React.Component {
 
     constructor(props) {
 
@@ -61,14 +73,13 @@ export default class SignInWhiteBox extends React.Component {
                     <ForgotPassword linkClick={this.props.linkClick} />
                 </div>
 
-                <SigninMessage siginmessage={this.props.siginmessage} />
+                <SigninMessage messageRef={this.props.messageRef}/>
                 {/* SIGN IN BUTTON */}
-                <SimpleBtn ref={this.props.signinButtonRef} text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
+                <SimpleBtn buttonRef={this.props.buttonRef} text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
                 <SignUpLink linkClick={this.props.linkClick} />
             </div>
         )
     }
-
     trackUsernameChange(invoker, e) {
 
         invoker.parentViewModel.username = e.target.value;

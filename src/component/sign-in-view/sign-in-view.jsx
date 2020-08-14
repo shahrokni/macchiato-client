@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/sign-in-view.css';
 import SigInLogo from './sign-in-logo';
-import SignInWhiteBox from './sign-in-white-box';
+import { SignInWhiteBox } from './sign-in-white-box';
 import WelcomeBox from '../welcome-box/welcome-box';
 import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
@@ -14,7 +14,9 @@ export default class SignInView extends React.Component {
 
         super(props);
 
-        this.state = { siginmessage: '', isAuthenticated: AuthenticationState.NotSet };
+        this.state = {isAuthenticated: AuthenticationState.NotSet };
+        this.signinButtonRef = React.createRef();
+        this.signinMessageRef = React.createRef();
 
         this.signinViewModel = {
             username: undefined,
@@ -50,6 +52,13 @@ export default class SignInView extends React.Component {
     render() {
 
         let isUserAuthenticated = this.state.isAuthenticated;
+
+        const siginWhiteBoxProps = {            
+            signinViewModel: this.signinViewModel,
+            signinAction: () => { this.signin(this) },
+            linkClick: this.props.linkClick
+        }
+
         return (
             <React.Fragment>
 
@@ -60,21 +69,18 @@ export default class SignInView extends React.Component {
                         <div className="signInViewContainer">
                             <SigInLogo />
                             <SignInWhiteBox
-                                siginmessage={this.state.siginmessage}
-                                signinViewModel={this.signinViewModel}
-                                signinAction={() => {
-                                    this.signin(this)
-                                }}
-                                linkClick={this.props.linkClick} />
+                                ref={{btnRef: this.signinButtonRef,messageRef: this.signinMessageRef}}
+                                {...siginWhiteBoxProps}
+                            />
                         </div>
                     </React.Fragment>
                 }
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
                         <div style={{ visibility: 'hidden' }}>
-                            {                                
+                            {
                                 (window.location.href = appGeneralInfo.baseUrl +
-                                appGeneralInfo.mainMenuItems.homePage)
+                                    appGeneralInfo.mainMenuItems.homePage)
                             }
                         </div>
                     </React.Suspense>
@@ -94,16 +100,21 @@ export default class SignInView extends React.Component {
                 }
             </React.Fragment>
         )
-    }
+    }  
+  
 
     signin(invoker) {
-        
+
         /* THE SIGNIN PROCESS IS NOT FINISHED YET */
         /* THIS CONDITION LOCKS THE SIGNIN BUSTTON */
         if (invoker.isSigninDisable === true)
             return;
 
         this.isSigninDisable = true;
+        this.signinButtonRef.current.disabled = true;
+        this.signinButtonRef.current.style.cursor = 'no-drop';
+        this.signinMessageRef.current.style.color = '#116805';
+        this.signinMessageRef.current.innerText = 'Please be patient...'
 
         let userService = new UserService();
         let user = new User();
@@ -114,14 +125,14 @@ export default class SignInView extends React.Component {
 
             if (response.isSuccessful === true) {
 
-                userService.getUserDetail((response)=>{                   
-                   
-                    /* KEEP USER INFORMATION IN LOCAL STORAGE */                    
-                    window.sessionStorage.setItem('userName',response.outputJson.userDetail.name); 
-                    window.sessionStorage.setItem('userLastName',response.outputJson.userDetail.lastName);                   
+                userService.getUserDetail((response) => {
+
+                    /* KEEP USER INFORMATION IN LOCAL STORAGE */
+                    window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
+                    window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
                     invoker.setState({ isAuthenticated: AuthenticationState.Authenticated });
                 });
-                
+
 
             } else {
 
@@ -139,14 +150,18 @@ export default class SignInView extends React.Component {
                 }
 
                 /* LET SIGNIN BUTTON FREE */
-                this.isSigninDisable = false;
+                this.isSigninDisable = false;               
+                this.signinButtonRef.current.disabled = false;
+                this.signinButtonRef.current.style.cursor = 'pointer';
+                this.signinMessageRef.current.style.color = '#D9183B';
+                this.signinMessageRef.current.innerText = errorMessage;
 
+                /* *IMPROVE */
                 this.setState({
-                    isAuthenticated: AuthenticationState.NotAuthenticated,
-                    siginmessage: errorMessage
+                    isAuthenticated: AuthenticationState.NotAuthenticated                    
                 });
 
             }
-        });        
-    }    
+        });
+    }
 }
