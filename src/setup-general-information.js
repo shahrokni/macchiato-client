@@ -14,11 +14,15 @@ const appGeneralInfo = {
         account:'account',
         wallet:'wallet',
         messages:'messages',
-        about:'about'
+        about:'about',
+        
     },
     views:{
         sigin:'signin',
-        signup:'signup'
+        signup:'signup',
+        forgotPassword:'forgotpassword',
+        globalMessage:'globalMessage',
+        register:'register'
     }
 }
 

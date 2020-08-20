@@ -1,6 +1,6 @@
-export {MessageType};
+export {GlobalMessageType};
 
-const MessageType = Object.freeze({
+const GlobalMessageType = Object.freeze({
     NotSet: 'NotSet',
     Error: 'Error',
     Information: 'Information',
