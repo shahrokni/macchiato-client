@@ -11,13 +11,13 @@ import { checkUserName, checkStrongPassword } from '../../util/regex/string-rege
 
 export const SignInWhiteBox = React.forwardRef((props, ref) => (
 
-    <SigninWhiteBoxClass 
-        buttonRef={ref.btnRef} 
-        messageRef = {ref.messageRef}
-        signinViewModel = {props.signinViewModel}
-        linkClick = {props.linkClick}
-        signinAction = {props.signinAction}
-        siginmessage = {props.siginmessage}
+    <SigninWhiteBoxClass
+        buttonRef={ref.btnRef}
+        messageRef={ref.messageRef}
+        signinViewModel={props.signinViewModel}
+        linkClick={props.linkClick}
+        signinAction={props.signinAction}
+        siginmessage={props.siginmessage}
     />
 ));
 
@@ -51,6 +51,11 @@ class SigninWhiteBoxClass extends React.Component {
 
                 {/* USER NAME */}
                 <TextField
+
+                    onKeyPress={(e) => {
+                        this.callSigninAction(e);
+                    }}
+
                     onChange={(e) => {
                         this.trackUsernameChange(this, e);
                     }}
@@ -60,6 +65,11 @@ class SigninWhiteBoxClass extends React.Component {
 
                 {/* PASSWORD */}
                 <TextField
+
+                    onKeyPress={(e) => {
+                        this.callSigninAction(e);
+                    }}
+
                     onChange={(e) => {
                         this.trackPasswordChange(this, e)
                     }}
@@ -73,13 +83,20 @@ class SigninWhiteBoxClass extends React.Component {
                     <ForgotPassword linkClick={this.props.linkClick} />
                 </div>
 
-                <SigninMessage messageRef={this.props.messageRef}/>
+                <SigninMessage messageRef={this.props.messageRef} />
                 {/* SIGN IN BUTTON */}
                 <SimpleBtn buttonRef={this.props.buttonRef} text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
                 <SignUpLink linkClick={this.props.linkClick} />
             </div>
         )
     }
+
+    callSigninAction(event) {
+
+        event.key === 'Enter' &&
+            this.props.signinAction();
+    }
+
     trackUsernameChange(invoker, e) {
 
         invoker.parentViewModel.username = e.target.value;
