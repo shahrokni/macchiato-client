@@ -26,7 +26,7 @@ export default class UserService {
             callBack(serverResponse);
         })
             .catch((err) => {
-                               
+
                 response.clientValidations.push(ErrorMessages.Err0000());
                 callBack(response);
             })

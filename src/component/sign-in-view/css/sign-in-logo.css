@@ -1,0 +1,57 @@
+/*ALL DEVICES*/
+.signInSoftwareName{
+    font-family: Ubuntu-B;
+}
+.signInSoftwareSlogan{
+    font-family: Ubuntu-R;
+    color: #707070;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+
+
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+
+}
+
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  {   
+    .signInLogoBox{
+        width: 100%;
+        height:23vh;
+    }
+    .signInTitleBox{
+        width:32vw;
+        float: left;
+        margin-top: 4vh;
+    }
+    .signInSoftwareName{       
+        text-align: center;
+        font-size: 28px;    
+        float: left;    
+        width: 32vw;
+    }
+    .signInSoftwareSlogan{
+        text-align: center;
+        font-size: 16px;
+        float: left;
+        width: 32vw;
+    }
+    .signInLogoPicture{        
+        width: 8vw;
+        height:8vw;
+        float: left;
+        background-image: url('../../../../src/resource/image/logo.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+} 
