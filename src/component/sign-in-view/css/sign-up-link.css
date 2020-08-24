@@ -1,3 +1,5 @@
+
+
 /*ALL DEVICES*/
 .signupLinkContainer >a{
     color:#D9183B;
@@ -29,6 +31,19 @@
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
+    .signupLinkContainer{
+        float: left;
+        width: 90%;
+        height: fit-content;
+        margin-left: 5%;
+        margin-bottom: 5%;
+        box-sizing: border-box;
+        padding-left: 10%;
+        margin-top: 5%;
+    }
+    .sigupLinkMessage{
+        float:left;
+    }
 }
 
 
