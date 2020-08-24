@@ -7,10 +7,18 @@
 .sigupLinkMessage{
     color: #707070;
     font-family: Montserrat-Regular;
+    padding-right: 1%;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
-
+    .signupLinkContainer{
+        float: left;
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 2%;        
+    }   
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){

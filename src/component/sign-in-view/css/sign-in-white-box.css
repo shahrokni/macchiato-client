@@ -2,15 +2,29 @@
 
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
-
+    
     .signInWhiteBoxContainer{
+
         width: 100%;
-        height: 100%;
-        float: left;       
-    }
-
-    .signInWhiteBoxContainer{
+        height: 70%;
+        float: left;
+        position: relative;       
+        top: 20%;
         background-color: rgba(255,255,255,1);
+    }   
+    .signInWhiteBoxContainer .MuiTextField-root{
+
+        margin-top: 4%;
+        width: 90%;
+        margin-left: 5%;
+    } 
+
+    .signInOptions{
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+        display: flex;
+        flex-direction: row;
     }
 }
 /*Mobile and Tablet Landscape*/
@@ -28,15 +42,13 @@
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  {   
 
-    .signInWhiteBoxContainer{
-        background-color: rgba(255,255,255,0.8);
-    }
-
+  
     .signInWhiteBoxContainer{
         float: left;       
         width: 100%;
         border-radius: 5px;
-        box-shadow: 0px 6px 12px #70707029;     
+        box-shadow: 0px 6px 12px #70707029; 
+        background-color: rgba(255,255,255,0.8);    
     }
 
     /*Material UI text field control*/
