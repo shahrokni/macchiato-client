@@ -1,3 +1,5 @@
+
+
 /*ALL DEVICES*/
 
 /*Mobile and Tablet Portrait*/
@@ -36,6 +38,29 @@
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
+    
+    .signInWhiteBoxContainer{
+        float: left;       
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: 0px 6px 12px #70707029; 
+        background-color: rgba(255,255,255,0.8);    
+        height: 50%;
+    }
+
+    /*Material UI text field control*/
+    .MuiTextField-root{
+
+        width: 90%;
+        float: left;
+        margin-top: 10px !important;
+        margin-left: 5% !important;
+    }
+    .signInOptions{
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
 }
 
 

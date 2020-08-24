@@ -1,3 +1,5 @@
+
+
 /*ALL DEVICES*/
 .rememberMe{
     font-family: Montserrat-Regular;
@@ -19,7 +21,14 @@
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
-
+    
+    .rememberMe{
+        float: left;
+        margin-top: 3%;
+    }
+    .MuiCheckbox-root{
+        float: left;
+    }
 }
 
 
