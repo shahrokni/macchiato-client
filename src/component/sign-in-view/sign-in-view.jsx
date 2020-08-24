@@ -14,7 +14,7 @@ export default class SignInView extends React.Component {
 
         super(props);
 
-        this.state = {isAuthenticated: AuthenticationState.NotSet };
+        this.state = { isAuthenticated: AuthenticationState.NotSet };
         this.signinButtonRef = React.createRef();
         this.signinMessageRef = React.createRef();
 
@@ -53,7 +53,7 @@ export default class SignInView extends React.Component {
 
         let isUserAuthenticated = this.state.isAuthenticated;
 
-        const siginWhiteBoxProps = {            
+        const siginWhiteBoxProps = {
             signinViewModel: this.signinViewModel,
             signinAction: () => { this.signin(this) },
             linkClick: this.props.linkClick
@@ -65,11 +65,14 @@ export default class SignInView extends React.Component {
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
 
                     <React.Fragment>
-                        <WelcomeBox />
+                        {
+                            !window.matchMedia("(max-width:767px)") &&
+                            <WelcomeBox />
+                        }
                         <div className="signInViewContainer">
                             <SigInLogo />
                             <SignInWhiteBox
-                                ref={{btnRef: this.signinButtonRef,messageRef: this.signinMessageRef}}
+                                ref={{ btnRef: this.signinButtonRef, messageRef: this.signinMessageRef }}
                                 {...siginWhiteBoxProps}
                             />
                         </div>
@@ -100,8 +103,8 @@ export default class SignInView extends React.Component {
                 }
             </React.Fragment>
         )
-    }  
-  
+    }
+
 
     signin(invoker) {
 
@@ -150,7 +153,7 @@ export default class SignInView extends React.Component {
                 }
 
                 /* LET SIGNIN BUTTON FREE */
-                this.isSigninDisable = false;               
+                this.isSigninDisable = false;
                 this.signinButtonRef.current.disabled = false;
                 this.signinButtonRef.current.style.cursor = 'pointer';
                 this.signinMessageRef.current.style.color = '#D9183B';
@@ -158,7 +161,7 @@ export default class SignInView extends React.Component {
 
                 /* *IMPROVE */
                 this.setState({
-                    isAuthenticated: AuthenticationState.NotAuthenticated                    
+                    isAuthenticated: AuthenticationState.NotAuthenticated
                 });
 
             }

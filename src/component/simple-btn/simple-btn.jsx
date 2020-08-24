@@ -11,17 +11,18 @@ export default class SimpleBtn extends React.Component {
         }
         return (
             <button
-                ref = {this.props.buttonRef}
+                ref={this.props.buttonRef}
                 type='button'
-                onClick = {this.props.action} 
+                onClick={this.props.action}
                 /*TODO: ON KEY PRESSED SIGNIN ACTION...*/
                 className={'simpleBtn ' + btnStyle}
                 style={{
-                    width: this.props.simpleStyle.size,
-                    textAlign: this.props.simpleStyle.textAlign,
-                    marginTop: this.props.simpleStyle.marginTop,
-                    marginLeft: this.props.simpleStyle.marginLeft,
-                    float: this.props.simpleStyle.float
+                    height: this.props.simpleStyle.height && this.props.simpleStyle.height,
+                    width: this.props.simpleStyle.size && this.props.simpleStyle.size,
+                    textAlign: this.props.simpleStyle.textAlign && this.props.simpleStyle.textAlign,
+                    marginTop: this.props.simpleStyle.marginTop && this.props.simpleStyle.marginTop,
+                    marginLeft: this.props.simpleStyle.marginLeft && this.props.simpleStyle.marginLeft,
+                    float: this.props.simpleStyle.float && this.props.simpleStyle.float
                 }}>
                 {this.props.text}
             </button>
