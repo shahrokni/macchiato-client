@@ -4,9 +4,9 @@ import HomepageLink from './homepage-link';
 import './css/homepage-view.css';
 import { appGeneralInfo } from '../../setup-general-information';
 import { AuthenticationState } from '../../entity/global/authentication-state';
-import ViewHandler from '../main-container/util/view-handler';
 import UserService from '../../service/user-service/user-service';
 import HomepageViewLogo from './homepage-view-logo';
+
 export default class HomePage extends React.Component {
 
     constructor(props) {
@@ -22,13 +22,19 @@ export default class HomePage extends React.Component {
 
             let responseUtil = require('../../util/response-util/response-util');
 
-            if (responseUtil.isAuthenticated(serverResponse) === true) {
+            if (responseUtil.isAuthenticated(serverResponse) === AuthenticationState.Authenticated) {
 
                 this.setState({ isAuthenticated: AuthenticationState.Authenticated });
             }
-            else {
+            else if (responseUtil.isAuthenticated(serverResponse) === AuthenticationState.NotAuthenticated) {
+
                 this.setState({ isAuthenticated: AuthenticationState.NotAuthenticated });
             }
+            else if (responseUtil.isAuthenticated(serverResponse) === AuthenticationState.CommunicationError) {
+
+                this.setState({ isAuthenticated: AuthenticationState.CommunicationError });
+            }
+
         });
     }
 
@@ -40,7 +46,7 @@ export default class HomePage extends React.Component {
             <React.Fragment>
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
                     <div id='homePageContainer'>
-                        <WelcomeBox text="Welcome Amir Tahmasebi!" />
+                        <WelcomeBox />
                         <HomepageViewLogo />
                         <div id='homePageLinksContainer'>
                             <HomepageLink linkClick={this.props.linkClick} title='Vocabulary practice' name={appGeneralInfo.mainMenuItems.vocabPractice} />
@@ -56,7 +62,26 @@ export default class HomePage extends React.Component {
                 }
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
                     <React.Suspense fallback={<h3>Loading ...</h3>}>
-                        {ViewHandler.retrievRegisterView(this.props.linkClick)}
+                        {
+                            <div style={{ visibility: 'hidden' }}>
+                                {
+                                    window.location.href = appGeneralInfo.baseUrl +
+                                    appGeneralInfo.views.register
+                                }
+                            </div>
+                        }
+                    </React.Suspense>
+                }
+                {isUserAuthenticated === AuthenticationState.CommunicationError &&
+                    <React.Suspense fallback={<h3>Loading ...</h3>}>
+                        {
+                            <div style={{ visibility: 'hidden' }}>
+                                {
+                                    window.location.href = appGeneralInfo.baseUrl +
+                                    appGeneralInfo.views.globalMessage
+                                }
+                            </div>
+                        }
                     </React.Suspense>
                 }
             </React.Fragment>
