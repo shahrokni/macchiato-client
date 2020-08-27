@@ -1,3 +1,5 @@
+
+
 /*ALL DEVICES*/
 .rememberMe{
     font-family: Montserrat-Regular;
@@ -5,17 +7,35 @@
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
-
+    .rememberMe{
+        width: fit-content;
+        height: fit-content;
+        margin-top: 3%;
+    }
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
-
+    
+    .rememberMe{
+        float: left;
+        margin-top: 3%;
+    }
+    .MuiCheckbox-root{
+        float: left;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
-
+    
+    .rememberMe{
+        float: left;
+        margin-top: 3%;
+    }
+    .MuiCheckbox-root{
+        float: left;
+    }
 }
 
 
@@ -29,5 +49,4 @@
     .MuiCheckbox-root{
         float: left;
     }
-
 } 

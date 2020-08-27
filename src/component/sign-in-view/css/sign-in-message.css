@@ -1,3 +1,6 @@
+
+
+
 /*ALL DEVICES*/
 .signinMessageBox{
     color: #D9183B;
@@ -7,16 +10,29 @@
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
 
+    .signinMessageBox{
+        float:left;
+        width: 80%;
+        margin-left: 5%;
+    }
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
-
+    .signinMessageBox{
+        width: 80%;
+        float: left;
+        margin-left: 5%;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
-
+    .signinMessageBox{
+        width: 80%;
+        float: left;
+        margin-left: 5%;
+    }
 }
 
 

@@ -2,14 +2,17 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import './css/sign-up-link.css';
 
-export default class SignUpLink extends React.Component{
+export default class SignUpLink extends React.Component {
 
-    render(){
+    render() {
         return (
-           
+
             <div className="signupLinkContainer">
                 <div className="sigupLinkMessage">Not a Macchiato member?</div>
-                <Link to={'/signup'} onClick={this.props.linkClick}>Sign up</Link>
+                <Link to={'/signup'} style={{
+                    textDecorationLine: 'underline',
+                    textDecorationStyle: 'dashed'
+                }} onClick={this.props.linkClick}>Sign up</Link>
             </div>
         )
     }

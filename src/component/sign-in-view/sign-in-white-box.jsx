@@ -43,8 +43,13 @@ class SigninWhiteBoxClass extends React.Component {
             marginTop: '10px',
             marginLeft: '5%',
             float: 'left',
-            textAlign: 'center'
-        }
+            textAlign: 'center',
+            height:'8%'
+        }       
+
+
+        if(!window.matchMedia('(max-width:767px)'))
+            delete signInBtnStyle.height;
 
         return (
             <div className="signInWhiteBoxContainer">
