@@ -19,7 +19,11 @@
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
-
+    .signinMessageBox{
+        width: 80%;
+        float: left;
+        margin-left: 5%;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/

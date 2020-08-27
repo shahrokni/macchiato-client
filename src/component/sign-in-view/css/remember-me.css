@@ -16,7 +16,14 @@
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
-
+    
+    .rememberMe{
+        float: left;
+        margin-top: 3%;
+    }
+    .MuiCheckbox-root{
+        float: left;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
@@ -42,5 +49,4 @@
     .MuiCheckbox-root{
         float: left;
     }
-
 } 

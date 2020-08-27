@@ -22,7 +22,13 @@
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
-
+    .signInViewContainer{
+        position: relative;
+        width: 40vw;
+        height: 40vw;
+        left:28vw;
+        top:2vh;        
+    }
 }
 
 /*iphonX, ipad, ipad pro*/

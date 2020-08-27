@@ -25,6 +25,20 @@
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
+    
+    .signupLinkContainer{
+        float: left;
+        width: 90%;
+        height: fit-content;
+        margin-left: 5%;
+        margin-bottom: 5%;
+        box-sizing: border-box;
+        padding-left: 10%;
+        margin-top: 5%;
+    }
+    .sigupLinkMessage{
+        float:left;
+    }
 
 }
 
