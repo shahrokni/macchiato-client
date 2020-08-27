@@ -32,7 +32,27 @@
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
+    .signInWhiteBoxContainer{
+        float: left;       
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: 0px 6px 12px #70707029; 
+        background-color: rgba(255,255,255,0.8);    
+    }
 
+    /*Material UI text field control*/
+    .MuiTextField-root{
+
+        width: 90%;
+        float: left;
+        margin-top: 10px !important;
+        margin-left: 5% !important;
+    }
+    .signInOptions{
+        float: left;
+        width: 90%;
+        margin-left: 5%;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
