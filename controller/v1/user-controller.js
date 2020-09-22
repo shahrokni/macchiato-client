@@ -580,3 +580,27 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
     }
 }
 module.exports.changeUserPassword = changeUserPassword;
+
+async function saveAuthKey4User(userId){
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    response.isSuccessful = false;
+
+    let authKey = mongoose.Types.ObjectId();   
+    const docQuery = User.findOneAndUpdate({_id:userId},{authkKey: authKey});
+    await docQuery.exec().then((doc)=>{
+
+        response.isSuccessful = true;
+        response["hasAuthKey"] = true;
+        response.outputJson = JSON.stringify({authKey: authKey});       
+    })
+    .catch((err)=>{
+        
+        response.isSuccessful = false;
+        response.serverValidations.push(global.errorResource.Err0000());      
+        
+    });
+    return Promise.resolve(response);
+}
+module.exports.saveAuthKey4User = saveAuthKey4User;

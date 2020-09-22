@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
-var SkillScoreSchema = require('./skill-score');
 var bcrypt = require("bcrypt-nodejs");
 
 var userSchema = mongoose.Schema({
 
     userName: { type: mongoose.Schema.Types.String, required: true, unique: true },
     password: { type: mongoose.Schema.Types.String, required: true },
+    authkKey:{type: mongoose.Schema.Types.ObjectId, unique:true},
     userDetail: {type:mongoose.Schema.Types.ObjectId, ref:'UserDetail'},
     administrator : {type:mongoose.Schema.Types.ObjectId, ref:'Administrator'}
 });

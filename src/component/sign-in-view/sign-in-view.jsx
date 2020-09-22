@@ -123,7 +123,8 @@ export default class SignInView extends React.Component {
         let user = new User();
         user.userName = invoker.signinViewModel.username;
         user.password = invoker.signinViewModel.password;
-
+        (invoker.signinViewModel.rememberMe === true) ? user.rememberMe = true : user.rememberMe = false;
+        
         userService.signIn(user, (response) => {
 
             if (response.isSuccessful === true) {

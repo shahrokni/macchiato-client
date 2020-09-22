@@ -108,8 +108,10 @@ export default class UserService {
         else {
 
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            let api = '';
+            (user.rememberMe === false) ? api = 'user_api/v1/user/login' : api = 'user_api/v1/user/login_set_remember';
 
-            restInstance.post('user_api/v1/user/login', { username: user.userName, password: user.password })
+            restInstance.post(api, { username: user.userName, password: user.password })
                 .then(function (res) {
 
                     let responseUtil = require('../../util/response-util/response-util');
@@ -121,9 +123,9 @@ export default class UserService {
                     response.clientValidations.push(ErrorMessages.Err0000());
                     callBack(response);
                 });
-
         }
     }
+
 
     /*userDetail: UserDetail-output: Reponse*/
     update(userDetail, callBack) {
