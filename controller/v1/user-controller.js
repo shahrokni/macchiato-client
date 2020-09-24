@@ -581,6 +581,7 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
 }
 module.exports.changeUserPassword = changeUserPassword;
 
+/*TODO:BAD PRACTICE*/
 async function saveAuthKey4User(userId){
 
     let response = new global.responseClass();
@@ -592,8 +593,8 @@ async function saveAuthKey4User(userId){
     await docQuery.exec().then((doc)=>{
 
         response.isSuccessful = true;
-        response["hasAuthKey"] = true;
-        response.outputJson = JSON.stringify({authKey: authKey});       
+        response["hasAuthKey"] = true;        
+        response.outputJson = {authKey: authKey};       
     })
     .catch((err)=>{
         

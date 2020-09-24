@@ -7,7 +7,9 @@ import './css/sign-in-white-box.css';
 import SimpleBtn from '../simple-btn/simple-btn';
 import TextField from '@material-ui/core/TextField';
 import ErrorMessage from '../../resource/text/error-message';
-import { checkUserName, checkStrongPassword } from '../../util/regex/string-regex';
+import CookieWarningMessage from './cookie-message';
+import {checkStrongPassword,checkUserName} from '../../util/regex/string-regex'
+import {isCookieEnabled} from '../../util/cookie-util/cookie-util';
 
 export const SignInWhiteBox = React.forwardRef((props, ref) => (
 
@@ -92,6 +94,7 @@ class SigninWhiteBoxClass extends React.Component {
                 {/* SIGN IN BUTTON */}
                 <SimpleBtn buttonRef={this.props.buttonRef} text={'Sign in'} action={this.props.signinAction} secondryTheme={false} simpleStyle={signInBtnStyle} />
                 <SignUpLink linkClick={this.props.linkClick} />
+                {!isCookieEnabled() && <CookieWarningMessage/>}
             </div>
         )
     }

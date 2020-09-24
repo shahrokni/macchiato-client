@@ -7,7 +7,7 @@ import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import User from '../../entity/user/user';
 import { appGeneralInfo } from '../../setup-general-information';
-
+import {setCookie} from '../../util/cookie-util/cookie-util';
 export default class SignInView extends React.Component {
 
     constructor(props) {
@@ -128,6 +128,14 @@ export default class SignInView extends React.Component {
         userService.signIn(user, (response) => {
 
             if (response.isSuccessful === true) {
+
+
+                if(response['hasAuthKey']){
+                    if(response['hasAuthKey']===true){
+                        /* SET REMEMBER ME COOKIE */                        
+                        setCookie({key:'authKey',value:response.outputJson.authKey},365);
+                    }
+                }
 
                 userService.getUserDetail((response) => {
 
