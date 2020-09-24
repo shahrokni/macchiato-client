@@ -21,9 +21,20 @@ export const setCookie = (input: CookieKeyValue, expdays: number): void => {
     document.cookie = cookieString;   
 }
 
-export const getCookieByKey= (key:string):CookieKeyValue=>{   
+export const getCookieByKey= (key:string):string=>{   
 
-    return {key:'X',value:'Y'} as CookieKeyValue;
+    let value = ''
+    const cookieStr = `;${document.cookie}`;
+    const exp = '^'+key+'='; 
+    const regex = new RegExp(exp,'i');
+    const parts = cookieStr.split(';');
+    for(let i=0;i<parts.length;i++){
+        if(parts[i].search(regex)!==-1){
+            value = parts[i].substring(key.length+1,cookieStr.length+1);
+            break;
+        }
+    }
+    return value;
 }
 
 export const isCookieEnabled = ():boolean=>{
