@@ -10,37 +10,51 @@ export const setCookie = (input: CookieKeyValue, expdays: number): void => {
         return;
 
     let cookieString = '';
-    /* SET COOKIE PARAMS */    
+    /* SET COOKIE PARAMS */
     cookieString = cookieString + input.key + '=' + input.value + ';'
     /* SET EXPIRE DATE */
     let date = new Date();
     date.setTime(date.getTime() + (expdays * 24 * 60 * 60 * 1000));
-    cookieString = cookieString+' expires='+date.toUTCString()+';';
+    cookieString = cookieString + ' expires=' + date.toUTCString() + ';';
     /* SET COOKIE PATH */
-    cookieString += ' path=/';   
-    document.cookie = cookieString;   
+    cookieString += ' path=/';
+    document.cookie = cookieString;
 }
 
-export const getCookieByKey= (key:string):string=>{   
+export const getCookieByKey = (key: string): string => {
 
     let value = ''
     const cookieStr = `;${document.cookie}`;
-    const exp = '^'+key+'='; 
-    const regex = new RegExp(exp,'i');
+    const exp = '^' + key + '=';
+    const regex = new RegExp(exp, 'i');
     const parts = cookieStr.split(';');
-    for(let i=0;i<parts.length;i++){
-        if(parts[i].search(regex)!==-1){
-            value = parts[i].substring(key.length+1,cookieStr.length+1);
+    for (let i = 0; i < parts.length; i++) {
+        if (parts[i].search(regex) !== -1) {
+            value = parts[i].substring(key.length + 1, cookieStr.length + 1);
             break;
         }
     }
     return value;
 }
 
-export const isCookieEnabled = ():boolean=>{
-    
-    if(navigator.cookieEnabled)
+export const isCookieEnabled = (): boolean => {
+
+    if (navigator.cookieEnabled)
         return true;
     return false;
 }
 
+export const removeCookieByKey = (key: string): void => {
+
+    if (key === '')
+        return;
+        
+    let cookieStr = '';
+    cookieStr = cookieStr + key + '=' + ';';
+    let date = new Date();
+    /* A DAY BEFORE */
+    date.setTime(date.getTime() - 86400000);
+    cookieStr = cookieStr + ' expires=' + date.toUTCString() + ';';
+    cookieStr += ' path=/';
+    document.cookie = cookieStr;
+}

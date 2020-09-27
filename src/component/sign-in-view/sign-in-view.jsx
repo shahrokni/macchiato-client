@@ -8,6 +8,8 @@ import { AuthenticationState } from '../../entity/global/authentication-state';
 import User from '../../entity/user/user';
 import { appGeneralInfo } from '../../setup-general-information';
 import { setCookie, getCookieByKey } from '../../util/cookie-util/cookie-util';
+import { commonMessages } from '../../resource/text/common-messages';
+
 export default class SignInView extends React.Component {
 
     constructor(props) {
@@ -79,11 +81,20 @@ export default class SignInView extends React.Component {
                                     />
                                 </div>
                             </React.Fragment>)
-                            : (<div>Somthing ELSE</div>)
+                            : (
+                                <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
+                                    <div style={{ visibility: 'hidden' }}>
+                                        {
+                                            (window.location.href=appGeneralInfo.baseUrl+
+                                                appGeneralInfo.views.checkUserInformation)
+                                        }
+                                    </div>
+                                </React.Suspense>
+                            )
                     )
                 }
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
-                    <React.Suspense fallback={<h3>Loading ...</h3>}>
+                    <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                         <div style={{ visibility: 'hidden' }}>
                             {
                                 (window.location.href = appGeneralInfo.baseUrl +
@@ -93,7 +104,7 @@ export default class SignInView extends React.Component {
                     </React.Suspense>
                 }
                 {isUserAuthenticated === AuthenticationState.CommunicationError &&
-                    <React.Suspense fallback={<h3>Loading ...</h3>}>
+                    <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                         {
                             /*Redirect to Global View Message*/
                             <div style={{ visibility: 'hidden' }}>
