@@ -11,7 +11,7 @@ export default function CheckUserInformation() {
     let destinationLink = '';
 
     useEffect(() => {
-        alert(getCookieByKey('authKey'));
+
     })
 
     return (
@@ -21,6 +21,9 @@ export default function CheckUserInformation() {
                 (showLoadingMessage === true) ? (
                     <div className='checkUserInfromation'>
                         {checkUserInfoMessag}
+                        <span className="material-icons hourglass">
+                            hourglass_bottom
+                        </span>
                     </div>) : (
                         <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                             <div style={{ visibility: 'hidden' }}>
