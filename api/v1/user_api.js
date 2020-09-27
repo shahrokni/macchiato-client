@@ -129,6 +129,18 @@ api.get('/user/save_authkey_successfulLogin', async (req, res) => {
     });   
 });
 
+/*-------------LOGIN WITH AUTHKEY----------------*/
+
+api.post('user/loginwithauthkey', async(req,res)=>{
+    userController.loginWithAuthKey(req.body.authKey)
+    .then((response)=>{
+
+    })
+    .catch((err)=>{
+        
+    })
+});
+
 /*------------------------------------------------*/
 api.get('/user/logout', (req, res) => {
 

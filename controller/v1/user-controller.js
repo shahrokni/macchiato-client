@@ -582,6 +582,8 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
 module.exports.changeUserPassword = changeUserPassword;
 
 /*TODO:BAD PRACTICE*/
+/* WHY SHOULD WE WAIT?! :) */
+/* CASUE THE WAY THE PROMISE IS RETURNED! */
 async function saveAuthKey4User(userId){
 
     let response = new global.responseClass();
@@ -605,3 +607,9 @@ async function saveAuthKey4User(userId){
     return Promise.resolve(response);
 }
 module.exports.saveAuthKey4User = saveAuthKey4User;
+
+/*--------------------------------------------------*/
+async function loginWithAuthKey(authKey){
+    return Promise.resolve(1);
+}
+module.exports.loginWithAuthKey = loginWithAuthKey;
