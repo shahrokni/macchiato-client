@@ -92,7 +92,36 @@ export default class UserService {
         }
 
     }
+    /*authKey:string */
+    signinWithAuthKey(authKey,callBack){
 
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+
+        if(!authKey){
+
+            response.clientValidations.push(ErrorMessages.Err0000());
+            callBack(response);
+        }
+        else{
+
+            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            const api = 'user_api/v1/user/loginwithauthkey';
+            restInstance.post(api,{authKey:authKey})
+            .then((response)=>{
+
+                const responseUtil = require('../../util/response-util/response-util');
+                const serverResponse = responseUtil.extractResponse(response);
+                callBack(serverResponse);
+            })
+            .catch((err)=>{
+
+                response.clientValidations.push(ErrorMessages.Err0000());
+                callBack(response)
+            });
+        }
+    }
     /*user: User - output: Response*/
     signIn(user, callBack) {
 

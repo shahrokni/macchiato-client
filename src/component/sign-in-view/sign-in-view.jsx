@@ -154,7 +154,7 @@ export default class SignInView extends React.Component {
 
                 userService.getUserDetail((response) => {
 
-                    /* KEEP USER INFORMATION IN LOCAL STORAGE */
+                    /* KEEP USER INFORMATION IN SESSION STORAGE */
                     window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
                     window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
                     invoker.setState({ isAuthenticated: AuthenticationState.Authenticated });

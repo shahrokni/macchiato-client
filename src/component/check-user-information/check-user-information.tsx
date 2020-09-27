@@ -3,15 +3,52 @@ import './css/check-user-information.css';
 import { commonMessages } from '../../resource/text/common-messages';
 import { appGeneralInfo } from '../../setup-general-information';
 import { getCookieByKey, removeCookieByKey } from '../../util/cookie-util/cookie-util';
+import UserService from '../../service/user-service/user-service';
 
 export default function CheckUserInformation() {
 
-    const checkUserInfoMessag = 'The user information is being checked. Please be patient...';
-    const [showLoadingMessage, setShowLoadingMessage] = useState(true);
     let destinationLink = '';
+    const checkUserInfoMessag = 'The user information is being checked. Please be patient...';
+    const [showLoadingMessage, setShowLoadingMessage] = useState(true);    
+    /* FUNCTIONS */
+    const isAuthKeyValid = async (): Promise<boolean> => {
+        const authKey = getAuthKey();        
+        return Promise.resolve(true);
+    }
+
+    const getAuthKey = (): string => {
+
+        const authKey = getCookieByKey('authKey');
+        return authKey;
+    }  
+    
+    const removeAuthKeyCookie = (): void => {
+        removeCookieByKey('authKey');
+    }
 
     useEffect(() => {
 
+        isAuthKeyValid()
+        .then((isValid)=>{
+
+            setShowLoadingMessage(false);
+            if(isValid===true){
+                /* GET USER INFORMATION */  
+                const userService = new UserService();
+                userService.getUserDetail((response:any)=>{
+
+                    window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
+                    window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
+                    destinationLink = appGeneralInfo.baseUrl+appGeneralInfo.mainMenuItems.homePage;
+                    return;
+                });              
+            }
+            else{
+                removeAuthKeyCookie();
+                destinationLink = appGeneralInfo.baseUrl+appGeneralInfo.views.sigin;
+                return;
+            }
+        })
     })
 
     return (
@@ -35,21 +72,6 @@ export default function CheckUserInformation() {
                     )
             }
         </React.Fragment>
-    )
+    );   
 }
 
-const getAuthKey = (): string => {
-
-    const authKey = getCookieByKey('authKey');
-    return authKey;
-}
-
-const isAuthKeyValid = async (): Promise<boolean> => {
-    const authKey = getAuthKey();
-    /* SERVICE CALL */
-    return Promise.resolve(true);
-}
-
-const removeAuthKeyCookie = (): void => {
-    removeCookieByKey('authKey');
-}
