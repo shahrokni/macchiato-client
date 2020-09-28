@@ -9,19 +9,31 @@ export default function CheckUserInformation() {
 
     let destinationLink = '';
     const checkUserInfoMessag = 'The user information is being checked. Please be patient...';
-    const [showLoadingMessage, setShowLoadingMessage] = useState(true);    
+    const [showLoadingMessage, setShowLoadingMessage] = useState(true);
     /* FUNCTIONS */
     const isAuthKeyValid = async (): Promise<boolean> => {
-        const authKey = getAuthKey();        
-        return Promise.resolve(true);
+        const authKey = getAuthKey();
+        return new Promise((resolve, reject) => {
+            const userService = new UserService();
+            userService.signinWithAuthKey(authKey, (response: any) => {
+                if (response) {
+                    (response.isSuccessful === true)
+                        ? resolve(true)
+                        : resolve(false);
+                }
+                else {
+                    resolve(false)
+                }
+            });
+        })
     }
 
     const getAuthKey = (): string => {
 
         const authKey = getCookieByKey('authKey');
         return authKey;
-    }  
-    
+    }
+
     const removeAuthKeyCookie = (): void => {
         removeCookieByKey('authKey');
     }
@@ -29,31 +41,29 @@ export default function CheckUserInformation() {
     useEffect(() => {
 
         isAuthKeyValid()
-        .then((isValid)=>{
-
-            setShowLoadingMessage(false);
-            if(isValid===true){
-                /* GET USER INFORMATION */  
-                const userService = new UserService();
-                userService.getUserDetail((response:any)=>{
-
-                    window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
-                    window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
-                    destinationLink = appGeneralInfo.baseUrl+appGeneralInfo.mainMenuItems.homePage;
+            .then((isValid) => {
+                if (isValid === true) {
+                    /* GET USER INFORMATION */
+                    const userService = new UserService();
+                    userService.getUserDetail((response: any) => {
+                        window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
+                        window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
+                        destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.mainMenuItems.homePage;
+                        setShowLoadingMessage(false);
+                        return;
+                    });
+                }
+                else {
+                    removeAuthKeyCookie();
+                    destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.views.sigin;
+                    setShowLoadingMessage(false);
                     return;
-                });              
-            }
-            else{
-                removeAuthKeyCookie();
-                destinationLink = appGeneralInfo.baseUrl+appGeneralInfo.views.sigin;
-                return;
-            }
-        })
+                }
+            })
     })
 
     return (
         <React.Fragment>
-
             {
                 (showLoadingMessage === true) ? (
                     <div className='checkUserInfromation'>
@@ -72,6 +82,6 @@ export default function CheckUserInformation() {
                     )
             }
         </React.Fragment>
-    );   
+    );
 }
 

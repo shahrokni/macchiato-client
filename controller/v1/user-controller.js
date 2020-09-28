@@ -340,18 +340,18 @@ function getDetailedUserInformation(userId, done) {
 
             response.isSuccessful = true;
             responseObj = {
-                userName : fetchedUserDetail.userName,
-                userDetail : {
-                    name : fetchedUserDetail.userDetail.name,
-                    lastName : fetchedUserDetail.userDetail.lastName,
-                    studentNumber : fetchedUserDetail.userDetail.studentNumber,
-                    registerationDate : fetchedUserDetail.userDetail.registerationDate,
-                    email : fetchedUserDetail.userDetail.email,
-                    gender : fetchedUserDetail.userDetail.gender,
-                    cellphone : fetchedUserDetail.userDetail.cellphone,
-                    province : fetchedUserDetail.userDetail.province,
-                    birthDate : fetchedUserDetail.userDetail.birthDate,
-                    skillScore : fetchedUserDetail.userDetail.skillScore,
+                userName: fetchedUserDetail.userName,
+                userDetail: {
+                    name: fetchedUserDetail.userDetail.name,
+                    lastName: fetchedUserDetail.userDetail.lastName,
+                    studentNumber: fetchedUserDetail.userDetail.studentNumber,
+                    registerationDate: fetchedUserDetail.userDetail.registerationDate,
+                    email: fetchedUserDetail.userDetail.email,
+                    gender: fetchedUserDetail.userDetail.gender,
+                    cellphone: fetchedUserDetail.userDetail.cellphone,
+                    province: fetchedUserDetail.userDetail.province,
+                    birthDate: fetchedUserDetail.userDetail.birthDate,
+                    skillScore: fetchedUserDetail.userDetail.skillScore,
                     id: fetchedUserDetail.userDetail._id
                 }
             }
@@ -359,7 +359,7 @@ function getDetailedUserInformation(userId, done) {
             done(response)
         }
         else {
-          
+
             response.isSuccessful = false;
             let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
 
@@ -515,7 +515,7 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
 
                                                 response.isSuccessful = true;
                                                 responseObj = {
-                                                    password:hiddenData
+                                                    password: hiddenData
                                                 }
 
                                                 response.outputJson = responseObj
@@ -584,32 +584,27 @@ module.exports.changeUserPassword = changeUserPassword;
 /*TODO:BAD PRACTICE*/
 /* WHY SHOULD WE WAIT?! :) */
 /* CASUE THE WAY THE PROMISE IS RETURNED! */
-async function saveAuthKey4User(userId){
+async function saveAuthKey4User(userId) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     response.isSuccessful = false;
 
-    let authKey = mongoose.Types.ObjectId();   
-    const docQuery = User.findOneAndUpdate({_id:userId},{authkKey: authKey});
-    await docQuery.exec().then((doc)=>{
+    let authKey = mongoose.Types.ObjectId();
+    const docQuery = User.findOneAndUpdate({ _id: userId }, { authkKey: authKey });
+    await docQuery.exec().then((doc) => {
 
         response.isSuccessful = true;
-        response["hasAuthKey"] = true;        
-        response.outputJson = {authKey: authKey};       
+        response["hasAuthKey"] = true;
+        response.outputJson = { authKey: authKey };
     })
-    .catch((err)=>{
-        
-        response.isSuccessful = false;
-        response.serverValidations.push(global.errorResource.Err0000());      
-        
-    });
+        .catch((err) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0000());
+
+        });
     return Promise.resolve(response);
 }
 module.exports.saveAuthKey4User = saveAuthKey4User;
-
 /*--------------------------------------------------*/
-async function loginWithAuthKey(authKey){
-    return Promise.resolve(1);
-}
-module.exports.loginWithAuthKey = loginWithAuthKey;

@@ -92,6 +92,7 @@ export default class UserService {
         }
 
     }
+    
     /*authKey:string */
     signinWithAuthKey(authKey,callBack){
 

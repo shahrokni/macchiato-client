@@ -85,14 +85,17 @@ api.get('/user/isAuthenticated', isUserAuthenticated, (req, res) => {
     res.json({ response: response });
     return;
 });
-
 /*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
-
     successRedirect: 'successfulLogin',
     failureRedirect: 'failedLogin',
 }));
-
+/*-------------LOGIN WITH AUTHKEY----------------*/
+api.post('user/loginwithauthkey', passport.authenticate('loginWithAuthKey', {
+    successRedirect: 'successfulLogin',
+    failureRedirect: 'failedLogin',
+}));
+/*-----------------------------------------------*/
 api.get('/user/successfulLogin', (req, res) => {
 
     let response = new global.responseClass();
@@ -121,24 +124,12 @@ api.post('/user/login_set_remember', passport.authenticate('login', {
 }));
 
 api.get('/user/save_authkey_successfulLogin', async (req, res) => {
-    
+
     await userController.saveAuthKey4User(req.user._id).then((response) => {
-       
+
         res.json({ response: response });
         return res;
-    });   
-});
-
-/*-------------LOGIN WITH AUTHKEY----------------*/
-
-api.post('user/loginwithauthkey', async(req,res)=>{
-    userController.loginWithAuthKey(req.body.authKey)
-    .then((response)=>{
-
-    })
-    .catch((err)=>{
-        
-    })
+    });
 });
 
 /*------------------------------------------------*/
