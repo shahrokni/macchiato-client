@@ -119,7 +119,7 @@ export default class UserService {
             .catch((err)=>{
 
                 response.clientValidations.push(ErrorMessages.Err0000());
-                callBack(response)
+                callBack(response);
             });
         }
     }

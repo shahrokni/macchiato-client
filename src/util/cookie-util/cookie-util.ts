@@ -24,16 +24,16 @@ export const setCookie = (input: CookieKeyValue, expdays: number): void => {
 export const getCookieByKey = (key: string): string => {
 
     let value = ''
-    const cookieStr = `;${document.cookie}`;
+    const cookieStr = `;${document.cookie}`;  
     const exp = '^' + key + '=';
     const regex = new RegExp(exp, 'i');
     const parts = cookieStr.split(';');
     for (let i = 0; i < parts.length; i++) {
         if (parts[i].search(regex) !== -1) {
-            value = parts[i].substring(key.length + 1, cookieStr.length + 1);
+            value = parts[i].substring(key.length + 1, cookieStr.length + 1);           
             break;
         }
-    }
+    }   
     return value;
 }
 

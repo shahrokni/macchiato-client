@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './css/check-user-information.css';
-import { commonMessages } from '../../resource/text/common-messages';
 import { appGeneralInfo } from '../../setup-general-information';
 import { getCookieByKey, removeCookieByKey } from '../../util/cookie-util/cookie-util';
 import UserService from '../../service/user-service/user-service';
@@ -9,7 +8,6 @@ export default function CheckUserInformation() {
 
     let destinationLink = '';
     const checkUserInfoMessag = 'The user information is being checked. Please be patient...';
-    const [showLoadingMessage, setShowLoadingMessage] = useState(true);
     /* FUNCTIONS */
     const isAuthKeyValid = async (): Promise<boolean> => {
         const authKey = getAuthKey();
@@ -34,8 +32,11 @@ export default function CheckUserInformation() {
         return authKey;
     }
 
-    const removeAuthKeyCookie = (): void => {
-        removeCookieByKey('authKey');
+    const removeAuthKeyCookie = async (): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            removeCookieByKey('authKey');
+            resolve();
+        });
     }
 
     useEffect(() => {
@@ -48,38 +49,39 @@ export default function CheckUserInformation() {
                     userService.getUserDetail((response: any) => {
                         window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
                         window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
-                        destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.mainMenuItems.homePage;
-                        setShowLoadingMessage(false);
+                        setTimeout(()=>{
+                            destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.mainMenuItems.homePage;
+                            document.location.href = destinationLink;
+                        },1000);                    
                         return;
                     });
                 }
                 else {
-                    removeAuthKeyCookie();
-                    destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.views.sigin;
-                    setShowLoadingMessage(false);
+                    removeAuthKeyCookie().then(() => {
+                        setTimeout(()=>{
+                            destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.views.sigin;
+                            document.location.href = destinationLink;
+                        },1000);
+                  
+                    });
                     return;
                 }
+            })
+            .catch((ex) => {
+                alert(ex);
             })
     })
 
     return (
         <React.Fragment>
             {
-                (showLoadingMessage === true) ? (
-                    <div className='checkUserInfromation'>
-                        {checkUserInfoMessag}
-                        <span className="material-icons hourglass">
-                            hourglass_bottom
+
+                <div className='checkUserInfromation'>
+                    {checkUserInfoMessag}
+                    <span style={{color:'#116805'}} className="material-icons hourglass">
+                        hourglass_bottom
                         </span>
-                    </div>) : (
-                        <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
-                            <div style={{ visibility: 'hidden' }}>
-                                {
-                                    (window.location.href = destinationLink)
-                                }
-                            </div>
-                        </React.Suspense>
-                    )
+                </div>
             }
         </React.Fragment>
     );

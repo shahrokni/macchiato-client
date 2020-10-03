@@ -19,7 +19,7 @@ module.exports = function () {
 };
 
 passport.use('loginWithAuthKey',new localStrategy((authKey,done)=>{
-
+    
     User.findOne({authKey:authKey},function(err,user){
 
         if(err){

@@ -100,8 +100,7 @@ api.get('/user/successfulLogin', (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = true;
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();    
     res.json({ response: response });
     return;
 });
