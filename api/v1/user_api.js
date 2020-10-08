@@ -91,7 +91,7 @@ api.post('/user/login', passport.authenticate('login', {
     failureRedirect: 'failedLogin',
 }));
 /*-------------LOGIN WITH AUTHKEY----------------*/
-api.post('user/loginwithauthkey', passport.authenticate('loginWithAuthKey', {
+api.post('/user/loginwithauthkey', passport.authenticate('login', {
     successRedirect: 'successfulLogin',
     failureRedirect: 'failedLogin',
 }));
