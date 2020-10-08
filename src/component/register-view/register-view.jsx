@@ -5,8 +5,7 @@ import RegisterBox from './register-box.jsx';
 
 export default class RegisterView extends React.Component {
     render() {
-        return (
-
+        return (           
             <div className='fullSize absolute'>
                 <WelcomeBox />
                 <RegisterBox linkClick ={this.props.linkClick}/>

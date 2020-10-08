@@ -28,7 +28,11 @@ export default class ViewHandler {
             const HomePageView = React.lazy(() => import('../../homepage-view/homepage-view'));
             createdComponent = <HomePageView linkClick={innerLinkClickEventHandler} />;
         }
-
+        /* CHECK USER INFORMATION */
+        if(currentLocatin === appGeneralInfo.views.checkUserInformation){
+            const CheckUserInformationView = React.lazy(()=>import('../../check-user-information/check-user-information'));
+            createdComponent = <CheckUserInformationView/>
+        }
         /*Language Level*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.languageLevel) {
             //TODO

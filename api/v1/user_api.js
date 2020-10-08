@@ -24,13 +24,13 @@ function isUserAuthenticated(req, res, next) {
 
 //Save the new user
 api.post('/user', async (req, res) => {
-    
+
     await userController.registerUser(req.body)
-    .then((response)=>{
-               
-        res.json({response:response});
-        return;
-    });   
+        .then((response) => {
+
+            res.json({ response: response });
+            return;
+        });
 });
 
 
@@ -76,7 +76,7 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
     });
 });
 
-api.get('/user/isAuthenticated',isUserAuthenticated,(req,res)=>{
+api.get('/user/isAuthenticated', isUserAuthenticated, (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = true;
@@ -85,20 +85,22 @@ api.get('/user/isAuthenticated',isUserAuthenticated,(req,res)=>{
     res.json({ response: response });
     return;
 });
-
 /*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
-
     successRedirect: 'successfulLogin',
     failureRedirect: 'failedLogin',
 }));
-
+/*-------------LOGIN WITH AUTHKEY----------------*/
+api.post('/user/loginwithauthkey', passport.authenticate('login', {
+    successRedirect: 'successfulLogin',
+    failureRedirect: 'failedLogin',
+}));
+/*-----------------------------------------------*/
 api.get('/user/successfulLogin', (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = true;
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();    
     res.json({ response: response });
     return;
 });
@@ -113,7 +115,23 @@ api.get('/user/failedLogin', (req, res) => {
     res.json({ response: response });
     return;
 });
+/*----------- LOGIN AND SAVE AUT KEY (RMEMBER ME) ---------*/
+api.post('/user/login_set_remember', passport.authenticate('login', {
 
+    successRedirect: 'save_authkey_successfulLogin',
+    failureRedirect: 'failedLogin',
+}));
+
+api.get('/user/save_authkey_successfulLogin', async (req, res) => {
+
+    await userController.saveAuthKey4User(req.user._id).then((response) => {
+
+        res.json({ response: response });
+        return res;
+    });
+});
+
+/*------------------------------------------------*/
 api.get('/user/logout', (req, res) => {
 
     req.logout();
@@ -130,6 +148,7 @@ api.get('/user/logedout', (req, res) => {
     return res;
 });
 
+/*-----------------------------------------------*/
 api.get('/notlogedIn', (req, res) => {
 
     let response = new global.responseClass();

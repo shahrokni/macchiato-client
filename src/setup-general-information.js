@@ -21,8 +21,9 @@ const appGeneralInfo = {
         sigin:'signin',
         signup:'signup',
         forgotPassword:'forgotpassword',
-        globalMessage:'globalMessage',
-        register:'register'
+        globalMessage:'globalmessage',
+        register:'register',
+        checkUserInformation:'checkuserinformation'
     }
 }
 

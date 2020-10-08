@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 module.exports = function () {
-
+    mongoose.set('debug',true);
     mongoose.connection
         .on('error', () => { console.log('DB connection has thrown an exception!'); })
         .on('disconnected', () => {console.log('DB connection was disconnected!')})

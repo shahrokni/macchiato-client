@@ -18,9 +18,23 @@ module.exports = function () {
     });
 };
 
-passport.use('login',new localStrategy(function(username,password,done){
+passport.use('loginWithAuthKey',new localStrategy((authKey,done)=>{
+    
+    User.findOne({authKey:authKey},function(err,user){
 
-   
+        if(err){
+            return done(err);
+        }
+        if(!user){
+            return done(null,false,{message:'The authkey has not been found!'});
+        }
+        else{
+            return done(null,user);
+        }
+    })
+}));
+
+passport.use('login',new localStrategy(function(username,password,done){  
 
     User.findOne({userName:username},function(err,user){
 

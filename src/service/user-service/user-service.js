@@ -92,7 +92,37 @@ export default class UserService {
         }
 
     }
+    
+    /*authKey:string */
+    signinWithAuthKey(authKey,callBack){
 
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+
+        if(!authKey){
+
+            response.clientValidations.push(ErrorMessages.Err0000());
+            callBack(response);
+        }
+        else{
+
+            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            const api = 'user_api/v1/user/loginwithauthkey';
+            restInstance.post(api,{authKey:authKey})
+            .then((response)=>{
+
+                const responseUtil = require('../../util/response-util/response-util');
+                const serverResponse = responseUtil.extractResponse(response);
+                callBack(serverResponse);
+            })
+            .catch((err)=>{
+
+                response.clientValidations.push(ErrorMessages.Err0000());
+                callBack(response);
+            });
+        }
+    }
     /*user: User - output: Response*/
     signIn(user, callBack) {
 
@@ -108,8 +138,10 @@ export default class UserService {
         else {
 
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            let api = '';
+            (user.rememberMe === false) ? api = 'user_api/v1/user/login' : api = 'user_api/v1/user/login_set_remember';
 
-            restInstance.post('user_api/v1/user/login', { username: user.userName, password: user.password })
+            restInstance.post(api, { username: user.userName, password: user.password })
                 .then(function (res) {
 
                     let responseUtil = require('../../util/response-util/response-util');
@@ -121,9 +153,9 @@ export default class UserService {
                     response.clientValidations.push(ErrorMessages.Err0000());
                     callBack(response);
                 });
-
         }
     }
+
 
     /*userDetail: UserDetail-output: Reponse*/
     update(userDetail, callBack) {
