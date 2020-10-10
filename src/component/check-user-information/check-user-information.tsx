@@ -11,12 +11,12 @@ export default function CheckUserInformation() {
     const checkUserInfoMessag = 'The user information is being checked. Please be patient...';
     /* FUNCTIONS */
     const isAuthKeyValid = async (): Promise<boolean> => {
-        const authKey = getAuthKey();       
+        const authKey = getAuthKey();
         return new Promise((resolve, reject) => {
             const userService = new UserService();
             userService.signinWithAuthKey(authKey, (response: any) => {
                 if (response) {
-                   
+
                     (response.isSuccessful === true)
                         ? resolve(true)
                         : resolve(false);
@@ -51,26 +51,26 @@ export default function CheckUserInformation() {
                     userService.getUserDetail((response: any) => {
                         window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
                         window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.mainMenuItems.homePage;
                             document.location.href = destinationLink;
-                        },timeout);                    
+                        }, timeout);
                         return;
                     });
                 }
                 else {
                     removeAuthKeyCookie().then(() => {
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             destinationLink = appGeneralInfo.baseUrl + appGeneralInfo.views.sigin;
                             document.location.href = destinationLink;
-                        },timeout);
-                  
+                        }, timeout);
+
                     });
                     return;
                 }
             })
             .catch((ex) => {
-              
+
             })
     })
 
@@ -80,9 +80,9 @@ export default function CheckUserInformation() {
 
                 <div className='checkUserInfromation'>
                     {checkUserInfoMessag}
-                    <span style={{color:'#116805'}} className="material-icons hourglass">
+                    <span style={{ color: '#116805' }} className="material-icons hourglass">
                         hourglass_bottom
-                        </span>
+                    </span>
                 </div>
             }
         </React.Fragment>

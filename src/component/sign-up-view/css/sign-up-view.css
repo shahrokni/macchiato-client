@@ -1,0 +1,18 @@
+
+/*ALL DEVICES*/
+
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .signupViewContainer{
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;      
+    }
+    /*I HAVE TO HIDE THE WALL PAPER FOR SOME REASONS!*/
+    /*BAD PRACTICE!!! HAVE NO OTHER CHOICE*/
+    #mainWallpaper{
+        visibility: hidden;
+    }
+}
