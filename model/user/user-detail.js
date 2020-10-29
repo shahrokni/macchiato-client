@@ -13,7 +13,8 @@ var userDetailSchema = mongoose.Schema({
     province: { type: mongoose.Schema.Types.String, required: true },
     birthDate: { type: mongoose.Schema.Types.Date },
     isActive : {type: mongoose.Schema.Types.Boolean, required:true, default:true},
-    skillScore: [SkillScoreSchema]
+    skillScore: [SkillScoreSchema],
+    Introducer: {type:mongoose.Schema.Types.ObjectId, ref:'Introducer'}
 });
 var UserDetail = mongoose.model('UserDetail',userDetailSchema);
 module.exports.UserDetail = UserDetail;

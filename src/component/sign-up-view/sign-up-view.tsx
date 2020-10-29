@@ -22,7 +22,8 @@ export default function SignUpView() {
                 const termOfUseService = new TermOfUseService();
                 termOfUseService.getApplicationTerm()
                     .then((termOfUse) => {
-                        appTermOfUse.description = (termOfUse as TermOfUse).description;
+                        if(termOfUse)
+                            appTermOfUse.description = (termOfUse as TermOfUse).description;
                         setIsReady(true);
                     })
             });
