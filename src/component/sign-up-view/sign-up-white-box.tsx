@@ -3,13 +3,13 @@ import AppIntroducer from '../../entity/app-introducer/interface/AppIntroducer';
 import './css/sign-up-white-box.css';
 
 
-interface SignUpStaticInfo {
+export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[],
     termOfUse:String
 }
 
 
-export const SignUpWhiteBox = (props:SignUpStaticInfo):JSX.Element=>{
+export const SignUpWhiteBox = (signUpStaticInfo:SignUpStaticInfo):JSX.Element=>{
     return (
                 <React.Fragment>
                     <h1>

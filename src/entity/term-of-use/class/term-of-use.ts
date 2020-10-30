@@ -1,9 +1,9 @@
 import ITermOfUse from '../interface/term-of-use';
 export default class TermOfUse implements ITermOfUse {
     constructor() {
-        this.version = '';
+        this.version = 0;
         this.description = '';
     }
-    version: String;
+    version: Number;
     description: String;
 }

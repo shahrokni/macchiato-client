@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import SignupLogoBox from './sign-up-logo-box';
-import { SignUpWhiteBox } from './sign-up-white-box';
+import { SignUpWhiteBox, SignUpStaticInfo } from './sign-up-white-box';
 import AppIntroducer from '../../entity/app-introducer/interface/AppIntroducer';
 import IntroducerService from '../../service/introducer-service/introducer-service';
 import TermOfUseService from '../../service/term-of-use-service/term-of-use-service';
-import './css/sign-up-view.css';
 import TermOfUse from '../../entity/term-of-use/class/term-of-use';
+import SimpleNarrowWaiting from '../../component/simple-waiting/simple-waiting';
+import './css/sign-up-view.css';
 
 export default function SignUpView() {
 
@@ -22,7 +23,7 @@ export default function SignUpView() {
                 const termOfUseService = new TermOfUseService();
                 termOfUseService.getApplicationTerm()
                     .then((termOfUse) => {
-                        if(termOfUse)
+                        if (termOfUse)
                             appTermOfUse.description = (termOfUse as TermOfUse).description;
                         setIsReady(true);
                     })
@@ -31,7 +32,12 @@ export default function SignUpView() {
     return (
         <div className='signupViewContainer'>
             <SignupLogoBox />
-            {isReady && <SignUpWhiteBox appIntroducers={appIntroducers} termOfUse={appTermOfUse.description} />}
+            {
+                (isReady === true)
+                    ? <SignUpWhiteBox termOfUse={appTermOfUse.description}
+                        appIntroducers={appIntroducers} />
+                    : <SimpleNarrowWaiting />
+            }
         </div>
     );
 }

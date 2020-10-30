@@ -6,7 +6,6 @@ export default class IntroducerService {
 
     dateUtil;
     constructor() {
-
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
@@ -18,7 +17,7 @@ export default class IntroducerService {
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
         return new Promise((resolve, reject) => {
-            restInstance.get('introducer/v1/introducers')
+            restInstance.get('introducer_api/v1/introducers')
                 .then((res: any) => {
 
                     let responseUtil = require('../../util/response-util/response-util');
@@ -38,7 +37,7 @@ export default class IntroducerService {
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
         return new Promise((resolve, reject) => {
-            restInstance.get('introducer/v1/introducers/detail')
+            restInstance.get('introducer_api/v1/introducers/detail')
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res);

@@ -1,4 +1,4 @@
 export default interface ITermOfUse{
-    version:String;
+    version:Number;
     description:String;
 }
