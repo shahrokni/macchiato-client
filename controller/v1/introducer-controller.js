@@ -1,5 +1,4 @@
 const Introducer = require('../../model/introducer/introducer');
-const mongoose = require('mongoose');
 const projecttion = 'name code isEnabled';
 const detailedProjection = 'name code isEnabled contactInfo contract';
 /*--------------------------------------------------------------*/

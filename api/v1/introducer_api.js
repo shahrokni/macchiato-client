@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const introducerApi = express.Router();
 introducerApi.use(bodyParser.json());
-
 /*--------------------------------------*/
 introducerApi.get('/introducers',requestHandler.isUserAuthenticated,(req,res)=>{
     introducerController.getAllIntroducers(false)
