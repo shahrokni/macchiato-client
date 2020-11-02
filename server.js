@@ -45,7 +45,7 @@ app.use('/user_api/v1', userApiRouter);
 app.use('/user_message_api/v1',userMessageApiRouter);
 app.use('/admin_question_api/v1/',adminQuestionApiRouter);
 app.use('/introducer_api/v1',introducerRouter);
-app.use('termofuse_api/v1',termofuseRouter);
+app.use('/termofuse_api/v1',termofuseRouter);
 /*----------------- -----------------------*/
 app.listen(port, () => console.log('Listening on port ' + port));
 /*----------------------------------------------*/
