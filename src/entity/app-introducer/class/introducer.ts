@@ -13,6 +13,6 @@ export default class Introducer implements IAppIntroducer {
     code: string;
     name: string;
     isEnabled: boolean;
-    contract: Contract | null;
+    contract: Contract[] | null;
     contactInfo: ContactInfo | null;
 }

@@ -191,7 +191,6 @@ async function registerUser(userDetail) {
                     registerationDate: fetchedUser.registerationDate,
                     province: fetchedUser.province
                 }
-
             })
             .catch((exception) => {
 

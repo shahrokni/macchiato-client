@@ -29,7 +29,7 @@ class ErrorMessage {
 
         return "Database error has occurred!";
     }
-    /*------------------------------------------------------------ */
+    /*-----------------U   S   E   R---------------------- */
 
     //studentNumber
     static ErrBu0001() {
@@ -159,7 +159,7 @@ class ErrorMessage {
 
         return "Advertisment cannot be deleted by the applicaition users!"
     }
-    /*-----------------------------------------------------------*/
+    /*------------------Q   U   E  S  T  I  O  N----------------------*/
     static ErrBu0023() {
 
         return "System could not generate the question number!";
@@ -169,6 +169,11 @@ class ErrorMessage {
 
         return "System could not generate the new question!";
     }
+    /*--------------- I N T R O D U C E R -------------------------*/
+    static ErrBu0025(){
+        return "The code has already been taken!";
+    }
 }
+
 
 module.exports = ErrorMessage;
