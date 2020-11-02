@@ -7,14 +7,14 @@ introducerApi.use(bodyParser.json());
 
 /*--------------------------------------*/
 introducerApi.get('/introducers',requestHandler.isUserAuthenticated,(req,res)=>{
-    introducerController.getAllIntroducers()
+    introducerController.getAllIntroducers(false)
     .then((response)=>{
         res.json({response:response});
         return;
     });
 });
 introducerApi.get('/introducers/detail',requestHandler.isUserAuthenticated,(req,res)=>{
-    introducerController.getAllIntroducersDetail()
+    introducerController.getAllIntroducers(true)
     .then((response)=>{
         res.json({response:response});
         return;
