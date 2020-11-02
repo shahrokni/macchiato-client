@@ -13,6 +13,8 @@ var userMessageApiRouter = require('./api/v1/user_message_api');
 var adminQuestionApiRouter = require('./administrator_api/v1/adminstrator_question_api');
 var introducerRouter = require('./api/v1/introducer_api');
 var termofuseRouter = require('./api/v1/termofuse_api');
+var adminIntroducerRouter = require('./administrator_api/v1/administrator_introducer_api');
+var adminTermOfUseRouter = require('./administrator_api/v1/administrator_termofuse_api');
 /*---------------GLOBAL AND COMMON VARIABLES---------------------*/
 //Please notice that the following common and global variables are used by all apis.
 //THEREFORE, THEY ARE DECLARED ONLY ONCE! 
@@ -46,6 +48,8 @@ app.use('/user_message_api/v1',userMessageApiRouter);
 app.use('/admin_question_api/v1/',adminQuestionApiRouter);
 app.use('/introducer_api/v1',introducerRouter);
 app.use('/termofuse_api/v1',termofuseRouter);
+app.use('/admin_introducer_api/v1',adminIntroducerRouter);
+app.use('admin_termofuse_api',adminTermOfUseRouter);
 /*----------------- -----------------------*/
 app.listen(port, () => console.log('Listening on port ' + port));
 /*----------------------------------------------*/

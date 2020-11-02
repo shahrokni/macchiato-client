@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import AppIntroducer from '../../entity/app-introducer/interface/AppIntroducer';
+import AppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer';
 import './css/sign-up-white-box.css';
 
 

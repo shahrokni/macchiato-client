@@ -20,11 +20,4 @@ introducerApi.get('/introducers/detail',requestHandler.isUserAuthenticated,(req,
         return;
     });
 });
-introducerApi.post('/introducer',requestHandler.isUserAuthenticated,(req,res)=>{
-    introducerController.addIntroducer((response)=>{
-        res.json({response:response});
-        return;
-    })
-});
-
 module.exports = introducerApi;

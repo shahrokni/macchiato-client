@@ -1,11 +1,18 @@
-import AppIntroducer from '../interface/AppIntroducer';
+import IAppIntroducer from '../interface/IAppIntroducer';
+import Contract from './contract';
+import ContactInfo from './contact_info';
+export default class Introducer implements IAppIntroducer {
 
-export default class Introducer implements AppIntroducer{
-
-    constructor(){
-        this.code='';
-        this.name='';
+    constructor() {
+        this.code = '';
+        this.name = '';
+        this.isEnabled = true;
+        this.contract = null;
+        this.contactInfo = null;
     }
     code: string;
     name: string;
+    isEnabled: boolean;
+    contract: Contract | null;
+    contactInfo: ContactInfo | null;
 }
