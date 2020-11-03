@@ -1,6 +1,8 @@
 
 /*ALL DEVICES*/
-
+.signupViewContainer{
+    display: flex;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
     .signupViewContainer{
