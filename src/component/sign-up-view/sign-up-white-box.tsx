@@ -7,6 +7,7 @@ import { MenuItem } from '@material-ui/core';
 import {SignUpConditionsLink} from './sign-up-conditions-link';
 import {ConditionsAgreement} from './sign-up-agree-contions';
 import SimpleBtn from '../simple-btn/simple-btn';
+import {SignInLink} from './sign-in-link';
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[] 
@@ -96,6 +97,14 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 </div>
             </div>
             <SimpleBtn text={'Sign up'} secondryTheme={false}/>
+            <div>
+                <div>
+                    Do you have an account?
+                </div>
+                <div>
+                    <SignInLink/>
+                </div>
+            </div>
         </div>
     );
 }
