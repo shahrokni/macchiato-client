@@ -49,7 +49,7 @@ app.use('/admin_question_api/v1/',adminQuestionApiRouter);
 app.use('/introducer_api/v1',introducerRouter);
 app.use('/termofuse_api/v1',termofuseRouter);
 app.use('/admin_introducer_api/v1',adminIntroducerRouter);
-app.use('admin_termofuse_api',adminTermOfUseRouter);
+app.use('/admin_termofuse_api/v1',adminTermOfUseRouter);
 /*----------------- -----------------------*/
 app.listen(port, () => console.log('Listening on port ' + port));
 /*----------------------------------------------*/
