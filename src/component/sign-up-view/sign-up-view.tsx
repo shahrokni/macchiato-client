@@ -15,7 +15,8 @@ export default function SignUpView() {
         const introducerService = new IntroducerService();
         introducerService.getAllIntroducers()
             .then((introducers) => {
-                appIntroducers = introducers as IAppIntroducer[];                
+                appIntroducers = introducers as IAppIntroducer[];  
+                setIsReady(true);
             });
     });
     return (

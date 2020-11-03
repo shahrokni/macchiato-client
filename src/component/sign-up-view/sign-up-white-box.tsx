@@ -4,16 +4,29 @@ import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import { MenuItem } from '@material-ui/core';
-import {SignUpConditionsLink} from './sign-up-conditions-link';
-import {ConditionsAgreement} from './sign-up-agree-contions';
+import { SignUpConditionsLink } from './sign-up-conditions-link';
+import { ConditionsAgreement } from './sign-up-agree-contions';
 import SimpleBtn from '../simple-btn/simple-btn';
-import {SignInLink} from './sign-in-link';
+import { SignInLink } from './sign-in-link';
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
-    appIntroducers: AppIntroducer[] 
+    appIntroducers: AppIntroducer[]
 }
 /*-------------------------------*/
 export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {
+
+    let signInBtnStyle = {        
+        size: '90%',
+        marginTop: '10px',
+        marginLeft: '5%',
+        float: 'left',
+        textAlign: 'center',
+        height: '8%'
+    }
+
+    if (!window.matchMedia('(max-width:767px)'))
+        signInBtnStyle.height = 'auto';
+
     return (
         <div className='signUpWhitBoxContainer'>
             <TextField
@@ -87,22 +100,22 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             />
             <div>
                 <div>
-                    <ConditionsAgreement/>
+                    <ConditionsAgreement />
                 </div>
                 <div>
                     I agree with
                 </div>
                 <div>
-                    <SignUpConditionsLink/>
+                    <SignUpConditionsLink />
                 </div>
             </div>
-            <SimpleBtn text={'Sign up'} secondryTheme={false}/>
+            <SimpleBtn text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
             <div>
                 <div>
                     Do you have an account?
                 </div>
                 <div>
-                    <SignInLink/>
+                    <SignInLink />
                 </div>
             </div>
         </div>
