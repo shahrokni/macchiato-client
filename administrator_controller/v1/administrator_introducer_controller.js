@@ -17,7 +17,7 @@ async function addIntroducer(introducer) {
                 }
                 else {
                     const newIntroducer =
-                        new Introducer({ code: introducer.coce, name: introducer.name, isEnabled: introducer.isEnabled });
+                        new Introducer({ code: introducer.code, name: introducer.name, isEnabled: introducer.isEnabled });
                     newIntroducer.save({})
                         .then((savedDocument) => {
                             response.isSuccessful = true;

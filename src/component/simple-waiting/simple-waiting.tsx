@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/simple-waiting';
+import './css/simple-waiting.css';
 export default function SimpleNarrowWaiting() {
     return (
         <div>
