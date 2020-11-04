@@ -1,9 +1,11 @@
 import React from 'react';
-
+import Checkbox from '@material-ui/core/Checkbox';
 export const ConditionsAgreement = ():JSX.Element=>{
     return (
-        <h1>
-            FUCK!
-        </h1>
+        <React.Fragment>
+            <Checkbox            
+            inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+            />           
+        </React.Fragment>
     );
 }

@@ -4,10 +4,9 @@ import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import { MenuItem } from '@material-ui/core';
-import { SignUpConditionsLink } from './sign-up-conditions-link';
 import { ConditionsAgreement } from './sign-up-agree-contions';
 import SimpleBtn from '../simple-btn/simple-btn';
-import { SignInLink } from './sign-in-link';
+import { RedDashedLink } from '../red-dashed-link/red-dashed-link';
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[]
@@ -15,11 +14,10 @@ export interface SignUpStaticInfo {
 /*-------------------------------*/
 export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {
 
-    let signInBtnStyle = {        
+    let signInBtnStyle = {
         size: '90%',
         marginTop: '10px',
-        marginLeft: '5%',
-        float: 'left',
+        marginLeft: '5%',      
         textAlign: 'center',
         height: '8%'
     }
@@ -44,15 +42,15 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 label='Username'
                 variant='outlined'
             />
-            <div >
-                <div>
-                    <Select id='signUpGender'>
+            <div>
+                <div className='signUpSelectControl'>
+                    <Select id='signUpGender' variant="outlined" defaultValue={'Man'}>
                         <MenuItem value={'Man'}>Man</MenuItem>
                         <MenuItem value={'Woman'}>Woman</MenuItem>
                     </Select>
                 </div>
-                <div>
-                    <Select>
+                <div className='signUpSelectControl'>
+                    <Select id='signUpProvince' variant="outlined" defaultValue={1}>
                         <MenuItem value={1}>Tehran</MenuItem>
                         <MenuItem value={2}>Khuzestan</MenuItem>
                         <MenuItem value={3}>Fars</MenuItem>
@@ -98,24 +96,28 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 variant='outlined'
                 type='password'
             />
-            <div>
+            <div className='signupRow'>
                 <div>
                     <ConditionsAgreement />
                 </div>
-                <div>
-                    I agree with
+                <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070' }}>
+                    I agree with&nbsp;
                 </div>
-                <div>
-                    <SignUpConditionsLink />
+                <div style={{ display: 'flex' }}>
+                    <RedDashedLink text='tems and conditions' href='/termofuse' marginTop='6%' marginLeft='' />
                 </div>
             </div>
-            <SimpleBtn text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
-            <div>
-                <div>
-                    Do you have an account?
+            <br />
+            
+                <SimpleBtn text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
+           
+            <br />
+            <div className='signupRow'>
+                <div style={{ fontFamily: 'Montserrat-Regular', color: '#707070' }}>
+                    Do you have an account?&nbsp;
                 </div>
                 <div>
-                    <SignInLink />
+                    <RedDashedLink text='Sign in' href='/signin' marginTop='3%' marginLeft='' />
                 </div>
             </div>
         </div>
