@@ -16,8 +16,8 @@ export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[]
 }
 /*-------------------------------*/
-export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {    
- 
+export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {
+
     /*----- INPUT VALUES OBJECT--*/
     let formState: {
         name: string,
@@ -159,9 +159,12 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                     trackUserName(e);
                 }}
             />
+
             <div className='signupRow'>
                 <IntroducerSelector appIntroducers={signUpStaticInfo.appIntroducers} />
             </div>
+
+
             <div>
                 <div className='signUpSelectControl'>
                     <Select id='signUpGender' variant="outlined" defaultValue={'Man'}>
