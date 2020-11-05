@@ -58,7 +58,17 @@ class ErrorMessage {
     //name and lastName
     static ErrBu0005() {
 
-        return "Either you name or last name format is not correct!";
+        return "Either your name or last name format is not correct!";
+    }
+    //name
+    static ErrBu0026(){
+
+        return "The name format is not correct!";
+    }
+
+    //last name
+    static ErrBu0027(){
+        return "The last name format is not correct!"
     }
 
     //password
