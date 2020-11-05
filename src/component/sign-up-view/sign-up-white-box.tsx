@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import AppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer';
 import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
@@ -7,111 +7,113 @@ import { MenuItem } from '@material-ui/core';
 import { ConditionsAgreement } from './sign-up-agree-contions';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { RedDashedLink } from '../red-dashed-link/red-dashed-link';
-import {checkNameFormat,checkUserName,checkStrongPassword} from '../../util/regex/string-regex';
+import { checkNameFormat, checkUserName, checkStrongPassword } from '../../util/regex/string-regex';
 import ErrorMessage from '../../resource/text/error-message';
+import { IntroducerSelector } from '../introducer-selector/introducer-selector';
+
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[]
 }
 /*-------------------------------*/
 export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {    
-
+ 
     /*----- INPUT VALUES OBJECT--*/
-    let formState : {
-        name:string,
-        lastName:string,
-        username:string,
-        password:string,
-        province:string,
-        introducer:string,
-        gender:string,
-        conditionAgreement:boolean,
+    let formState: {
+        name: string,
+        lastName: string,
+        username: string,
+        password: string,
+        province: string,
+        introducer: string,
+        gender: string,
+        conditionAgreement: boolean,
 
-    }={
-        name:'',
-        lastName:'',
-        username:'',
-        password:'',
-        province:'',
-        introducer:'',
-        gender:'',
-        conditionAgreement:false
+    } = {
+        name: '',
+        lastName: '',
+        username: '',
+        password: '',
+        province: '',
+        introducer: '',
+        gender: '',
+        conditionAgreement: false
     }
     /*---- S T A T E S -----*/
-    const [isNameValid,setIsNameValid]=useState(false);
-    const [nameErrorMessage,setNameErrorMessage]=useState('');
-    const [isLastNameValid,setIsLastNameValid]=useState(false)
-    const [lastNameErrorMessage,setLastNameErrorMessage]=useState('');
-    const [isUserNameValid,setIsUserNameValid]=useState(false);
-    const [usernameErrorMessage,setUsernameErrorMessage]=useState('');
-    const [isPasswordValid,setIsPasswordValid]=useState(false);
-    const [passwordErrorMessage,setPasswordErrorMessage]=useState('');
-    const [isRepeatedPasswordValid,setIsRepeatedPasswordValid]=useState(false);
-    const [repeatedPasswordErrorMessage,setRepeatedPasswordErrorMessage]=useState('');
+    const [isNameValid, setIsNameValid] = useState(false);
+    const [nameErrorMessage, setNameErrorMessage] = useState('');
+    const [isLastNameValid, setIsLastNameValid] = useState(false)
+    const [lastNameErrorMessage, setLastNameErrorMessage] = useState('');
+    const [isUserNameValid, setIsUserNameValid] = useState(false);
+    const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [isRepeatedPasswordValid, setIsRepeatedPasswordValid] = useState(false);
+    const [repeatedPasswordErrorMessage, setRepeatedPasswordErrorMessage] = useState('');
     /*------------L O C A L F U N C T I O N S -------------------------*/
 
-    const trackNameChange=(e:React.ChangeEvent<HTMLTextAreaElement|HTMLInputElement>):void=>{
-           const newValue =  e.target.value;
-           formState.name = newValue;
-           const isValid = checkNameFormat(newValue);
-           if(!isValid){
-               setIsNameValid(false);
-               setNameErrorMessage(ErrorMessage.ErrBu0026())
-           }
-           else{
-               setIsNameValid(true);
-               setNameErrorMessage('');
-           }
+    const trackNameChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+        const newValue = e.target.value;
+        formState.name = newValue;
+        const isValid = checkNameFormat(newValue);
+        if (!isValid) {
+            setIsNameValid(false);
+            setNameErrorMessage(ErrorMessage.ErrBu0026())
+        }
+        else {
+            setIsNameValid(true);
+            setNameErrorMessage('');
+        }
     }
-    const trackLastNameChange=(e:React.ChangeEvent<HTMLTextAreaElement|HTMLInputElement>):void=>{
+    const trackLastNameChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
         formState.lastName = newValue;
         const isValid = checkNameFormat(newValue);
-        if(!isValid){
+        if (!isValid) {
             setIsLastNameValid(false);
             setLastNameErrorMessage(ErrorMessage.ErrBu0027());
         }
-        else{
+        else {
             setIsLastNameValid(true);
             setLastNameErrorMessage('');
         }
     }
-    const trackUserName=(e:React.ChangeEvent<HTMLTextAreaElement|HTMLInputElement>):void=>{
+    const trackUserName = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
         formState.username = newValue;
         const isValid = checkUserName(newValue);
-        if(!isValid){
+        if (!isValid) {
             setIsUserNameValid(false);
             setUsernameErrorMessage(ErrorMessage.ErrBu0004());
         }
-        else{
+        else {
             setIsUserNameValid(true);
             setUsernameErrorMessage('');
         }
     }
-    const trackPassword=(e:React.ChangeEvent<HTMLTextAreaElement|HTMLInputElement>):void=>{
+    const trackPassword = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
         formState.password = newValue;
         const isValid = checkStrongPassword(newValue);
-        if(!isValid){
+        if (!isValid) {
             setIsPasswordValid(false);
             setPasswordErrorMessage(ErrorMessage.ErrBu0006());
         }
-        else{
-            setIsPasswordValid(true); 
+        else {
+            setIsPasswordValid(true);
             setPasswordErrorMessage('');
         }
     }
-    const trackRepeatedPassword=(e:React.ChangeEvent<HTMLTextAreaElement|HTMLInputElement>):void=>{
-        const newValue = e.target.value;   
-        if(newValue!==formState.password){
+    const trackRepeatedPassword = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+        const newValue = e.target.value;
+        if (newValue !== formState.password) {
             setIsRepeatedPasswordValid(false);
             setRepeatedPasswordErrorMessage(ErrorMessage.ErrBu0020());
-        }   
-        else{
+        }
+        else {
             setIsRepeatedPasswordValid(true);
             setRepeatedPasswordErrorMessage('');
-        }  
+        }
     }
     /*-----------------------------------------------------------------*/
     let signInBtnStyle = {
@@ -121,7 +123,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
         textAlign: 'center',
         height: '8%'
     }
-    
+
     if (!window.matchMedia('(max-width:767px)'))
         signInBtnStyle.height = 'auto';
 
@@ -132,8 +134,8 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 label='Name'
                 variant='outlined'
                 error={!isNameValid}
-                helperText = {nameErrorMessage}
-                onChange={(e)=>{
+                helperText={nameErrorMessage}
+                onChange={(e) => {
                     trackNameChange(e)
                 }}
             />
@@ -143,20 +145,23 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 variant='outlined'
                 error={!isLastNameValid}
                 helperText={lastNameErrorMessage}
-               onChange={(e)=>{
+                onChange={(e) => {
                     trackLastNameChange(e)
-               }}
+                }}
             />
             <TextField
                 id='signUpUserName'
                 label='Username'
                 variant='outlined'
-                error = {!isUserNameValid}
+                error={!isUserNameValid}
                 helperText={usernameErrorMessage}
-                onChange={(e)=>{
+                onChange={(e) => {
                     trackUserName(e);
                 }}
             />
+            <div className='signupRow'>
+                <IntroducerSelector appIntroducers={signUpStaticInfo.appIntroducers} />
+            </div>
             <div>
                 <div className='signUpSelectControl'>
                     <Select id='signUpGender' variant="outlined" defaultValue={'Man'}>
@@ -206,7 +211,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 type='password'
                 error={!isPasswordValid}
                 helperText={passwordErrorMessage}
-                onChange={(e)=>{
+                onChange={(e) => {
                     trackPassword(e);
                 }}
             />
@@ -217,7 +222,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 type='password'
                 error={!isRepeatedPasswordValid}
                 helperText={repeatedPasswordErrorMessage}
-                onChange={(e)=>{
+                onChange={(e) => {
                     trackRepeatedPassword(e);
                 }}
             />
@@ -248,4 +253,3 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
         </div>
     );
 }
-

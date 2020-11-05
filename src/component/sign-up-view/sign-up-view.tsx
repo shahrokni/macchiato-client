@@ -6,16 +6,15 @@ import IntroducerService from '../../service/introducer-service/introducer-servi
 import SimpleNarrowWaiting from '../../component/simple-waiting/simple-waiting';
 import './css/sign-up-view.css';
 
-export default function SignUpView() {
+let appIntroducers: IAppIntroducer[]=[];
 
-    const [isReady, setIsReady] = useState(false);
-    let appIntroducers: IAppIntroducer[] = [];
-   
+export default function SignUpView() {
+    const [isReady, setIsReady] = useState(false);   
     useEffect(() => {      
         const introducerService = new IntroducerService();
         introducerService.getAllIntroducers()
             .then((introducers) => {
-                appIntroducers = introducers as IAppIntroducer[];  
+                appIntroducers = introducers as IAppIntroducer[];                
                 setIsReady(true);
             });
     });

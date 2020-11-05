@@ -8,7 +8,7 @@ async function getAllIntroducers(includeDetail) {
         let response = new global.responseClass();
         response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
         const findQuery = Introducer.find({ isEnabled: true },
-            ((includeDetail === false) ? projecttion : detailedProjection));
+            ((includeDetail === false) ? projecttion : detailedProjection));        
         findQuery.exec((err, documents) => {
             if (err) {
                 response.isSuccessful = false;
@@ -24,8 +24,3 @@ async function getAllIntroducers(includeDetail) {
     });
 }
 module.exports.getAllIntroducers = getAllIntroducers;
-
-
-
-
-

@@ -5,13 +5,14 @@ const bodyParser = require('body-parser');
 const introducerApi = express.Router();
 introducerApi.use(bodyParser.json());
 /*--------------------------------------*/
-introducerApi.get('/introducers',requestHandler.isUserAuthenticated,(req,res)=>{
+introducerApi.get('/introducers',(req,res)=>{
     introducerController.getAllIntroducers(false)
     .then((response)=>{
         res.json({response:response});
         return;
     });
 });
+//TODO: This mtehod mus be placed in Administrator API!!!!
 introducerApi.get('/introducers/detail',requestHandler.isUserAuthenticated,(req,res)=>{
     introducerController.getAllIntroducers(true)
     .then((response)=>{
