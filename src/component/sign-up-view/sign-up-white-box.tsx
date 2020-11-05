@@ -157,6 +157,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                     trackUserName(e);
                 }}
             />
+            {/* NEW CHANGES! */}
             <div>
                 <div className='signUpSelectControl'>
                     <Select id='signUpGender' variant="outlined" defaultValue={'Man'}>
