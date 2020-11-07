@@ -9,8 +9,7 @@ export default class IntroducerService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    async getAllIntroducers(): Promise<Introducer[] | null> {
-
+    async getAllIntroducers(): Promise<Introducer[] | null> {        
         let response = new Response();
         response.isSuccessful = false;
         response.operationTimestamp = this.dateUtil.getCurrentDateTime();
@@ -18,8 +17,7 @@ export default class IntroducerService {
 
         return new Promise((resolve, reject) => {
             restInstance.get('introducer_api/v1/introducers')
-                .then((res: any) => {
-                    console.log(res);
+                .then((res: any) => {                   
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res);
                     if (!serverResponse || !serverResponse.outputJson)
