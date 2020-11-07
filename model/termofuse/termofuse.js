@@ -1,3 +1,4 @@
+/* .... */
 var mongoose = require('mongoose');
 const termOfUseSchema = mongoose.Schema({
     description: {type:mongoose.Schema.Types.String, require:true},
