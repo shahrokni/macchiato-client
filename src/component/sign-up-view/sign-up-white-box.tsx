@@ -3,8 +3,9 @@ import AppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer'
 import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText'
 import { MenuItem } from '@material-ui/core';
-import { ConditionsAgreement } from './sign-up-agree-contions';
+import Checkbox from '@material-ui/core/Checkbox';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { RedDashedLink } from '../red-dashed-link/red-dashed-link';
 import { checkNameFormat, checkUserName, checkStrongPassword } from '../../util/regex/string-regex';
@@ -115,6 +116,14 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             setRepeatedPasswordErrorMessage('');
         }
     }
+    const agrre = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+
+        if (formState.conditionAgreement === false) {
+            formState.conditionAgreement = true;
+            return;
+        }
+        formState.conditionAgreement = false;
+    }
     /*-----------------------------------------------------------------*/
     let signInBtnStyle = {
         size: '90%',
@@ -163,7 +172,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             <div className='signupRow'>
                 <IntroducerSelector appIntroducers={signUpStaticInfo.appIntroducers} />
             </div>
-
+            <FormHelperText>Who introduced English Macchiato to you?</FormHelperText>
 
             <div>
                 <div className='signUpSelectControl'>
@@ -231,7 +240,12 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             />
             <div className='signupRow'>
                 <div>
-                    <ConditionsAgreement />
+                    <Checkbox
+                        inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+                        onChange={(e) => {
+                            agrre(e)
+                        }}
+                    />
                 </div>
                 <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070' }}>
                     I agree with&nbsp;

@@ -179,7 +179,12 @@ export default class ViewHandler {
             
             createdComponent = <RegisterView linkClick={innerLinkClickEventHandler}/>
         }
-               
+        /* Term of use */   
+        if(currentLocatin === appGeneralInfo.views.termOfUse){
+            const TermOfUse = 
+                React.lazy(()=>import('../../term-of-use/term-of-use'));
+            createdComponent = <TermOfUse linkClick={innerLinkClickEventHandler}/>
+        }
         store.dispatch(keepCurrentComponent(createdComponent));
         return createdComponent;
     }

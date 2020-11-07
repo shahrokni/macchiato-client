@@ -22,6 +22,10 @@
         width: 90%;
         margin-left: 5%;
     } 
+    .signUpWhitBoxContainer .MuiFormHelperText-root{
+        width: 90%;
+        margin-left: 5%;
+    }
     .signUpSelectControl .MuiOutlinedInput-root{
         width: 90%;
         margin-left: 5%;
