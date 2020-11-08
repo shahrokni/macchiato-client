@@ -11,7 +11,8 @@ import { RedDashedLink } from '../red-dashed-link/red-dashed-link';
 import { checkNameFormat, checkUserName, checkStrongPassword } from '../../util/regex/string-regex';
 import ErrorMessage from '../../resource/text/error-message';
 import { IntroducerSelector } from '../introducer-selector/introducer-selector';
-
+import UserService from '../../service/user-service/user-service';
+import {UserDetail} from '../../entity/user/userDetail';
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[]
@@ -124,6 +125,27 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
         }
         formState.conditionAgreement = false;
     }
+
+    const doSignup = (userInformation:any)=>{
+
+        if(formState.conditionAgreement===false){
+            //TODO
+        }
+        const userService = new UserService();
+        let userDetail = new UserDetail();
+        userDetail.name = formState.name;
+        userDetail.lastName = formState.lastName;
+        userDetail.userName = formState.username;
+        userDetail.password = formState.password;
+        userDetail.province = formState.province;
+        userDetail.gender = formState.gender;
+        userDetail.introducerCode = formState.introducer;
+
+        userService.signUp(userDetail,()=>{
+            //TODO
+        });
+    }
+    
     /*-----------------------------------------------------------------*/
     let signInBtnStyle = {
         size: '90%',
@@ -256,7 +278,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             </div>
             <br />
 
-            <SimpleBtn text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
+            <SimpleBtn action={doSignup} text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
 
             <br />
             <div className='signupRow'>

@@ -8,15 +8,16 @@ export class UserDetail extends User {
     constructor() {
 
         super();
-        this.name = "";
-        this.lastName = "";
-        this.studentNumber = "";
+        this.name = '';
+        this.lastName = '';
+        this.studentNumber = '';
         this.registerationDate = new Date();
-        this.email = "";
+        this.email = '';
         this.birthDate = undefined;
         this.gender = Gender.NotSet;
-        this.cellphone = "";
+        this.cellphone = '';
         this.skillScore = new SkillScore();
         this.province = Province.NotSet;
+        this.introducerCode = '';
     }
 }
