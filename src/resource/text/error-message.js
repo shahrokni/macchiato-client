@@ -169,6 +169,11 @@ class ErrorMessage {
 
         return "Advertisment cannot be deleted by the applicaition users!"
     }
+    //agreement
+    static ErrBu0028(){
+
+        return "You need to accept the terms of use!";
+    }
     /*------------------Q   U   E  S  T  I  O  N----------------------*/
     static ErrBu0023() {
 

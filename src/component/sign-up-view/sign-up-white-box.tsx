@@ -12,14 +12,19 @@ import { checkNameFormat, checkUserName, checkStrongPassword } from '../../util/
 import ErrorMessage from '../../resource/text/error-message';
 import { IntroducerSelector } from '../introducer-selector/introducer-selector';
 import UserService from '../../service/user-service/user-service';
-import {UserDetail} from '../../entity/user/userDetail';
+import { UserDetail } from '../../entity/user/userDetail';
+import { SignUpMessage } from './sign-up-message';
+import { commonMessages } from '../../resource/text/common-messages';
+import { appGeneralInfo } from '../../setup-general-information';
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[]
 }
 /*-------------------------------*/
 export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {
-
+    const red = '#D9183B';
+    const darkGreen = '#116805';
+   
     /*----- INPUT VALUES OBJECT--*/
     let formState: {
         name: string,
@@ -52,6 +57,9 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [isRepeatedPasswordValid, setIsRepeatedPasswordValid] = useState(false);
     const [repeatedPasswordErrorMessage, setRepeatedPasswordErrorMessage] = useState('');
+    const [signupMessage, setsignupMessage] = useState('');
+    const [signupMessageColor, setSignupMessageColor] = useState(red);
+    const [isSignedUp, setIsSignedUp] = useState(false);
     /*------------L O C A L F U N C T I O N S -------------------------*/
 
     const trackNameChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
@@ -126,11 +134,18 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
         formState.conditionAgreement = false;
     }
 
-    const doSignup = (userInformation:any)=>{
+    const doSignup = (): void => {
 
-        if(formState.conditionAgreement===false){
-            //TODO
+        lockSignUpForm();
+        showWaitingMessage();
+
+        if (formState.conditionAgreement === false) {
+            setSignupMessageColor(red);
+            setsignupMessage(ErrorMessage.ErrBu0028());
+            releaseSignUpForm();
+            return;
         }
+
         const userService = new UserService();
         let userDetail = new UserDetail();
         userDetail.name = formState.name;
@@ -141,11 +156,50 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
         userDetail.gender = formState.gender;
         userDetail.introducerCode = formState.introducer;
 
-        userService.signUp(userDetail,()=>{
-            //TODO
+        userService.signUp(userDetail, (serverResponse: any) => {
+            if (serverResponse.isSuccessful === true) {
+                userService.signIn({
+                    username: formState.username,
+                    password: formState.password
+                }, (response:any) => {
+                    if(response.isSuccessful===true){
+                        setIsSignedUp(true);
+                        return;
+                    }
+                    else{
+                        setSignupMessageColor(red);
+                        setsignupMessage( ErrorMessage.Err0000());
+                        return;
+                    }
+                })               
+            }
+            else {
+                setSignupMessageColor(red);
+                releaseSignUpForm();
+                let errorMessage = '';
+                if (serverResponse.clientValidations != null && serverResponse.clientValidations.length !== 0) {
+                    errorMessage = serverResponse.clientValidations[0];
+                    setsignupMessage(errorMessage);
+                    return;
+                }
+                if (serverResponse.serverValidations != null && serverResponse.serverValidations.length !== 0) {
+                    errorMessage = serverResponse.serverValidations[0];
+                    setsignupMessage(errorMessage);
+                    return;
+                }
+            }
         });
     }
-    
+    const lockSignUpForm = ():void=>{
+        //TODO
+    }
+    const releaseSignUpForm = ():void=>{
+        //TODO
+    }
+    const showWaitingMessage = ():void=>{
+        setSignupMessageColor(darkGreen);
+        setsignupMessage(commonMessages.wait);
+    }
     /*-----------------------------------------------------------------*/
     let signInBtnStyle = {
         size: '90%',
@@ -278,7 +332,21 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             </div>
             <br />
 
+            {signupMessage && <SignUpMessage message={signupMessage} color={signupMessageColor} />}
             <SimpleBtn action={doSignup} text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
+            {isSignedUp &&
+                <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
+                    {
+                        /*Redirect to Global View Message*/
+                        <div style={{ visibility: 'hidden' }}>
+                            {
+                                window.location.href = appGeneralInfo.baseUrl +
+                                appGeneralInfo.mainMenuItems.homePage
+                            }
+                        </div>
+                    }
+                </React.Suspense>
+            }
 
             <br />
             <div className='signupRow'>
