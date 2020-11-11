@@ -14,7 +14,7 @@ var userDetailSchema = mongoose.Schema({
     birthDate: { type: mongoose.Schema.Types.Date },
     isActive : {type: mongoose.Schema.Types.Boolean, required:true, default:true},
     skillScore: [SkillScoreSchema],
-    introducer: {type:mongoose.Schema.Types.ObjectId, ref:'Introducer'}
+    introducer: {type:mongoose.Schema.Types.String, default:'not-set'}
 });
 var UserDetail = mongoose.model('UserDetail',userDetailSchema);
 module.exports.UserDetail = UserDetail;

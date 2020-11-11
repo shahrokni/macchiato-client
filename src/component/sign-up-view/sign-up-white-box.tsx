@@ -3,7 +3,7 @@ import AppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer'
 import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText'
+import FormHelperText from '@material-ui/core/FormHelperText';
 import { MenuItem } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import SimpleBtn from '../simple-btn/simple-btn';
@@ -16,36 +16,19 @@ import { UserDetail } from '../../entity/user/userDetail';
 import { SignUpMessage } from './sign-up-message';
 import { commonMessages } from '../../resource/text/common-messages';
 import { appGeneralInfo } from '../../setup-general-information';
+import { Province } from '../../entity/global/province';
+import { Gender } from '../../entity/user/gender';
+
 /*----- I N T E R F A C E --------*/
 export interface SignUpStaticInfo {
     appIntroducers: AppIntroducer[]
 }
+
 /*-------------------------------*/
 export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {
     const red = '#D9183B';
     const darkGreen = '#116805';
-   
-    /*----- INPUT VALUES OBJECT--*/
-    let formState: {
-        name: string,
-        lastName: string,
-        username: string,
-        password: string,
-        province: string,
-        introducer: string,
-        gender: string,
-        conditionAgreement: boolean,
-
-    } = {
-        name: '',
-        lastName: '',
-        username: '',
-        password: '',
-        province: '',
-        introducer: '',
-        gender: '',
-        conditionAgreement: false
-    }
+    const defaultProvince = Province.Tehran;
     /*---- S T A T E S -----*/
     const [isNameValid, setIsNameValid] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState('');
@@ -60,11 +43,23 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
     const [signupMessage, setsignupMessage] = useState('');
     const [signupMessageColor, setSignupMessageColor] = useState(red);
     const [isSignedUp, setIsSignedUp] = useState(false);
+    const [isControlDisabled, setIsControlDisabled] = useState(false);
+    const [isFormLocked, setIsFormLocked] = useState(false);
+    const [formState, setFormState] = useState({
+        name: '',
+        lastName: '',
+        username: '',
+        password: '',
+        province: defaultProvince,
+        introducer: '',
+        gender: Gender.Male,
+        conditionAgreement: false
+    });
     /*------------L O C A L F U N C T I O N S -------------------------*/
 
     const trackNameChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
-        formState.name = newValue;
+        setFormState({ ...formState, name: newValue });
         const isValid = checkNameFormat(newValue);
         if (!isValid) {
             setIsNameValid(false);
@@ -77,7 +72,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
     }
     const trackLastNameChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
-        formState.lastName = newValue;
+        setFormState({ ...formState, lastName: newValue });
         const isValid = checkNameFormat(newValue);
         if (!isValid) {
             setIsLastNameValid(false);
@@ -90,7 +85,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
     }
     const trackUserName = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
-        formState.username = newValue;
+        setFormState({ ...formState, username: newValue });
         const isValid = checkUserName(newValue);
         if (!isValid) {
             setIsUserNameValid(false);
@@ -101,9 +96,18 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             setUsernameErrorMessage('');
         }
     }
+    const trackIntroducer = (introducer:string): void => {
+        setFormState({...formState,introducer:introducer});
+    }
+    const trackProvince = (province:string): void => {        
+        setFormState({...formState,province:province});
+    }
+    const trackGender = (gender:string): void => {
+        setFormState({...formState,gender:gender});
+    }
     const trackPassword = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
-        formState.password = newValue;
+        setFormState({ ...formState, password: newValue });
         const isValid = checkStrongPassword(newValue);
         if (!isValid) {
             setIsPasswordValid(false);
@@ -125,16 +129,20 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             setRepeatedPasswordErrorMessage('');
         }
     }
+
     const agrre = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
 
         if (formState.conditionAgreement === false) {
-            formState.conditionAgreement = true;
+            setFormState({ ...formState, conditionAgreement: true });
             return;
         }
-        formState.conditionAgreement = false;
+        setFormState({ ...formState, conditionAgreement: false });
     }
 
     const doSignup = (): void => {
+
+        if (isFormLocked === true)
+            return;
 
         lockSignUpForm();
         showWaitingMessage();
@@ -161,17 +169,17 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 userService.signIn({
                     username: formState.username,
                     password: formState.password
-                }, (response:any) => {
-                    if(response.isSuccessful===true){
+                }, (response: any) => {
+                    if (response.isSuccessful === true) {
                         setIsSignedUp(true);
                         return;
                     }
-                    else{
+                    else {
                         setSignupMessageColor(red);
-                        setsignupMessage( ErrorMessage.Err0000());
+                        setsignupMessage(ErrorMessage.Err0000());
                         return;
                     }
-                })               
+                })
             }
             else {
                 setSignupMessageColor(red);
@@ -190,13 +198,19 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             }
         });
     }
-    const lockSignUpForm = ():void=>{
-        //TODO
+    const lockSignUpForm = (): void => {
+        setIsFormLocked(true);
+        const signupBtn = Array.from(document.getElementsByClassName('simpleBtn') as HTMLCollectionOf<HTMLElement>);
+        signupBtn[0].style.cursor = 'no-drop';
+        setIsControlDisabled(true);
     }
-    const releaseSignUpForm = ():void=>{
-        //TODO
+    const releaseSignUpForm = (): void => {
+        setIsFormLocked(false);
+        const signupBtn = Array.from(document.getElementsByClassName('simpleBtn') as HTMLCollectionOf<HTMLElement>);
+        signupBtn[0].style.cursor = 'pointer';
+        setIsControlDisabled(false);
     }
-    const showWaitingMessage = ():void=>{
+    const showWaitingMessage = (): void => {
         setSignupMessageColor(darkGreen);
         setsignupMessage(commonMessages.wait);
     }
@@ -220,6 +234,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 variant='outlined'
                 error={!isNameValid}
                 helperText={nameErrorMessage}
+                disabled={isControlDisabled}
                 onChange={(e) => {
                     trackNameChange(e)
                 }}
@@ -230,6 +245,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 variant='outlined'
                 error={!isLastNameValid}
                 helperText={lastNameErrorMessage}
+                disabled={isControlDisabled}
                 onChange={(e) => {
                     trackLastNameChange(e)
                 }}
@@ -240,55 +256,69 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 variant='outlined'
                 error={!isUserNameValid}
                 helperText={usernameErrorMessage}
+                disabled={isControlDisabled}
                 onChange={(e) => {
                     trackUserName(e);
                 }}
             />
 
             <div className='signupRow'>
-                <IntroducerSelector appIntroducers={signUpStaticInfo.appIntroducers} />
+                <IntroducerSelector appIntroducers={signUpStaticInfo.appIntroducers} isDisabled={isControlDisabled} changeEvent={trackIntroducer} />
             </div>
             <FormHelperText>Who introduced English Macchiato to you?</FormHelperText>
 
             <div>
                 <div className='signUpSelectControl'>
-                    <Select id='signUpGender' variant="outlined" defaultValue={'Man'}>
-                        <MenuItem value={'Man'}>Man</MenuItem>
-                        <MenuItem value={'Woman'}>Woman</MenuItem>
+                    <Select id='signUpGender'
+                     variant="outlined"
+                     defaultValue={'Male'}
+                     disabled={isControlDisabled}
+                     onChange={(e)=>{
+                        trackGender(String(e.target.value))
+                     }}
+                     >
+                        <MenuItem value={'Male'}>Male</MenuItem>
+                        <MenuItem value={'Female'}>Female</MenuItem>
                     </Select>
                 </div>
                 <div className='signUpSelectControl'>
-                    <Select id='signUpProvince' variant="outlined" defaultValue={1}>
-                        <MenuItem value={1}>Tehran</MenuItem>
-                        <MenuItem value={2}>Khuzestan</MenuItem>
-                        <MenuItem value={3}>Fars</MenuItem>
-                        <MenuItem value={4}>Isfahan</MenuItem>
-                        <MenuItem value={5}>Semnan</MenuItem>
-                        <MenuItem value={6}>East Azarbaijan</MenuItem>
-                        <MenuItem value={7}>West Azarbaijan</MenuItem>
-                        <MenuItem value={8}>Ardabil</MenuItem>
-                        <MenuItem value={9}>Gilan</MenuItem>
-                        <MenuItem value={10}>Zanjan</MenuItem>
-                        <MenuItem value={11}>Kurdistan</MenuItem>
-                        <MenuItem value={12}>Kermanshah</MenuItem>
-                        <MenuItem value={13}>Hamedan</MenuItem>
-                        <MenuItem value={14}>Qazvin</MenuItem>
-                        <MenuItem value={15}>Alborz</MenuItem>
-                        <MenuItem value={16}>Mazandaran</MenuItem>
-                        <MenuItem value={17}>Markazi</MenuItem>
-                        <MenuItem value={18}>Qom</MenuItem>
-                        <MenuItem value={19}>Lorestan</MenuItem>
-                        <MenuItem value={20}>Chaharmahal</MenuItem>
-                        <MenuItem value={21}>Kohgiluyeh</MenuItem>
-                        <MenuItem value={22}>Bushehr</MenuItem>
-                        <MenuItem value={23}>Hormozgan</MenuItem>
-                        <MenuItem value={24}>Kerman</MenuItem>
-                        <MenuItem value={25}>South Khorasan</MenuItem>
-                        <MenuItem value={26}>Razavi Khorsan</MenuItem>
-                        <MenuItem value={27}>North Khorasan</MenuItem>
-                        <MenuItem value={28}>Golestan</MenuItem>
-                        <MenuItem value={29}>Sistan Baluchestan</MenuItem>
-                        <MenuItem value={30}>Ilam</MenuItem>
+                    <Select id='signUpProvince' variant="outlined"
+                     defaultValue={1}
+                     disabled={isControlDisabled}
+                     onChange={(e)=>{
+                        trackProvince(String(e.target.value))
+                     }}
+                     >
+                        <MenuItem value={Province.Tehran}>{Province.Tehran}</MenuItem>
+                        <MenuItem value={Province.Khuzestan}>{Province.Khuzestan}</MenuItem>
+                        <MenuItem value={Province.Fars}>{Province.Fars}</MenuItem>
+                        <MenuItem value={Province.Isfahan}>{Province.Isfahan}</MenuItem>
+                        <MenuItem value={Province.Semnan}>{Province.Semnan}</MenuItem>
+                        <MenuItem value={Province.EastAzarbaijan}>{Province.EastAzarbaijan}</MenuItem>
+                        <MenuItem value={Province.WestAzarbaijan}>{Province.WestAzarbaijan}</MenuItem>
+                        <MenuItem value={Province.Ardabil}>{Province.Ardabil}</MenuItem>
+                        <MenuItem value={Province.Gilan}>{Province.Gilan}</MenuItem>
+                        <MenuItem value={Province.Zanjan}>{Province.Zanjan}</MenuItem>
+                        <MenuItem value={Province.Kurdistan}>{Province.Kurdistan}</MenuItem>
+                        <MenuItem value={Province.Kermanshah}>{Province.Kermanshah}</MenuItem>
+                        <MenuItem value={Province.Hamedan}>{Province.Hamedan}</MenuItem>
+                        <MenuItem value={Province.Qazvin}>{Province.Qazvin}</MenuItem>
+                        <MenuItem value={Province.Alborz}>{Province.Alborz}</MenuItem>
+                        <MenuItem value={Province.Mazanderan}>{Province.Mazanderan}</MenuItem>
+                        <MenuItem value={Province.Markazi}>{Province.Markazi}</MenuItem>
+                        <MenuItem value={Province.Qom}>{Province.Qom}</MenuItem>
+                        <MenuItem value={Province.Lorestan}>{Province.Lorestan}</MenuItem>
+                        <MenuItem value={Province.Chaharmahal}>{Province.Chaharmahal}</MenuItem>
+                        <MenuItem value={Province.Kohgiluyeh}>{Province.Kohgiluyeh}</MenuItem>
+                        <MenuItem value={Province.Bushehr}>{Province.Bushehr}</MenuItem>
+                        <MenuItem value={Province.Hormozgan}>{Province.Hormozgan}</MenuItem>
+                        <MenuItem value={Province.Kerman}>{Province.Kerman}</MenuItem>
+                        <MenuItem value={Province.SouthKhorasan}>{Province.SouthKhorasan}</MenuItem>
+                        <MenuItem value={Province.RazaviKhorsan}>{Province.RazaviKhorsan}</MenuItem>
+                        <MenuItem value={Province.NorthKhorasan}>{Province.NorthKhorasan}</MenuItem>
+                        <MenuItem value={Province.Golestan}>{Province.Golestan}</MenuItem>
+                        <MenuItem value={Province.SistanBaluchestan}>{Province.SistanBaluchestan}</MenuItem>
+                        <MenuItem value={Province.Ilam}>{Province.Ilam}</MenuItem>
                     </Select>
                 </div>
             </div>
@@ -299,6 +329,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 type='password'
                 error={!isPasswordValid}
                 helperText={passwordErrorMessage}
+                disabled={isControlDisabled}
                 onChange={(e) => {
                     trackPassword(e);
                 }}
@@ -310,6 +341,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 type='password'
                 error={!isRepeatedPasswordValid}
                 helperText={repeatedPasswordErrorMessage}
+                disabled={isControlDisabled}
                 onChange={(e) => {
                     trackRepeatedPassword(e);
                 }}
@@ -318,6 +350,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 <div>
                     <Checkbox
                         inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+                        disabled={isControlDisabled}
                         onChange={(e) => {
                             agrre(e)
                         }}
@@ -331,8 +364,9 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 </div>
             </div>
             <br />
-
-            {signupMessage && <SignUpMessage message={signupMessage} color={signupMessageColor} />}
+            <div className='signupRow'>
+                {signupMessage && <SignUpMessage message={signupMessage} color={signupMessageColor} />}
+            </div>
             <SimpleBtn action={doSignup} text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
             {isSignedUp &&
                 <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>

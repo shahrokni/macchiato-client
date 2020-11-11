@@ -8,7 +8,9 @@ import IAppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer
 import './css/introducer-selector.css';
 /*----- I N T E R F A C E --------*/
 export interface IIntroducerSelector {
-    appIntroducers: AppIntroducer[]
+    appIntroducers: AppIntroducer[];
+    isDisabled:boolean;
+    changeEvent:any
 }
 
 let appIntroducers: IAppIntroducer[] = [];
@@ -42,6 +44,10 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
                 <Select
                     defaultValue={'NONE'}
                     variant="outlined"
+                    disabled = {introducerSelectorParam.isDisabled}
+                    onChange={(e)=>{
+                        introducerSelectorParam.changeEvent(e)
+                    }}
                 >
                     <MenuItem key={0} value={'NONE'}>{'No one!'}</MenuItem>
                     {appIntroducers.map((item, index) =>
