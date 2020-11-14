@@ -9,11 +9,12 @@ var userDetailSchema = mongoose.Schema({
     registerationDate: { type: mongoose.Schema.Types.Date, required: true },
     email: { type: mongoose.Schema.Types.String },
     gender: { type: mongoose.Schema.Types.String },
-    cellphone: { type: mongoose.Schema.Types.String },
+    cellphone: { type: mongoose.Schema.Types.String },    
     province: { type: mongoose.Schema.Types.String, required: true },
     birthDate: { type: mongoose.Schema.Types.Date },
     isActive : {type: mongoose.Schema.Types.Boolean, required:true, default:true},
-    skillScore: [SkillScoreSchema]
+    skillScore: [SkillScoreSchema],
+    introducer: {type:mongoose.Schema.Types.String, default:'not-set'}
 });
 var UserDetail = mongoose.model('UserDetail',userDetailSchema);
 module.exports.UserDetail = UserDetail;

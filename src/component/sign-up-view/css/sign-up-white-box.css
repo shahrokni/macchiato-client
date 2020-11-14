@@ -1,0 +1,37 @@
+/*ALL DEVICES*/
+.signupRow{
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 4%;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .signUpWhitBoxContainer{
+        width: 100%;
+        height: 70%;
+        float: left;
+        position: relative;       
+        top: 20%;
+        background-color: rgba(255,255,255,1);
+    }   
+    .signUpWhitBoxContainer .MuiTextField-root{
+
+        margin-top: 4%;
+        width: 90%;
+        margin-left: 5%;
+    } 
+    .signUpWhitBoxContainer .MuiFormHelperText-root{
+        width: 90%;
+        margin-left: 5%;
+    }
+    .signUpSelectControl .MuiOutlinedInput-root{
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 4%;
+    }
+    .signupAgreeText{
+        margin-top: 3%;
+    }
+}

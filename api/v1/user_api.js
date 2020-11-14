@@ -10,8 +10,6 @@ api.use(bodyParser.json());
 
 //Check if the user is authenticated
 function isUserAuthenticated(req, res, next) {
-
-
     if (req.isAuthenticated()) {
 
         next();
@@ -23,8 +21,7 @@ function isUserAuthenticated(req, res, next) {
 }
 
 //Save the new user
-api.post('/user', async (req, res) => {
-
+api.post('/user', async (req, res) => {  
     await userController.registerUser(req.body)
         .then((response) => {
 
