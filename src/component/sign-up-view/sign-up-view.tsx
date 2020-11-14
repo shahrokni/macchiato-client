@@ -13,8 +13,7 @@ import { appGeneralInfo } from '../../setup-general-information';
 let appIntroducers: IAppIntroducer[] = [];
 export default function SignUpView() {
 
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(AuthenticationState.NotSet);
-
+    const [isUserAuthenticated, setIsUserAuthenticated] = useState(AuthenticationState.NotSet);    
     useEffect(() => {       
         const userService = new UserService();
         userService.isUserAuthenticated()
@@ -23,8 +22,7 @@ export default function SignUpView() {
                 if (res === false) {
                     const introducerService = new IntroducerService();
                     introducerService.getAllIntroducers()
-                        .then((introducers) => {
-                            appIntroducers = introducers as IAppIntroducer[];
+                        .then((introducers) => {                                                            
                             setIsUserAuthenticated(AuthenticationState.NotAuthenticated);
                         });
                 }
@@ -43,7 +41,7 @@ export default function SignUpView() {
                 (isUserAuthenticated === AuthenticationState.NotSet) ?
                     <SimpleNarrowWaiting /> : (
                         (isUserAuthenticated === AuthenticationState.NotAuthenticated)
-                            ? (<SignUpWhiteBox appIntroducers={appIntroducers} />)
+                            ? (<SignUpWhiteBox />)
                             : (
                                 <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                                     <div style={{ visibility: 'hidden' }}>

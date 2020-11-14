@@ -19,13 +19,8 @@ import { appGeneralInfo } from '../../setup-general-information';
 import { Province } from '../../entity/global/province';
 import { Gender } from '../../entity/user/gender';
 
-/*----- I N T E R F A C E --------*/
-export interface SignUpStaticInfo {
-    appIntroducers: AppIntroducer[]
-}
-
 /*-------------------------------*/
-export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element => {
+export const SignUpWhiteBox = (): JSX.Element => {
     const red = '#D9183B';
     const darkGreen = '#116805';
     const defaultProvince = Province.Tehran;
@@ -263,7 +258,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
             />
 
             <div className='signupRow'>
-                <IntroducerSelector appIntroducers={signUpStaticInfo.appIntroducers} isDisabled={isControlDisabled} changeEvent={trackIntroducer} />
+                <IntroducerSelector appIntroducers={null} isDisabled={isControlDisabled} changeEvent={trackIntroducer} />
             </div>
             <FormHelperText>Who introduced English Macchiato to you?</FormHelperText>
 
@@ -283,7 +278,7 @@ export const SignUpWhiteBox = (signUpStaticInfo: SignUpStaticInfo): JSX.Element 
                 </div>
                 <div className='signUpSelectControl'>
                     <Select id='signUpProvince' variant="outlined"
-                     defaultValue={1}
+                     defaultValue={Province.Tehran}
                      disabled={isControlDisabled}
                      onChange={(e)=>{
                         trackProvince(String(e.target.value))

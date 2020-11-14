@@ -8,18 +8,17 @@ import IAppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer
 import './css/introducer-selector.css';
 /*----- I N T E R F A C E --------*/
 export interface IIntroducerSelector {
-    appIntroducers: AppIntroducer[];
+    appIntroducers: AppIntroducer[]|null;
     isDisabled:boolean;
     changeEvent:any
 }
 
-let appIntroducers: IAppIntroducer[] = [];
 export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector): any => {
     
-    const [reloadTrigger, setReloadTrigger] = useState(true);
+    const [appIntroducers,setAppIntroducers] = useState<IAppIntroducer[]>([]);    
     if (introducerSelectorParam != null && introducerSelectorParam.appIntroducers != null && introducerSelectorParam.appIntroducers.length !== 0) {
         introducerSelectorParam.appIntroducers.map((item) => {
-            appIntroducers.push(item);
+            setAppIntroducers([...appIntroducers,item]);
         })
     }
 
@@ -29,17 +28,14 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
             const introducerService = new IntroducerService();
             introducerService.getAllIntroducers()
                 .then((result) => {
-                    result?.map((item) => {
-                        appIntroducers.push(item as IAppIntroducer);
-                        setReloadTrigger(true);
-                    });
+                    setAppIntroducers([...(result as IAppIntroducer[])]);
                 })
         }
     });
 
     return (
 
-        (appIntroducers.length !== 0 && reloadTrigger === true) ? (
+        (appIntroducers.length !== 0) ? (
             <div className='introducerSelectorContainer'>
                 <Select
                     defaultValue={'NONE'}
@@ -49,7 +45,7 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
                         introducerSelectorParam.changeEvent(e)
                     }}
                 >
-                    <MenuItem key={0} value={'NONE'}>{'No one!'}</MenuItem>
+                    <MenuItem key={0} value={'NONE'}>{'No One!'}</MenuItem>
                     {appIntroducers.map((item, index) =>
                         <MenuItem key={index + 1} value={item.code}>{item.name}</MenuItem>
                     )}
