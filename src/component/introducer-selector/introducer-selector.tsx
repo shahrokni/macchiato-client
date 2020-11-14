@@ -42,7 +42,7 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
                     variant="outlined"
                     disabled = {introducerSelectorParam.isDisabled}
                     onChange={(e)=>{
-                        introducerSelectorParam.changeEvent(e)
+                        introducerSelectorParam.changeEvent(e.target.value)
                     }}
                 >
                     <MenuItem key={0} value={'NONE'}>{'No One!'}</MenuItem>

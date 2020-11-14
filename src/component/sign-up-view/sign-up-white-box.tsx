@@ -162,8 +162,9 @@ export const SignUpWhiteBox = (): JSX.Element => {
         userService.signUp(userDetail, (serverResponse: any) => {
             if (serverResponse.isSuccessful === true) {
                 userService.signIn({
-                    username: formState.username,
-                    password: formState.password
+                    userName: formState.username,
+                    password: formState.password,
+                    rememberMe:true
                 }, (response: any) => {
                     if (response.isSuccessful === true) {
                         setIsSignedUp(true);
@@ -188,6 +189,10 @@ export const SignUpWhiteBox = (): JSX.Element => {
                 if (serverResponse.serverValidations != null && serverResponse.serverValidations.length !== 0) {
                     errorMessage = serverResponse.serverValidations[0];
                     setsignupMessage(errorMessage);
+                    return;
+                }
+                else{
+                    setsignupMessage(ErrorMessage.Err0000());
                     return;
                 }
             }
