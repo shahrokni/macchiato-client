@@ -222,11 +222,19 @@ export const SignUpWhiteBox = (): JSX.Element => {
         textAlign: 'center',
         height: '8%'
     }
+    let redDashedLinkStyle = {
+        fontSize : '',
+        marginTop:'6%'
+    }
+    /* MOBILE LANDSCAPE */
+    if (window.matchMedia('(max-width:767px) and (orientation: landscape)').matches){
+        signInBtnStyle.height = '4%';
+        signInBtnStyle.marginTop = '0';
+        redDashedLinkStyle.fontSize = '10pt';
+        redDashedLinkStyle.marginTop = '8%';
+    }
 
-    if (!window.matchMedia('(max-width:767px)'))
-        signInBtnStyle.height = 'auto';
-
-    return (
+    return (        
         <div className='signUpWhitBoxContainer'>
             <TextField
                 id='signUpName'
@@ -356,11 +364,11 @@ export const SignUpWhiteBox = (): JSX.Element => {
                         }}
                     />
                 </div>
-                <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070' }}>
+                <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070', height:'max-content' }}>
                     I agree with&nbsp;
                 </div>
                 <div style={{ display: 'flex' }}>
-                    <RedDashedLink text='tems and conditions' href='/termofuse' marginTop='6%' marginLeft='' />
+                    <RedDashedLink text='tems and conditions' href='/termofuse' marginTop={redDashedLinkStyle.marginTop} marginLeft='' fontSize={redDashedLinkStyle.fontSize} />
                 </div>
             </div>
             <br />
@@ -388,7 +396,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
                     Do you have an account?&nbsp;
                 </div>
                 <div>
-                    <RedDashedLink text='Sign in' href='/signin' marginTop='3%' marginLeft='' />
+                    <RedDashedLink text='Sign in' href='/signin' marginTop='3%' marginLeft='' fontSize={redDashedLinkStyle.fontSize} />
                 </div>
             </div>
         </div>

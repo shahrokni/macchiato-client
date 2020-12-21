@@ -5,6 +5,7 @@
     width: 90%;
     margin-left: 5%;
     margin-top: 4%;
+    float: left;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
@@ -33,5 +34,39 @@
     }
     .signupAgreeText{
         margin-top: 3%;
+    }
+}
+
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+
+    .signUpWhitBoxContainer{
+        float: left; 
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: 0px 6px 12px #70707029; 
+        background-color: rgba(255,255,255,0.8);        
+    }
+
+    /*Material UI text field control*/
+    .signUpWhitBoxContainer .MuiTextField-root{
+
+        width: 90%;
+        float: left;
+        margin-top: 10px !important;
+        margin-left: 5% !important;
+    }  
+    .signUpWhitBoxContainer .MuiFormHelperText-root{
+        width: 90%;
+        margin-left: 5%;
+    }
+    .signUpSelectControl .MuiOutlinedInput-root{
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 4%;
+    }
+    .signupAgreeText{
+        margin-top: 4%;
+        font-size: 10pt;        
     }
 }
