@@ -20,3 +20,14 @@
         visibility: hidden;
     }
 }
+
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+
+    .signupViewContainer{
+        position: relative;
+        width: 40vw;        
+        left:28vw;
+        top:2vh;        
+    }
+}
