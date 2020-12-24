@@ -91,14 +91,14 @@ export const SignUpWhiteBox = (): JSX.Element => {
             setUsernameErrorMessage('');
         }
     }
-    const trackIntroducer = (introducer:string): void => {
-        setFormState({...formState,introducer:introducer});
+    const trackIntroducer = (introducer: string): void => {
+        setFormState({ ...formState, introducer: introducer });
     }
-    const trackProvince = (province:string): void => {        
-        setFormState({...formState,province:province});
+    const trackProvince = (province: string): void => {
+        setFormState({ ...formState, province: province });
     }
-    const trackGender = (gender:string): void => {
-        setFormState({...formState,gender:gender});
+    const trackGender = (gender: string): void => {
+        setFormState({ ...formState, gender: gender });
     }
     const trackPassword = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newValue = e.target.value;
@@ -164,7 +164,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
                 userService.signIn({
                     userName: formState.username,
                     password: formState.password,
-                    rememberMe:true
+                    rememberMe: true
                 }, (response: any) => {
                     if (response.isSuccessful === true) {
                         setIsSignedUp(true);
@@ -191,7 +191,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
                     setsignupMessage(errorMessage);
                     return;
                 }
-                else{
+                else {
                     setsignupMessage(ErrorMessage.Err0000());
                     return;
                 }
@@ -217,24 +217,23 @@ export const SignUpWhiteBox = (): JSX.Element => {
     /*-----------------------------------------------------------------*/
     let signInBtnStyle = {
         size: '90%',
-        marginTop: '10px',
+        marginTop: '3px',
         marginLeft: '5%',
         textAlign: 'center',
-        height: '8%'
+        height: '46px',        
     }
     let redDashedLinkStyle = {
-        fontSize : '',
-        marginTop:'6%'
+        fontSize: '',
+        marginTop: '6%'
     }
     /* MOBILE LANDSCAPE */
-    if (window.matchMedia('(max-width:767px) and (orientation: landscape)').matches){
-        signInBtnStyle.height = '4%';
-        signInBtnStyle.marginTop = '0';
+    if (window.matchMedia('(max-width:767px) and (orientation: landscape)').matches) {
+
         redDashedLinkStyle.fontSize = '10pt';
         redDashedLinkStyle.marginTop = '8%';
     }
 
-    return (        
+    return (
         <div className='signUpWhitBoxContainer'>
             <TextField
                 id='signUpName'
@@ -278,25 +277,25 @@ export const SignUpWhiteBox = (): JSX.Element => {
             <div>
                 <div className='signUpSelectControl'>
                     <Select id='signUpGender'
-                     variant="outlined"
-                     defaultValue={'Male'}
-                     disabled={isControlDisabled}
-                     onChange={(e)=>{
-                        trackGender(String(e.target.value))
-                     }}
-                     >
+                        variant="outlined"
+                        defaultValue={'Male'}
+                        disabled={isControlDisabled}
+                        onChange={(e) => {
+                            trackGender(String(e.target.value))
+                        }}
+                    >
                         <MenuItem value={'Male'}>Male</MenuItem>
                         <MenuItem value={'Female'}>Female</MenuItem>
                     </Select>
                 </div>
                 <div className='signUpSelectControl'>
                     <Select id='signUpProvince' variant="outlined"
-                     defaultValue={Province.Tehran}
-                     disabled={isControlDisabled}
-                     onChange={(e)=>{
-                        trackProvince(String(e.target.value))
-                     }}
-                     >
+                        defaultValue={Province.Tehran}
+                        disabled={isControlDisabled}
+                        onChange={(e) => {
+                            trackProvince(String(e.target.value))
+                        }}
+                    >
                         <MenuItem value={Province.Tehran}>{Province.Tehran}</MenuItem>
                         <MenuItem value={Province.Khuzestan}>{Province.Khuzestan}</MenuItem>
                         <MenuItem value={Province.Fars}>{Province.Fars}</MenuItem>
@@ -364,7 +363,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
                         }}
                     />
                 </div>
-                <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070', height:'max-content' }}>
+                <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070', height: 'max-content' }}>
                     I agree with&nbsp;
                 </div>
                 <div style={{ display: 'flex' }}>
@@ -375,7 +374,9 @@ export const SignUpWhiteBox = (): JSX.Element => {
             <div className='signupRow'>
                 {signupMessage && <SignUpMessage message={signupMessage} color={signupMessageColor} />}
             </div>
+
             <SimpleBtn action={doSignup} text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
+
             {isSignedUp &&
                 <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                     {
