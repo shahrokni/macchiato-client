@@ -1,3 +1,4 @@
 export const commonMessages = {
-    loading:'Loading ...'
+    loading:'Loading ...',
+    wait:'Please be patient...'
 }

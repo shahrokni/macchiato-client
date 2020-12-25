@@ -23,7 +23,8 @@ const appGeneralInfo = {
         forgotPassword:'forgotpassword',
         globalMessage:'globalmessage',
         register:'register',
-        checkUserInformation:'checkuserinformation'
+        checkUserInformation:'checkuserinformation',
+        termOfUse:'termofuse'
     }
 }
 

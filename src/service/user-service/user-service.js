@@ -76,17 +76,16 @@ export default class UserService {
         }
         else {
 
-            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-            restInstance.post('user_api/v1/user', userDetail).then(function (res) {
-
+            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());           
+            restInstance.post('user_api/v1/user', userDetail)
+            .then(function (res) {            
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
                 callBack(serverResponse);
             })
-                .catch(function (err) {
-
-                    response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
+                .catch(function (err) {                  
+                    errorMessages.push(ErrorMessages.Err0000());
+                    response.setClientValidations(errorMessages);
                     callBack(response);
                 });
         }

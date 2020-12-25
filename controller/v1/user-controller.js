@@ -38,7 +38,8 @@ async function registerUser(userDetail) {
         name: receivedData.name,
         lastName: receivedData.lastName,
         registerationDate: Date.now(),
-        province: receivedData.province
+        province: receivedData.province,
+        introducer: receivedData.introducerCode
     });
 
     let SkillScoreSchema = require('../../model/user/skill-score');
@@ -125,8 +126,7 @@ async function registerUser(userDetail) {
 
                 newUserDetailId = savedUserDetail._id;
             })
-            .catch((exception) => {
-
+            .catch((exception) => {               
                 let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                 if (message != null)
                     throw message;
@@ -191,7 +191,6 @@ async function registerUser(userDetail) {
                     registerationDate: fetchedUser.registerationDate,
                     province: fetchedUser.province
                 }
-
             })
             .catch((exception) => {
 

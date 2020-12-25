@@ -11,7 +11,8 @@ function uniformUserDetail(userDetail) {
         gender: userDetail.gender,
         province: userDetail.province,
         password : userDetail.password,
-        studentNumber : userDetail.studentNumber
+        studentNumber : userDetail.studentNumber,
+        introducerCode: userDetail.introducerCode
     };
 
     if(uniformUserDetailObj.name){

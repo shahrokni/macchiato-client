@@ -1,0 +1,7 @@
+.redDashedLink{
+    color: #D9183B;
+    font-family: 'Montserrat-Medium';
+    cursor: pointer;
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+}

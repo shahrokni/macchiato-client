@@ -132,7 +132,7 @@ export default class SignInView extends React.Component {
         this.signinButtonRef.current.disabled = true;
         this.signinButtonRef.current.style.cursor = 'no-drop';
         this.signinMessageRef.current.style.color = '#116805';
-        this.signinMessageRef.current.innerText = 'Please be patient...'
+        this.signinMessageRef.current.innerText = commonMessages.wait;
 
         let userService = new UserService();
         let user = new User();
