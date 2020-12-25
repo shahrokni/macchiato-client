@@ -28,7 +28,7 @@ export default function SignUpView() {
             })
     });
     return (
-        <div className='signupViewContainer'>
+        <div className='signupViewContainer'>            
             <SignupLogoBox />
             {
                 (isUserAuthenticated === AuthenticationState.NotSet) ?

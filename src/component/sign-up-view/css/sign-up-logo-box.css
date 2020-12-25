@@ -6,3 +6,64 @@
             display: none;
         }
 }
+
+
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    .signUpLogoBox{
+        display: none;
+    }
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    .signUpLogoBox{
+        display: none;
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  {  
+    .signUpLogoBox{
+        width: 40vw;
+        height:40vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       
+    }
+    .signupLogoPictureContainer{
+        display: flex;
+        flex-direction: column;
+        width: 33vw;
+        height: 33vw;
+        background-color: rgba(255,255,255,0.5); 
+        border-radius: 5px;
+    }
+    .signupLogoPicture{
+        width: 20vw;
+        height: 20vw;
+        background-image: url('../../../../src/resource/image/logo.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: relative;
+        left: 7vw;
+        top:5vw;
+    }
+    .signupLogoTitle{
+        font-family: Ubuntu-B;
+        text-align: center;
+        font-size: 28px;    
+        position: relative;
+        top:5vw;
+        text-align: center;
+    }
+    .signupLogoSlogan{
+        font-family: Ubuntu-R;
+        color: #000000;
+        text-align: center;
+        top:5vw;
+        position: relative;
+    }
+}
