@@ -31,3 +31,23 @@
         top:2vh;        
     }
 }
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    .signupViewContainer{
+        position: relative;
+        width: 40vw;        
+        left:28vw;
+        top:2vh;        
+    }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  {  
+    .signupViewContainer{
+        position: relative;
+        flex-direction: row-reverse;
+        width: 90vw;        
+        left: 2vw;
+        top:5vh;        
+    }
+}
