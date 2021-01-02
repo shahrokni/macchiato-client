@@ -126,12 +126,12 @@ async function registerUser(userDetail) {
 
                 newUserDetailId = savedUserDetail._id;
             })
-            .catch((exception) => {               
+            .catch((exception) => {                               
                 let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                 if (message != null)
                     throw message;
                 else
-                    throw global.errorResource.Err0000();
+                    throw global.errorResource.Err0000();                
             });
 
         //Initiate a financial account
@@ -206,7 +206,7 @@ async function registerUser(userDetail) {
 
     }
     catch (exception) {
-
+        
         console.log(exception);
         await session.abortTransaction();
         session.endSession();
