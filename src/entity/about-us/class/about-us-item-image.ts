@@ -3,7 +3,7 @@ import AboutUsItem from "./about-us-item";
 export default class AboutUsImageItem extends AboutUsItem{
     constructor(){
         super();
-        this.Url = '';
+        this.url = '';
     }
-    Url:String;
+    url:String;
 }

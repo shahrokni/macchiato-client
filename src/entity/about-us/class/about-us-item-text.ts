@@ -2,7 +2,9 @@ import AboutUsItem from "./about-us-item";
 export default class AboutUsTextItem extends AboutUsItem{
      constructor(){
         super();
-        this.Text = '';
+        this.text = '';
+        this.header='';
      }
-     Text:String;     
+     header:String;
+     text:String;     
 }
