@@ -14,8 +14,7 @@ const appGeneralInfo = {
         account:'account',
         wallet:'wallet',
         messages:'messages',
-        about:'about',
-        
+        about:'about'      
     },
     views:{
         sigin:'signin',
@@ -24,7 +23,9 @@ const appGeneralInfo = {
         globalMessage:'globalmessage',
         register:'register',
         checkUserInformation:'checkuserinformation',
-        termOfUse:'termofuse'
+        termOfUse:'termofuse',
+        aboutPersian:'about_persian',
+        aboutEnglish:'about_english'
     }
 }
 

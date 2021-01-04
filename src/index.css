@@ -171,6 +171,22 @@ a{
   font-family: UbuntuMono-RI;
   src: url(./resource/font/UbuntuMono-RI.ttf);
 }
+@font-face{
+  font-family: Dana-Bold;
+  src:url(./resource/font/Dana-Bold.ttf);
+}
+@font-face{
+  font-family:Dana-Regular;
+  src:url(./resource/font/Dana-Regular.ttf);
+}
+@font-face{
+  font-family: Dana-FaNum-Regular;
+  src:url(./resource/font/Dana-FaNum-Regular.ttf);
+}
+@font-face{
+  font-family: Dana-FaNum-Bold;
+  src:url(./resource/font/Dana-FaNum-Bold.ttf);
+}
 .fullSize{
   width:100%;
   height: 100%;  

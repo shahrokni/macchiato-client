@@ -15,7 +15,7 @@ export default class SimpleBtn extends React.Component {
                 type='button'
                 onClick={this.props.action}
                 /*TODO: ON KEY PRESSED SIGNIN ACTION...*/
-                className={'simpleBtn ' + btnStyle}
+                className={'simpleBtn ' + btnStyle + ((this.props.extraClass)?' '+this.props.extraClass:'')}
                 style={{
                     height: this.props.simpleStyle.height && this.props.simpleStyle.height,
                     width: this.props.simpleStyle.size && this.props.simpleStyle.size,

@@ -1,33 +1,43 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import AboutUs from '../../entity/about-us/class/about-us'
 import { Language } from '../../entity/global/language';
-import AboutUsService from '../../service/about-us-service/about-us-service';
+import { appGeneralInfo } from '../../setup-general-information';
+import SimpleBtn from '../simple-btn/simple-btn';
+import './css/about-view.css';
 export default function AboutView(): JSX.Element {
 
-    const [aboutUsData, setAboutUsData] = useState<AboutUs | null>(null);
+
     useEffect(() => {
-        const service = new AboutUsService();
-        if (!aboutUsData) {
-            service.getAboutUs(Language.English)
-                .then((result) => {
-                    setAboutUsData(result);
-                })
-                .catch((error) => {
-                    console.log('** ' + error);
-                });
-        }
+
     });
-
+    const englishBtnStyle = { size: '30vh', marginLeft: '5vh', height:'8vh' }
+    const farsiBtnStyle = { size: '30vh', marginLeft: '5vh', height:'8vh' }
     return (
-        <Fragment>
-            {(!aboutUsData) ? (<h1>About Us View</h1>) : (
+        <div className='aboutUsContainer'>
+            <div className='aboutUsCenterBox'>
+                <div className='aboutUsMacchiatoLog'>
+                    <div className='aboutUsLogoImage'>
+                    </div>
+                    <div className='aboutUsMacchiatoTitle'>
+                        English Macchiato
+                    </div>
+                </div>
+                <div className='aboutUsLanguageBox'>
+                    <SimpleBtn simpleStyle={englishBtnStyle}
+                        action={() => {                           
+                            window.location.href = appGeneralInfo.baseUrl + appGeneralInfo.views.aboutEnglish;
+                        }}                        
+                        text={Language[Language.English]} />
 
-                <Fragment>
-                    <h3>{Language[aboutUsData.language]}</h3>
-                </Fragment>
-            )}
+                    <SimpleBtn
+                        action={() => {                           
+                            window.location.href = appGeneralInfo.baseUrl + appGeneralInfo.views.aboutPersian;
+                        }}
+                        simpleStyle={farsiBtnStyle}
+                        extraClass={'persianFont'}
+                        text={'فارسی'} />
 
-        </Fragment>
-
+                </div>
+            </div>
+        </div>
     );
 }

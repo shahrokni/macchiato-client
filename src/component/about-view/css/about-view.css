@@ -1,0 +1,80 @@
+
+.aboutUsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;   
+}
+.aboutUsCenterBox{
+    display: flex;    
+}
+.aboutUsMacchiatoTitle{
+    font-family: Ubuntu-B;
+    text-align: center;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+
+
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+
+
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    
+
+}
+
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  {   
+
+  .aboutUsCenterBox{
+      width: 80vh;
+      height: 80vh;      
+      background-color: wheat;
+      border-radius: 5px;
+      background-color: rgba(255,255,255,0.5);
+  }
+  .aboutUsCenterBox{
+     flex-direction: column;
+  }
+  .aboutUsLanguageBox{
+      position: relative;
+      box-sizing: border-box;
+      padding: 5%;
+      width:100%;
+      height: 15vh;  
+      top:5vh;   
+      
+  }
+  .aboutUsMacchiatoLog{
+      position: relative;
+      width: 60vh;
+      height: 60vh;
+      left:10vh; 
+      top: 5vh;     
+     
+  }
+  .aboutUsLogoImage{
+      position: relative;
+      left: 5vh;
+      width: 50vh;
+      height: 50vh;
+      background-size:     contain;                      
+      background-repeat:   no-repeat;
+      background-position: center center;
+      background-image: url('../../../../src/resource/image/logo.png');
+  }
+  .aboutUsMacchiatoTitle{
+      font-size: 40px;
+  }
+  .persianFont{
+      font-family:Dana-Regular;
+  }
+} 
