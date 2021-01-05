@@ -3,7 +3,7 @@ const projecttion = 'name code isEnabled';
 const detailedProjection = 'name code isEnabled contactInfo contract';
 /*--------------------------------------------------------------*/
 
-async function getAllIntroducers(includeDetail) {
+function getAllIntroducers(includeDetail) {
     return new Promise((resolve, reject) => {
         let response = new global.responseClass();
         response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
