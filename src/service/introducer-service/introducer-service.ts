@@ -9,7 +9,7 @@ export default class IntroducerService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    async getAllIntroducers(): Promise<Introducer[] | null> {        
+    getAllIntroducers(): Promise<Introducer[] | null> {        
         let response = new Response();
         response.isSuccessful = false;
         response.operationTimestamp = this.dateUtil.getCurrentDateTime();
@@ -27,7 +27,7 @@ export default class IntroducerService {
         })
     }
 
-    async getAllIntroducersDetail(): Promise<Introducer[] | null> {
+    getAllIntroducersDetail(): Promise<Introducer[] | null> {
 
         let response = new Response();
         response.isSuccessful = false;
@@ -47,7 +47,7 @@ export default class IntroducerService {
     }
 
 
-    async addIntroducer(introducer: Introducer): Promise<Introducer | null> {
+    addIntroducer(introducer: Introducer): Promise<Introducer | null> {
         let response = new Response();
         response.isSuccessful = false;
         response.operationTimestamp = this.dateUtil.getCurrentDateTime();
