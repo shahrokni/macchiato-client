@@ -5,6 +5,11 @@
     height: 100%;    
     background-color: #EEEEEE;
 }
+.aboutHeaderContainer{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
 .aboutHeader{
     position: relative;
     color:#D9183B;
@@ -13,6 +18,7 @@
     width: fit-content;
 }
 .aboutFarsiHeader{
+    position: relative;
     color:#D9183B;
     font-family: Dana-Regular;
     cursor: pointer;
@@ -24,24 +30,59 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 .aboutItemText{
+    position: relative;
     font-family: Montserrat-Regular;  
     text-align: justify;    
 }
 .aboutItemHeader{
+    position: relative;
     font-family: Montserrat-Regular;
     width: fit-content;   
 }
 .aboutImage{    
+    position: relative;
     background-size:     contain;                      
     background-repeat:   no-repeat;
     background-position: center center;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
-
-
+    .whiteRibbonContainer{
+        display: none;
+    }
+    .aboutImage{
+        width: 90vw;
+        height: 90vw;
+        left:5vw;
+    }   
+    .aboutItemHeader{
+        width: 98vw;
+        left:1vw;
+        font-size: 1rem;
+        top:0.5rem;
+    }
+    .aboutItemText{
+        width: 98vw;
+        font-size: 0.75rem;
+        left: 1vw;
+        line-height: 1.2rem;
+    }
+    .aboutFarsiHeader{
+        font-size: 1.2rem;  
+        left:0.25rem;      
+    }
+    .aboutTextImageBox{ 
+        width: 100%;
+        height: 100%;
+       
+    }
+    .aboutHeader{
+        font-size: 1.4rem;
+        left:0.25rem
+    }
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
@@ -59,13 +100,10 @@
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  { 
 
-    .aboutHeaderContainer{
-        position: relative;
+    .aboutHeaderContainer{       
         width: 94vw;
         left: 1vw;
-        top:1vh;
-        display: flex;
-        flex-direction: row;
+        top:1vh;        
     }
     .aboutHeader{
         font-size: 1.5rem;   
@@ -78,13 +116,12 @@
         width: 94vw;
         left: 1vw;
         top:2vh;
-        height:79vh;
-        overflow:auto;
+        height:79vh;       
     }
     .aboutImage{
         width: 90vw;  
         height: 30vw;      
         box-sizing: border-box;
-        left:1vw;       
+        left:0.5vw;       
     }
 } 

@@ -25,10 +25,6 @@ export default function AboutView(): JSX.Element {
             })
     }, []);
 
-    useEffect(()=>{
-        setHasDomChanged(true);
-    });
-
     return (
         <div className='aboutContainer'>
             <WhiteRibbon />
@@ -45,7 +41,7 @@ export default function AboutView(): JSX.Element {
     );
 }
 
-function createAboutItems(aboutUs: AboutUs | null): JSX.Element[] {
+const createAboutItems = (aboutUs: AboutUs | null): JSX.Element[] => {
     let elements: JSX.Element[] = [];
     if (aboutUs != null) {
         const orderedItems = aboutUs.getSortedAboutUsItems();
