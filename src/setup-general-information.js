@@ -1,4 +1,6 @@
 const appGeneralInfo = {
+    appName:'English Macchiato',
+    appSlogan:'Drink Your English Macchiato Now!',
     baseUrl:'http://localhost:3000/',
     mainMenuItems:{
         homePage:'homepage',

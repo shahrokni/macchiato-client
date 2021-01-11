@@ -8,20 +8,14 @@ import IAppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer
 import './css/introducer-selector.css';
 /*----- I N T E R F A C E --------*/
 export interface IIntroducerSelector {
-    appIntroducers: AppIntroducer[]|null;
-    isDisabled:boolean;
-    changeEvent:any
+    appIntroducers: AppIntroducer[] | null;
+    isDisabled: boolean;
+    changeEvent: any
 }
 
 export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector): any => {
-    
-    const [appIntroducers,setAppIntroducers] = useState<IAppIntroducer[]>([]);    
-    if (introducerSelectorParam != null && introducerSelectorParam.appIntroducers != null && introducerSelectorParam.appIntroducers.length !== 0) {
-        introducerSelectorParam.appIntroducers.map((item) => {
-            setAppIntroducers([...appIntroducers,item]);
-        })
-    }
 
+    const [appIntroducers, setAppIntroducers] = useState<IAppIntroducer[]>([]);
     useEffect(() => {
         //FETCH ALL INTRODUCERS FROM DATABASE
         if (appIntroducers.length === 0) {
@@ -31,7 +25,7 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
                     setAppIntroducers([...(result as IAppIntroducer[])]);
                 })
         }
-    });
+    }, []);
 
     return (
 
@@ -40,8 +34,8 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
                 <Select
                     defaultValue={'NONE'}
                     variant="outlined"
-                    disabled = {introducerSelectorParam.isDisabled}
-                    onChange={(e)=>{
+                    disabled={introducerSelectorParam.isDisabled}
+                    onChange={(e) => {
                         introducerSelectorParam.changeEvent(e.target.value)
                     }}
                 >

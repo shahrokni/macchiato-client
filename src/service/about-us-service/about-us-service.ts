@@ -41,10 +41,18 @@ export default class AboutUsService {
                                 continue;
                             }
                             else if (serverResponse.outputJson.aboutUsItems[i].type == AboutUsItemType[AboutUsItemType.Image]) {
+                                console.log(serverResponse.outputJson.aboutUsItems[i]);
                                 let imageItem = new AboutUsImageItem();
                                 imageItem.order = serverResponse.outputJson.aboutUsItems[i].order;
                                 imageItem.type = serverResponse.outputJson.aboutUsItems[i].type;
-                                imageItem.url = serverResponse.outputJson.aboutUsItems[i].url;
+                                imageItem.image.name = serverResponse.outputJson.aboutUsItems[i].image.name;
+                                imageItem.image.alt = serverResponse.outputJson.aboutUsItems[i].image.alt;
+                                imageItem.image.type = serverResponse.outputJson.aboutUsItems[i].image.type;
+                                imageItem.image.hasMobileTabletPortrait = serverResponse.outputJson.aboutUsItems[i].image.hasMobileTabletPortrait;
+                                imageItem.image.hasMobileTabletLandscape = serverResponse.outputJson.aboutUsItems[i].image.hasMobileTabletLandscape;
+                                imageItem.image.hasIPadFamily = serverResponse.outputJson.aboutUsItems[i].image.hasIPadFamily;
+                                imageItem.image.hasDesktop = serverResponse.outputJson.aboutUsItems[i].image.hasDesktop;
+
                                 response.AboutUsItems.push(imageItem);
                             }
                         }

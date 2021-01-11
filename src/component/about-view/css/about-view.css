@@ -1,17 +1,42 @@
-
-.aboutUsContainer{
+.aboutContainer{
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     width: 100%;
-    height: 100%;   
+    height: 100%;    
+    background-color: #EEEEEE;
 }
-.aboutUsCenterBox{
-    display: flex;    
+.aboutHeader{
+    position: relative;
+    color:#D9183B;
+    font-family: Montserrat-Medium;
+    height: fit-content;
+    width: fit-content;
 }
-.aboutUsMacchiatoTitle{
-    font-family: Ubuntu-B;
-    text-align: center;
+.aboutFarsiHeader{
+    color:#D9183B;
+    font-family: Dana-Regular;
+    cursor: pointer;
+}
+.aboutTextImageBox{
+    background-color: #FFFFFF;  
+    border-radius: 5px;  
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.aboutItemText{
+    font-family: Montserrat-Regular;  
+    text-align: justify;    
+}
+.aboutItemHeader{
+    font-family: Montserrat-Regular;
+    width: fit-content;   
+}
+.aboutImage{    
+    background-size:     contain;                      
+    background-repeat:   no-repeat;
+    background-position: center center;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
@@ -32,49 +57,34 @@
 
 
 /*DESKTOP*/
-@media only screen and (min-width: 768px) and (orientation: landscape)  {   
+@media only screen and (min-width: 768px) and (orientation: landscape)  { 
 
-  .aboutUsCenterBox{
-      width: 80vh;
-      height: 80vh;      
-      background-color: wheat;
-      border-radius: 5px;
-      background-color: rgba(255,255,255,0.5);
-  }
-  .aboutUsCenterBox{
-     flex-direction: column;
-  }
-  .aboutUsLanguageBox{
-      position: relative;
-      box-sizing: border-box;
-      padding: 5%;
-      width:100%;
-      height: 15vh;  
-      top:5vh;   
-      
-  }
-  .aboutUsMacchiatoLog{
-      position: relative;
-      width: 60vh;
-      height: 60vh;
-      left:10vh; 
-      top: 5vh;     
-     
-  }
-  .aboutUsLogoImage{
-      position: relative;
-      left: 5vh;
-      width: 50vh;
-      height: 50vh;
-      background-size:     contain;                      
-      background-repeat:   no-repeat;
-      background-position: center center;
-      background-image: url('../../../../src/resource/image/logo.png');
-  }
-  .aboutUsMacchiatoTitle{
-      font-size: 40px;
-  }
-  .persianFont{
-      font-family:Dana-Regular;
-  }
+    .aboutHeaderContainer{
+        position: relative;
+        width: 94vw;
+        left: 1vw;
+        top:1vh;
+        display: flex;
+        flex-direction: row;
+    }
+    .aboutHeader{
+        font-size: 1.5rem;   
+    }
+    .aboutFarsiHeader{
+        font-size: 1.3rem;
+    }
+    .aboutTextImageBox{       
+        padding: 1vw;
+        width: 94vw;
+        left: 1vw;
+        top:2vh;
+        height:79vh;
+        overflow:auto;
+    }
+    .aboutImage{
+        width: 90vw;  
+        height: 30vw;      
+        box-sizing: border-box;
+        left:1vw;       
+    }
 } 

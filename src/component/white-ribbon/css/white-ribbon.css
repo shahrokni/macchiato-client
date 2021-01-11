@@ -1,0 +1,71 @@
+.whiteRibbonContainer{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background-color: #FFFFFF;
+    border-radius: 0 0 5px 5px;
+}
+.whiteRibbonLogoContainer{
+    position: relative;
+    background-image: url('../../../../src/resource/image/logo.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.whiteRibbonTitleContainer{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.whiteRibbonAppTitle{
+    position: relative;
+    font-family: Ubuntu-B;    
+}
+.whiteRibbonAppSlogan{
+    position: relative;
+    font-family: Ubuntu-R;
+    color: #707070;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+
+
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+
+
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    
+
+}
+
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  { 
+    .whiteRibbonContainer{        
+        height: 12vh;  
+        width: 94vw;  
+        left:1vw;    
+    }
+    .whiteRibbonLogoContainer{
+        height: 4vw;
+        width: 4vw;
+        top: 1.5vh;
+        left: 1vw;
+    }
+    .whiteRibbonTitleContainer{
+        left: 2vw;
+    }
+    .whiteRibbonAppTitle{
+        font-size: 1.5rem;
+        top:2vh;
+    }
+    .whiteRibbonAppSlogan{
+        font-size: 0.875rem;
+        top:2vh;
+    }
+} 
