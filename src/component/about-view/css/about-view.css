@@ -1,0 +1,193 @@
+.aboutContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;    
+    background-color: #EEEEEE;
+}
+.aboutHeaderContainer{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+.aboutHeader{
+    position: relative;
+    color:#D9183B;
+    font-family: Montserrat-Medium;
+    height: fit-content;
+    width: fit-content;
+}
+.aboutFarsiHeader{
+    position: relative;
+    color:#D9183B;
+    font-family: Dana-Regular;
+    cursor: pointer;
+}
+.aboutTextImageBox{
+    background-color: #FFFFFF;  
+    border-radius: 5px;  
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+.aboutItemText{
+    position: relative;
+    font-family: Montserrat-Regular;  
+    text-align: justify;    
+}
+.aboutItemHeader{
+    position: relative;
+    font-family: Montserrat-Regular;
+    width: fit-content;   
+}
+.aboutImage{    
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0px 6px #70707029;
+}
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .whiteRibbonContainer{
+        display: none;
+    }
+    .aboutImage{
+        width: 97vw;
+        height: 93vw;
+        left:1.5vw;
+    }   
+    .aboutItemHeader{
+        width: 98vw;
+        left:1vw;
+        font-size: 1rem;
+        top:0.5rem;
+    }
+    .aboutItemText{
+        box-sizing: border-box;
+        width: 98vw;
+        font-size: 0.75rem;
+        left: 1vw;
+        line-height: 1.2rem;
+        padding-left: 0.75vw;
+    }
+    .aboutFarsiHeader{
+        font-size: 1.2rem;  
+        left:0.25rem;      
+    }
+    .aboutTextImageBox{ 
+        width: 100%;
+        height: 100%;
+       
+    }
+    .aboutHeader{
+        font-size: 1.4rem;
+        left:0.25rem
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+
+    .aboutImage{
+        width: 90vw;
+        left:2.5vw;
+    }
+    .aboutHeaderContainer{
+        top:2vh;
+    }
+    .aboutHeader{
+        font-size: 1.4rem;
+        left:0.25rem
+    }
+    .aboutFarsiHeader{
+        font-size: 1.2rem;  
+        left:0.25rem;      
+    }
+    .aboutTextImageBox{ 
+        top:3vh;
+    }
+    .aboutItemHeader{
+        top:2vh;
+        left:0.5vw;
+        font-size: 1rem;
+    }
+    .aboutItemText{
+        font-size: 0.75rem;
+        left:0.75vw;
+        width: 93vw;
+        line-height: 1.2rem;
+    }
+    .whiteRibbonContainer{
+        display: none;
+    }
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+    .aboutImage{
+        width: 98vw;
+        left:1vw;
+    }
+    .aboutHeaderContainer{
+        top:2vh;
+    }
+    .aboutHeader{
+        font-size: 1.4rem;
+        left:0.25rem
+    }
+    .aboutFarsiHeader{
+        font-size: 1.2rem;  
+        left:0.25rem;      
+    }
+    .aboutTextImageBox{ 
+        top:3vh;
+    }
+    .aboutItemHeader{
+        top:2vh;
+        left:0.5vw;       
+    }
+    .aboutItemText{
+        top:1vh;
+        left:0.75vw;
+        width: 93vw;
+        line-height: 1.2rem;
+    }
+    .whiteRibbonContainer{
+        display: none;
+    }
+    
+}
+
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  { 
+
+    .aboutHeaderContainer{       
+        width: 94vw;
+        left: 1vw;
+        top:1vh;        
+    }
+    .aboutHeader{
+        font-size: 1.5rem;   
+    }
+    .aboutFarsiHeader{
+        font-size: 1.3rem;
+    }
+    .aboutTextImageBox{       
+        padding: 1vw;
+        width: 94vw;
+        left: 1vw;
+        top:2vh;
+        height:79vh;       
+    }
+    .aboutImage{
+        width: 90vw;  
+        height: 30vw;      
+        box-sizing: border-box;
+        left:0.5vw;   
+        margin-bottom: 1vh;    
+    }
+    .aboutItemText{
+        left:0.5vw;
+    }
+} 

@@ -1,9 +1,9 @@
 import AboutUsItem from "./about-us-item";
-
-export default class AboutUsImageItem extends AboutUsItem{
-    constructor(){
+import Image from '../../image/image';
+export default class AboutUsImageItem extends AboutUsItem {
+    constructor() {
         super();
-        this.url = '';
+        this.image = new Image();
     }
-    url:String;
+    image: Image;
 }
