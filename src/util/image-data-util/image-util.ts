@@ -26,7 +26,7 @@ export default class ImageUtil {
             imageName = image.name + desktop;
         else
             imageName = image.name;
-            
+      
         return imageName;
     }
 }

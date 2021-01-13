@@ -44,9 +44,8 @@
 }
 .aboutImage{    
     position: relative;
-    background-size:     contain;                      
-    background-repeat:   no-repeat;
-    background-position: center center;
+    border-radius: 8px;
+    box-shadow: 0px 6px #70707029;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
@@ -54,9 +53,9 @@
         display: none;
     }
     .aboutImage{
-        width: 90vw;
-        height: 90vw;
-        left:5vw;
+        width: 97vw;
+        height: 93vw;
+        left:1.5vw;
     }   
     .aboutItemHeader{
         width: 98vw;
@@ -65,10 +64,12 @@
         top:0.5rem;
     }
     .aboutItemText{
+        box-sizing: border-box;
         width: 98vw;
         font-size: 0.75rem;
         left: 1vw;
         line-height: 1.2rem;
+        padding-left: 0.75vw;
     }
     .aboutFarsiHeader{
         font-size: 1.2rem;  
@@ -87,13 +88,74 @@
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
 
-
+    .aboutImage{
+        width: 90vw;
+        left:2.5vw;
+    }
+    .aboutHeaderContainer{
+        top:2vh;
+    }
+    .aboutHeader{
+        font-size: 1.4rem;
+        left:0.25rem
+    }
+    .aboutFarsiHeader{
+        font-size: 1.2rem;  
+        left:0.25rem;      
+    }
+    .aboutTextImageBox{ 
+        top:3vh;
+    }
+    .aboutItemHeader{
+        top:2vh;
+        left:0.5vw;
+        font-size: 1rem;
+    }
+    .aboutItemText{
+        font-size: 0.75rem;
+        left:0.75vw;
+        width: 93vw;
+        line-height: 1.2rem;
+    }
+    .whiteRibbonContainer{
+        display: none;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
+    .aboutImage{
+        width: 98vw;
+        left:1vw;
+    }
+    .aboutHeaderContainer{
+        top:2vh;
+    }
+    .aboutHeader{
+        font-size: 1.4rem;
+        left:0.25rem
+    }
+    .aboutFarsiHeader{
+        font-size: 1.2rem;  
+        left:0.25rem;      
+    }
+    .aboutTextImageBox{ 
+        top:3vh;
+    }
+    .aboutItemHeader{
+        top:2vh;
+        left:0.5vw;       
+    }
+    .aboutItemText{
+        top:1vh;
+        left:0.75vw;
+        width: 93vw;
+        line-height: 1.2rem;
+    }
+    .whiteRibbonContainer{
+        display: none;
+    }
     
-
 }
 
 
@@ -122,6 +184,10 @@
         width: 90vw;  
         height: 30vw;      
         box-sizing: border-box;
-        left:0.5vw;       
+        left:0.5vw;   
+        margin-bottom: 1vh;    
+    }
+    .aboutItemText{
+        left:0.5vw;
     }
 } 
