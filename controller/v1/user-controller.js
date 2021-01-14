@@ -126,12 +126,12 @@ async function registerUser(userDetail) {
 
                 newUserDetailId = savedUserDetail._id;
             })
-            .catch((exception) => {                               
+            .catch((exception) => {
                 let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                 if (message != null)
                     throw message;
                 else
-                    throw global.errorResource.Err0000();                
+                    throw global.errorResource.Err0000();
             });
 
         //Initiate a financial account
@@ -206,7 +206,7 @@ async function registerUser(userDetail) {
 
     }
     catch (exception) {
-        
+
         console.log(exception);
         await session.abortTransaction();
         session.endSession();
@@ -579,7 +579,7 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
     }
 }
 module.exports.changeUserPassword = changeUserPassword;
-
+//---------------------------------------------------------
 /*TODO:BAD PRACTICE*/
 /* WHY SHOULD WE WAIT?! :) */
 /* CASUE THE WAY THE PROMISE IS RETURNED! */
@@ -606,4 +606,18 @@ async function saveAuthKey4User(userId) {
     return Promise.resolve(response);
 }
 module.exports.saveAuthKey4User = saveAuthKey4User;
+//---------------------------------------------------------
+function getScore(userId) {
+
+    return new Promise((resolve, reject) => {
+        const query = User.findOne({ _id: userId }, { skillScore: 1 });
+        query.exec().then((fetchedScore) => {
+            resolve(fetchedScore[0]);
+        })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
+module.exports.getScore = getScore;
 /*--------------------------------------------------*/
