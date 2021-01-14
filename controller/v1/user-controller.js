@@ -12,7 +12,7 @@ var mongoose = require('mongoose');
 const salt = 10;
 const hiddenData = '***';
 /*-----------------------------------------*/
-
+//TODO
 async function registerUser(userDetail) {
 
     const bcrypt = require('bcrypt-nodejs');
@@ -219,7 +219,7 @@ async function registerUser(userDetail) {
 }
 module.exports.registerUser = registerUser;
 //---------------------------------------------------------------------------------------
-
+//TODO
 function updateUserInformation(userDetail, userId, done) {
 
     let response = new global.responseClass();
@@ -326,6 +326,7 @@ function updateUserInformation(userDetail, userId, done) {
 }
 module.exports.updateUserInformation = updateUserInformation;
 //------------------------------------------------------------------
+//TODO
 function getDetailedUserInformation(userId, done) {
 
     let response = new global.responseClass();
@@ -375,7 +376,7 @@ function getDetailedUserInformation(userId, done) {
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 //---------------------------------------------------------------------
-
+//TODO
 function updateUserEmail(newEmail, userId, done) {
 
     let response = new global.responseClass();
