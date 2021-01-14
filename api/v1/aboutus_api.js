@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const aboutUsApi = express.Router();
 aboutUsApi.use(bodyParser.json());
 /*------------------------------------------------*/
-aboutUsApi.get('/aboutus', async (req, res) => {    
-    await aboutUsController.getAboutUs(req.query.lang)
+aboutUsApi.get('/aboutus', (req, res) => {
+    aboutUsController.getAboutUs(req.query.lang)
         .then((response) => {
             res.json({ response: response });
             return;

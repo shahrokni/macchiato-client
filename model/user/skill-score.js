@@ -6,7 +6,8 @@ var skillScoreSchema = new mongoose.Schema(
         readingScore: { type: mongoose.Schema.Types.Number, required: true, default: 0 },
         speakingScore: { type: mongoose.Schema.Types.Number, required: true, default: 0 },
         writingScore: { type: mongoose.Schema.Types.Number, required: true, default: 0 },
-        slangScore: {type:mongoose.Schema.Types.Number, required:true, default:0}
+        slangScore: { type: mongoose.Schema.Types.Number, required: true, default: 0 },
+        vocabScore: { type: mongoose.Schema.Types.Number, required: true, default: 0 }
     }
 );
 

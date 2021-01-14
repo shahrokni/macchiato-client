@@ -7,6 +7,7 @@ var userDetailSchema = mongoose.Schema({
     lastName: { type: mongoose.Schema.Types.String, required: true },
     studentNumber: { type: mongoose.Schema.Types.String, required: true, unique:true },
     registerationDate: { type: mongoose.Schema.Types.Date, required: true },
+    lastLoginDate:{type:mongoose.Schema.Types.Date},
     email: { type: mongoose.Schema.Types.String },
     gender: { type: mongoose.Schema.Types.String },
     cellphone: { type: mongoose.Schema.Types.String },    

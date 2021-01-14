@@ -21,7 +21,7 @@ function isUserAuthenticated(req, res, next) {
 }
 
 //Save the new user
-api.post('/user', async (req, res) => {  
+api.post('/user', async (req, res) => {
     await userController.registerUser(req.body)
         .then((response) => {
 
@@ -73,6 +73,7 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
     });
 });
 
+//Check if user is authenticated
 api.get('/user/isAuthenticated', isUserAuthenticated, (req, res) => {
 
     let response = new global.responseClass();
@@ -82,6 +83,53 @@ api.get('/user/isAuthenticated', isUserAuthenticated, (req, res) => {
     res.json({ response: response });
     return;
 });
+
+//Get score
+api.get('/user/score', isUserAuthenticated, (req, res) => {
+
+    const practiceType = req.query.type;
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    userController.getScore(req.user._id).then((scoreObject) => {
+
+        response.isSuccessful = true;
+        response.outputJson = { score: 0, practiceType: practiceType };
+
+        switch (practiceType) {
+            case 'Listening':
+                response.outputJson.score = scoreObject.listeningScore;
+                break;
+            case 'Reading':
+                response.outputJson.score = scoreObject.readingScore;
+                break;
+            case 'Writing':
+                response.outputJson.score = scoreObject.writingScore;
+                break;
+            case 'Speaking':
+                response.outputJson.score = scoreObject.speakingScore;
+                break;
+            case 'Slang':
+                response.outputJson.score = scoreObject.slangScore;
+                break;
+            case 'Vocabulary':
+                response.outputJson.score = scoreObject.vocabScore;
+                break;
+            default:
+                response.outputJson.score = 0;
+        }
+        res.json({ response: response });
+        return;
+    })
+        .catch((err) => {
+            response.isSuccessful = false;
+            response.outputJson = {};
+            response.serverValidations.push(global.errorResource.Err0000());
+            res.json({ response: response });
+            return;
+        })
+});
+
 /*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
     successRedirect: 'successfulLogin',
@@ -97,7 +145,7 @@ api.get('/user/successfulLogin', (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = true;
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();    
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     res.json({ response: response });
     return;
 });
