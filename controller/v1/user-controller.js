@@ -39,7 +39,8 @@ async function registerUser(userDetail) {
         lastName: receivedData.lastName,
         registerationDate: Date.now(),
         province: receivedData.province,
-        introducer: receivedData.introducerCode
+        introducer: receivedData.introducerCode,
+        gender:receivedData.gender
     });
 
     let SkillScoreSchema = require('../../model/user/skill-score');
