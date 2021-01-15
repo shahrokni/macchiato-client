@@ -1,23 +1,25 @@
-import Response from '../../communication/entity/response';
+import Response from '../../communication/entity/response-novel';
 import RestProvider from '../../communication/entity/rest-provider';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import { PracticeType } from '../../entity/global/practice-type';
 import Score from '../../entity/score-box/score-box';
+import { UserDetail } from '../../entity/user/userDetail';
+import ErrorMessage from '../../resource/text/error-message';
+
 
 export default class UserService {
 
     dateUtil: any;
     constructor() {
-
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
     isUserAuthenticated(): Promise<Boolean | null> {
         return new Promise((resolve, reject) => {
 
-            let response = new Response();
-            response.isSuccessful = false;
-            response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+            // let response = new Response();
+            // response.isSuccessful = false;
+            // response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
             restInstance.get('user_api/v1/user/isAuthenticated').then((res: any) => {
@@ -40,28 +42,110 @@ export default class UserService {
         })
     }
 
-    getScore(practiceType: PracticeType): Promise<Score> {
+    getScore(practiceType: PracticeType): Promise<Response<Score>> {
         return new Promise((resolve, reject) => {
-            let response = new Response();
+            let response = new Response<Score>();
             response.isSuccessful = false;
-            response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
             restInstance.get('user_api/v1/user/score?type=' + PracticeType[practiceType])
                 .then((res: any) => {
 
                     var responseUtil: any = require('../../util/response-util/response-util');
                     const serverResponse = responseUtil.extractResponse(res);
-                    if (serverResponse && serverResponse.isSuccessful && serverResponse.outputJson) {
-                        resolve(serverResponse.outputJson as Score);
+                    response.operationTimeServer = serverResponse.operationTimestamp;
+                    if (serverResponse.isSuccessful) {
+                        response.isSuccessful = true;
+                        response.outputJson = serverResponse.outputJson as Score;
+                        resolve(response);
                     }
                     else {
-                        //TODO
-                        reject()
+                      (serverResponse.serverValidations as string[]).forEach((serverError)=>{
+                          response.serverValidations.push(serverError);
+                      });
                     }
                 })
                 .catch((err: any) => {
-
+                    response.isSuccessful = false;
+                    response.serverValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
                 })
+        });
+    }
+
+    getEmail(): Promise<Response<string>> {
+        return new Promise((resolve, reject) => {
+            let response = new Response<string>();
+            response.isSuccessful = false;
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
+            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            restInstance.get('user_api/v1/user/email').then((res:any)=>{
+                var responseUtil: any = require('../../util/response-util/response-util');
+                const serverResponse = responseUtil.extractResponse(res);
+                response.operationTimeServer = serverResponse.operationTimestamp;
+                if (serverResponse.isSuccessful) {
+                    response.isSuccessful = true;
+                    response.outputJson = serverResponse.outputJson as string;
+                    resolve(response);
+                }
+                else{
+                    (serverResponse.serverValidations as string[]).forEach((serverError)=>{
+                        response.serverValidations.push(serverError);
+                    });
+                }
+            })
+            .catch((err:any)=>{
+                response.isSuccessful = false;
+                response.serverValidations.push(ErrorMessage.Err0000().toString());
+                resolve(response);
+            })
+        });
+    }
+
+
+
+    updateEmail(newEmail: string): Promise<Response<UserDetail>> {
+
+        return new Promise((resolve, reject) => {
+
+            let UserValidationClass = require('../../util/validation/user-validation');
+            let validator = new UserValidationClass();
+            let response = new Response<UserDetail>();
+            response.isSuccessful = false;
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
+            let errorMessages = validator.validateUpdateEmail(newEmail);
+            if (errorMessages != null && errorMessages.length !== 0) {
+                (errorMessages as string[]).forEach((clientError) => {
+                    response.clientValidations.push(clientError);
+                });
+                resolve(response);
+            }
+            else {
+                let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+                restInstance.put('user_api/v1/user/email', { 'newEmail': newEmail }).then((res: any) => {
+
+                    let responseUtil = require('../../util/response-util/response-util');
+                    let serverResponse = responseUtil.extractResponse(res);
+                    response.operationTimeServer = serverResponse.operationTimestamp;
+                    if (serverResponse.isSuccessfu) {
+                        response.isSuccessful = true;
+                        response.outputJson = serverResponse.outputJson as UserDetail
+                        resolve(response);
+                    }
+                    else {
+                        response.isSuccessful =false;
+                        (serverResponse.serverValidations as string[]).forEach((serverError)=>{
+                            response.serverValidations.push(serverError);
+                        })
+                        resolve(response);
+                    }
+
+                }).catch(() => {
+                    response.isSuccessful = false;
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response)                    
+                })
+            }
         });
     }
 

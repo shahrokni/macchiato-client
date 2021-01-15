@@ -13,7 +13,7 @@ export const ScoreBox = (practiceType: PracticeType): JSX.Element => {
         const userService = new UserService();
         userService.getScore(practiceType)
             .then((res) => {
-                setScoreData(res);
+                setScoreData(res.outputJson as Score);
                 setIsReady(true);
             })
             .catch((err) => {

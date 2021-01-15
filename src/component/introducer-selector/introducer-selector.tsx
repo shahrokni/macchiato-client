@@ -21,8 +21,8 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
         if (appIntroducers.length === 0) {
             const introducerService = new IntroducerService();
             introducerService.getAllIntroducers()
-                .then((result) => {
-                    setAppIntroducers([...(result as IAppIntroducer[])]);
+                .then((response) => {
+                    setAppIntroducers([...(response.outputJson as IAppIntroducer[])]);
                 })
         }
     }, []);
