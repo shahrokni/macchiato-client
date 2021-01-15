@@ -54,11 +54,19 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
 //Update the email
 api.put('/user/email', isUserAuthenticated, (req, res) => {
 
-    userController.updateUserEmail(req.body.newEmail, req.user._id, (response) => {
-        res.json({ response: response });
-        return;
-    });
+    userController.updateUserEmail(req.body.newEmail, req.user._id)
+        .then((response) => {
+            res.json({ response: response });
+            return;
+        })
 });
+
+api.get('/user/email',isUserAuthenticated,(req,res)=>{
+    userController.getEmail(req.user._id).then((response)=>{
+        res.json({response:response});
+        return;
+    })
+})
 
 //Change the password
 api.put('/user/password', isUserAuthenticated, (req, res) => {

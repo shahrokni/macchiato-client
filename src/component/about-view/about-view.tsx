@@ -20,7 +20,7 @@ export default function AboutView(): JSX.Element {
         const aboutService = new AboutUsService();
         aboutService.getAboutUs(Language.English)
             .then((response) => {
-                setAboutUsObject(response);
+                setAboutUsObject(response.outputJson as AboutUs);
                 setHasDomChanged(true);
             })
     }, []);

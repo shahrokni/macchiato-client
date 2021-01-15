@@ -192,43 +192,6 @@ export default class UserService {
         }
     }
 
-    /*output: Response*/
-    updateEmail(newEmail, callBack) {
-
-        let UserValidationClass = require('../../util/validation/user-validation');
-        let validator = new UserValidationClass();
-
-        let response = new Response();
-        response.isSuccessful = false;
-        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
-        let errorMessages = validator.validateUpdateEmail(newEmail);
-
-        if (errorMessages != null && errorMessages.length !== 0) {
-
-            response.setClientValidations(errorMessages);
-            callBack(response);
-        }
-        else {
-
-            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-            restInstance.put('user_api/v1/user/email', { 'newEmail': newEmail }).then(function (res) {
-
-                let responseUtil = require('../../util/response-util/response-util');
-                let serverResponse = responseUtil.extractResponse(res);
-                callBack(serverResponse);
-
-            })
-                .catch(function (err) {
-
-                    response.clientValidations.push(ErrorMessages.Err0000());
-                    callBack(response);
-                });
-
-        }
-    }
-
     changePassword(oldPassword, newPassword, repeatedNewPassword, callBack) {
 
         let UserValidationClass = require('../../util/validation/user-validation');

@@ -1,34 +1,34 @@
 import AboutUs from '../../entity/about-us/class/about-us';
-import Response from '../../communication/entity/response';
+import Response from '../../communication/entity/response-novel';
 import RestProvider from '../../communication/entity/rest-provider';
 import { Language } from '../../entity/global/language';
 import { AboutUsItemType } from '../../entity/about-us/enum/about-us-item-type';
 import AboutUsTextItem from '../../entity/about-us/class/about-us-item-text';
 import AboutUsImageItem from '../../entity/about-us/class/about-us-item-image';
+import ErrorMessage from '../../resource/text/error-message';
 export default class AboutUsService {
     constructor() {
         this.dateUtil = require('../../util/date-util/date-util');
     }
     dateUtil: any;
 
-    getAboutUs(language: Language): Promise<AboutUs | null> {
+    getAboutUs(language: Language): Promise<Response<AboutUs>> {
 
-        let response = new Response();
+        let response = new Response<AboutUs>();
         response.isSuccessful = false;
-        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+        response.operationTimeClient = this.dateUtil.getCurrentDateTime();
         let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
         return new Promise((resolve, reject) => {
             restInstance.get('/about_us/v1/aboutus?lang=' + Language[language])
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res);
-
-                    if (!serverResponse || !serverResponse.outputJson)
-                        resolve(null);
-                    else {
-                        let response = new AboutUs();
-                        response.AboutUsItems = [];
-                        response.language = serverResponse.outputJson.language;
+                    response.operationTimeServer = serverResponse.operationTimestamp;
+                    if (serverResponse.isSuccessful) {
+                        response.isSuccessful = true;
+                        let aboutus = new AboutUs();
+                        aboutus.AboutUsItems = [];
+                        aboutus.language = serverResponse.outputJson.language;
                         for (let i = 0; i < serverResponse.outputJson.aboutUsItems.length; i++) {
 
                             if (serverResponse.outputJson.aboutUsItems[i].type == AboutUsItemType[AboutUsItemType.Text]) {
@@ -37,7 +37,7 @@ export default class AboutUsService {
                                 textItem.text = serverResponse.outputJson.aboutUsItems[i].text;
                                 textItem.order = serverResponse.outputJson.aboutUsItems[i].order;
                                 textItem.type = serverResponse.outputJson.aboutUsItems[i].type;
-                                response.AboutUsItems.push(textItem);
+                                aboutus.AboutUsItems.push(textItem);
                                 continue;
                             }
                             else if (serverResponse.outputJson.aboutUsItems[i].type == AboutUsItemType[AboutUsItemType.Image]) {
@@ -53,13 +53,23 @@ export default class AboutUsService {
                                 imageItem.image.hasIPadFamily = serverResponse.outputJson.aboutUsItems[i].image.hasIPadFamily;
                                 imageItem.image.hasDesktop = serverResponse.outputJson.aboutUsItems[i].image.hasDesktop;
 
-                                response.AboutUsItems.push(imageItem);
+                                aboutus.AboutUsItems.push(imageItem);
                             }
                         }
+                        response.outputJson = aboutus;
                         resolve(response);
                     }
-                }).catch((err: any) => {
-
+                    else {
+                        response.isSuccessful = false;
+                        (serverResponse.serverValidations as string[]).forEach((serverErr) => {
+                            response.serverValidations.push(serverErr);
+                        });
+                        resolve(response);
+                    }
+                }).catch(() => {
+                    response.isSuccessful = false;
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
                 });
 
         });

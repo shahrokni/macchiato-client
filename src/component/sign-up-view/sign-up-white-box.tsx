@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import AppIntroducer from '../../entity/app-introducer/interface/IAppIntroducer';
 import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';

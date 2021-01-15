@@ -40,7 +40,7 @@ async function registerUser(userDetail) {
         registerationDate: Date.now(),
         province: receivedData.province,
         introducer: receivedData.introducerCode,
-        gender:receivedData.gender
+        gender: receivedData.gender
     });
 
     let SkillScoreSchema = require('../../model/user/skill-score');
@@ -376,102 +376,54 @@ function getDetailedUserInformation(userId, done) {
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 //---------------------------------------------------------------------
-//TODO
-function updateUserEmail(newEmail, userId, done) {
 
-    let response = new global.responseClass();
+function updateUserEmail(newEmail, userId) {
+
+    const response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    let userValidation = new userValidationClass();
-    let errorMessages = userValidation.validateUpdateEmail(newEmail);
+    return new Promise((resolve, reject) => {
 
-    if (errorMessages != null && errorMessages.length !== 0) {
+        let userValidation = new userValidationClass();
+        let errorMessages = userValidation.validateUpdateEmail(newEmail);
+        if (errorMessages != null && errorMessages.length !== 0) {
+            response.isSuccessful = false;
+            response.serverValidations = errorMessages;
+            resolve(respone);
+        }
 
-        response.serverValidations = errorMessages;
-        done(response);
-    }
-    else {
-
-        let findUserQuery = User.findOne({ _id: userId }, 'userDetail');
-        findUserQuery.exec((findUserErr, foundUser) => {
-
-            if (!findUserErr) {
-
-                let userDetailId = foundUser.userDetail;
-                //Check whther the email has already been taken
-                UserDetail.UserDetail
-                    .countDocuments({ email: newEmail, _id: { $ne: userDetailId } })
-                    .exec((countErr, countRedundantQuery) => {
-
-                        if (!countErr) {
-
-                            if (countRedundantQuery === 0) {
-
-                                UserDetail.UserDetail.findById(userDetailId, (findUserDetailErr, fetchedUserDetail) => {
-
-                                    if (!findUserDetailErr) {
-
-                                        fetchedUserDetail.email = newEmail;
-                                        fetchedUserDetail.save((saveErr, savedUserDetail) => {
-
-                                            if (!saveErr) {
-
-                                                response.isSuccessful = true;
-                                                userDetailObj = {
-                                                    studenNumber: savedUserDetail.studentNumber,
-                                                    email: savedUserDetail.email,
-                                                }
-
-                                                response.outputJson = userDetailObj;
-                                                done(response);
-                                            }
-                                            else {
-
-                                                response.isSuccessful = false;
-                                                let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
-
-                                                if (message != null)
-                                                    response.serverValidations.push(message);
-                                                else
-                                                    response.serverValidations.push(global.errorResource.Err0000());
-                                                done(response);
-                                            }
-                                        });
-                                    }
-                                    else {
-
-                                        response.isSuccessful = false;
-                                        response.serverValidations.push(global.errorResource.Err0000());
-                                        done(response);
-                                    }
-                                }).exec();
-                            }
-                            else {
-
-                                response.isSuccessful = false;
-                                response.serverValidations.push(global.errorResource.ErrBu0013());
-                                done(response);
-                            }
-                        }
-                        else {
-
-                            response.isSuccessful = false;
-                            response.serverValidations.push(global.errorResource.Err0000());
-                            done(response);
-                        }
-
-                    });
-            }
-            else {
-
-                response.isSuccessful = false;
-                response.serverValidations.push(global.errorResource.Err0000());
-                done(response);
-            }
-        })
-    }
+        User.findById(userId, { userDetail: 1 }).then((userDetailId) => {
+            UserDetail.UserDetail.findOneAndUpdate({ _id: userDetailId },
+                { email: newEmail },
+                { upsert: false, returnNewDocument: true }).then((userDetail) => {
+                    response.isSuccessful = true;
+                    userDetailObj = {
+                        studenNumber: userDetail.studentNumber,
+                        email: userDetail.email,
+                    }
+                    response.outputJson = userDetailObj;
+                    resolve(response);
+                }).catch((err) => {
+                    response.isSuccessful = false;
+                    let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
+                    if (message != null)
+                        response.serverValidations.push(message);
+                    else
+                        response.serverValidations.push(global.errorResource.Err0000());
+                    resolve(response);
+                })
+        });
+    });
 }
 module.exports.updateUserEmail = updateUserEmail;
+
+function getEmail(userId){
+    return new Promise((resolve,reject)=>{
+       
+    });
+}
+module.exports.getEmail = getEmail;
+//TODO
 //---------------------------------------------------------
 function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userId, done) {
 
