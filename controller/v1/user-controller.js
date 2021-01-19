@@ -417,9 +417,28 @@ function updateUserEmail(newEmail, userId) {
 }
 module.exports.updateUserEmail = updateUserEmail;
 
-function getEmail(userId){
-    return new Promise((resolve,reject)=>{
-       
+function getEmail(userId) {
+
+    const response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+
+    return new Promise((resolve) => {
+        let aggregate = User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(userId) } },
+        { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'detail' } },
+        { $project: { first: { $arrayElemAt: ["$detail.email.0"] }, '_id': 0 } }]);
+        aggregate.exec((err,result)=>{
+            if(err){
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            }
+            else{
+                response.isSuccessful = true;
+                if(result && result.length>0)
+                    response.outputJson  = result[0].first;
+                resolve(response)
+            }
+        });
     });
 }
 module.exports.getEmail = getEmail;
