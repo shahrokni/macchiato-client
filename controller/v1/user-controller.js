@@ -436,7 +436,7 @@ function getEmail(userId) {
                 response.isSuccessful = true;
                 if(result && result.length>0)
                     response.outputJson  = result[0].first;
-                resolve(response)
+                resolve(response);
             }
         });
     });
