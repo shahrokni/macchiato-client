@@ -60,9 +60,9 @@ export default class UserService {
                         resolve(response);
                     }
                     else {
-                      (serverResponse.serverValidations as string[]).forEach((serverError)=>{
-                          response.serverValidations.push(serverError);
-                      });
+                        (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                            response.serverValidations.push(serverError);
+                        });
                     }
                 })
                 .catch((err: any) => {
@@ -79,7 +79,7 @@ export default class UserService {
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_api/v1/user/email').then((res:any)=>{
+            restInstance.get('user_api/v1/user/email').then((res: any) => {
                 var responseUtil: any = require('../../util/response-util/response-util');
                 const serverResponse = responseUtil.extractResponse(res);
                 response.operationTimeServer = serverResponse.operationTimestamp;
@@ -88,17 +88,17 @@ export default class UserService {
                     response.outputJson = serverResponse.outputJson as string;
                     resolve(response);
                 }
-                else{
-                    (serverResponse.serverValidations as string[]).forEach((serverError)=>{
+                else {
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
                         response.serverValidations.push(serverError);
                     });
                 }
             })
-            .catch((err:any)=>{
-                response.isSuccessful = false;
-                response.serverValidations.push(ErrorMessage.Err0000().toString());
-                resolve(response);
-            })
+                .catch((err: any) => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
+                })
         });
     }
 
@@ -133,19 +133,79 @@ export default class UserService {
                         resolve(response);
                     }
                     else {
-                        response.isSuccessful =false;
-                        (serverResponse.serverValidations as string[]).forEach((serverError)=>{
+                        response.isSuccessful = false;
+                        (serverResponse.serverValidations as string[]).forEach((serverError) => {
                             response.serverValidations.push(serverError);
-                        })
+                        });
                         resolve(response);
                     }
 
                 }).catch(() => {
                     response.isSuccessful = false;
                     response.clientValidations.push(ErrorMessage.Err0000().toString());
-                    resolve(response)                    
+                    resolve(response)
                 })
             }
+        });
+    }
+
+    getCellphone(): Promise<Response<string>> {
+        return new Promise((resolve) => {
+            const response = new Response<string>();
+            response.isSuccessful = false;
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
+            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            restInstance.get('user_api/v1/user/cellphone').then((res: any) => {
+                let responseUtil = require('../../util/response-util/response-util');
+                let serverResponse = responseUtil.extractResponse(res);
+                if (serverResponse.isSuccessfu) {
+                    response.isSuccessful = true;
+                    response.outputJson = serverResponse.outputJson as string;
+                    resolve(response);
+                }
+                else {
+                    response.isSuccessful = false;
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                        response.serverValidations.push(serverError);
+                    });
+                    resolve(response);
+                }
+            })
+                .catch(() => {
+                    response.isSuccessful = false;
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
+                })
+        });
+    }
+
+    updateCellphone(newCellphone: string): Promise<Response<UserDetail>> {
+        return new Promise((resolve) => {
+            const response = new Response<UserDetail>();
+            response.isSuccessful = false;
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
+            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            restInstance.put('user_api/v1/user/cellphone', { "cellphone": newCellphone }).then((res: any) => {
+                let responseUtil = require('../../util/response-util/response-util');
+                let serverResponse = responseUtil.extractResponse(res);
+                if (serverResponse.isSuccessfu) {
+                    response.isSuccessful = true;
+                    response.outputJson = serverResponse.outputJson as UserDetail;
+                    resolve(response);
+                }
+                else {
+                    response.isSuccessful = false;
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                        response.serverValidations.push(serverError);
+                    });
+                    resolve(response);
+                }
+            })
+            .catch(()=>{
+                response.isSuccessful = false;
+                response.clientValidations.push(ErrorMessage.Err0000().toString());
+                resolve(response);
+            })
         });
     }
 

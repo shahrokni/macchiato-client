@@ -376,16 +376,15 @@ function getDetailedUserInformation(userId, done) {
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 //---------------------------------------------------------------------
-
 function updateUserEmail(newEmail, userId) {
 
     const response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
-        let userValidation = new userValidationClass();
-        let errorMessages = userValidation.validateUpdateEmail(newEmail);
+        const userValidation = new userValidationClass();
+        const errorMessages = userValidation.validateUpdateEmail(newEmail);
         if (errorMessages != null && errorMessages.length !== 0) {
             response.isSuccessful = false;
             response.serverValidations = errorMessages;
@@ -412,11 +411,16 @@ function updateUserEmail(newEmail, userId) {
                         response.serverValidations.push(global.errorResource.Err0000());
                     resolve(response);
                 })
+        })
+        .catch(()=>{
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0000());
+            resolve(response);
         });
     });
 }
 module.exports.updateUserEmail = updateUserEmail;
-
+//---------------------------------------------------------------
 function getEmail(userId) {
 
     const response = new global.responseClass();
@@ -442,6 +446,74 @@ function getEmail(userId) {
     });
 }
 module.exports.getEmail = getEmail;
+//---------------------------------------------------------
+function getCellphone(userId){
+    const response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCompactCurrentDate();
+
+    return new Promise((resolve)=>{
+        let aggregate = User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(userId) } },
+            { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'detail' } },
+            { $project: { first: { $arrayElemAt: ["$detail.cellphone.0"] }, '_id': 0 } }]);
+        aggregate.exec((err,result)=>{
+            if(err){
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            }
+            else{
+                response.isSuccessful = true;
+                if(result && result.length>0)
+                    response.outputJson = result[0].first;
+                resolve(response);
+            }
+        })
+    })
+}
+module.exports.getCellphone = getCellphone;
+//---------------------------------------------------------
+function updateCellphone(cellphone,userId){
+    const response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    return new Promise((resolve)=>{
+        const userValidation = new userValidationClass();
+        const errorMessages = userValidation.validateUpdateCellphone(cellphone);
+        if (errorMessages != null && errorMessages.length !== 0) {
+            response.isSuccessful = false;
+            response.serverValidations = errorMessages;
+            resolve(respone);
+        }
+        User.findById(userId, { userDetail: 1 })
+        .then((userDetailId) => {
+            UserDetail.UserDetail.findOneAndUpdate({ _id: userDetailId },
+                { cellphone: cellphone },
+                { upsert: false, returnNewDocument: true }).then((userDetail) => {
+                    response.isSuccessful = true;
+                    userDetailObj = {
+                        studenNumber: userDetail.studentNumber,
+                        cellphone: userDetail.cellphone,
+                    }
+                    response.outputJson = userDetailObj;
+                    resolve(response);
+                }).catch(() => {
+                    response.isSuccessful = false;
+                    let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
+                    if (message != null)
+                        response.serverValidations.push(message);
+                    else
+                        response.serverValidations.push(global.errorResource.Err0000());
+                    resolve(response);
+                })
+        })
+        .catch(()=>{
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0000());
+            resolve(response);
+        })
+    });
+}
+module.exports.updateCellphone = updateCellphone;
+//---------------------------------------------------------
 //TODO
 //---------------------------------------------------------
 function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userId, done) {
