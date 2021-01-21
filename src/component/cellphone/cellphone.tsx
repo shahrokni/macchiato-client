@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { checkEmailFormat } from '../../util/regex/string-regex';
+import { checkCellphone } from '../../util/regex/string-regex';
 import { commonMessages } from '../../resource/text/common-messages';
 import TextField from '@material-ui/core/TextField';
 import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { UserDetail } from '../../entity/user/userDetail';
-export const Email = (): JSX.Element => {
+
+export const Cellphone = ():JSX.Element =>{
 
     const saveBtn = 'Save';
     const update = 'Update';
     const red = '#D9183B';
     const darkGreen = '#116805';
-    const btnId = 'updateEmailBtn';
+    const btnId = 'updateCellphoneBtn';
 
-    const [email, setEmail] = useState('');
+    const [cellphone, setCellphone] = useState('');
     const [status, setStatus] = useState(commonMessages.loading);
     const [statusColor, setStatusColor] = useState(darkGreen);
     const [isDataReady, setIsDataReady] = useState(false);
     const [isComponentLoaded, setIsComponentLoaded] = useState(false);
-    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isCellphoneValid, setIsCellphoneValid] = useState(false);
     const [btnText, setBtnTxt] = useState(commonMessages.loading);
     const [isLocked, setIsLocked] = useState(false);
 
     useEffect(() => {
         const userService = new UserService();
-        userService.getEmail().then((response) => {
+        userService.getCellphone().then((response) => {
             
-            const fetchedEmail = response.outputJson as string;
+            const fetchedCellphone = response.outputJson as string;
             setIsDataReady(true);
             setIsComponentLoaded(true);
-            (!fetchedEmail) ? setBtnTxt(saveBtn) : setBtnTxt(update);
-            (fetchedEmail) && (setEmail(fetchedEmail));
+            (!fetchedCellphone) ? setBtnTxt(saveBtn) : setBtnTxt(update);
+            (fetchedCellphone) && (setCellphone(fetchedCellphone));
             setStatus('');
         })
             .catch((err) => {
@@ -40,18 +41,18 @@ export const Email = (): JSX.Element => {
             })
     }, []);
 
-    const fillEmailDefaultValue = (): string => {
+    const fillCellphoneDefaultValue = (): string => {
         let defaultvalue = ''
         if (isDataReady) {
-            (email) && (defaultvalue = email);
+            (cellphone) && (defaultvalue = cellphone);
         }
         return defaultvalue;
     }
 
-    const trackEmailChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
-        const newEmailValue = e.target.value;
-        setEmail(newEmailValue);
-        setIsEmailValid(checkEmailFormat(newEmailValue));
+    const trackCellphoneChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+        const newCellphoneValue = e.target.value;
+        setCellphone(newCellphoneValue);
+        setIsCellphoneValid(checkCellphone(newCellphoneValue));
     }
 
     const manageForm = (isLocked: boolean): () => void => {
@@ -66,7 +67,7 @@ export const Email = (): JSX.Element => {
 
     }
 
-    const updateEmail = (): any => {
+    const updateCellphone = (): any => {
 
         if (isLocked === true)
             return;
@@ -75,12 +76,12 @@ export const Email = (): JSX.Element => {
         setStatus(commonMessages.wait);
         (manageForm(true))();
         const userService = new UserService();
-        userService.updateEmail(email)
+        userService.updateCellphone(cellphone)
             .then((response) => {
 
                 if (response.isSuccessful) {
                     const userDetail = response.outputJson as UserDetail;
-                    setEmail((userDetail as UserDetail).email);
+                    setCellphone((userDetail as UserDetail).cellphone);
                 }
                 else {
                     setStatusColor(red);
@@ -95,29 +96,27 @@ export const Email = (): JSX.Element => {
             });
     }
 
-
     return (
         <div className={'emailContainer'}>
             <div className={'row'}>
                 <TextField
-                    id='email'
-                    label='email'
+                    id='cellphone'
+                    label='cellphone'
                     variant='outlined'
-                    error={!isEmailValid}
+                    error={!isCellphoneValid}
                     helperText={ErrorMessage.ErrBu0003()}
-                    defaultValue={fillEmailDefaultValue()}
+                    defaultValue={fillCellphoneDefaultValue()}
                     onChange={(e) => {
-                        trackEmailChange(e)
+                        trackCellphoneChange(e)
                     }}
                 />
-                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateEmail()} />
+                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateCellphone()} />
             </div>
             <div className={'row'}>
-                <div className={'emailStatusMessage'} style={{ color: statusColor }}>
+                <div className={'cellphoneStatusMessage'} style={{ color: statusColor }}>
                     {status}
                 </div>
             </div>
         </div>
     );
-
 }
