@@ -29,6 +29,10 @@ class ErrorMessage {
 
         return "Database error has occurred!";
     }
+
+    static Err0007(){
+        return "No connection could be made due some network problems!"
+    }
     /*-----------------U   S   E   R---------------------- */
 
     //studentNumber

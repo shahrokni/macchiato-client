@@ -128,6 +128,7 @@ async function registerUser(userDetail) {
                 newUserDetailId = savedUserDetail._id;
             })
             .catch((exception) => {
+                console.log(exception);
                 let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                 if (message != null)
                     throw message;

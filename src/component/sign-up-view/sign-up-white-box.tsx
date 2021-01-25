@@ -17,7 +17,8 @@ import { commonMessages } from '../../resource/text/common-messages';
 import { appGeneralInfo } from '../../setup-general-information';
 import { Province } from '../../entity/global/province';
 import { Gender } from '../../entity/user/gender';
-
+import { ProvinceComponent } from '../../component/province/province';
+import {GenderComponent} from '../../component/gender/gender';
 /*-------------------------------*/
 export const SignUpWhiteBox = (): JSX.Element => {
     const red = '#D9183B';
@@ -219,7 +220,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
         marginTop: '3px',
         marginLeft: '5%',
         textAlign: 'center',
-        height: '46px',        
+        height: '46px',
     }
     let redDashedLinkStyle = {
         fontSize: '',
@@ -275,57 +276,10 @@ export const SignUpWhiteBox = (): JSX.Element => {
 
             <div>
                 <div className='signUpSelectControl'>
-                    <Select id='signUpGender'
-                        variant="outlined"
-                        defaultValue={'Male'}
-                        disabled={isControlDisabled}
-                        onChange={(e) => {
-                            trackGender(String(e.target.value))
-                        }}
-                    >
-                        <MenuItem value={'Male'}>Male</MenuItem>
-                        <MenuItem value={'Female'}>Female</MenuItem>
-                    </Select>
+                    <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender.Male}/>
                 </div>
                 <div className='signUpSelectControl'>
-                    <Select id='signUpProvince' variant="outlined"
-                        defaultValue={Province.Tehran}
-                        disabled={isControlDisabled}
-                        onChange={(e) => {
-                            trackProvince(String(e.target.value))
-                        }}
-                    >
-                        <MenuItem value={Province.Tehran}>{Province.Tehran}</MenuItem>
-                        <MenuItem value={Province.Khuzestan}>{Province.Khuzestan}</MenuItem>
-                        <MenuItem value={Province.Fars}>{Province.Fars}</MenuItem>
-                        <MenuItem value={Province.Isfahan}>{Province.Isfahan}</MenuItem>
-                        <MenuItem value={Province.Semnan}>{Province.Semnan}</MenuItem>
-                        <MenuItem value={Province.EastAzarbaijan}>{Province.EastAzarbaijan}</MenuItem>
-                        <MenuItem value={Province.WestAzarbaijan}>{Province.WestAzarbaijan}</MenuItem>
-                        <MenuItem value={Province.Ardabil}>{Province.Ardabil}</MenuItem>
-                        <MenuItem value={Province.Gilan}>{Province.Gilan}</MenuItem>
-                        <MenuItem value={Province.Zanjan}>{Province.Zanjan}</MenuItem>
-                        <MenuItem value={Province.Kurdistan}>{Province.Kurdistan}</MenuItem>
-                        <MenuItem value={Province.Kermanshah}>{Province.Kermanshah}</MenuItem>
-                        <MenuItem value={Province.Hamedan}>{Province.Hamedan}</MenuItem>
-                        <MenuItem value={Province.Qazvin}>{Province.Qazvin}</MenuItem>
-                        <MenuItem value={Province.Alborz}>{Province.Alborz}</MenuItem>
-                        <MenuItem value={Province.Mazanderan}>{Province.Mazanderan}</MenuItem>
-                        <MenuItem value={Province.Markazi}>{Province.Markazi}</MenuItem>
-                        <MenuItem value={Province.Qom}>{Province.Qom}</MenuItem>
-                        <MenuItem value={Province.Lorestan}>{Province.Lorestan}</MenuItem>
-                        <MenuItem value={Province.Chaharmahal}>{Province.Chaharmahal}</MenuItem>
-                        <MenuItem value={Province.Kohgiluyeh}>{Province.Kohgiluyeh}</MenuItem>
-                        <MenuItem value={Province.Bushehr}>{Province.Bushehr}</MenuItem>
-                        <MenuItem value={Province.Hormozgan}>{Province.Hormozgan}</MenuItem>
-                        <MenuItem value={Province.Kerman}>{Province.Kerman}</MenuItem>
-                        <MenuItem value={Province.SouthKhorasan}>{Province.SouthKhorasan}</MenuItem>
-                        <MenuItem value={Province.RazaviKhorsan}>{Province.RazaviKhorsan}</MenuItem>
-                        <MenuItem value={Province.NorthKhorasan}>{Province.NorthKhorasan}</MenuItem>
-                        <MenuItem value={Province.Golestan}>{Province.Golestan}</MenuItem>
-                        <MenuItem value={Province.SistanBaluchestan}>{Province.SistanBaluchestan}</MenuItem>
-                        <MenuItem value={Province.Ilam}>{Province.Ilam}</MenuItem>
-                    </Select>
+                    <ProvinceComponent id={'signUpProvince'} isDisabled={isControlDisabled} onChange={trackProvince} defaultValue={Province.Tehran}/>
                 </div>
             </div>
             <TextField

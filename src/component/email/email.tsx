@@ -110,7 +110,7 @@ export const Email = (): JSX.Element => {
                         trackEmailChange(e)
                     }}
                 />
-                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateEmail()} />
+                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateEmail()}/>
             </div>
             <div className={'row'}>
                 <div className={'emailStatusMessage'} style={{ color: statusColor }}>
