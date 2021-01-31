@@ -54,13 +54,13 @@ export default class UserService {
         })
     }
 
-    getScore(practiceType: PracticeType): Promise<Response<Score>> {
+    getScore(): Promise<Response<Score>> {
         return new Promise((resolve, reject) => {
             let response = new Response<Score>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_api/v1/user/score?type=' + PracticeType[practiceType])
+            restInstance.get('user_api/v1/user/score')
                 .then((res: any) => {
 
                     var responseUtil: any = require('../../util/response-util/response-util');

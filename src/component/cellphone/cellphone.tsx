@@ -96,6 +96,15 @@ export const Cellphone = ():JSX.Element =>{
             });
     }
 
+    const updateCellphoneBtn = {
+        size: '90%',
+        marginTop: '3px',
+        marginLeft: '5%',
+        textAlign: 'center',
+        height: '46px'
+    }
+
+
     return (
         <div className={'emailContainer'}>
             <div className={'row'}>
@@ -104,13 +113,13 @@ export const Cellphone = ():JSX.Element =>{
                     label='cellphone'
                     variant='outlined'
                     error={!isCellphoneValid}
-                    helperText={ErrorMessage.ErrBu0003()}
+                    helperText={ErrorMessage.ErrBu0011()}
                     defaultValue={fillCellphoneDefaultValue()}
                     onChange={(e) => {
                         trackCellphoneChange(e)
                     }}
                 />
-                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateCellphone()} />
+                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateCellphone} simpleStyle={updateCellphoneBtn} />
             </div>
             <div className={'row'}>
                 <div className={'cellphoneStatusMessage'} style={{ color: statusColor }}>

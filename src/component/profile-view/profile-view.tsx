@@ -3,9 +3,8 @@ import ProfileWhiteBox from './profile-white-box';
 import { Email } from '../email/email';
 import { Cellphone } from '../cellphone/cellphone';
 import WhiteRibbon from '../white-ribbon/white-ribbon';
-import { ScoreBox } from '../score-box/score-box';
+import { ScoreBox, IScoreBox } from '../score-box/score-box';
 import './css/profile-view.css';
-import { PracticeType } from '../../entity/global/practice-type';
 import { AuthenticationState } from '../../entity/global/authentication-state-novel';
 import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
 import { commonMessages } from '../../resource/text/common-messages';
@@ -14,16 +13,33 @@ import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-mess
 import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
 import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
+import { PracticeType } from '../../entity/global/practice-type';
+import Score from '../../entity/score-box/score-box';
 
 export default function ProfileView(): JSX.Element {
 
     const profileTitle = 'Your Account';
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
+    const [scoreData, setScoreData] = useState<Score | null>(null);
+
     useEffect(() => {
         const userService = new UserService();
         userService.isUserAuthenticated()
-            .then((response) => {                
-                setIsAuthenticated(response.outputJson as AuthenticationState);
+            .then((authResponse) => {
+                userService.getScore()
+                    .then((scoreResponse) => {
+                        if (scoreResponse && scoreResponse.outputJson) {
+                            const score = new Score();
+                            score.listeningScore = scoreResponse.outputJson.listeningScore;
+                            score.readingScore = scoreResponse.outputJson.readingScore;
+                            score.writingScore = scoreResponse.outputJson.writingScore;
+                            score.speakingScore = scoreResponse.outputJson.speakingScore;
+                            score.slangScore = scoreResponse.outputJson.slangScore;
+                            score.vocabScore = scoreResponse.outputJson.vocabScore;
+                            setScoreData(score);
+                        }
+                        setIsAuthenticated(authResponse.outputJson as AuthenticationState);
+                    })
             });
     }, []);
 
@@ -36,7 +52,7 @@ export default function ProfileView(): JSX.Element {
                     (<SimpleNarrowWaiting />) : (
                         <Fragment>
                             {
-                                (isAuthenticated === AuthenticationState.Authenticated) ?
+                                (isAuthenticated === AuthenticationState.NotAuthenticated) ?
                                     (
                                         <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                                             <div style={{ visibility: 'hidden' }}>
@@ -67,12 +83,12 @@ export default function ProfileView(): JSX.Element {
                                                                     <Cellphone />
                                                                 </div>
                                                                 <div className={'profileScoreBoxContainer'}>
-                                                                    <ScoreBox {...PracticeType.Listening} />
-                                                                    <ScoreBox {...PracticeType.Reading} />
-                                                                    <ScoreBox {...PracticeType.Writing} />
-                                                                    <ScoreBox {...PracticeType.Speaking} />
-                                                                    <ScoreBox {...PracticeType.Vocabulary} />
-                                                                    <ScoreBox {...PracticeType.Slang} />
+                                                                    <ScoreBox practiceType={PracticeType.Listening} score={scoreData as Score} />
+                                                                    <ScoreBox practiceType={PracticeType.Reading} score={scoreData as Score} />
+                                                                    <ScoreBox practiceType={PracticeType.Writing} score={scoreData as Score} />
+                                                                    <ScoreBox practiceType={PracticeType.Speaking} score={scoreData as Score} />
+                                                                    <ScoreBox practiceType={PracticeType.Vocabulary} score={scoreData as Score} />
+                                                                    <ScoreBox practiceType={PracticeType.Slang} score={scoreData as Score} />
                                                                 </div>
                                                             </div>
                                                         </Fragment>

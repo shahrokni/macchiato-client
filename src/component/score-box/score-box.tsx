@@ -2,36 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { PracticeType } from '../../entity/global/practice-type';
 import { createStarArray } from '../../util/score-util/score-util';
 import Score from '../../entity/score-box/score-box';
-import UserService from '../../service/user-service/user-service-novel';
 
-export const ScoreBox = (practiceType: PracticeType): JSX.Element => {
+
+export interface IScoreBox {
+    score: Score,
+    practiceType: PracticeType
+}
+
+export const ScoreBox = (scoreBoxPram: IScoreBox): JSX.Element => {
 
     const [isReady, setIsReady] = useState(false);
     const [scoreData, setScoreData] = useState<Score | null>(null);
+    const [practiceTypeData, setPracticeTypeData] = useState<PracticeType | null>(null);
 
     useEffect(() => {
-        const userService = new UserService();
-        userService.getScore(practiceType)
-            .then((res) => {
-                setScoreData(res.outputJson as Score);
-                setIsReady(true);
-            })
-            .catch((err) => {
-
-            })
+        setPracticeTypeData(scoreBoxPram.practiceType);
+        setScoreData(scoreBoxPram.score);
+        setIsReady(true)
     }, []);
 
     return (
         <div className={'scoreBoxContainer'}>
             <div className={'scoreBoxRow'}>
-                {getScoreBoxText(practiceType)}
+                {getScoreBoxText(scoreBoxPram.practiceType)}
             </div>
             <div className={'scoreBoxRow'}>
                 <div className={'starsRow'}>
-                    {(isReady && scoreData) && createStarElements(scoreData.score)}
+                    {(isReady && scoreData) && createStarElements(scoreData, practiceTypeData as PracticeType)}
                 </div>
                 <div className={'scoreNumber'}>
-                    {(isReady && scoreData) && ('(' + Math.round(scoreData.score) + ')')}
+                    {(isReady && scoreData) && ('(' + calculateScoreNumber(scoreData, practiceTypeData as PracticeType) + ')')}
                 </div>
             </div>
         </div>
@@ -40,25 +40,25 @@ export const ScoreBox = (practiceType: PracticeType): JSX.Element => {
 
 const getScoreBoxText = (practiceType: PracticeType): JSX.Element => {
 
-    let TextElemet = `Your <span style='color:'#D9183B''>@</span> level`;
+    let TextElemet = `Your <span class='scoreBoxSkillTitlBold'> @ </span> level`;
     switch (practiceType) {
         case PracticeType.Listening:
-            TextElemet.replace("@", "Listening");
+            TextElemet = TextElemet.replace("@", "Listening");
             break;
         case PracticeType.Reading:
-            TextElemet.replace("@", "Reading");
+            TextElemet = TextElemet.replace("@", "Reading");
             break;
         case PracticeType.Speaking:
-            TextElemet.replace("@", "Speaking");
+            TextElemet = TextElemet.replace("@", "Speaking");
             break;
         case PracticeType.Writing:
-            TextElemet.replace("@", "Writing");
+            TextElemet = TextElemet.replace("@", "Writing");
             break;
         case PracticeType.Vocabulary:
-            TextElemet.replace("@", "Vocabulary");
+            TextElemet = TextElemet.replace("@", "Vocabulary");
             break;
         case PracticeType.Slang:
-            TextElemet.replace("@", "Slang");
+            TextElemet = TextElemet.replace("@", "Slang");
             break;
         default:
             TextElemet.replace("@", " ");
@@ -66,11 +66,30 @@ const getScoreBoxText = (practiceType: PracticeType): JSX.Element => {
     return <div dangerouslySetInnerHTML={{ __html: TextElemet }}></div>
 }
 
-const createStarElements = (score: number): JSX.Element[] => {
+const createStarElements = (score: Score, practiceType: PracticeType): JSX.Element[] => {
     let stars: JSX.Element[] = [];
-    const starArray = createStarArray(score);
-    starArray.forEach((state, idx) => {
-        stars.push(<div className={state} key={'star-' + idx}></div>);
+    const starArray = createStarArray(score, practiceType);
+    starArray.forEach((starState, idx) => {
+        stars.push(<div className={starState} key={'star-' + idx}></div>);
     })
     return stars;
+}
+
+const calculateScoreNumber = (score: Score, practiceType: PracticeType): number => {
+    let actual_score = 0;
+    switch (practiceType) {
+        case PracticeType.Listening: actual_score = score.listeningScore;
+            break;
+        case PracticeType.Reading: actual_score = score.readingScore;
+            break;
+        case PracticeType.Writing: actual_score = score.writingScore;
+            break;
+        case PracticeType.Speaking: actual_score = score.speakingScore;
+            break;
+        case PracticeType.Slang: actual_score = score.slangScore;
+            break;
+        case PracticeType.Vocabulary: actual_score = score.vocabScore;
+        default: actual_score = 0;
+    }
+    return Math.round(actual_score);
 }

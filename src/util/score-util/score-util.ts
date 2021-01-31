@@ -1,25 +1,47 @@
-export const createStarArray = (score: number): string[] => {
+import { PracticeType } from "../../entity/global/practice-type";
+import Score from "../../entity/score-box/score-box";
+
+export const createStarArray = (score: Score, practiceType:PracticeType): string[] => {
 
     let stars: string[] = [];
     const empty = 'emptyStar';
     const filled = 'filledStar';
     const half = 'halfStar';
+    let actual_score = 0 ; 
 
-    const integral = Math.floor(score);
-    const decimal = score % 1;
+    switch (practiceType) {
+        case PracticeType.Listening: actual_score = score.listeningScore;
+            break;
+        case PracticeType.Reading: actual_score = score.readingScore;
+            break;
+        case PracticeType.Writing: actual_score = score.writingScore;
+            break;
+        case PracticeType.Speaking: actual_score = score.speakingScore;
+            break;
+        case PracticeType.Slang: actual_score = score.slangScore;
+            break;
+        case PracticeType.Vocabulary: actual_score = score.vocabScore;
+            break;
+        default: actual_score = 0;
+    }
+
+
+
+    const integral = Math.floor(actual_score);
+    const decimal = actual_score % 1;
 
     for (let i = 0; i < integral; i++) {
         stars.push(filled);
     }
     if (decimal >= 0.5) {
         stars.push(half);
-        const emptyCount = Math.floor(6 - score);
+        const emptyCount = Math.floor(6 - actual_score);
         for (let i = 0; i < emptyCount; i++) {
             stars.push(empty);
         }
     }
     else {
-        const emptyCount = Math.ceil(6 - score);
+        const emptyCount = Math.ceil(6 - actual_score);
         for (let i = 0; i < emptyCount; i++) {
             stars.push(empty);
         }
