@@ -6,6 +6,7 @@ import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { UserDetail } from '../../entity/user/userDetail';
+import systemMessages from '../../resource/text/system-message';
 export const Email = (): JSX.Element => {
 
     const saveBtn = 'Save';
@@ -26,12 +27,12 @@ export const Email = (): JSX.Element => {
     useEffect(() => {
         const userService = new UserService();
         userService.getEmail().then((response) => {
-            
             const fetchedEmail = response.outputJson as string;
             setIsDataReady(true);
             setIsComponentLoaded(true);
             (!fetchedEmail) ? setBtnTxt(saveBtn) : setBtnTxt(update);
-            (fetchedEmail) && (setEmail(fetchedEmail));
+            (!fetchedEmail) ? setEmail('') : setEmail(fetchedEmail);
+            (!fetchedEmail) ? setIsEmailValid(false) : setIsEmailValid(true);
             setStatus('');
         })
             .catch((err) => {
@@ -68,7 +69,7 @@ export const Email = (): JSX.Element => {
 
     const updateEmail = (): any => {
 
-        if (isLocked === true)
+        if (isLocked === true || !isComponentLoaded)
             return;
 
         setStatusColor(darkGreen);
@@ -76,19 +77,23 @@ export const Email = (): JSX.Element => {
         (manageForm(true))();
         const userService = new UserService();
         userService.updateEmail(email)
-            .then((response) => {
-
+            .then((response) => {               
                 if (response.isSuccessful) {
                     const userDetail = response.outputJson as UserDetail;
                     setEmail((userDetail as UserDetail).email);
+                    setStatus(systemMessages.emailUpdate);
+                    setStatusColor(darkGreen);
                 }
                 else {
                     setStatusColor(red);
-                    if (response.clientValidations.length > 0) {
+                    if (response.serverValidations.length > 0) {
                         setStatus(response.serverValidations[0].toString());
                     }
                     else if (response.clientValidations.length > 0) {
                         setStatus(response.clientValidations[0].toString());
+                    }
+                    else{
+                        setStatus(ErrorMessage.Err0000());
                     }
                     (manageForm(false))();
                 }
@@ -108,16 +113,16 @@ export const Email = (): JSX.Element => {
             <div className={'row'}>
                 <TextField
                     id='email'
-                    label='email'
+                    label={'email'}
                     variant='outlined'
                     error={!isEmailValid}
-                    helperText={ErrorMessage.ErrBu0003()}
-                    defaultValue={fillEmailDefaultValue()}
+                    helperText={(!isEmailValid)?ErrorMessage.ErrBu0003():''}
+                    value={(isDataReady && email) ? email : ''}
                     onChange={(e) => {
                         trackEmailChange(e)
                     }}
                 />
-                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateEmail} simpleStyle={updateEmailBtn}/>
+                <SimpleBtn id={btnId} text={btnText} action={updateEmail} simpleStyle={updateEmailBtn} />
             </div>
             <div className={'row'}>
                 <div className={'emailStatusMessage'} style={{ color: statusColor }}>

@@ -139,7 +139,7 @@ export default class UserService {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res);
                     response.operationTimeServer = serverResponse.operationTimestamp;
-                    if (serverResponse.isSuccessfu) {
+                    if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
                         response.outputJson = serverResponse.outputJson as UserDetail
                         resolve(response);
