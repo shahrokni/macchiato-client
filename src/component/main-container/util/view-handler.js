@@ -108,9 +108,9 @@ export default class ViewHandler {
         /*Account*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.account) {
 
-            const AccountView =
-                React.lazy(() => import('../../account-view/account-view'));
-            createdComponent = <AccountView linkClick={innerLinkClickEventHandler}/>;
+            const ProfileView =
+                React.lazy(() => import('../../profile-view/profile-view'));
+            createdComponent = <ProfileView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Wallet*/

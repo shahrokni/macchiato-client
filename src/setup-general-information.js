@@ -13,7 +13,7 @@ const appGeneralInfo = {
         speakingPractice: 'speakingpractice',
         slangPractice: 'slangpractice',
         reports: 'reports',
-        account: 'account',
+        account: 'profile',
         wallet: 'wallet',
         messages: 'messages',
         about: 'about'

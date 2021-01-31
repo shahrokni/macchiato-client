@@ -208,7 +208,6 @@ async function registerUser(userDetail) {
     }
     catch (exception) {
 
-        console.log(exception);
         await session.abortTransaction();
         session.endSession();
 
@@ -412,11 +411,11 @@ function updateUserEmail(newEmail, userId) {
                     resolve(response);
                 })
         })
-        .catch(()=>{
-            response.isSuccessful = false;
-            response.serverValidations.push(global.errorResource.Err0000());
-            resolve(response);
-        });
+            .catch(() => {
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            });
     });
 }
 module.exports.updateUserEmail = updateUserEmail;
@@ -430,16 +429,16 @@ function getEmail(userId) {
         let aggregate = User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(userId) } },
         { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'detail' } },
         { $project: { first: { $arrayElemAt: ["$detail.email.0"] }, '_id': 0 } }]);
-        aggregate.exec((err,result)=>{
-            if(err){
+        aggregate.exec((err, result) => {
+            if (err) {
                 response.isSuccessful = false;
                 response.serverValidations.push(global.errorResource.Err0000());
                 resolve(response);
             }
-            else{
+            else {
                 response.isSuccessful = true;
-                if(result && result.length>0)
-                    response.outputJson  = result[0].first;
+                if (result && result.length > 0)
+                    response.outputJson = result[0].first;
                 resolve(response);
             }
         });
@@ -447,23 +446,23 @@ function getEmail(userId) {
 }
 module.exports.getEmail = getEmail;
 //---------------------------------------------------------
-function getCellphone(userId){
+function getCellphone(userId) {
     const response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCompactCurrentDate();
 
-    return new Promise((resolve)=>{
+    return new Promise((resolve) => {
         let aggregate = User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(userId) } },
-            { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'detail' } },
-            { $project: { first: { $arrayElemAt: ["$detail.cellphone.0"] }, '_id': 0 } }]);
-        aggregate.exec((err,result)=>{
-            if(err){
+        { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'detail' } },
+        { $project: { first: { $arrayElemAt: ["$detail.cellphone.0"] }, '_id': 0 } }]);
+        aggregate.exec((err, result) => {
+            if (err) {
                 response.isSuccessful = false;
                 response.serverValidations.push(global.errorResource.Err0000());
                 resolve(response);
             }
-            else{
+            else {
                 response.isSuccessful = true;
-                if(result && result.length>0)
+                if (result && result.length > 0)
                     response.outputJson = result[0].first;
                 resolve(response);
             }
@@ -472,10 +471,10 @@ function getCellphone(userId){
 }
 module.exports.getCellphone = getCellphone;
 //---------------------------------------------------------
-function updateCellphone(cellphone,userId){
+function updateCellphone(cellphone, userId) {
     const response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-    return new Promise((resolve)=>{
+    return new Promise((resolve) => {
         const userValidation = new userValidationClass();
         const errorMessages = userValidation.validateUpdateCellphone(cellphone);
         if (errorMessages != null && errorMessages.length !== 0) {
@@ -484,32 +483,32 @@ function updateCellphone(cellphone,userId){
             resolve(respone);
         }
         User.findById(userId, { userDetail: 1 })
-        .then((userDetailId) => {
-            UserDetail.UserDetail.findOneAndUpdate({ _id: userDetailId },
-                { cellphone: cellphone },
-                { upsert: false, returnNewDocument: true }).then((userDetail) => {
-                    response.isSuccessful = true;
-                    userDetailObj = {
-                        studenNumber: userDetail.studentNumber,
-                        cellphone: userDetail.cellphone,
-                    }
-                    response.outputJson = userDetailObj;
-                    resolve(response);
-                }).catch(() => {
-                    response.isSuccessful = false;
-                    let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
-                    if (message != null)
-                        response.serverValidations.push(message);
-                    else
-                        response.serverValidations.push(global.errorResource.Err0000());
-                    resolve(response);
-                })
-        })
-        .catch(()=>{
-            response.isSuccessful = false;
-            response.serverValidations.push(global.errorResource.Err0000());
-            resolve(response);
-        })
+            .then((userDetailId) => {
+                UserDetail.UserDetail.findOneAndUpdate({ _id: userDetailId },
+                    { cellphone: cellphone },
+                    { upsert: false, returnNewDocument: true }).then((userDetail) => {
+                        response.isSuccessful = true;
+                        userDetailObj = {
+                            studenNumber: userDetail.studentNumber,
+                            cellphone: userDetail.cellphone,
+                        }
+                        response.outputJson = userDetailObj;
+                        resolve(response);
+                    }).catch(() => {
+                        response.isSuccessful = false;
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
+                        if (message != null)
+                            response.serverValidations.push(message);
+                        else
+                            response.serverValidations.push(global.errorResource.Err0000());
+                        resolve(response);
+                    })
+            })
+            .catch(() => {
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            })
     });
 }
 module.exports.updateCellphone = updateCellphone;
@@ -651,18 +650,57 @@ async function saveAuthKey4User(userId) {
     return Promise.resolve(response);
 }
 module.exports.saveAuthKey4User = saveAuthKey4User;
-//---------------------------------------------------------
+//--------------------------------------------------------
 function getScore(userId) {
-
-    return new Promise((resolve, reject) => {
-        const query = User.findOne({ _id: userId }, { skillScore: 1 });
-        query.exec().then((fetchedScore) => {
-            resolve(fetchedScore[0]);
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    return new Promise((resolve) => {
+        if (!userId) {
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0005());
+            resolve(response)
+        }
+        getUserJoinedDetail(userId).then((userCompleteObject) => {          
+            if (!userCompleteObject ||
+                !userCompleteObject.userDetailCollection ||
+                !userCompleteObject.userDetailCollection[0] ||
+                !userCompleteObject.userDetailCollection[0].skillScore ||
+                !userCompleteObject.userDetailCollection[0].skillScore[0]) {
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.ErrBu0010());
+                resolve(response);
+            }
+            else {
+                response.isSuccessful = true;
+                response.outputJson = userCompleteObject.userDetailCollection[0].skillScore[0];
+                resolve(response);
+            }
         })
             .catch((err) => {
-                reject(err)
+                response.isSuccessful = false;
+                response.serverValidations.push(err);
+                resolve(response);
             })
     })
 }
 module.exports.getScore = getScore;
-/*--------------------------------------------------*/
+/*---------------------------------*/
+
+
+
+/*------------------------ PRIVATE FUNCTIONS--------------*/
+function getUserJoinedDetail(userId) {
+    return new Promise((resolve, reject) => {
+        const aggregate = User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(userId) } },
+        { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'userDetailCollection' } }]);
+        aggregate.exec((err, result) => {
+            if (err) {
+                reject(global.errorResource.Err0000());
+            }
+            else {
+                (result && result.length != 0) ?
+                    resolve(result[0]) : resolve(null);
+            }
+        })
+    });
+}

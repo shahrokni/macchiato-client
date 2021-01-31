@@ -95,6 +95,13 @@ export const Email = (): JSX.Element => {
             });
     }
 
+    const updateEmailBtn = {
+        size: '90%',
+        marginTop: '3px',
+        marginLeft: '5%',
+        textAlign: 'center',
+        height: '46px'
+    }
 
     return (
         <div className={'emailContainer'}>
@@ -110,7 +117,7 @@ export const Email = (): JSX.Element => {
                         trackEmailChange(e)
                     }}
                 />
-                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateEmail()} />
+                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateEmail} simpleStyle={updateEmailBtn}/>
             </div>
             <div className={'row'}>
                 <div className={'emailStatusMessage'} style={{ color: statusColor }}>

@@ -3,7 +3,7 @@ import './css/register-view.css';
 import WelcomeBox from '../welcome-box/welcome-box';
 import RegisterBox from './register-box.jsx';
 import UserService from '../../service/user-service/user-service-novel';
-import { AuthenticationState } from '../../entity/global/authentication-state';
+import { AuthenticationState } from '../../entity/global/authentication-state-novel';
 import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
 import { appGeneralInfo } from '../../setup-general-information';
 import { commonMessages } from '../../resource/text/common-messages';
@@ -17,17 +17,9 @@ export default class RegisterView extends React.Component {
     componentDidMount() {
         const userService = new UserService();
         userService.isUserAuthenticated()
-            .then((res) => {
-                if (res === true) {
-                    this.setState({ isUserAuthenticated: AuthenticationState.Authenticated });
-                }
-                else if (res === false) {
-                    this.setState({ isUserAuthenticated: AuthenticationState.NotAuthenticated });
-                }
-                else {
-                    this.setState({ isUserAuthenticated: AuthenticationState.NotSet });
-                }
-            })
+            .then((response) => {
+                this.setState({ isUserAuthenticated: response.outputJson });
+            });
     }
     render() {
         return (

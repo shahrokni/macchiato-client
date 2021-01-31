@@ -1,6 +1,6 @@
 import Response from '../../communication/entity/response-novel';
 import RestProvider from '../../communication/entity/rest-provider';
-import { AuthenticationState } from '../../entity/global/authentication-state';
+import { AuthenticationState } from '../../entity/global/authentication-state-novel';
 import { PracticeType } from '../../entity/global/practice-type';
 import Score from '../../entity/score-box/score-box';
 import { UserDetail } from '../../entity/user/userDetail';
@@ -14,12 +14,12 @@ export default class UserService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    isUserAuthenticated(): Promise<Boolean | null> {
-        return new Promise((resolve, reject) => {
+    isUserAuthenticated(): Promise<Response<AuthenticationState>> {
+        return new Promise((resolve) => {
 
-            // let response = new Response();
-            // response.isSuccessful = false;
-            // response.operationTimeClient = this.dateUtil.getCurrentDateTime();
+            let response = new Response<AuthenticationState>();
+            response.isSuccessful = false;
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
             restInstance.get('user_api/v1/user/isAuthenticated').then((res: any) => {
@@ -27,28 +27,40 @@ export default class UserService {
                 var responseUtil: any = require('../../util/response-util/response-util');
                 const serverResponse = responseUtil.extractResponse(res);
                 const authState = responseUtil.isAuthenticated(serverResponse);
+                response.operationTimeServer = serverResponse.operationTimestamp;
+                response.isSuccessful = true;
 
-                if (authState === AuthenticationState.Authenticated)
-                    resolve(true);
-                else if (authState === AuthenticationState.NotAuthenticated)
-                    resolve(false);
-                else
-                    resolve(null);
+                if (authState === 'Authenticated') {
+                    response.outputJson = AuthenticationState.Authenticated;
+                }
+                else if (authState === 'Not Aauthenticated') {
+                    response.outputJson = AuthenticationState.NotAuthenticated;
+                }
+                else if (authState === 'Communication Error') {
+                    response.outputJson = AuthenticationState.CommunicationError;
+                }
+                else {
+                    response.outputJson = AuthenticationState.NotSet;
+                }
+                resolve(response);
+
             })
-                .catch((err: any) => {
-                    resolve(null);
+                .catch(() => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
                 })
 
         })
     }
 
-    getScore(practiceType: PracticeType): Promise<Response<Score>> {
+    getScore(): Promise<Response<Score>> {
         return new Promise((resolve, reject) => {
             let response = new Response<Score>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_api/v1/user/score?type=' + PracticeType[practiceType])
+            restInstance.get('user_api/v1/user/score')
                 .then((res: any) => {
 
                     var responseUtil: any = require('../../util/response-util/response-util');
@@ -201,11 +213,11 @@ export default class UserService {
                     resolve(response);
                 }
             })
-            .catch(()=>{
-                response.isSuccessful = false;
-                response.clientValidations.push(ErrorMessage.Err0000().toString());
-                resolve(response);
-            })
+                .catch(() => {
+                    response.isSuccessful = false;
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
+                })
         });
     }
 
