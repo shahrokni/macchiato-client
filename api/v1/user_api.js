@@ -55,7 +55,7 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
 api.put('/user/email', isUserAuthenticated, (req, res) => {
 
     userController.updateUserEmail(req.body.newEmail, req.user._id)
-        .then((response) => {
+        .then((response) => {            
             res.json({ response: response });
             return;
         })

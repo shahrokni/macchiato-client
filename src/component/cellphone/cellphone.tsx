@@ -69,7 +69,7 @@ export const Cellphone = ():JSX.Element =>{
 
     const updateCellphone = (): any => {
 
-        if (isLocked === true)
+        if (isLocked === true || !isComponentLoaded)
             return;
 
         setStatusColor(darkGreen);
@@ -119,7 +119,7 @@ export const Cellphone = ():JSX.Element =>{
                         trackCellphoneChange(e)
                     }}
                 />
-                <SimpleBtn id={btnId} text={btnText} action={isComponentLoaded && updateCellphone} simpleStyle={updateCellphoneBtn} />
+                <SimpleBtn id={btnId} text={btnText} action={updateCellphone} simpleStyle={updateCellphoneBtn} />
             </div>
             <div className={'row'}>
                 <div className={'cellphoneStatusMessage'} style={{ color: statusColor }}>
