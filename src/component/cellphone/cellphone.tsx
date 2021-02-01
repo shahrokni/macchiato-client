@@ -6,8 +6,9 @@ import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { UserDetail } from '../../entity/user/userDetail';
-
-export const Cellphone = ():JSX.Element =>{
+import systemMessages from '../../resource/text/system-message';
+import './css/cellphone.css';
+export const Cellphone = (): JSX.Element => {
 
     const saveBtn = 'Save';
     const update = 'Update';
@@ -27,12 +28,13 @@ export const Cellphone = ():JSX.Element =>{
     useEffect(() => {
         const userService = new UserService();
         userService.getCellphone().then((response) => {
-            
+
             const fetchedCellphone = response.outputJson as string;
             setIsDataReady(true);
             setIsComponentLoaded(true);
             (!fetchedCellphone) ? setBtnTxt(saveBtn) : setBtnTxt(update);
             (fetchedCellphone) && (setCellphone(fetchedCellphone));
+            (!fetchedCellphone) ? setIsCellphoneValid(false) : setIsCellphoneValid(true);
             setStatus('');
         })
             .catch((err) => {
@@ -41,13 +43,6 @@ export const Cellphone = ():JSX.Element =>{
             })
     }, []);
 
-    const fillCellphoneDefaultValue = (): string => {
-        let defaultvalue = ''
-        if (isDataReady) {
-            (cellphone) && (defaultvalue = cellphone);
-        }
-        return defaultvalue;
-    }
 
     const trackCellphoneChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newCellphoneValue = e.target.value;
@@ -82,46 +77,51 @@ export const Cellphone = ():JSX.Element =>{
                 if (response.isSuccessful) {
                     const userDetail = response.outputJson as UserDetail;
                     setCellphone((userDetail as UserDetail).cellphone);
+                    setStatus(systemMessages.cellphoneUpdate);
+                    setStatusColor(darkGreen);
                 }
                 else {
                     setStatusColor(red);
-                    if (response.clientValidations.length > 0) {
+                    if (response.serverValidations.length > 0) {
                         setStatus(response.serverValidations[0].toString());
                     }
                     else if (response.clientValidations.length > 0) {
                         setStatus(response.clientValidations[0].toString());
                     }
+                    else {
+                        setStatus(ErrorMessage.Err0000());
+                    }
                     (manageForm(false))();
                 }
             });
     }
-
+    /* DESKTOP */
     const updateCellphoneBtn = {
-        size: '90%',
-        marginTop: '3px',
+        size: '27%',
+        marginTop: '0',
         marginLeft: '5%',
         textAlign: 'center',
-        height: '46px'
+        height: '3.125rem'
     }
 
 
     return (
-        <div className={'emailContainer'}>
-            <div className={'row'}>
+        <div className={'cellphoneContainer'}>
+            <div className={'row cellphoneRow'}>
                 <TextField
                     id='cellphone'
                     label='cellphone'
                     variant='outlined'
                     error={!isCellphoneValid}
-                    helperText={ErrorMessage.ErrBu0011()}
-                    defaultValue={fillCellphoneDefaultValue()}
+                    helperText={(!isCellphoneValid) ? ErrorMessage.ErrBu0011() : ''}
+                    value={(isDataReady && cellphone) ? cellphone : ''}
                     onChange={(e) => {
                         trackCellphoneChange(e)
                     }}
                 />
                 <SimpleBtn id={btnId} text={btnText} action={updateCellphone} simpleStyle={updateCellphoneBtn} />
             </div>
-            <div className={'row'}>
+            <div className={'row cellphoneRow'}>
                 <div className={'cellphoneStatusMessage'} style={{ color: statusColor }}>
                     {status}
                 </div>

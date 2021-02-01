@@ -1,5 +1,41 @@
 /*ALL*/
-
+.emptyStar{
+    background-image: url('../../../resource/image/star-gray.png');
+}
+.filledStar{
+    background-image: url('../../../resource/image/star-fill.png');
+}
+.halfStar{
+    background-image: url('../../../resource/image/star-half.png');
+}
+.starSquare{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.starsRow{
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+.scoreBoxContainer{
+   
+    border-left-color: #D9183B;
+    box-sizing: border-box;
+    border-left-style: solid;
+    border-radius: 5px;
+    background-color: #ffffff;    
+}
+.scoreNumber{
+    box-sizing: border-box;
+    color:#707070;
+}
+.scoreBoxSkillTitlBold{
+    color: #D9183B;
+}
+.scoreBoxRow{
+    font-family: Montserrat-Regular;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
    
@@ -17,6 +53,21 @@
 
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  { 
-
-
+    .starSquare{
+        width: 1.37rem;
+        height: 1.37rem;
+    }  
+    .scoreNumber{
+        padding-left: 0.5rem;
+        margin-top: -0.14rem;
+        font-size: 1.125rem;        
+    }  
+    .scoreBoxRow{
+        font-size: 1.16rem;
+    }
+    .scoreBoxContainer{
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;    
+        border-left-width:2px;
+    }
 } 

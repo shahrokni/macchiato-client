@@ -375,7 +375,7 @@ function getDetailedUserInformation(userId, done) {
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 //---------------------------------------------------------------------
-function updateUserEmail(newEmail, userId) {    
+function updateUserEmail(newEmail, userId) {
     const response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     return new Promise(
@@ -392,7 +392,7 @@ function updateUserEmail(newEmail, userId) {
                 response.serverValidations = errorMessages;
                 resolve(respone);
             }
-            const fetchDetailIdQuery = User.findById(userId, { userDetail: 1, _id:0 });
+            const fetchDetailIdQuery = User.findById(userId, { userDetail: 1, _id: 0 });
             fetchDetailIdQuery.exec()
                 .then((fetchedDetailId) => {
                     if (!fetchedDetailId || !fetchedDetailId.userDetail) {
@@ -400,30 +400,30 @@ function updateUserEmail(newEmail, userId) {
                         response.serverValidations.push(global.errorResource.Err0005());
                         resolve(response);
                     }
-                    else {                       
+                    else {
                         const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
                             { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
                             { email: newEmail }, { upsert: false, returnNewDocument: true });
                         updateDetailObjectQuery.exec().then(
                             (detailObject) => {
-                            response.isSuccessful = true;
-                            userDetailObject = {
-                                studenNumber: detailObject.studentNumber,
-                                email: detailObject.email,
-                            }
-                            response.outputJson = userDetailObject;
-                            resolve(response);
-                        }).catch((err) => {
-                            response.isSuccessful = false;
-                            let message = global.dbExceptionHandler.tryGetErrorMessage(err);
-                            if (message != null)
-                                response.serverValidations.push(message);
-                            else
-                                response.serverValidations.push(global.errorResource.Err0000());
-                            resolve(response);
-                        })
+                                response.isSuccessful = true;
+                                userDetailObject = {
+                                    studenNumber: detailObject.studentNumber,
+                                    email: detailObject.email,
+                                }
+                                response.outputJson = userDetailObject;
+                                resolve(response);
+                            }).catch((err) => {
+                                response.isSuccessful = false;
+                                let message = global.dbExceptionHandler.tryGetErrorMessage(err);
+                                if (message != null)
+                                    response.serverValidations.push(message);
+                                else
+                                    response.serverValidations.push(global.errorResource.Err0000());
+                                resolve(response);
+                            })
                     }
-                }).catch((err) => {                    
+                }).catch(() => {
                     response.isSuccessful = false;
                     response.serverValidations.push(global.errorResource.Err0000());
                     resolve(response);
@@ -505,38 +505,51 @@ module.exports.getCellphone = getCellphone;
 //---------------------------------------------------------
 function updateCellphone(cellphone, userId) {
     const response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();   
     return new Promise((resolve) => {
+        if (!userId) {
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0005());
+            resolve(response);
+        }
         const userValidation = new userValidationClass();
         const errorMessages = userValidation.validateUpdateCellphone(cellphone);
-        if (errorMessages != null && errorMessages.length !== 0) {
+        if (errorMessages != null && errorMessages.length != 0) {
             response.isSuccessful = false;
             response.serverValidations = errorMessages;
-            resolve(respone);
+            resolve(response);
         }
-        User.findById(userId, { userDetail: 1 })
-            .then((userDetailId) => {
-                UserDetail.UserDetail.findOneAndUpdate({ _id: userDetailId },
-                    { cellphone: cellphone },
-                    { upsert: false, returnNewDocument: true }).then((userDetail) => {
+        const fetchDetailIdQuery = User.findById(userId, { userDetail: 1, _id: 0 });
+        fetchDetailIdQuery.exec()
+            .then((fetchedDetailId) => {
+                if (!fetchedDetailId || !fetchedDetailId.userDetail) {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.Err0005());
+                    resolve(response);
+                }
+                else {
+                    const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
+                        { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
+                        { cellphone: cellphone }, { upsert: false, returnNewDocument: true });
+                    updateDetailObjectQuery.exec().then((detailObject) => {
                         response.isSuccessful = true;
-                        userDetailObj = {
-                            studenNumber: userDetail.studentNumber,
-                            cellphone: userDetail.cellphone,
+                        userDetailObject = {
+                            studenNumber: detailObject.studentNumber,
+                            cellphone: detailObject.cellphone,
                         }
-                        response.outputJson = userDetailObj;
+                        response.outputJson = userDetailObject;                        
                         resolve(response);
-                    }).catch(() => {
+                    }).catch((err) => {
                         response.isSuccessful = false;
-                        let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(err);
                         if (message != null)
                             response.serverValidations.push(message);
                         else
                             response.serverValidations.push(global.errorResource.Err0000());
                         resolve(response);
                     })
-            })
-            .catch(() => {
+                }
+            }).catch(() => {
                 response.isSuccessful = false;
                 response.serverValidations.push(global.errorResource.Err0000());
                 resolve(response);
@@ -723,8 +736,20 @@ module.exports.getScore = getScore;
 /*------------------------ PRIVATE FUNCTIONS--------------*/
 function getUserJoinedDetail(userId) {
     return new Promise((resolve, reject) => {
-        const aggregate = User.aggregate([{ $match: { _id: mongoose.Types.ObjectId(userId) } },
-        { $lookup: { from: 'userdetails', localField: 'userDetail', foreignField: '_id', as: 'userDetailCollection' } }]);
+        const aggregate = User.aggregate([
+            {
+                $match: {
+                    _id: mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'userdetails',
+                    localField: 'userDetail',
+                    foreignField: '_id',
+                    as: 'userDetailCollection'
+                }
+            }]);
         aggregate.exec((err, result) => {
             if (err) {
                 reject(global.errorResource.Err0000());
