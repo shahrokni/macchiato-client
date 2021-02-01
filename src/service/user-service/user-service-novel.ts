@@ -1,7 +1,6 @@
 import Response from '../../communication/entity/response-novel';
 import RestProvider from '../../communication/entity/rest-provider';
 import { AuthenticationState } from '../../entity/global/authentication-state-novel';
-import { PracticeType } from '../../entity/global/practice-type';
 import Score from '../../entity/score-box/score-box';
 import { UserDetail } from '../../entity/user/userDetail';
 import ErrorMessage from '../../resource/text/error-message';
@@ -170,7 +169,7 @@ export default class UserService {
             restInstance.get('user_api/v1/user/cellphone').then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
-                if (serverResponse.isSuccessfu) {
+                if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     response.outputJson = serverResponse.outputJson as string;
                     resolve(response);
@@ -200,7 +199,7 @@ export default class UserService {
             restInstance.put('user_api/v1/user/cellphone', { "cellphone": newCellphone }).then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
-                if (serverResponse.isSuccessfu) {
+                if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     response.outputJson = serverResponse.outputJson as UserDetail;
                     resolve(response);

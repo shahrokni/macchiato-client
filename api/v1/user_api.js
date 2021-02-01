@@ -55,33 +55,33 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
 api.put('/user/email', isUserAuthenticated, (req, res) => {
 
     userController.updateUserEmail(req.body.newEmail, req.user._id)
-        .then((response) => {            
+        .then((response) => {
             res.json({ response: response });
             return;
         })
 });
 
 // Fetch the email
-api.get('/user/email',isUserAuthenticated,(req,res)=>{
-    userController.getEmail(req.user._id).then((response)=>{
-        res.json({response:response});
+api.get('/user/email', isUserAuthenticated, (req, res) => {
+    userController.getEmail(req.user._id).then((response) => {
+        res.json({ response: response });
         return;
     })
 })
 
 //Update the cellphone
-api.put('/user/cellphone',isUserAuthenticated,(req,res)=>{
-    userController.updateCellphone(req.body.cellphone,req.user_id)
-    .then((response)=>{
-        res.json({response:response});
-        return;
-    })
+api.put('/user/cellphone', isUserAuthenticated, (req, res) => {
+    userController.updateCellphone(req.body.cellphone, req.user._id)
+        .then((response) => {           
+            res.json({ response: response });
+            return;
+        })
 });
 
 //Fetch the cellphone
-api.get('/user/cellphone',isUserAuthenticated,(req,res)=>{
-    userController.getCellphone(req.user._id).then((response)=>{
-        res.json({response:response});
+api.get('/user/cellphone', isUserAuthenticated, (req, res) => {
+    userController.getCellphone(req.user._id).then((response) => {
+        res.json({ response: response });
         return;
     })
 });
@@ -112,10 +112,10 @@ api.get('/user/isAuthenticated', isUserAuthenticated, (req, res) => {
 
 //Get score
 api.get('/user/score', isUserAuthenticated, (req, res) => {
-    userController.getScore(req.user._id).then((response) => {              
+    userController.getScore(req.user._id).then((response) => {
         res.json({ response: response });
         return;
-    })      
+    })
 });
 
 /*------------------------------LOGIN----------------------------------*/

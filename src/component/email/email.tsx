@@ -7,6 +7,8 @@ import UserService from '../../service/user-service/user-service-novel';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { UserDetail } from '../../entity/user/userDetail';
 import systemMessages from '../../resource/text/system-message';
+import './css/email.css';
+
 export const Email = (): JSX.Element => {
 
     const saveBtn = 'Save';
@@ -41,14 +43,6 @@ export const Email = (): JSX.Element => {
             })
     }, []);
 
-    const fillEmailDefaultValue = (): string => {
-        let defaultvalue = ''
-        if (isDataReady) {
-            (email) && (defaultvalue = email);
-        }
-        return defaultvalue;
-    }
-
     const trackEmailChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const newEmailValue = e.target.value;
         setEmail(newEmailValue);
@@ -77,7 +71,7 @@ export const Email = (): JSX.Element => {
         (manageForm(true))();
         const userService = new UserService();
         userService.updateEmail(email)
-            .then((response) => {               
+            .then((response) => {
                 if (response.isSuccessful) {
                     const userDetail = response.outputJson as UserDetail;
                     setEmail((userDetail as UserDetail).email);
@@ -92,7 +86,7 @@ export const Email = (): JSX.Element => {
                     else if (response.clientValidations.length > 0) {
                         setStatus(response.clientValidations[0].toString());
                     }
-                    else{
+                    else {
                         setStatus(ErrorMessage.Err0000());
                     }
                     (manageForm(false))();
@@ -100,23 +94,24 @@ export const Email = (): JSX.Element => {
             });
     }
 
+    /* DESKTOP */
     const updateEmailBtn = {
-        size: '90%',
-        marginTop: '3px',
+        size: '27%',
+        marginTop: '0',
         marginLeft: '5%',
         textAlign: 'center',
-        height: '46px'
+        height: '3.125rem'
     }
 
     return (
         <div className={'emailContainer'}>
-            <div className={'row'}>
+            <div className={'row emailRow'}>
                 <TextField
                     id='email'
                     label={'email'}
                     variant='outlined'
                     error={!isEmailValid}
-                    helperText={(!isEmailValid)?ErrorMessage.ErrBu0003():''}
+                    helperText={(!isEmailValid) ? ErrorMessage.ErrBu0003() : ''}
                     value={(isDataReady && email) ? email : ''}
                     onChange={(e) => {
                         trackEmailChange(e)

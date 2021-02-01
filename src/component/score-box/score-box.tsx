@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PracticeType } from '../../entity/global/practice-type';
 import { createStarArray } from '../../util/score-util/score-util';
 import Score from '../../entity/score-box/score-box';
-
+import './css/score-box.css'
 
 export interface IScoreBox {
     score: Score,
@@ -29,9 +29,9 @@ export const ScoreBox = (scoreBoxPram: IScoreBox): JSX.Element => {
             <div className={'scoreBoxRow'}>
                 <div className={'starsRow'}>
                     {(isReady && scoreData) && createStarElements(scoreData, practiceTypeData as PracticeType)}
-                </div>
-                <div className={'scoreNumber'}>
-                    {(isReady && scoreData) && ('(' + calculateScoreNumber(scoreData, practiceTypeData as PracticeType) + ')')}
+                    <div className={'scoreNumber'}>
+                        {(isReady && scoreData) && ('(' + calculateScoreNumber(scoreData, practiceTypeData as PracticeType) + ')')}
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@ const createStarElements = (score: Score, practiceType: PracticeType): JSX.Eleme
     let stars: JSX.Element[] = [];
     const starArray = createStarArray(score, practiceType);
     starArray.forEach((starState, idx) => {
-        stars.push(<div className={starState} key={'star-' + idx}></div>);
+        stars.push(<div className={'starSquare ' + starState} key={'star-' + idx}></div>);
     })
     return stars;
 }

@@ -3,7 +3,7 @@ import ProfileWhiteBox from './profile-white-box';
 import { Email } from '../email/email';
 import { Cellphone } from '../cellphone/cellphone';
 import WhiteRibbon from '../white-ribbon/white-ribbon';
-import { ScoreBox, IScoreBox } from '../score-box/score-box';
+import { ScoreBox } from '../score-box/score-box';
 import './css/profile-view.css';
 import { AuthenticationState } from '../../entity/global/authentication-state-novel';
 import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
@@ -15,9 +15,9 @@ import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
 import { PracticeType } from '../../entity/global/practice-type';
 import Score from '../../entity/score-box/score-box';
+import './css/profile-view.css';
 
 export default function ProfileView(): JSX.Element {
-
     const profileTitle = 'Your Account';
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [scoreData, setScoreData] = useState<Score | null>(null);
