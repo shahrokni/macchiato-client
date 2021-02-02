@@ -10,7 +10,8 @@ import './css/introducer-selector.css';
 export interface IIntroducerSelector {
     appIntroducers: AppIntroducer[] | null;
     isDisabled: boolean;
-    changeEvent: any
+    changeEvent: any,
+    defaultValue:string
 }
 
 export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector): any => {
@@ -32,7 +33,7 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
         (appIntroducers.length !== 0) ? (
             <div className='introducerSelectorContainer'>
                 <Select
-                    defaultValue={'NONE'}
+                    defaultValue={introducerSelectorParam.defaultValue}
                     variant="outlined"
                     disabled={introducerSelectorParam.isDisabled}
                     onChange={(e) => {

@@ -1,13 +1,13 @@
 import { PracticeType } from "../../entity/global/practice-type";
 import Score from "../../entity/score-box/score-box";
 
-export const createStarArray = (score: Score, practiceType:PracticeType): string[] => {
+export const createStarArray = (score: Score, practiceType: PracticeType): string[] => {
 
     let stars: string[] = [];
     const empty = 'emptyStar';
     const filled = 'filledStar';
     const half = 'halfStar';
-    let actual_score = 0 ; 
+    let actual_score = 0;
 
     switch (practiceType) {
         case PracticeType.Listening: actual_score = score.listeningScore;
@@ -47,4 +47,16 @@ export const createStarArray = (score: Score, practiceType:PracticeType): string
         }
     }
     return stars;
+}
+
+export interface IScoreTypePair {
+    score: number;
+    type: PracticeType;
+}
+export const sortScoreTypeByScore = (arrayScoreType: IScoreTypePair[]): IScoreTypePair[] => {
+
+    return arrayScoreType.sort((a: IScoreTypePair, b: IScoreTypePair) => {
+        return (b.score - a.score);
+    });
+
 }
