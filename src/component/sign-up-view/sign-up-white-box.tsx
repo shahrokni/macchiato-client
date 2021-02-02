@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import './css/sign-up-white-box.css';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { MenuItem } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import SimpleBtn from '../simple-btn/simple-btn';
 import { RedDashedLink } from '../red-dashed-link/red-dashed-link';
@@ -47,7 +45,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
         password: '',
         province: defaultProvince,
         introducer: '',
-        gender: Gender.Male,
+        gender: Gender[Gender.Male],
         conditionAgreement: false
     });
     /*------------L O C A L F U N C T I O N S -------------------------*/
@@ -270,13 +268,13 @@ export const SignUpWhiteBox = (): JSX.Element => {
             />
 
             <div className='signupRow'>
-                <IntroducerSelector appIntroducers={null} isDisabled={isControlDisabled} changeEvent={trackIntroducer} />
+                <IntroducerSelector appIntroducers={null} isDisabled={isControlDisabled} changeEvent={trackIntroducer}  defaultValue={'NONE'} />
             </div>
             <FormHelperText>Who introduced English Macchiato to you?</FormHelperText>
 
             <div>
                 <div className='signUpSelectControl'>
-                    <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender.Male}/>
+                    <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender[Gender.Male]}/>
                 </div>
                 <div className='signUpSelectControl'>
                     <ProvinceComponent id={'signUpProvince'} isDisabled={isControlDisabled} onChange={trackProvince} defaultValue={Province.Tehran}/>

@@ -2,6 +2,8 @@
 .profileWhiteBoxContainer{
     position: relative;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){

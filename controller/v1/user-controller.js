@@ -443,7 +443,7 @@ function getEmail(userId) {
             resolve(response)
         }
         else {
-            getUserJoinedDetail(userId).then((userCompleteObject) => {
+            fetchUserJoinedDetail(userId).then((userCompleteObject) => {
                 if (!userCompleteObject ||
                     !userCompleteObject.userDetailCollection ||
                     !userCompleteObject.userDetailCollection[0]) {
@@ -478,7 +478,7 @@ function getCellphone(userId) {
             resolve(response)
         }
         else {
-            getUserJoinedDetail(userId).then((userCompleteObject) => {
+            fetchUserJoinedDetail(userId).then((userCompleteObject) => {
                 if (!userCompleteObject ||
                     !userCompleteObject.userDetailCollection ||
                     !userCompleteObject.userDetailCollection[0]) {
@@ -705,7 +705,7 @@ function getScore(userId) {
             response.serverValidations.push(global.errorResource.Err0005());
             resolve(response)
         }
-        getUserJoinedDetail(userId).then((userCompleteObject) => {
+        fetchUserJoinedDetail(userId).then((userCompleteObject) => {
             if (!userCompleteObject ||
                 !userCompleteObject.userDetailCollection ||
                 !userCompleteObject.userDetailCollection[0] ||
@@ -731,10 +731,19 @@ function getScore(userId) {
 module.exports.getScore = getScore;
 /*---------------------------------*/
 
+function getUserJoinedDetail(userId){
+    return new Promise((resolve)=>{
+        fetchUserJoinedDetail(userId)
+        .then((userJoinedDetailData)=>{
 
+        }).catch((err)=>{
+            
+        })
+    });
+}
 
 /*------------------------ PRIVATE FUNCTIONS--------------*/
-function getUserJoinedDetail(userId) {
+function fetchUserJoinedDetail(userId) {
     return new Promise((resolve, reject) => {
         const aggregate = User.aggregate([
             {
