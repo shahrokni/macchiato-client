@@ -1,6 +1,6 @@
 import User from "./user";
 import { Gender } from "./gender";
-import { SkillScore } from "./skill-score";
+import SkillScore  from "./skill-score";
 import {Province} from '../global/province';
 
 export class UserDetail extends User {
@@ -13,11 +13,22 @@ export class UserDetail extends User {
         this.studentNumber = '';
         this.registerationDate = new Date();
         this.email = '';
-        this.birthDate = undefined;
+        this.birthDate = new Date();
         this.gender = Gender.NotSet;
         this.cellphone = '';
         this.skillScore = new SkillScore();
         this.province = Province.NotSet;
         this.introducerCode = '';
     }
+    name:string;
+    lastName:string;
+    studentNumber:string;
+    registerationDate:Date;
+    email:string;
+    birthDate:Date;
+    gender:Gender | string;
+    cellphone:string;
+    skillScore:SkillScore;
+    province:string;
+    introducerCode:string
 }

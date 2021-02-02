@@ -42,7 +42,7 @@ export default function ProfileWhiteBox(): JSX.Element {
         password: '',
         province: defaultProvince,
         introducer: '',
-        gender: Gender.Male,
+        gender: Gender[Gender.Male],
         conditionAgreement: false
     });
 

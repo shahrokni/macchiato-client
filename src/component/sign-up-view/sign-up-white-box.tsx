@@ -45,7 +45,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
         password: '',
         province: defaultProvince,
         introducer: '',
-        gender: Gender.Male,
+        gender: Gender[Gender.Male],
         conditionAgreement: false
     });
     /*------------L O C A L F U N C T I O N S -------------------------*/
@@ -274,7 +274,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
 
             <div>
                 <div className='signUpSelectControl'>
-                    <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender.Male}/>
+                    <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender[Gender.Male]}/>
                 </div>
                 <div className='signUpSelectControl'>
                     <ProvinceComponent id={'signUpProvince'} isDisabled={isControlDisabled} onChange={trackProvince} defaultValue={Province.Tehran}/>
