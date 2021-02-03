@@ -5,6 +5,9 @@
     display: flex;
     flex-direction: column;
 }
+.userInformationStatusMessage{
+    font-family: Montserrat-Medium;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
    
@@ -30,5 +33,16 @@
         padding-right: 2rem;
         padding-top: 3rem;
         padding-bottom: 3rem;
+    }
+    .profileWhiteBoxRow{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        width: 100%;       
+    }
+    .profileWhiteBoxRow .MuiTextField-root{
+        width: 100%;
+    }
+    .userInformationStatusMessage{
+        font-size: 0.875rem;
     }
 } 

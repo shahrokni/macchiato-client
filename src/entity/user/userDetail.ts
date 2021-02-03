@@ -11,9 +11,9 @@ export class UserDetail extends User {
         this.name = '';
         this.lastName = '';
         this.studentNumber = '';
-        this.registerationDate = new Date();
+        this.registerationDate = null;
         this.email = '';
-        this.birthDate = new Date();
+        this.birthDate = null;
         this.gender = Gender.NotSet;
         this.cellphone = '';
         this.skillScore = new SkillScore();
@@ -23,9 +23,9 @@ export class UserDetail extends User {
     name:string;
     lastName:string;
     studentNumber:string;
-    registerationDate:Date;
+    registerationDate:Date | null;
     email:string;
-    birthDate:Date;
+    birthDate:Date | null;
     gender:Gender | string;
     cellphone:string;
     skillScore:SkillScore;

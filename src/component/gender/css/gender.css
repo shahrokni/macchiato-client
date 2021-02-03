@@ -1,0 +1,6 @@
+.genderComponentContainer{
+    width:100%
+}
+.genderComponentContainer .MuiOutlinedInput-root{
+    width:100%;
+}

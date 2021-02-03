@@ -86,6 +86,13 @@ api.get('/user/cellphone', isUserAuthenticated, (req, res) => {
     })
 });
 
+/* Fetch User Joined With Detail */
+api.get('/user/userjoineddetail',isUserAuthenticated,(req,res)=>{
+    userController.getUserJoinedDetail(req.user._id).then((response)=>{
+        res.json({response:response});
+        return;
+    });
+});
 //Change the password
 api.put('/user/password', isUserAuthenticated, (req, res) => {
 

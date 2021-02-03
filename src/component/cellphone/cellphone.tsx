@@ -29,18 +29,32 @@ export const Cellphone = (): JSX.Element => {
         const userService = new UserService();
         userService.getCellphone().then((response) => {
 
-            const fetchedCellphone = response.outputJson as string;
-            setIsDataReady(true);
-            setIsComponentLoaded(true);
-            (!fetchedCellphone) ? setBtnTxt(saveBtn) : setBtnTxt(update);
-            (fetchedCellphone) && (setCellphone(fetchedCellphone));
-            (!fetchedCellphone) ? setIsCellphoneValid(false) : setIsCellphoneValid(true);
-            setStatus('');
-        })
-            .catch((err) => {
+            if (response && response.isSuccessful && response.outputJson) {
+                const fetchedCellphone = response.outputJson as string;
+                setIsDataReady(true);
+                setIsComponentLoaded(true);
+                (!fetchedCellphone) ? setBtnTxt(saveBtn) : setBtnTxt(update);
+                (fetchedCellphone) && (setCellphone(fetchedCellphone));
+                (!fetchedCellphone) ? setIsCellphoneValid(false) : setIsCellphoneValid(true);
+                setStatus('');
+            }
+            else {
+                setIsComponentLoaded(false);
                 setStatusColor(red);
-                setStatus(err);
-            })
+                if (response.clientValidations && response.clientValidations.length != 0) {
+                    setStatus(response.clientValidations[0].toString());
+                    return;
+                }
+                else if (response.serverValidations && response.serverValidations.length != 0) {
+                    setStatus(response.serverValidations[0].toString());
+                    return;
+                }
+                else {
+                    setStatus(ErrorMessage.Err0000());
+                }
+            }
+
+        });
     }, []);
 
 
