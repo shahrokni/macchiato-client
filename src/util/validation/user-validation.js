@@ -41,6 +41,12 @@ class UserValidation {
             errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
+        //Check Gender
+        if (!userDetail.gender) {
+
+            errorMessages.push(this.ErrorMessage.ErrBu0012());
+        }
+
         //Check province 
         if (!userDetail.province || userDetail.province === 'NotSet') {
 
@@ -83,7 +89,7 @@ class UserValidation {
     }
 
     validateUpdateCellphone(newCellphone) {
-        
+
         let errorMessages = [];
 
         if (!this.checkCellphoneFunc(newCellphone)) {
@@ -96,7 +102,7 @@ class UserValidation {
 
     /*userDetail: UserDetail - output: String Array*/
     validateUpdateData(userDetail) {
-
+       
         let errorMessages = [];
 
         if (userDetail == null) {
@@ -109,14 +115,9 @@ class UserValidation {
             errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
 
-        if (userDetail.birthDate && userDetail.birthDate.getMonth) {
+        if (!userDetail.birthDate || userDetail.birthDate.getTime() > Date.now()) {
 
             errorMessages.push(this.ErrorMessage.ErrBu0007());
-        }
-
-        if (userDetail.cellphone && this.checkCellphoneFunc(userDetail.cellphone) === false) {
-
-            errorMessages.push(this.ErrorMessage.ErrBu0011());
         }
 
         if (!userDetail.province || userDetail.province === 'NotSet') {

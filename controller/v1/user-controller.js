@@ -8,6 +8,7 @@ var userValidationClass = require('../../src/util/validation/user-validation');
 var User = require('../../model/user/user');
 var UserDetail = require('../../model/user/user-detail');
 var mongoose = require('mongoose');
+const { response } = require('express');
 /*-----------------------------------------*/
 const salt = 10;
 const hiddenData = '***';
@@ -253,11 +254,10 @@ function updateUserInformation(userDetail, userId, done) {
                             //Set sent data
                             foundUserDetail.name = receivedData.name;
                             foundUserDetail.lastName = receivedData.lastName;
-                            foundUserDetail.gender = receivedData.gender;
-                            foundUserDetail.cellphone = receivedData.cellphone;
+                            foundUserDetail.gender = receivedData.gender;                            
                             foundUserDetail.province = receivedData.province;
                             foundUserDetail.birthDate = receivedData.birthDate;
-
+                            foundUserDetail.introducer = receivedData.introducerCode;
                             //Save the instance and return it to the client
                             foundUserDetail.save(function (saveErr, savedUserDetail) {
 
@@ -270,10 +270,10 @@ function updateUserInformation(userDetail, userId, done) {
                                         lastName: savedUserDetail.lastName,
                                         studentNumber: savedUserDetail.studentNumber,
                                         registerationDate: savedUserDetail.registerationDate,
-                                        gender: savedUserDetail.gender,
-                                        cellphone: savedUserDetail.cellphone,
                                         province: savedUserDetail.province,
                                         birthDate: savedUserDetail.birthDate,
+                                        introducerCode:savedUserDetail.introducer,
+                                        gender:savedUserDetail.gender
                                     }
                                     response.outputJson = userDetailObj;
                                     done(response);
@@ -732,16 +732,49 @@ module.exports.getScore = getScore;
 /*---------------------------------*/
 
 function getUserJoinedDetail(userId){
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    if (!userId) {
+        response.isSuccessful = false;
+        response.serverValidations.push(global.errorResource.Err0005());
+        resolve(response)
+    }
     return new Promise((resolve)=>{
         fetchUserJoinedDetail(userId)
         .then((userJoinedDetailData)=>{
-
+            if(!userJoinedDetailData){
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.ErrBu0010());
+                resolve(response);
+            }
+            else{
+                const userJoinedDetil = {
+                    userName:userJoinedDetailData.userName,
+                    name:userJoinedDetailData.userDetailCollection[0].name,
+                    lastName:userJoinedDetailData.userDetailCollection[0].lastName,
+                    studentNumber:userJoinedDetailData.userDetailCollection[0].studentNumber,
+                    registerationDate:userJoinedDetailData.userDetailCollection[0].registerationDate,
+                    email:userJoinedDetailData.userDetailCollection[0].email,
+                    birthDate:userJoinedDetailData.userDetailCollection[0].birthDate,
+                    gender:userJoinedDetailData.userDetailCollection[0].gender,
+                    cellphone:userJoinedDetailData.userDetailCollection[0].cellphone,
+                    skillScore:userJoinedDetailData.userDetailCollection[0].skillScore,
+                    province:userJoinedDetailData.userDetailCollection[0].province,
+                    introducerCode:userJoinedDetailData.userDetailCollection[0].introducer
+                }
+                response.isSuccessful = true;
+                response.outputJson = userJoinedDetil;
+                resolve(response);
+            }
         }).catch((err)=>{
-            
+            response.isSuccessful = false;
+            response.serverValidations.push(err);
+            resolve(response);
         })
     });
 }
-
+module.exports.getUserJoinedDetail = getUserJoinedDetail;
 /*------------------------ PRIVATE FUNCTIONS--------------*/
 function fetchUserJoinedDetail(userId) {
     return new Promise((resolve, reject) => {

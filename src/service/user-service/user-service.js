@@ -155,7 +155,7 @@ export default class UserService {
         }
     }
 
-
+    /*deprecated*/
     /*userDetail: UserDetail-output: Reponse*/
     update(userDetail, callBack) {
 

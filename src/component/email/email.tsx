@@ -25,22 +25,36 @@ export const Email = (): JSX.Element => {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [btnText, setBtnTxt] = useState(commonMessages.loading);
     const [isLocked, setIsLocked] = useState(false);
+    const [emailTxtControlEnable, setEmailTxtControlEnable] = useState(true);
 
     useEffect(() => {
         const userService = new UserService();
         userService.getEmail().then((response) => {
-            const fetchedEmail = response.outputJson as string;
-            setIsDataReady(true);
-            setIsComponentLoaded(true);
-            (!fetchedEmail) ? setBtnTxt(saveBtn) : setBtnTxt(update);
-            (!fetchedEmail) ? setEmail('') : setEmail(fetchedEmail);
-            (!fetchedEmail) ? setIsEmailValid(false) : setIsEmailValid(true);
-            setStatus('');
-        })
-            .catch((err) => {
+            if (response && response.isSuccessful && response.outputJson) {
+                const fetchedEmail = response.outputJson as string;
+                setIsDataReady(true);
+                setIsComponentLoaded(true);
+                (!fetchedEmail) ? setBtnTxt(saveBtn) : setBtnTxt(update);
+                (!fetchedEmail) ? setEmail('') : setEmail(fetchedEmail);
+                (!fetchedEmail) ? setIsEmailValid(false) : setIsEmailValid(true);
+                setStatus('');
+            }
+            else {
+                setIsComponentLoaded(false);
                 setStatusColor(red);
-                setStatus(err);
-            })
+                if (response.clientValidations && response.clientValidations.length != 0) {
+                    setStatus(response.clientValidations[0].toString());
+                    return;
+                }
+                else if (response.serverValidations && response.serverValidations.length != 0) {
+                    setStatus(response.serverValidations[0].toString());
+                    return;
+                }
+                else {
+                    setStatus(ErrorMessage.Err0000());
+                }
+            }
+        })
     }, []);
 
     const trackEmailChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
@@ -52,7 +66,7 @@ export const Email = (): JSX.Element => {
     const manageForm = (isLocked: boolean): () => void => {
 
         const cursor = (!isLocked) ? 'pointer' : 'no-drop';
-
+        setEmailTxtControlEnable(!isLocked);
         return () => {
             (!isLocked) ? setIsLocked(false) : setIsLocked(true);
             const updateBtn = document.getElementById(btnId);
@@ -113,6 +127,7 @@ export const Email = (): JSX.Element => {
                     error={!isEmailValid}
                     helperText={(!isEmailValid) ? ErrorMessage.ErrBu0003() : ''}
                     value={(isDataReady && email) ? email : ''}
+                    disabled={!emailTxtControlEnable}
                     onChange={(e) => {
                         trackEmailChange(e)
                     }}
