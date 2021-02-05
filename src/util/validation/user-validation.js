@@ -114,8 +114,8 @@ class UserValidation {
 
             errorMessages.push(this.ErrorMessage.ErrBu0005());
         }
-
-        if (!userDetail.birthDate || userDetail.birthDate.getTime() > Date.now()) {
+        
+        if (!userDetail.birthDate || new Date(userDetail.birthDate).getTime() > Date.now()) {
 
             errorMessages.push(this.ErrorMessage.ErrBu0007());
         }

@@ -1,19 +1,17 @@
-function uniformUserDetail(userDetail) {
-    console.log('1');
-    console.log(userDetail);
-    uniformUserDetailObj = {        
-        userName: (!userDetail.userName) ? '' : (userDetail.userName.trim()).toLowerCase(),
-        name: (!userDetail.name) ? '' : (userDetail.name.trim()).toLowerCase(),
-        lastName: (!userDetail.lastName) ? '' : (userDetail.lastName.trim()).toLowerCase(),
-        cellphone: (!userDetail.cellphone) ? '' : userDetail.cellphone.trim(),
-        email: (!userDetail.email) ? '' : (userDetail.email.trim()).toLowerCase(),
-        birthDate: userDetail.birthDate,
-        gender: userDetail.gender,
-        province: userDetail.province,
-        password: userDetail.password,
-        studentNumber: userDetail.studentNumber,
-        introducerCode: userDetail.introducerCode
-    };
+function uniformUserDetail(userDetail) { 
+   
+    uniformUserDetailObj = {};
+    uniformUserDetailObj.userName = (!userDetail.userName) ? '' : (userDetail.userName.trim()).toLowerCase();
+    uniformUserDetailObj.name = (!userDetail.name) ? '' : (userDetail.name.trim()).toLowerCase();
+    uniformUserDetailObj.lastName = (!userDetail.lastName) ? '' : (userDetail.lastName.trim()).toLowerCase();
+    uniformUserDetailObj.cellphone = (!userDetail.cellphone) ? '' : userDetail.cellphone.trim();
+    uniformUserDetailObj.email = (!userDetail.email) ? '' : (userDetail.email.trim()).toLowerCase();
+    uniformUserDetailObj.birthDate = userDetail.birthDate;
+    uniformUserDetailObj.gender = userDetail.gender;
+    uniformUserDetailObj.province = userDetail.province;
+    uniformUserDetailObj.password = userDetail.password;
+    uniformUserDetailObj.studentNumber = userDetail.studentNumber;
+    uniformUserDetailObj.introducerCode = userDetail.introducerCode;
 
     if (uniformUserDetailObj.name) {
 
@@ -25,9 +23,8 @@ function uniformUserDetail(userDetail) {
 
         uniformUserDetailObj.lastName = uniformUserDetailObj.lastName[0].toUpperCase() +
             uniformUserDetailObj.lastName.substring(1, (uniformUserDetailObj.lastName.length));
-    }
-    console.log('2');
-    console.log(uniformUserDetailObj);
+    }   
+    
     return uniformUserDetailObj;
 }
 module.exports.uniformUserDetail = uniformUserDetail;
