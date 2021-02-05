@@ -20,6 +20,7 @@ import {
     MuiPickersUtilsProvider
 } from '@material-ui/pickers';
 import { UserDetail } from '../../entity/user/userDetail';
+import systemMessages from '../../resource/text/system-message';
 
 export default function ProfileWhiteBox(): JSX.Element {
 
@@ -174,7 +175,7 @@ export default function ProfileWhiteBox(): JSX.Element {
 
     const trackBirthDate = (date: Date | null) => {
         setFetchedBirthDate(date);
-        setFormState({ ...formState, birthDate: date });
+        setFormState({ ...formState, birthDate: date as Date });
         if (date) {
             setIsBirthDateValid(true);
         }
@@ -197,9 +198,17 @@ export default function ProfileWhiteBox(): JSX.Element {
         setStatusColor(darkGreen);
         setStatus(commonMessages.wait);
         (manageForm(true))();
+
+        const userDetailData = new UserDetail();
+        userDetailData.name = formState.name;
+        userDetailData.lastName = formState.lastName;
+        userDetailData.birthDate = formState.birthDate;
+        userDetailData.gender = formState.gender;
+        userDetailData.province = formState.province;
+        userDetailData.introducerCode = formState.introducer;
         const userService = new UserService();       
-        userService.updateUserInformation(formState as unknown as UserDetail)
-            .then((response) => {
+        userService.updateUserInformation(userDetailData)
+            .then((response) => {                
                 if (response && response.isSuccessful && response.outputJson) {
                     const userDetail = response.outputJson as UserDetail;
                     setStatusColor(darkGreen);
@@ -210,6 +219,8 @@ export default function ProfileWhiteBox(): JSX.Element {
                     setFetchedProvince(userDetail.province);
                     setFetchedUserGender(userDetail.gender as string);
                     setFetchedUserIntroducer(userDetail.introducerCode);
+                    setStatus(systemMessages.userInformationUpdate);
+                    setStatusColor(darkGreen);
                 }
                 else {
                     setStatusColor(red);
@@ -332,6 +343,7 @@ export default function ProfileWhiteBox(): JSX.Element {
                                     error={!isBirthDateValid}
                                     helperText={!isBirthDateValid ? birthDateErrorMessage : ''}
                                     value={(!fetchedBirthDate) ? null : fetchedBirthDate}
+                                    disabled={isControlDisabled}
                                     onChange={trackBirthDate}
                                     KeyboardButtonProps={{
                                         'aria-label': 'change date',
