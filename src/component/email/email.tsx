@@ -85,7 +85,7 @@ export const Email = (): JSX.Element => {
         (manageForm(true))();
         const userService = new UserService();
         userService.updateEmail(email)
-            .then((response) => {
+            .then((response) => {                
                 if (response.isSuccessful) {
                     const userDetail = response.outputJson as UserDetail;
                     setEmail((userDetail as UserDetail).email);
