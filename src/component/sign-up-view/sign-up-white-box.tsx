@@ -16,7 +16,7 @@ import { appGeneralInfo } from '../../setup-general-information';
 import { Province } from '../../entity/global/province';
 import { Gender } from '../../entity/user/gender';
 import { ProvinceComponent } from '../../component/province/province';
-import {GenderComponent} from '../../component/gender/gender';
+import { GenderComponent } from '../../component/gender/gender';
 /*-------------------------------*/
 export const SignUpWhiteBox = (): JSX.Element => {
     const red = '#D9183B';
@@ -213,121 +213,128 @@ export const SignUpWhiteBox = (): JSX.Element => {
         setsignupMessage(commonMessages.wait);
     }
     /*-----------------------------------------------------------------*/
-    let signInBtnStyle = {
-        size: '90%',
-        marginTop: '3px',
-        marginLeft: '5%',
+    const signInBtnStyle = {
+        size: '100%',
         textAlign: 'center',
-        height: '46px',
+        height: '3.125rem'
     }
-    let redDashedLinkStyle = {
+    const agreeRedDashedLinkStyle = {
         fontSize: '',
-        marginTop: '6%'
+        marginTop: '0.66rem'
+    }
+    const signinRedDashedLinkStyle = {
+        fontSize: '',
+        marginTop: '0'
     }
     /* MOBILE LANDSCAPE */
     if (window.matchMedia('(max-width:767px) and (orientation: landscape)').matches) {
 
-        redDashedLinkStyle.fontSize = '10pt';
-        redDashedLinkStyle.marginTop = '8%';
+        agreeRedDashedLinkStyle.fontSize = '0.75rem';
+        agreeRedDashedLinkStyle.marginTop = '8%';
     }
 
     return (
         <div className='signUpWhitBoxContainer'>
-            <TextField
-                id='signUpName'
-                label='Name'
-                variant='outlined'
-                error={!isNameValid}
-                helperText={nameErrorMessage}
-                disabled={isControlDisabled}
-                onChange={(e) => {
-                    trackNameChange(e)
-                }}
-            />
-            <TextField
-                id='signUpLastName'
-                label='Last name'
-                variant='outlined'
-                error={!isLastNameValid}
-                helperText={lastNameErrorMessage}
-                disabled={isControlDisabled}
-                onChange={(e) => {
-                    trackLastNameChange(e)
-                }}
-            />
-            <TextField
-                id='signUpUserName'
-                label='Username'
-                variant='outlined'
-                error={!isUserNameValid}
-                helperText={usernameErrorMessage}
-                disabled={isControlDisabled}
-                onChange={(e) => {
-                    trackUserName(e);
-                }}
-            />
-
-            <div className='signupRow'>
-                <IntroducerSelector appIntroducers={null} isDisabled={isControlDisabled} changeEvent={trackIntroducer}  defaultValue={'NONE'} />
+            <div className='signupWhiteBoxRow'>
+                <TextField
+                    id='signUpName'
+                    label='Name'
+                    variant='outlined'
+                    error={!isNameValid}
+                    helperText={nameErrorMessage}
+                    disabled={isControlDisabled}
+                    onChange={(e) => {
+                        trackNameChange(e)
+                    }}
+                />
             </div>
-            <FormHelperText>Who introduced English Macchiato to you?</FormHelperText>
-
-            <div>
-                <div className='signUpSelectControl'>
-                    <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender[Gender.Male]}/>
-                </div>
-                <div className='signUpSelectControl'>
-                    <ProvinceComponent id={'signUpProvince'} isDisabled={isControlDisabled} onChange={trackProvince} defaultValue={Province.Tehran}/>
-                </div>
+            <div className='signupWhiteBoxRow'>
+                <TextField
+                    id='signUpLastName'
+                    label='Last name'
+                    variant='outlined'
+                    error={!isLastNameValid}
+                    helperText={lastNameErrorMessage}
+                    disabled={isControlDisabled}
+                    onChange={(e) => {
+                        trackLastNameChange(e)
+                    }}
+                />
             </div>
-            <TextField
-                id='signUpPassword'
-                label='Password'
-                variant='outlined'
-                type='password'
-                error={!isPasswordValid}
-                helperText={passwordErrorMessage}
-                disabled={isControlDisabled}
-                onChange={(e) => {
-                    trackPassword(e);
-                }}
-            />
-            <TextField
-                id='signUpRepeatPassword'
-                label='Repeat password'
-                variant='outlined'
-                type='password'
-                error={!isRepeatedPasswordValid}
-                helperText={repeatedPasswordErrorMessage}
-                disabled={isControlDisabled}
-                onChange={(e) => {
-                    trackRepeatedPassword(e);
-                }}
-            />
-            <div className='signupRow'>
-                <div>
-                    <Checkbox
-                        inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                        disabled={isControlDisabled}
-                        onChange={(e) => {
-                            agrre(e)
-                        }}
-                    />
-                </div>
+            <div className='signupWhiteBoxRow'>
+                <TextField
+                    id='signUpUserName'
+                    label='Username'
+                    variant='outlined'
+                    error={!isUserNameValid}
+                    helperText={usernameErrorMessage}
+                    disabled={isControlDisabled}
+                    onChange={(e) => {
+                        trackUserName(e);
+                    }}
+                />
+            </div>
+            <div className='signupWhiteBoxRow'>
+                <IntroducerSelector appIntroducers={null} isDisabled={isControlDisabled} changeEvent={trackIntroducer} defaultValue={'NONE'} />
+                <FormHelperText>Who introduced English Macchiato to you?</FormHelperText>
+            </div>
+
+
+            <div className='signupWhiteBoxRow'>
+                <GenderComponent id={'signUpGender'} isDisabled={isControlDisabled} onChange={trackGender} defaultValue={Gender[Gender.Male]} />
+            </div>
+            <div className='signupWhiteBoxRow'>
+                <ProvinceComponent id={'signUpProvince'} isDisabled={isControlDisabled} onChange={trackProvince} defaultValue={Province.Tehran} />
+            </div>
+            <div className='signupWhiteBoxRow'>
+                <TextField
+                    id='signUpPassword'
+                    label='Password'
+                    variant='outlined'
+                    type='password'
+                    error={!isPasswordValid}
+                    helperText={passwordErrorMessage}
+                    disabled={isControlDisabled}
+                    onChange={(e) => {
+                        trackPassword(e);
+                    }}
+                />
+            </div>
+            <div className='signupWhiteBoxRow'>
+                <TextField
+                    id='signUpRepeatPassword'
+                    label='Repeat password'
+                    variant='outlined'
+                    type='password'
+                    error={!isRepeatedPasswordValid}
+                    helperText={repeatedPasswordErrorMessage}
+                    disabled={isControlDisabled}
+                    onChange={(e) => {
+                        trackRepeatedPassword(e);
+                    }}
+                />
+            </div>
+
+            <div className='signupWhiteBoxRow signUpAgreeContiner'>
+
+                <Checkbox
+                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+                    disabled={isControlDisabled}
+                    onChange={(e) => {
+                        agrre(e)
+                    }}
+                />
+
                 <div className='signupAgreeText' style={{ fontFamily: 'Montserrat-Regular', color: '#707070', height: 'max-content' }}>
                     I agree with&nbsp;
                 </div>
                 <div style={{ display: 'flex' }}>
-                    <RedDashedLink text='tems and conditions' href='/termofuse' marginTop={redDashedLinkStyle.marginTop} marginLeft='' fontSize={redDashedLinkStyle.fontSize} />
+                    <RedDashedLink text='tems and conditions' href='/termofuse' marginTop={agreeRedDashedLinkStyle.marginTop} marginLeft='' fontSize={agreeRedDashedLinkStyle.fontSize} />
                 </div>
-            </div>
-            <br />
-            <div className='signupRow'>
-                {signupMessage && <SignUpMessage message={signupMessage} color={signupMessageColor} />}
             </div>
 
             <SimpleBtn action={doSignup} text={'Sign up'} secondryTheme={false} simpleStyle={signInBtnStyle} />
-
+            
             {isSignedUp &&
                 <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                     {
@@ -340,16 +347,15 @@ export const SignUpWhiteBox = (): JSX.Element => {
                         </div>
                     }
                 </React.Suspense>
-            }
-
-            <br />
-            <div className='signupRow'>
+            }            
+            <div className='signupWhiteBoxRow signinRedDashedLinkContainer'>
                 <div style={{ fontFamily: 'Montserrat-Regular', color: '#707070' }}>
                     Do you have an account?&nbsp;
                 </div>
-                <div>
-                    <RedDashedLink text='Sign in' href='/signin' marginTop='3%' marginLeft='' fontSize={redDashedLinkStyle.fontSize} />
-                </div>
+                <RedDashedLink text='Sign in' href='/signin' marginTop={signinRedDashedLinkStyle.marginTop} marginLeft='' fontSize={signinRedDashedLinkStyle.fontSize} />
+            </div>
+            <div className='signupWhiteBoxRow'>
+                {signupMessage && <SignUpMessage message={signupMessage} color={signupMessageColor} />}
             </div>
         </div>
     );

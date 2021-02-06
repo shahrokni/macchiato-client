@@ -11,7 +11,6 @@ import UserService from '../../service/user-service/user-service-novel';
 import ErrorMessage from '../../resource/text/error-message';
 import { checkNameFormat } from '../../util/regex/string-regex';
 import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
-import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-message';
 import { IntroducerSelector } from '../introducer-selector/introducer-selector';
 import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
