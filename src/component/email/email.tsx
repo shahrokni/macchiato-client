@@ -30,7 +30,7 @@ export const Email = (): JSX.Element => {
     useEffect(() => {
         const userService = new UserService();
         userService.getEmail().then((response) => {
-            if (response && response.isSuccessful && response.outputJson) {
+            if (response && response.isSuccessful) {
                 const fetchedEmail = response.outputJson as string;
                 setIsDataReady(true);
                 setIsComponentLoaded(true);
@@ -85,7 +85,7 @@ export const Email = (): JSX.Element => {
         (manageForm(true))();
         const userService = new UserService();
         userService.updateEmail(email)
-            .then((response) => {
+            .then((response) => {                
                 if (response.isSuccessful) {
                     const userDetail = response.outputJson as UserDetail;
                     setEmail((userDetail as UserDetail).email);

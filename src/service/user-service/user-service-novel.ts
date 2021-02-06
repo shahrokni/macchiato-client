@@ -146,7 +146,7 @@ export default class UserService {
 
     updateEmail(newEmail: string): Promise<Response<UserDetail>> {
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
 
             let UserValidationClass = require('../../util/validation/user-validation');
             let validator = new UserValidationClass();
@@ -166,7 +166,7 @@ export default class UserService {
 
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res);
-                    response.operationTimeServer = serverResponse.operationTimestamp;
+                    response.operationTimeServer = serverResponse.operationTimestamp;                    
                     if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
                         response.outputJson = serverResponse.outputJson as UserDetail

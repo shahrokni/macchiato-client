@@ -403,7 +403,7 @@ function updateUserEmail(newEmail, userId) {
                     else {
                         const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
                             { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
-                            { email: newEmail }, { upsert: false, returnNewDocument: true });
+                            { email: newEmail }, { upsert: false, new:true });
                         updateDetailObjectQuery.exec().then(
                             (detailObject) => {
                                 response.isSuccessful = true;
@@ -530,7 +530,7 @@ function updateCellphone(cellphone, userId) {
                 else {
                     const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
                         { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
-                        { cellphone: cellphone }, { upsert: false, returnNewDocument: true });
+                        { cellphone: cellphone }, { upsert: false, new:true });
                     updateDetailObjectQuery.exec().then((detailObject) => {
                         response.isSuccessful = true;
                         userDetailObject = {

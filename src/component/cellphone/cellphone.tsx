@@ -24,12 +24,13 @@ export const Cellphone = (): JSX.Element => {
     const [isCellphoneValid, setIsCellphoneValid] = useState(false);
     const [btnText, setBtnTxt] = useState(commonMessages.loading);
     const [isLocked, setIsLocked] = useState(false);
+    const [cellphoneTxtControlEnable, setEmailTxtControlEnable] = useState(true);
 
     useEffect(() => {
         const userService = new UserService();
         userService.getCellphone().then((response) => {
 
-            if (response && response.isSuccessful && response.outputJson) {
+            if (response && response.isSuccessful) {
                 const fetchedCellphone = response.outputJson as string;
                 setIsDataReady(true);
                 setIsComponentLoaded(true);
@@ -67,7 +68,7 @@ export const Cellphone = (): JSX.Element => {
     const manageForm = (isLocked: boolean): () => void => {
 
         const cursor = (!isLocked) ? 'pointer' : 'no-drop';
-
+        setEmailTxtControlEnable(!isLocked);
         return () => {
             (!isLocked) ? setIsLocked(false) : setIsLocked(true);
             const updateBtn = document.getElementById(btnId);
@@ -129,6 +130,7 @@ export const Cellphone = (): JSX.Element => {
                     error={!isCellphoneValid}
                     helperText={(!isCellphoneValid) ? ErrorMessage.ErrBu0011() : ''}
                     value={(isDataReady && cellphone) ? cellphone : ''}
+                    disabled={!cellphoneTxtControlEnable}
                     onChange={(e) => {
                         trackCellphoneChange(e)
                     }}

@@ -16,7 +16,7 @@ import UserService from '../../service/user-service/user-service-novel';
 import { PracticeType } from '../../entity/global/practice-type';
 import Score from '../../entity/score-box/score-box';
 import './css/profile-view.css';
-import {sortScoreTypeByScore,IScoreTypePair} from '../../util/score-util/score-util';
+import { sortScoreTypeByScore, IScoreTypePair } from '../../util/score-util/score-util';
 
 export default function ProfileView(): JSX.Element {
     const profileTitle = 'Your Account';
@@ -27,29 +27,30 @@ export default function ProfileView(): JSX.Element {
     useEffect(() => {
         const userService = new UserService();
         userService.isUserAuthenticated()
-            .then((authResponse) => {
+            .then((authResponse) => { 
+                setIsAuthenticated(authResponse.outputJson as AuthenticationState);                          
                 userService.getScore()
-                    .then((scoreResponse) => {
+                    .then((scoreResponse) => {                      
                         if (scoreResponse && scoreResponse.outputJson) {
-                            const scoreArr = [];                            
+                            const scoreArr = [];
                             const score = new Score();
                             score.listeningScore = scoreResponse.outputJson.listeningScore;
-                            scoreArr.push({score:score.listeningScore,type:PracticeType.Listening});
+                            scoreArr.push({ score: score.listeningScore, type: PracticeType.Listening });
                             score.readingScore = scoreResponse.outputJson.readingScore;
-                            scoreArr.push({score:score.readingScore,type:PracticeType.Reading});
+                            scoreArr.push({ score: score.readingScore, type: PracticeType.Reading });
                             score.writingScore = scoreResponse.outputJson.writingScore;
-                            scoreArr.push({score:score.writingScore,type:PracticeType.Writing});
+                            scoreArr.push({ score: score.writingScore, type: PracticeType.Writing });
                             score.speakingScore = scoreResponse.outputJson.speakingScore;
-                            scoreArr.push({score:score.speakingScore,type:PracticeType.Speaking});
+                            scoreArr.push({ score: score.speakingScore, type: PracticeType.Speaking });
                             score.slangScore = scoreResponse.outputJson.slangScore;
-                            scoreArr.push({score:score.slangScore,type:PracticeType.Slang});
+                            scoreArr.push({ score: score.slangScore, type: PracticeType.Slang });
                             score.vocabScore = scoreResponse.outputJson.vocabScore;
-                            scoreArr.push({score:score.vocabScore,type:PracticeType.Vocabulary});
+                            scoreArr.push({ score: score.vocabScore, type: PracticeType.Vocabulary });
                             const sortedScoreArray = sortScoreTypeByScore(scoreArr);
                             setOrderedScoreArray(sortedScoreArray);
-                            setScoreData(score);
+                            setScoreData(score);                            
                         }
-                        setIsAuthenticated(authResponse.outputJson as AuthenticationState);
+
                     })
             });
     }, []);
@@ -94,12 +95,16 @@ export default function ProfileView(): JSX.Element {
                                                                     <Cellphone />
                                                                 </div>
                                                                 <div className={'profileScoreBoxContainer'}>
+                                                                    {
+                                                                     (orderedScoreArray && orderedScoreArray.length!=0)?<Fragment>
                                                                     <ScoreBox practiceType={orderedScoreArray[0].type} score={scoreData as Score} />
                                                                     <ScoreBox practiceType={orderedScoreArray[1].type} score={scoreData as Score} />
                                                                     <ScoreBox practiceType={orderedScoreArray[2].type} score={scoreData as Score} />
                                                                     <ScoreBox practiceType={orderedScoreArray[3].type} score={scoreData as Score} />
                                                                     <ScoreBox practiceType={orderedScoreArray[4].type} score={scoreData as Score} />
                                                                     <ScoreBox practiceType={orderedScoreArray[5].type} score={scoreData as Score} />
+                                                                    </Fragment> :<SimpleNarrowWaiting/>
+                                                                     }
                                                                 </div>
                                                             </div>
                                                         </Fragment>
