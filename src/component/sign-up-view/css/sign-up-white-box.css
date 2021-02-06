@@ -19,16 +19,32 @@
     display: flex;
     flex-direction: row;
 }
+.provinceComponentContainer{
+    width:100%;    
+        
+}
+.provinceComponentContainer .MuiOutlinedInput-root{
+    width:100%;
+}
+.genderComponentContainer{
+    width:100%
+}
+.genderComponentContainer .MuiOutlinedInput-root{
+    width:100%;
+}
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
     .signUpWhitBoxContainer{
-        width: 100%;
-        height: 70%;       
-        top: 20%;         
-        padding-bottom: 2%;
+        width: 100%;       
+        padding: 1rem;
     }
     .signupAgreeText{
-        margin-top: 3%;
+        font-size: 0.75rem; 
+        margin-top: 0.75rem; 
+    }
+    .signupWhiteBoxRow{
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
 }
 
@@ -39,28 +55,35 @@
         width: 100%;
         border-radius: 5px;      
         box-shadow: 0px 6px 12px #70707029;     
-        padding-bottom: 2%;   
+        padding: 1rem; 
     }
     .signupAgreeText{
-        margin-top: 4%;
-        font-size: 10pt;        
+        font-size: 0.75rem; 
+        margin-top: 0.75rem;       
+    }
+    .signupWhiteBoxRow{
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
-    .signUpWhitBoxContainer{        
-        width: 100%;
-        border-radius: 5px;        
-        box-shadow: 0px 6px 12px #70707029;      
-        padding: 2%;  
+    .signUpWhitBoxContainer{    
+        width: 60vw;    
+        border-radius: 5px;       
+        box-shadow: 0px 6px 12px #70707029;    
+        padding: 2rem;
     }
-
-    .signupAgreeText{
-        margin-top: 4%;
-        font-size: 10pt;        
+    .signupWhiteBoxRow{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
+    .signupAgreeText{        
+        font-size: 0.75rem; 
+        margin-top: 0.75rem;       
+    }   
 }
 
 /*DESKTOP*/
@@ -69,29 +92,14 @@
         width: 60vw;    
         border-radius: 5px;       
         box-shadow: 0px 6px 12px #70707029;    
-       padding: 2rem;
+        padding: 2rem;
     }
     .signupWhiteBoxRow{
         padding-top: 1rem;
         padding-bottom: 1rem;
     }
-
     .signupAgreeText{        
         font-size: 0.75rem; 
         margin-top: 0.75rem;       
-    }
-
-    .provinceComponentContainer{
-        width:100%;    
-            
-    }
-    .provinceComponentContainer .MuiOutlinedInput-root{
-        width:100%;
-    }
-    .genderComponentContainer{
-        width:100%
-    }
-    .genderComponentContainer .MuiOutlinedInput-root{
-        width:100%;
-    }
+    }   
 }

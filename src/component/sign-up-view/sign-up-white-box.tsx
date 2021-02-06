@@ -226,11 +226,19 @@ export const SignUpWhiteBox = (): JSX.Element => {
         fontSize: '',
         marginTop: '0'
     }
+    const accountQuestionStyle={
+        fontSize:'',
+        marginTop:'0'
+    }
     /* MOBILE LANDSCAPE */
     if (window.matchMedia('(max-width:767px) and (orientation: landscape)').matches) {
 
-        agreeRedDashedLinkStyle.fontSize = '0.75rem';
-        agreeRedDashedLinkStyle.marginTop = '8%';
+        agreeRedDashedLinkStyle.fontSize = '0.7rem';
+        agreeRedDashedLinkStyle.marginTop = '0.8rem';
+        signinRedDashedLinkStyle.fontSize= '0.5rem';
+        signinRedDashedLinkStyle.marginTop = '0.25rem';
+        accountQuestionStyle.fontSize = '0.7rem';
+        accountQuestionStyle.marginTop='0.25rem'
     }
 
     return (
@@ -349,7 +357,7 @@ export const SignUpWhiteBox = (): JSX.Element => {
                 </React.Suspense>
             }            
             <div className='signupWhiteBoxRow signinRedDashedLinkContainer'>
-                <div style={{ fontFamily: 'Montserrat-Regular', color: '#707070' }}>
+                <div style={{ fontFamily: 'Montserrat-Regular', color: '#707070', fontSize:accountQuestionStyle.fontSize, marginTop:accountQuestionStyle.marginTop }}>
                     Do you have an account?&nbsp;
                 </div>
                 <RedDashedLink text='Sign in' href='/signin' marginTop={signinRedDashedLinkStyle.marginTop} marginLeft='' fontSize={signinRedDashedLinkStyle.fontSize} />
