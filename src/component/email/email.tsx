@@ -30,7 +30,7 @@ export const Email = (): JSX.Element => {
     useEffect(() => {
         const userService = new UserService();
         userService.getEmail().then((response) => {
-            if (response && response.isSuccessful && response.outputJson) {
+            if (response && response.isSuccessful) {
                 const fetchedEmail = response.outputJson as string;
                 setIsDataReady(true);
                 setIsComponentLoaded(true);
