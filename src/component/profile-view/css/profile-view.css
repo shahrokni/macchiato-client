@@ -3,6 +3,19 @@
     color:#D9183B;
     font-family: Montserrat-Medium;
 }
+.logoutBtn{
+    cursor:pointer;
+    border-radius: 5px;
+    color:#D9183B;
+    box-sizing: border-box;
+    position: relative;
+    border-color: #707070;
+}
+.profileTitleBar{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
 .profileInformationContainer{
     position: relative;
     display:flex;
@@ -36,11 +49,25 @@
         width: 93vw;
     }
     .profileTitle{
-        font-size: 1.5rem;
+        font-size: 1.5rem;       
+    }
+    .profileTitleBar{
         width: 94vw;
         left:1vw;
-        top:0.75rem;
-        position: relative;
+        top:0.75rem;       
+    }
+    .logoutBtn{
+        margin-left: 0.5rem;
+        height: 2rem;
+        width: 2rem;      
+        border-style: solid; 
+        border-width: 0.1rem;       
+        padding-top: 0.25rem;
+        padding-left: 0.25rem;
+        top:-0.1rem;
+    }
+    .logoutText{
+        font-size: 1.5rem;
     }
     .profileInformationContainer{
         width: 93vw;

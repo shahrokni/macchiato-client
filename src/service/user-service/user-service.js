@@ -231,28 +231,5 @@ export default class UserService {
                     callBack(response);
                 });
         }
-    }
-
-    /*output: Response*/
-    logOut(callBack) {
-
-        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-        restInstance.get('user_api/v1/user/logout').then(function (res) {
-
-            let responseUtil = require('../../util/response-util/response-util');
-            let serverResponse = responseUtil.extractResponse(res);
-            callBack(serverResponse);
-
-        })
-            .catch(function (err) {
-
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
-                response.clientValidations.push(ErrorMessages.Err0000());
-                callBack(response);
-            });
-    }
+    }   
 }

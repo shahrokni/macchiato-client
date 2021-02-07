@@ -170,19 +170,6 @@ class UserValidation {
         return errorMessages;
     }
 
-    /*user: User - output: String Array*/
-    validateLogOut(user) {
-
-        let errorMessages = [];
-
-        if (user != null && user.studentNumber != null && user.studentNumber != null) {
-            return errorMessages;
-        }
-
-        errorMessages.push(this.ErrorMessage.Err0002());
-        return errorMessages;
-    }
-
     /*userFilter: UserFilter - output: String Array*/
     validateFetchUser(userFilter) {
 
