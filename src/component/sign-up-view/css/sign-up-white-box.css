@@ -1,41 +1,50 @@
-/*ALL DEVICES*/
-.signupRow{
+.signupWhiteBoxRow{
+    width: 100%;
+}
+.signupWhiteBoxRow .MuiTextField-root{
+    width: 100%;
+}
+.signUpWhitBoxContainer{
+    position: relative;
+    display : flex;
+    flex-direction: column;       
+    box-sizing: border-box;
+    background-color: rgba(255,255,255,0.8);
+}
+.signUpAgreeContiner{
+    display:flex;
+    flex-direction: row;
+}
+.signinRedDashedLinkContainer{
     display: flex;
     flex-direction: row;
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 4%;   
+}
+.provinceComponentContainer{
+    width:100%;    
+        
+}
+.provinceComponentContainer .MuiOutlinedInput-root{
+    width:100%;
+}
+.genderComponentContainer{
+    width:100%
+}
+.genderComponentContainer .MuiOutlinedInput-root{
+    width:100%;
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
     .signUpWhitBoxContainer{
-        width: 100%;
-        height: 70%;       
-        position: relative;       
-        top: 20%;
-        background-color: rgba(255,255,255,1);
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        padding-bottom: 2%;
-    }   
-    .signUpWhitBoxContainer .MuiTextField-root{
-
-        margin-top: 4%;
-        width: 90%;
-        margin-left: 5%;
-    } 
-    .signUpWhitBoxContainer .MuiFormHelperText-root{
-        width: 90%;
-        margin-left: 5%;
-    }
-    .signUpSelectControl .MuiOutlinedInput-root{
-        width: 90%;
-        margin-left: 5%;
-        margin-top: 4%;
+        width: 100%;       
+        padding: 1rem;
     }
     .signupAgreeText{
-        margin-top: 3%;
+        font-size: 0.75rem; 
+        margin-top: 0.75rem; 
+    }
+    .signupWhiteBoxRow{
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
 }
 
@@ -44,110 +53,53 @@
 
     .signUpWhitBoxContainer{        
         width: 100%;
-        border-radius: 5px;
-        position: relative;
-        box-shadow: 0px 6px 12px #70707029; 
-        background-color: rgba(255,255,255,0.8); 
-        display : flex;
-        flex-direction: column;    
-        box-sizing: border-box;
-        padding-bottom: 2%;   
-    }
-
-    /*Material UI text field control*/
-    .signUpWhitBoxContainer .MuiTextField-root{
-
-        width: 90%;
-        float: left;
-        margin-top: 10px !important;
-        margin-left: 5% !important;
-    }  
-    .signUpWhitBoxContainer .MuiFormHelperText-root{
-        width: 90%;
-        margin-left: 5%;
-    }
-    .signUpSelectControl .MuiOutlinedInput-root{
-        width: 90%;
-        margin-left: 5%;
-        margin-top: 4%;
+        border-radius: 5px;      
+        box-shadow: 0px 6px 12px #70707029;     
+        padding: 1rem; 
     }
     .signupAgreeText{
-        margin-top: 4%;
-        font-size: 10pt;        
+        font-size: 0.75rem; 
+        margin-top: 0.75rem;       
+    }
+    .signupWhiteBoxRow{
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
 
-    .signUpWhitBoxContainer{        
-        width: 100%;
-        border-radius: 5px;
-        position: relative;
-        box-shadow: 0px 6px 12px #70707029; 
-        background-color: rgba(255,255,255,0.8); 
-        display : flex;
-        flex-direction: column;   
-        box-sizing: border-box;
-        padding-bottom: 2%;    
+    .signUpWhitBoxContainer{    
+        width: 60vw;    
+        border-radius: 5px;       
+        box-shadow: 0px 6px 12px #70707029;    
+        padding: 2rem;
     }
-
-    /*Material UI text field control*/
-    .signUpWhitBoxContainer .MuiTextField-root{
-
-        width: 90%;
-        float: left;
-        margin-top: 10px !important;
-        margin-left: 5% !important;
-    }  
-    .signUpWhitBoxContainer .MuiFormHelperText-root{
-        width: 90%;
-        margin-left: 5%;
+    .signupWhiteBoxRow{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
-    .signUpSelectControl .MuiOutlinedInput-root{
-        width: 90%;
-        margin-left: 5%;
-        margin-top: 4%;
-    }
-    .signupAgreeText{
-        margin-top: 4%;
-        font-size: 10pt;        
-    }
+    .signupAgreeText{        
+        font-size: 0.75rem; 
+        margin-top: 0.75rem;       
+    }   
 }
 
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  {  
     .signUpWhitBoxContainer{    
         width: 60vw;    
-        border-radius: 5px;
-        position: relative;
-        box-shadow: 0px 6px 12px #70707029; 
-        background-color: rgba(255,255,255,0.8); 
-        display : flex;
-        flex-direction: column;       
-        box-sizing: border-box;
-        padding-bottom: 2%;
+        border-radius: 5px;       
+        box-shadow: 0px 6px 12px #70707029;    
+        padding: 2rem;
     }
-
-    /*Material UI text field control*/
-    .signUpWhitBoxContainer .MuiTextField-root{
-
-        width: 90%;
-        float: left;
-        margin-top: 10px !important;
-        margin-left: 5% !important;
-    }  
-    .signUpWhitBoxContainer .MuiFormHelperText-root{
-        width: 90%;
-        margin-left: 5%;
+    .signupWhiteBoxRow{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
-    .signUpSelectControl .MuiOutlinedInput-root{
-        width: 90%;
-        margin-left: 5%;
-        margin-top: 4%;
-    }
-    .signupAgreeText{
-        margin-top: 2%;
-        font-size: 10pt;        
-    }
+    .signupAgreeText{        
+        font-size: 0.75rem; 
+        margin-top: 0.75rem;       
+    }   
 }

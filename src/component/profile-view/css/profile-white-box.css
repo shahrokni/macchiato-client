@@ -21,8 +21,6 @@
 @media only screen and (min-width: 768px) and (orientation: portrait){
     
 }
-
-
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape)  { 
     .profileWhiteBoxContainer{
@@ -44,5 +42,17 @@
     }
     .userInformationStatusMessage{
         font-size: 0.875rem;
+    }
+    .provinceComponentContainer{
+        width:100%;    
+    }
+    .provinceComponentContainer .MuiOutlinedInput-root{
+        width:100%;
+    }
+    .genderComponentContainer{
+        width:100%
+    }
+    .genderComponentContainer .MuiOutlinedInput-root{
+        width:100%;
     }
 } 
