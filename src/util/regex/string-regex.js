@@ -44,7 +44,7 @@ module.exports.checkUserName = checkUserName;
 function checkCellphone(cellphone){
 
     //TODO : Should we consider international numbers!?
-    let regex = /^(09)\d{9}/;
+    let regex = /^(09)\d{9}$/;
     let result = regex.test(cellphone);
 
     return result;
