@@ -14,18 +14,54 @@ import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
 import './css/profile-view.css';
 import Scores from '../scores/scores';
+import { Alarm } from '@material-ui/icons';
 
 export default function ProfileView(): JSX.Element {
-    const profileTitle = 'Your Account';
+
+    const defaultProfileTitle = 'Your Account';
+    const logOutMessage = 'Are you going to log-out? See you soon then!';
+    const logoutBtnId = 'logoutBtn'
+    const [profileTitle, setProfileTitle] = useState(defaultProfileTitle);
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
+    const [isLocked, setIsLocked] = useState(false);
+    const [isComponentLoaded, setIsComponentLoaded] = useState(false);
     useEffect(() => {
         const userService = new UserService();
         userService.isUserAuthenticated()
             .then((authResponse) => {
                 setIsAuthenticated(authResponse.outputJson as AuthenticationState);
+                setIsComponentLoaded(true);
             });
     }, []);
 
+
+    const manageForm = (locked: boolean): () => void => {
+        const cursor = (!locked) ? 'pointer' : 'no-drop';
+        return () => {
+            (!isLocked) ? setIsLocked(false) : setIsLocked(true);
+            const updateBtn = document.getElementById(logoutBtnId);
+            (updateBtn) && (updateBtn.style.cursor = cursor);
+        }
+    }
+
+
+    const logout = (): void => {
+
+        if (isLocked === true || !isComponentLoaded)
+            return;
+
+        (manageForm(true))();
+        const userService = new UserService();
+        userService.logout()
+            .then((response) => {
+                if (response && response.isSuccessful) {
+                    setIsAuthenticated(AuthenticationState.NotAuthenticated);
+                }
+                else {
+                    (manageForm(false))();
+                }
+            });
+    }
 
     return (
         <div className={'profileContainer'}>
@@ -58,7 +94,19 @@ export default function ProfileView(): JSX.Element {
                                                     (
                                                         <Fragment>
                                                             <WhiteRibbon />
-                                                            <div className={'profileTitle'}>{profileTitle}</div>
+
+                                                            <div className={'profileTitleBar'}>
+                                                                <div className={'profileTitle'}>
+                                                                    {profileTitle}
+                                                                </div>
+                                                                <div
+                                                                    id={logoutBtnId}
+                                                                    onClick={() => { logout() }}
+                                                                    className={'logoutBtn'}>
+                                                                    <i className="material-icons logoutText absolute">{'logout'}</i>
+                                                                </div>
+                                                            </div>
+
                                                             <div className={'profileInformationContainer'}>
                                                                 <div className={'profileUserDetailContainer'}>
                                                                     <ProfileWhiteBox />

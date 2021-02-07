@@ -179,11 +179,9 @@ api.get('/user/logout', (req, res) => {
 });
 
 api.get('/user/logedout', (req, res) => {
-
     let response = new global.responseClass();
     response.isSuccessful = true;
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
     res.json({ response: response });
     return res;
 });
@@ -195,7 +193,6 @@ api.get('/notlogedIn', (req, res) => {
     response.isSuccessful = false;
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     response.serverValidations.push(global.errorResource.ErrBu0017());
-
     res.json({ response: response });
     return res;
 });

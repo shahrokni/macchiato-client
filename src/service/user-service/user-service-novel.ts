@@ -52,28 +52,28 @@ export default class UserService {
         })
     }
 
-    getUserJoinedDetail():Promise<Response<UserDetail>>{
-        return new Promise((resolve)=>{
+    getUserJoinedDetail(): Promise<Response<UserDetail>> {
+        return new Promise((resolve) => {
             let response = new Response<UserDetail>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_api/v1/user/userjoineddetail').then((res:any)=>{
+            restInstance.get('user_api/v1/user/userjoineddetail').then((res: any) => {
                 var responseUtil: any = require('../../util/response-util/response-util');
-                const serverResponse = responseUtil.extractResponse(res);                
+                const serverResponse = responseUtil.extractResponse(res);
                 response.operationTimeServer = serverResponse.operationTimestamp;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     response.outputJson = serverResponse.outputJson as UserDetail;
                     resolve(response);
                 }
-                else{
+                else {
                     (serverResponse.serverValidations as string[]).forEach((serverError) => {
                         response.serverValidations.push(serverError);
                     });
                 }
 
-            }).catch((err:any)=>{                
+            }).catch((err: any) => {
                 response.isSuccessful = false;
                 response.clientValidations.push(ErrorMessage.Err0000().toString());
                 resolve(response);
@@ -166,7 +166,7 @@ export default class UserService {
 
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res);
-                    response.operationTimeServer = serverResponse.operationTimestamp;                    
+                    response.operationTimeServer = serverResponse.operationTimestamp;
                     if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
                         response.outputJson = serverResponse.outputJson as UserDetail
@@ -249,9 +249,9 @@ export default class UserService {
         });
     }
 
-    updateUserInformation(userDetail:UserDetail):Promise<Response<UserDetail>>{
-       
-        return new Promise((resolve)=>{
+    updateUserInformation(userDetail: UserDetail): Promise<Response<UserDetail>> {
+
+        return new Promise((resolve) => {
             const response = new Response<UserDetail>();
             response.isSuccessful = false;
             let UserValidationClass = require('../../util/validation/user-validation');
@@ -259,15 +259,15 @@ export default class UserService {
             let errorMessages = validator.validateUpdateData(userDetail);
             if (errorMessages != null && errorMessages.length !== 0) {
                 response.isSuccessful = false;
-                (errorMessages as string[]).forEach((err)=>{
+                (errorMessages as string[]).forEach((err) => {
                     response.clientValidations.push(err);
-                });                
+                });
                 resolve(response);
             }
-           
-            response.operationTimeClient =  this.dateUtil.getCurrentDateTime();
+
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.put('user_api/v1/user',{"userDetail":userDetail}).then((res:any)=>{
+            restInstance.put('user_api/v1/user', { "userDetail": userDetail }).then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
                 if (serverResponse.isSuccessful) {
@@ -275,19 +275,49 @@ export default class UserService {
                     response.outputJson = serverResponse.outputJson as UserDetail;
                     resolve(response);
                 }
-                else{
+                else {
                     response.isSuccessful = false;
                     (serverResponse.serverValidations as string[]).forEach((serverError) => {
                         response.serverValidations.push(serverError);
                     });
                     resolve(response);
                 }
-            }).catch(()=>{
+            }).catch(() => {
                 response.isSuccessful = false;
                 response.clientValidations.push(ErrorMessage.Err0000().toString());
                 resolve(response);
             })
         })
+    }
+
+    logout(): Promise<Response<void>> {
+        return new Promise((resolve) => {
+
+            const response = new Response<void>();
+            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            response.operationTimeClient = this.dateUtil.getCurrentDateTime();
+
+            restInstance.get('user_api/v1/user/logout').then((res: any) => {
+                let responseUtil = require('../../util/response-util/response-util');
+                let serverResponse = responseUtil.extractResponse(res);
+                if (serverResponse.isSuccessful) {
+                    response.isSuccessful = true;
+                    resolve(response);
+                }
+                else {
+                    response.isSuccessful = false;
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                        response.serverValidations.push(serverError);
+                    });
+                    resolve(response);
+                }
+
+            }).catch(() => {
+                response.isSuccessful = false;
+                response.clientValidations.push(ErrorMessage.Err0000().toString());
+                resolve(response);
+            })
+        });
     }
 
 }
