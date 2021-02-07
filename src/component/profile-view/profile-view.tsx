@@ -14,14 +14,11 @@ import ErrorMessage from '../../resource/text/error-message';
 import UserService from '../../service/user-service/user-service-novel';
 import './css/profile-view.css';
 import Scores from '../scores/scores';
-import { Alarm } from '@material-ui/icons';
 
 export default function ProfileView(): JSX.Element {
 
-    const defaultProfileTitle = 'Your Account';
-    const logOutMessage = 'Are you going to log-out? See you soon then!';
-    const logoutBtnId = 'logoutBtn'
-    const [profileTitle, setProfileTitle] = useState(defaultProfileTitle);
+    const profileTitle = 'Your Account';   
+    const logoutBtnId = 'logoutBtn'   
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [isLocked, setIsLocked] = useState(false);
     const [isComponentLoaded, setIsComponentLoaded] = useState(false);
@@ -101,7 +98,7 @@ export default function ProfileView(): JSX.Element {
                                                                 </div>
                                                                 <div
                                                                     id={logoutBtnId}
-                                                                    onClick={() => { logout() }}
+                                                                    onClick={() => { logout() }}                                                                   
                                                                     className={'logoutBtn'}>
                                                                     <i className="material-icons logoutText absolute">{'logout'}</i>
                                                                 </div>

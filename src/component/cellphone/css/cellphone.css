@@ -12,19 +12,55 @@
 
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
+    .cellphoneContainer{
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        margin-top: 1rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
 
-  
-  
+    }
+    .cellphoneStatusMessage{
+        font-size: 0.875rem;
+    }
+    .cellphoneRow > .MuiFormControl-root{
+        width:68%;
+    } 
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
+    .cellphoneContainer{
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        margin-top: 1rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
 
-  
+    }
+    .cellphoneStatusMessage{
+        font-size: 0.875rem;
+    }
+    .cellphoneRow > .MuiFormControl-root{
+        width:68%;
+    }  
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
+    .cellphoneContainer{
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        margin-top: 1rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
 
+    }
+    .cellphoneStatusMessage{
+        font-size: 0.875rem;
+    }
+    .cellphoneRow > .MuiFormControl-root{
+        width:68%;
+    }
     
 }
 
