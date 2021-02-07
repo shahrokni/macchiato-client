@@ -38,16 +38,63 @@
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
-   
+    .starSquare{
+        width: 1rem;
+        height: 1rem;
+    }  
+    .scoreNumber{
+        padding-left: 0.2rem;        
+        font-size: 0.8rem;        
+    }  
+    .scoreBoxRow{
+        font-size: 0.8rem;
+    }
+    .scoreBoxContainer{
+        margin-bottom: 1rem;
+        padding: 1rem;    
+        border-left-width:2px;
+        margin-top: 0.5rem;
+    }
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
-
+    .starSquare{
+        width: 1rem;
+        height: 1rem;
+    }  
+    .scoreNumber{
+        padding-left: 0.2rem;        
+        font-size: 0.8rem;        
+    }  
+    .scoreBoxRow{
+        font-size: 0.8rem;
+    }
+    .scoreBoxContainer{
+        margin-bottom: 1rem;
+        padding: 1rem;    
+        border-left-width:2px;
+        margin-top: 0.5rem;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
-    
+    .starSquare{
+        width: 1rem;
+        height: 1rem;
+    }  
+    .scoreNumber{
+        padding-left: 0.2rem;        
+        font-size: 0.8rem;        
+    }  
+    .scoreBoxRow{
+        font-size: 0.8rem;
+    }
+    .scoreBoxContainer{
+        margin-bottom: 1rem;
+        padding: 1rem;    
+        border-left-width:2px;
+    }
 }
 
 

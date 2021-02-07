@@ -30,16 +30,112 @@
 }
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
-   
+   .whiteRibbonContainer{
+       display: none;
+   }
+   .profileInformationContainer{
+       flex-direction: column;
+       width: 98%;
+       left: 1%;
+   }
+   .profileTitleBar{
+       width: 98%;
+       top:0.25rem;
+       left:1%;
+   }
+
+   .profileTitle{
+    font-size: 1.2rem;       
+    }
+
+   .logoutBtn{
+    margin-left: 0.5rem;
+    height: 2rem;
+    width: 2rem;      
+    border-style: solid; 
+    border-width: 0.1rem;       
+    padding-top: 0.25rem;
+    padding-left: 0.25rem;
+    top:-0.1rem;
+  }
+  .logoutText{
+    font-size: 1.5rem;
+   }
+
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
-
+    .whiteRibbonContainer{
+        display: none;
+    }
+    .profileInformationContainer{
+        flex-direction: column;
+        width: 98%;
+        left: 1%;
+    }
+    .profileTitleBar{
+        width: 98%;
+        top:0.25rem;
+        left:1%;
+    }
+ 
+    .profileTitle{
+     font-size: 1.2rem;       
+     }
+ 
+    .logoutBtn{
+     margin-left: 0.5rem;
+     height: 2rem;
+     width: 2rem;      
+     border-style: solid; 
+     border-width: 0.1rem;       
+     padding-top: 0.25rem;
+     padding-left: 0.25rem;
+     top:-0.1rem;
+   }
+   .logoutText{
+     font-size: 1.5rem;
+    }
 }
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){
-    
+    .whiteRibbonContainer{
+        display: none;
+    }
+    .whiteRibbonContainer{
+        width: 93vw;
+    }
+    .profileTitle{
+        font-size: 1.5rem;       
+    }
+    .profileTitleBar{
+        width: 94vw;
+        left:1vw;
+        top:0.75rem;       
+    }
+    .logoutBtn{
+        margin-left: 0.5rem;
+        height: 2rem;
+        width: 2rem;      
+        border-style: solid; 
+        border-width: 0.1rem;       
+        padding-top: 0.25rem;
+        padding-left: 0.25rem;
+        top:-0.1rem;
+    }
+    .logoutText{
+        font-size: 1.5rem;
+    }
+    .profileInformationContainer{
+        flex-direction: row;
+        width: 93vw;
+        top:1.5rem;
+        left:1vw;
+    }
+    .profileScoreBoxContainer{
+        left:1vw;
+    }
 }
 
 
@@ -70,6 +166,7 @@
         font-size: 1.5rem;
     }
     .profileInformationContainer{
+        flex-direction: row;
         width: 93vw;
         top:1.5rem;
         left:1vw;
