@@ -1,3 +1,5 @@
+import FieldExpression from "./filter-field-expression";
 export default interface IFilter {   
-    pageNumber: number;
+    pageNumber: number|undefined;
+    fieldsExpression:FieldExpression[]|undefined;
 }
