@@ -22,11 +22,27 @@ export default class UserMessageService implements IListDataService {
             restInstance.get('user_message_api/v1/message/listdata', { params: filter }).then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res) as Response<UserMessage[]>;
-                if(serverResponse.isSuccessful){
-
+                if (serverResponse.isSuccessful) {
+                    response.isSuccessful = true;
+                    response.outputJson = [];
+                    serverResponse.outputJson?.forEach((item, index) => {
+                        const data = new rowMetaData;
+                        data.annotations = [];
+                        data.rowData = item;
+                        data.hasUpdate = false;
+                        data.hasView = false;
+                        data.hasDelete = (!item.isAdvertisement) ? false : true;
+                        (item.isRead)? data.annotations.push('readMessage'):data.annotations.push('unreadMessage');                        
+                        response.outputJson?.push(data);
+                    });
+                    resolve(response);
                 }
-                else{
-
+                else {
+                    response.isSuccessful = false;
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                        response.serverValidations.push(serverError);
+                    });
+                    resolve(response);
                 }
             }).catch(() => {
                 response.isSuccessful = false;
@@ -52,6 +68,9 @@ export default class UserMessageService implements IListDataService {
                 }
                 else {
                     response.isSuccessful = false;
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                        response.serverValidations.push(serverError);
+                    });
                     resolve(response);
                 }
             })
@@ -79,6 +98,9 @@ export default class UserMessageService implements IListDataService {
                 }
                 else {
                     response.isSuccessful = false;
+                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
+                        response.serverValidations.push(serverError);
+                    });
                     resolve(response);
                 }
             }).catch(() => {

@@ -9,7 +9,7 @@ export default function GeneralGrid(
 
     const [isHeaderLoaded, setIsHeaderLoaded] = useState(false);
     const [totalRowCount, setRowTotalCount] = useState(0);
-    const [currenPage, setCurrenPage] = useState(1);
+    const [currenPage, setCurrenPage] = useState(0);
     const [rows, setRows] = useState<RowMetaData[] | null>(null);
     const [headerColour, setHeaderColour] = useState('');
     const [headerCellColour, setHeaderCellColour] = useState('');
@@ -20,35 +20,55 @@ export default function GeneralGrid(
     const [cellLength, setCellLength] = useState('');
     const [gridId, setGridId] = useState('grid-' + Math.floor(Math.random() * Math.floor(10)));
     const [isGridLoaded, setIsGridLoaded] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         initialGridParams(gridConfig);
         listDataService.countListData()
-            .then((total) => {
-                total = (total > 100) ? 100 : total;
-                setRowTotalCount(total);
-                filter.pageNumber = currenPage;
-                listDataService.listData(filter)
-                    .then((rows) => {
-                        setRows(rows);
-                    })
+            .then((countResponse) => {
+
+                if (countResponse.isSuccessful && countResponse.outputJson) {
+                    let total = countResponse.outputJson;
+                    total = (total > 100) ? 100 : total;
+                    setRowTotalCount(total);
+                    filter.pageNumber = currenPage;
+                    listDataService.listData(filter)
+                        .then((listDataResponse) => {
+                            if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
+                                const rows = listDataResponse.outputJson;
+                                setRows(rows);
+                            }
+                            else {
+                                setHasError(true);
+                            }
+                        })
+                }
+                else {
+                    setHasError(true);
+                }
             })
     }, []);
 
     const changePage = (pageNumber: number): void => {
         filter.pageNumber = pageNumber
         listDataService.listData(filter)
-            .then((rows) => {
-                setRows(rows);
-                setCurrenPage(pageNumber+1);
+            .then((listDataResponse) => {
+                if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
+                    const rows = listDataResponse.outputJson;
+                    setRows(rows);
+                    setCurrenPage(pageNumber + 1);
+                }
+                else {
+                    setHasError(true);
+                }
             });
     }
 
-    const shift2NextPage = ():void=>{
+    const shift2NextPage = (): void => {
 
     }
 
-    const  shift2PrevPage = ():void =>{
+    const shift2PrevPage = (): void => {
 
     }
 

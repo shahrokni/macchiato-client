@@ -8,7 +8,7 @@ var userValidationClass = require('../../src/util/validation/user-validation');
 var User = require('../../model/user/user');
 var UserDetail = require('../../model/user/user-detail');
 var mongoose = require('mongoose');
-const { response } = require('express');
+//const { response } = require('express');
 /*-----------------------------------------*/
 const salt = 10;
 const hiddenData = '***';
@@ -152,7 +152,7 @@ async function registerUser(userDetail) {
 
 
         await messageController.sendInitialMessage(newUserDetailId, opt)
-            .catch((exception) => {
+            .catch(() => {
 
                 throw global.errorResource.Err0000();
             });
@@ -164,7 +164,7 @@ async function registerUser(userDetail) {
 
             foundNewUser = newUser;
         })
-            .catch((exception) => {
+            .catch(() => {
 
                 throw global.errorResource.Err0000();
             });
