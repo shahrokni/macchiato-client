@@ -1,20 +1,11 @@
 export default class UserMessage {
 
-    constructor() {
-
-        this.id = '';
-        this.senderId = '';
-        this.receiverId = '';
-        this.sentDate = null;
-        this.isRead = false;
-        this.title = '';
-        this.text = '';
-    }
-    id: string;
-    senderId: string;
-    receiverId: string;
-    sentDate: Date | null;
-    isRead: boolean;
-    title: string;
-    text: string;
+    id: string | undefined;
+    senderId: string | undefined;
+    receiverId: string | undefined;
+    sentDate: Date | undefined;
+    isRead: boolean | undefined;
+    title: string | undefined;
+    text: string | undefined;
+    isAdvertisement: boolean | undefined;
 }
