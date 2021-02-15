@@ -13,10 +13,10 @@ import IGridConfig from '../../entity/general-grid/grid-config';
 import IListDataService from '../../entity/general-grid/IListDataService';
 import UserMessageService from '../../service/user-message-service/user-message-service';
 import IFilter from '../../entity/general-grid/IFilter';
-
+import './css/message-box-view.css';
 export default function MessageBoxView(): JSX.Element {
 
-    const messageBoxTitle = "Your Messages";
+    const messageBoxTitle = "Messages";
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [gridConfig, setGridConfig] = useState<IGridConfig | undefined>();
     const [listDataService, setListDataService] = useState<IListDataService | undefined>();
@@ -29,13 +29,13 @@ export default function MessageBoxView(): JSX.Element {
                 setGridConfig(
                     {
                         id: 'messageBoxGridComponent',
-                        headerColour: "#000000",
-                        headerCellColour: 'red',
-                        headerTitles: ['name', 'family', 'age'],
+                        headerColour: "#FFEEF0",
+                        headerCellColour: '#94162D',
+                        headerTitles: [{title:'Title', width:40},{title:'Date',width:20}],
                         hasPaging: true,
-                        oddRowsColur: 'green',
-                        evenRowsColour: 'black'
-
+                        oddRowsColur: '#FFFFFF',
+                        evenRowsColour: '#F6F6F6',
+                        hasActions:true
                     } as IGridConfig)
                 setListDataService(new UserMessageService());
                 setInitialFilter(

@@ -140,7 +140,7 @@ async function registerUser(userDetail) {
         let accountControler =
             require('../../administrator_controller/v1/administrator_financial_account_controller');
 
-        await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
+        await accountControler.initiateUserFinancialAccount(newUserId, opt)
             .catch((exception) => {
 
                 throw global.errorResource.Err0000();
@@ -151,7 +151,7 @@ async function registerUser(userDetail) {
             require('../../administrator_controller/v1/administrator_user_message_controller');
 
 
-        await messageController.sendInitialMessage(newUserDetailId, opt)
+        await messageController.sendInitialMessage(newUserId, opt)
             .catch(() => {
 
                 throw global.errorResource.Err0000();

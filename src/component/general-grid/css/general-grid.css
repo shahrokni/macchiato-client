@@ -1,0 +1,18 @@
+.gridHeader{
+    display: flex;
+    flex-direction: row;
+}
+.headerCell{    
+    font-family:Montserrat-Medium;
+    box-sizing: border-box;    
+}
+
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) {  
+    .headerCell{
+        font-size: 1.125rem;
+        padding: 0.75rem;
+    }
+
+}

@@ -23,7 +23,7 @@ class UserMessageModel {
         const userMessage = require('./user-message-schema');
         return new Promise((resolve, reject) => {
             const findQuery = userMessage
-                .find({ 'receiverId': `${userId}` }, projection, { skip: `${skip}`, limit: `${pageSize}` })
+                .find({ 'receiverId': `${userId}` }, { skip: `${skip}`, limit: `${pageSize}` })
                 .sort({ 'sentDate': -1 });
             findQuery.exec()
                 .then((userMessages) => {
