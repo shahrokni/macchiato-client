@@ -7,7 +7,7 @@ class UserMessageController {
         return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
-            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();           
             this.userMessageModel
                 .countAll(userId)
                 .then((count) => {

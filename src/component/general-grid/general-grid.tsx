@@ -1,39 +1,46 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import IListDataService from '../../entity/general-grid/IListDataService';
-import IGridConfig from "../../entity/general-grid/grid-config";
+import IGridConfig, { ITitleWidth } from "../../entity/general-grid/grid-config";
 import IFilter from '../../entity/general-grid/IFilter';
 import RowMetaData from '../../entity/general-grid/row-meta-data';
+import './css/general-grid.css';
+
+
+export interface IGeneralGridParams {
+    gridConfig: IGridConfig;
+    listDataService: IListDataService;
+    filter: IFilter;
+}
+
 export default function GeneralGrid(
-    gridConfig: IGridConfig,
-    listDataService: IListDataService, filter: IFilter): JSX.Element {
+    generalGridParams: IGeneralGridParams): JSX.Element {
 
     const [isHeaderLoaded, setIsHeaderLoaded] = useState(false);
     const [totalRowCount, setRowTotalCount] = useState(0);
     const [currenPage, setCurrenPage] = useState(0);
-    const [rows, setRows] = useState<RowMetaData[] | null>(null);
+    const [rows, setRows] = useState<RowMetaData[] | undefined>();
     const [headerColour, setHeaderColour] = useState('');
     const [headerCellColour, setHeaderCellColour] = useState('');
-    const [headerTitles, setHeaderTitles] = useState<string[]>([]);
-    const [hasPaging, setHasPaging] = useState<boolean | null>(null);
+    const [headerTitles, setHeaderTitles] = useState<ITitleWidth[]>([]);
+    const [hasPaging, setHasPaging] = useState<boolean | undefined>();
+    const [hasActions, setHasActions] = useState<boolean | undefined>()
     const [oddRowsColur, setOddRowsColur] = useState('');
     const [evenRowsColour, setEvenRowsColour] = useState('');
-    const [cellLength, setCellLength] = useState('');
     const [gridId, setGridId] = useState('grid-' + Math.floor(Math.random() * Math.floor(10)));
     const [isGridLoaded, setIsGridLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        initialGridParams(gridConfig);
-        listDataService.countListData()
-            .then((countResponse) => {
-
+        initialGridParams(generalGridParams.gridConfig);
+        generalGridParams.listDataService.countListData()
+            .then((countResponse) => {              
                 if (countResponse.isSuccessful && countResponse.outputJson) {
                     let total = countResponse.outputJson;
                     total = (total > 100) ? 100 : total;
                     setRowTotalCount(total);
-                    filter.pageNumber = currenPage;
-                    listDataService.listData(filter)
-                        .then((listDataResponse) => {
+                    generalGridParams.filter.pageNumber = currenPage;
+                    generalGridParams.listDataService.listData(generalGridParams.filter)
+                        .then((listDataResponse) => {                           
                             if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
                                 const rows = listDataResponse.outputJson;
                                 setRows(rows);
@@ -50,8 +57,8 @@ export default function GeneralGrid(
     }, []);
 
     const changePage = (pageNumber: number): void => {
-        filter.pageNumber = pageNumber
-        listDataService.listData(filter)
+        generalGridParams.filter.pageNumber = pageNumber
+        generalGridParams.listDataService.listData(generalGridParams.filter)
             .then((listDataResponse) => {
                 if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
                     const rows = listDataResponse.outputJson;
@@ -100,13 +107,13 @@ export default function GeneralGrid(
     }
 
     const createHeader = (): JSX.Element => {
-        const createHeadrCells = (headerTitles: string[]): JSX.Element[] => {
+        const createHeadrCells = (headerTitles: ITitleWidth[]): JSX.Element[] => {
             const headerCells: JSX.Element[] = [];
-            headerTitles.forEach((title, idx) => {
+            headerTitles.forEach((titleWidthPair, idx) => {
                 const cell =
                     <div className={'headerCell'} key={'headerCell' + (idx + 1)}
-                        style={{ color: headerCellColour, width: cellLength }}>
-                        {title}
+                        style={{ color: headerCellColour, width: titleWidthPair.width + '%' }}>
+                        {titleWidthPair.title}
                     </div>
                 headerCells.push(cell);
             })
@@ -114,8 +121,10 @@ export default function GeneralGrid(
         }
         const header =
             <div className={'gridHeader'} style={{ backgroundColor: headerColour }}>
-                <div className={'headerCell'} key={'headerCell0'}>Row</div>
+                <div className={'headerCell'} key={'headerCell0'}
+                    style={{ color: headerCellColour, width: '5%' }}>Row</div>
                 {createHeadrCells(headerTitles)}
+                {hasActions && <div className={'headerCell'} style={{ color: headerCellColour, width: '15%' }}>Actions</div>}
             </div>
         return header;
     }
@@ -170,9 +179,9 @@ export default function GeneralGrid(
         setHeaderCellColour(gridConfig.headerCellColour);
         setHeaderTitles(gridConfig.headerTitles);
         setHasPaging(gridConfig.hasPaging);
+        setHasActions(gridConfig.hasActions);
         setOddRowsColur(gridConfig.oddRowsColur);
         setEvenRowsColour(gridConfig.evenRowsColour);
-        setCellLength((100 / (gridConfig.headerTitles.length + 1)).toFixed(2) + '%');
         setIsGridLoaded(true);
         setIsHeaderLoaded(true);
     }
@@ -184,7 +193,7 @@ export default function GeneralGrid(
                 <div id={gridId} className={'generalGrid'}>
                     {isHeaderLoaded && createHeader()}
                     {rows && createRows()}
-                    {totalRowCount && hasPaging && createPager()}
+                    {/* {totalRowCount && hasPaging && createPager()} */}
                 </div>
             }
         </Fragment>;

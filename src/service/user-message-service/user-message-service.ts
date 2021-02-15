@@ -13,8 +13,8 @@ export default class UserMessageService implements IListDataService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    listData(filter: IFilter): Promise<Response<rowMetaData[]>> {
-        return new Promise((resolve) => {
+    listData(filter: IFilter): Promise<Response<rowMetaData[]>> {       
+        return new Promise((resolve) => {            
             const response = new Response<rowMetaData[]>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
@@ -61,9 +61,10 @@ export default class UserMessageService implements IListDataService {
             restInstance.get('user_message_api/v1/message/countall').then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res) as Response<number>;
+                response.operationTimeServer = serverResponse.operationTimeServer;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
-                    response.outputJson = serverResponse.outputJson;
+                    response.outputJson = serverResponse.outputJson;                    
                     resolve(response);
                 }
                 else {
@@ -91,6 +92,7 @@ export default class UserMessageService implements IListDataService {
             restInstance.get(`user_message_api/v1/message?ID=${messageId}`).then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res) as Response<UserMessage>;
+                response.operationTimeServer = serverResponse.operationTimeServer;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     response.outputJson = serverResponse.outputJson;
