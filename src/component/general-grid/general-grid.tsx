@@ -3,9 +3,15 @@ import IListDataService from '../../entity/general-grid/IListDataService';
 import IGridConfig from "../../entity/general-grid/grid-config";
 import IFilter from '../../entity/general-grid/IFilter';
 import RowMetaData from '../../entity/general-grid/row-meta-data';
+
+export interface IGeneralGridParams{
+    gridConfig:IGridConfig;
+    listDataService:IListDataService;
+    filter:IFilter;
+}
+
 export default function GeneralGrid(
-    gridConfig: IGridConfig,
-    listDataService: IListDataService, filter: IFilter): JSX.Element {
+    generalGridParams:IGeneralGridParams): JSX.Element {
 
     const [isHeaderLoaded, setIsHeaderLoaded] = useState(false);
     const [totalRowCount, setRowTotalCount] = useState(0);
@@ -23,16 +29,16 @@ export default function GeneralGrid(
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        initialGridParams(gridConfig);
-        listDataService.countListData()
+        initialGridParams(generalGridParams.gridConfig);
+        generalGridParams.listDataService.countListData()
             .then((countResponse) => {
 
                 if (countResponse.isSuccessful && countResponse.outputJson) {
                     let total = countResponse.outputJson;
                     total = (total > 100) ? 100 : total;
                     setRowTotalCount(total);
-                    filter.pageNumber = currenPage;
-                    listDataService.listData(filter)
+                    generalGridParams.filter.pageNumber = currenPage;
+                    generalGridParams.listDataService.listData(generalGridParams.filter)
                         .then((listDataResponse) => {
                             if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
                                 const rows = listDataResponse.outputJson;
@@ -50,8 +56,8 @@ export default function GeneralGrid(
     }, []);
 
     const changePage = (pageNumber: number): void => {
-        filter.pageNumber = pageNumber
-        listDataService.listData(filter)
+        generalGridParams.filter.pageNumber = pageNumber
+        generalGridParams.listDataService.listData(generalGridParams.filter)
             .then((listDataResponse) => {
                 if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
                     const rows = listDataResponse.outputJson;
