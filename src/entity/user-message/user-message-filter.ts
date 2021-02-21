@@ -1,7 +1,5 @@
-import filterFieldExpression from "../general-grid/filter-field-expression";
-import IFilter from "../general-grid/IFilter";
-
-export default class UserMessageFilter implements IFilter {   
-    fieldsExpression: filterFieldExpression[] | undefined;
+import IListDataServiceFilter from "../general-grid/I-list-data-service-filter";
+export default class UserMessageFilter implements IListDataServiceFilter {   
+    
     pageNumber: number | undefined;
 }

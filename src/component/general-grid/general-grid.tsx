@@ -1,201 +1,167 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IListDataService from '../../entity/general-grid/IListDataService';
-import IGridConfig, { ITitleWidth } from "../../entity/general-grid/grid-config";
-import IFilter from '../../entity/general-grid/IFilter';
+import IGridConfig, { ITitleWidthPair } from "../../entity/general-grid/grid-config";
+import IListDataServiceFilter from '../../entity/general-grid/I-list-data-service-filter';
 import RowMetaData from '../../entity/general-grid/row-meta-data';
 import './css/general-grid.css';
-
+import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
+import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-message';
+import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
+import ErrorMessage from '../../resource/text/error-message';
+import Response from '../../communication/entity/response-novel';
 
 export interface IGeneralGridParams {
     gridConfig: IGridConfig;
     listDataService: IListDataService;
-    filter: IFilter;
+    filter: IListDataServiceFilter;
 }
 
 export default function GeneralGrid(
     generalGridParams: IGeneralGridParams): JSX.Element {
 
-    const [isHeaderLoaded, setIsHeaderLoaded] = useState(false);
-    const [totalRowCount, setRowTotalCount] = useState(0);
-    const [currenPage, setCurrenPage] = useState(0);
-    const [rows, setRows] = useState<RowMetaData[] | undefined>();
-    const [headerColour, setHeaderColour] = useState('');
-    const [headerCellColour, setHeaderCellColour] = useState('');
-    const [headerTitles, setHeaderTitles] = useState<ITitleWidth[]>([]);
-    const [hasPaging, setHasPaging] = useState<boolean | undefined>();
-    const [hasActions, setHasActions] = useState<boolean | undefined>()
-    const [oddRowsColur, setOddRowsColur] = useState('');
-    const [evenRowsColour, setEvenRowsColour] = useState('');
-    const [gridId, setGridId] = useState('grid-' + Math.floor(Math.random() * Math.floor(10)));
-    const [isGridLoaded, setIsGridLoaded] = useState(false);
-    const [hasError, setHasError] = useState(false);
+    const [isGridLoaded, setIsGridLoaded] = useState<boolean>(false);
+    const [hasGridError, setHasGridError] = useState<boolean | undefined>(undefined);
+    const [gridId] = useState<string>(generalGridParams.gridConfig.id);
+    const [hasRowsActions] = useState<boolean>(generalGridParams.gridConfig.hasActions);
+    const [headerColor] = useState<string>(generalGridParams.gridConfig.headerColour);
+    const [headerCellColor] = useState<string>(generalGridParams.gridConfig.headerCellColor);
+    const [headerTitleWidthPair] = useState<ITitleWidthPair[]>(generalGridParams.gridConfig.headerTitleWidthPair);
+    const [totalRecords, setTotalRecords] = useState<number | undefined>(undefined);
+    const [listDataServiceFilter] = useState<IListDataServiceFilter>(generalGridParams.filter);
+    const [listDataService] = useState<IListDataService>(generalGridParams.listDataService);
+    const [rows, setRows] = useState<RowMetaData[] | undefined>(undefined);
 
-    useEffect(() => {
-        initialGridParams(generalGridParams.gridConfig);
-        generalGridParams.listDataService.countListData()
-            .then((countResponse) => {              
-                if (countResponse.isSuccessful && countResponse.outputJson) {
-                    let total = countResponse.outputJson;
-                    total = (total > 100) ? 100 : total;
-                    setRowTotalCount(total);
-                    generalGridParams.filter.pageNumber = currenPage;
-                    generalGridParams.listDataService.listData(generalGridParams.filter)
-                        .then((listDataResponse) => {                           
-                            if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
-                                const rows = listDataResponse.outputJson;
-                                setRows(rows);
-                            }
-                            else {
-                                setHasError(true);
-                            }
-                        })
-                }
-                else {
-                    setHasError(true);
-                }
-            })
-    }, []);
 
-    const changePage = (pageNumber: number): void => {
-        generalGridParams.filter.pageNumber = pageNumber
-        generalGridParams.listDataService.listData(generalGridParams.filter)
-            .then((listDataResponse) => {
-                if (listDataResponse.isSuccessful && listDataResponse.outputJson) {
-                    const rows = listDataResponse.outputJson;
-                    setRows(rows);
-                    setCurrenPage(pageNumber + 1);
-                }
-                else {
-                    setHasError(true);
-                }
-            });
-    }
+    useEffect(() => {       
+        listDataService?.countListData(null).then((countResponseData: Response<number>) => {
+            if (countResponseData.isSuccessful) {
+                setTotalRecords(countResponseData.outputJson);               
+                listDataService.listData(listDataServiceFilter)
+                    .then((listDataServiceResponse: Response<RowMetaData[]>) => {                       
+                        if (listDataServiceResponse.isSuccessful) {
+                            setRows(listDataServiceResponse.outputJson);                            
+                            setHasGridError(false);
+                            setIsGridLoaded(true);
+                        }
+                        else {
+                            setHasGridError(true);
+                            setIsGridLoaded(true);
+                        }
+                    })
+            }
+            else {
+                setHasGridError(true);
+                setIsGridLoaded(true);
+            }
+        })
+    }, []);   
 
-    const shift2NextPage = (): void => {
-
-    }
-
-    const shift2PrevPage = (): void => {
-
-    }
-
-    const createPager = (): JSX.Element => {
-        const pageContainer =
-            <div className={'pageContainer'}>
-
+    const createGridHeader = (): JSX.Element => {
+        const header = (
+            <div id={gridId + '-headerContainer'}
+                className={'headerContainer'}
+                style={{ color: headerCellColor, backgroundColor: headerColor }}>
+                <div className={'headerCell'} style={{ width: '5%', color:headerCellColor}}>{'Row'}</div>
                 {
                     ((): JSX.Element[] => {
-                        const pageButtons: JSX.Element[] = [];
-                        let pagesCount = Math.floor(totalRowCount / 10);
-                        if (totalRowCount % 10 !== 0)
-                            pagesCount += 1;
-                        const btnWidth = (100 / pagesCount).toFixed(2) + '%';
-                        for (let i = 0; i < pagesCount; i++) {
-                            const pageButton =
-                                <div className={'pageButton'} key={'pageBtn-' + (i + 1)} style={{ width: btnWidth }} onClick={() => {
-                                    changePage(i + 1)
-                                }}>
-                                    {i + 1}
-                                </div>;
-                            pageButtons.push(pageButton);
-                        }
-                        return pageButtons;
+                        const headerCells: JSX.Element[] = [];
+                        headerTitleWidthPair?.forEach((p, index) => {
+                            const cell = (
+                                <div key={index}
+                                    className={'headerCell'}
+                                    style={{ width: p.width + '%', color:headerCellColor }}>
+                                    {p.title}
+                                </div>)
+                            headerCells.push(cell);
+                        })
+                        return headerCells;
                     })()
                 }
+                {
+                    hasRowsActions &&
+                    <div className={'headerCell'} style={{ width: '20%', color:headerCellColor }}>{'Actions'}</div>
+                }
             </div>
-        return pageContainer;
-    }
-
-    const createHeader = (): JSX.Element => {
-        const createHeadrCells = (headerTitles: ITitleWidth[]): JSX.Element[] => {
-            const headerCells: JSX.Element[] = [];
-            headerTitles.forEach((titleWidthPair, idx) => {
-                const cell =
-                    <div className={'headerCell'} key={'headerCell' + (idx + 1)}
-                        style={{ color: headerCellColour, width: titleWidthPair.width + '%' }}>
-                        {titleWidthPair.title}
-                    </div>
-                headerCells.push(cell);
-            })
-            return headerCells;
-        }
-        const header =
-            <div className={'gridHeader'} style={{ backgroundColor: headerColour }}>
-                <div className={'headerCell'} key={'headerCell0'}
-                    style={{ color: headerCellColour, width: '5%' }}>Row</div>
-                {createHeadrCells(headerTitles)}
-                {hasActions && <div className={'headerCell'} style={{ color: headerCellColour, width: '15%' }}>Actions</div>}
-            </div>
+        );
         return header;
     }
 
-    const createRows = (): JSX.Element => {
-
-        const rowContainer = <div className={'rowContainer'} id={'rowContainer-' + grid}>
-            {
-                /* SELF INVOKE */
-                ((): JSX.Element[] => {
-                    const rowElements: JSX.Element[] = [];
-                    if (rows && rows.length != 0) {
-                        rows.forEach((r, idx) => {
-                            const cellElements: JSX.Element[] = [];
+    const createGridRows = (): JSX.Element => {
+        const rowsContainer = (
+            <div id={gridId + '-rowsContainer'}
+                className={'rowsContainer'}>
+                {
+                    ((): JSX.Element[] => {
+                        const rowElements: JSX.Element[] = [];
+                        rows?.forEach((r, rowIndex) => {
                             let cssClasses = '';
-                            ((idx + 1) % 2 === 0) ? (cssClasses += ' even') : (cssClasses += ' odd');
-                            r.annotations.forEach((ann) => {
-                                cssClasses = cssClasses + ' ' + ann;
+                            r.annotations.forEach((a) => {
+                                cssClasses = cssClasses + ' ' + a;
                             })
-                            const row = <div key={'gridRow-' + (idx + 1)} className={'gridRow' + cssClasses} style={{ backgroundColor: (idx % 2 === 0) ? evenRowsColour : oddRowsColur }}>
-                                {
-                                    /* SELF INVOKE */
-                                    ((): JSX.Element[] => {
-                                        let cellCounter = 1;
-                                        for (const key in r.rowData) {
-                                            if (r.hasOwnProperty(key)) {
-                                                const cell =
-                                                    <div key={'rowCell-' + cellCounter} className={'rowCell'} id={'rowCell-' + key}>
-                                                        {r.rowData[key]}
-                                                    </div>
-                                                cellElements.push(cell);
+                            cssClasses = ((rowIndex + 1) % 2 === 0) ? cssClasses + ' evenRow' : cssClasses + ' oddRow';
+                            const rowElement = (
+                                <div className={'gridRow ' + cssClasses} key={rowIndex} >
+                                    {
+                                        ((): JSX.Element[] => {
+                                            const rowCells: JSX.Element[] = [];
+                                            const rowCounter = <div className={'rowCell'}
+                                                style={{ width: '5%' }}
+                                                key={0}>
+                                                {rowIndex + 1}
+                                            </div>;
+                                            rowCells.push(rowCounter);
+
+                                            headerTitleWidthPair?.forEach((p, pIndex) => {
+                                                const cell = <div className={'rowCell'}
+                                                    key={pIndex + 1}
+                                                    style={{ width: p.width + '%' }}>
+                                                    {
+                                                        r?.rowData[p.dataKey]
+                                                    }
+                                                </div>;
+                                                rowCells.push(cell);
+                                            })
+
+                                            if (hasRowsActions) {
+                                                const cell = <div className={'rowCell'}
+                                                    key={'actionsCell'}
+                                                    style={{ width: '20%' }}>
+                                                    {
+                                                        r.hasView && <div className={'actionBtn viewAction'}></div>
+                                                    }
+                                                    {
+                                                        r.hasUpdate && <div className={'actionBtn updateAction'}></div>
+                                                    }
+                                                    {
+                                                        r.hasDelete && <div className={'actionBtn deleteAction'}></div>
+                                                    }
+
+                                                </div>
                                             }
-                                            cellCounter += 1;
-                                        }
-                                        return cellElements;
-                                    })()
-                                }
-                            </div>
-                            rowElements.push(row);
-                        });
-                    }
-                    return rowElements;
-                })()
-            }
-        </div>
-        return rowContainer;
+                                            return rowCells;
+                                        })()
+                                    }
+                                </div>
+                            )
+                            rowElements.push(rowElement);
+                        })
+                        return rowElements;
+                    })
+                }
+            </div>
+        )
+        return rowsContainer;
     }
 
-    const initialGridParams = (gridConfig: IGridConfig): void => {
-        setGridId('grid-' + gridConfig.id)
-        setHeaderColour(gridConfig.headerColour);
-        setHeaderCellColour(gridConfig.headerCellColour);
-        setHeaderTitles(gridConfig.headerTitles);
-        setHasPaging(gridConfig.hasPaging);
-        setHasActions(gridConfig.hasActions);
-        setOddRowsColur(gridConfig.oddRowsColur);
-        setEvenRowsColour(gridConfig.evenRowsColour);
-        setIsGridLoaded(true);
-        setIsHeaderLoaded(true);
-    }
+    return (
+        isGridLoaded ? (
+            !hasGridError ? (
+                <div className={'generalGridContainer'} id={gridId}>
+                    {createGridHeader()}
+                    {rows && rows.length && createGridRows()}
+                </div>) :
+                <SimpleNarrowMessage type={GlobalMessageType.Error} messgae={ErrorMessage.Err0000()} link={''} linkTitle={''} />
+        ) : <SimpleNarrowWaiting />
+    )
 
-    const grid =
-        <Fragment>
-            {
-                (isGridLoaded) &&
-                <div id={gridId} className={'generalGrid'}>
-                    {isHeaderLoaded && createHeader()}
-                    {rows && createRows()}
-                    {/* {totalRowCount && hasPaging && createPager()} */}
-                </div>
-            }
-        </Fragment>;
-    return grid;
 }

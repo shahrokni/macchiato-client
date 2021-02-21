@@ -14,7 +14,7 @@ export interface IIntroducerSelector {
     defaultValue:string
 }
 
-export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector): any => {
+export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector): JSX.Element => {
 
     const [appIntroducers, setAppIntroducers] = useState<IAppIntroducer[]>([]);
     useEffect(() => {
@@ -23,7 +23,7 @@ export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector)
             const introducerService = new IntroducerService();
             introducerService.getAllIntroducers()
                 .then((response) => {
-                    setAppIntroducers([...(response.outputJson as IAppIntroducer[])]);
+                    setAppIntroducers([...(response.outputJson as IAppIntroducer[])]);                    
                 })
         }
     }, []);
