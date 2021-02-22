@@ -1,14 +1,12 @@
 export default interface IGridConfig {   
     id:string; 
     headerColour: string;
-    headerCellColour: string
-    headerTitles: ITitleWidth[];
-    hasPaging: boolean;
-    oddRowsColur: string;
-    evenRowsColour: string;
-    hasActions:boolean
+    headerCellColor: string;
+    headerTitleWidthPair: ITitleWidthPair[];
+    hasActions:boolean;
 }
-export interface ITitleWidth{
+export interface ITitleWidthPair{
     title:string;
+    dataKey:string
     width:number;
 }

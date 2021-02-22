@@ -1,6 +1,6 @@
 import Response from '../../communication/entity/response-novel';
 import RestProvider from '../../communication/entity/rest-provider';
-import IFilter from '../../entity/general-grid/IFilter';
+import IListDataServiceFilter from '../../entity/general-grid/I-list-data-service-filter';
 import IListDataService from '../../entity/general-grid/IListDataService';
 import rowMetaData from '../../entity/general-grid/row-meta-data';
 import UserMessage from '../../entity/user-message/user-message';
@@ -13,26 +13,27 @@ export default class UserMessageService implements IListDataService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    listData(filter: IFilter): Promise<Response<rowMetaData[]>> {       
-        return new Promise((resolve) => {            
+    listData(filter: IListDataServiceFilter | undefined | null): Promise<Response<rowMetaData[]>> {
+        return new Promise((resolve) => {
             const response = new Response<rowMetaData[]>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());            
             restInstance.get('user_message_api/v1/message/listdata', { params: filter }).then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res) as Response<UserMessage[]>;
+                response.operationTimeServer = serverResponse.operationTimeServer;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     response.outputJson = [];
-                    serverResponse.outputJson?.forEach((item, index) => {
+                    serverResponse.outputJson?.forEach((item) => {
                         const data = new rowMetaData;
                         data.annotations = [];
                         data.rowData = item;
                         data.hasUpdate = false;
                         data.hasView = false;
                         data.hasDelete = (!item.isAdvertisement) ? false : true;
-                        (item.isRead)? data.annotations.push('readMessage'):data.annotations.push('unreadMessage');                        
+                        (item.isRead) ? data.annotations.push('readMessage') : data.annotations.push('unreadMessage');                        
                         response.outputJson?.push(data);
                     });
                     resolve(response);
@@ -52,7 +53,7 @@ export default class UserMessageService implements IListDataService {
         });
     }
 
-    countListData(): Promise<Response<number>> {
+    countListData(filter: IListDataServiceFilter | undefined | null): Promise<Response<number>> {
         return new Promise((resolve) => {
             const response = new Response<number>();
             response.isSuccessful = false;
@@ -64,7 +65,7 @@ export default class UserMessageService implements IListDataService {
                 response.operationTimeServer = serverResponse.operationTimeServer;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
-                    response.outputJson = serverResponse.outputJson;                    
+                    response.outputJson = serverResponse.outputJson;
                     resolve(response);
                 }
                 else {
@@ -122,6 +123,7 @@ export default class UserMessageService implements IListDataService {
             restInstance.delete('user_message_api/v1/message', { params: { messageId: messageId } }).then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res) as Response<void>;
+                response.operationTimeServer = serverResponse.operationTimeServer;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     resolve(response)
@@ -152,6 +154,7 @@ export default class UserMessageService implements IListDataService {
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res) as Response<void>;
+                    response.operationTimeServer = serverResponse.operationTimeServer;
                     if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
                         resolve(response)
@@ -182,6 +185,7 @@ export default class UserMessageService implements IListDataService {
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil.extractResponse(res) as Response<number>;
+                    response.operationTimeServer = serverResponse.operationTimeServer;
                     if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
                         response.outputJson = serverResponse.outputJson;

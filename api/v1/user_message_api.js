@@ -17,12 +17,12 @@ userMessageApi.get('/message/countall', requestHandler.isUserAuthenticated, (req
 });
 
 userMessageApi.get('/message/listdata', requestHandler.isUserAuthenticated, (req, res) => {
-    const userId = req.user._id;
-    const filter = req.params;
+    const userId = req.user._id;    
+    const filter = req.query;
     const userMessageController = new UserMessageController(new UserMessageModel());
     userMessageController.listMessages(userId, filter, 
         { 'title': 1, 'isAdvertisement': 1, 'isRead': 1, 'sentDate': 1 })
-        .then((response) => {
+        .then((response) => {            
         res.json({ response: response });
         return;
     });

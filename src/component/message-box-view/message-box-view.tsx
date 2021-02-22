@@ -12,7 +12,7 @@ import GeneralGrid from '../general-grid/general-grid';
 import IGridConfig from '../../entity/general-grid/grid-config';
 import IListDataService from '../../entity/general-grid/IListDataService';
 import UserMessageService from '../../service/user-message-service/user-message-service';
-import IFilter from '../../entity/general-grid/IFilter';
+import IListDataServiceFilter from '../../entity/general-grid/I-list-data-service-filter';
 import './css/message-box-view.css';
 export default function MessageBoxView(): JSX.Element {
 
@@ -20,7 +20,7 @@ export default function MessageBoxView(): JSX.Element {
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [gridConfig, setGridConfig] = useState<IGridConfig | undefined>();
     const [listDataService, setListDataService] = useState<IListDataService | undefined>();
-    const [initialFilter, setInitialFilter] = useState<IFilter | undefined>();
+    const [initialFilter, setInitialFilter] = useState<IListDataServiceFilter | undefined>();
     useEffect(() => {
         const userService = new UserService();
         userService.isUserAuthenticated()
@@ -29,19 +29,17 @@ export default function MessageBoxView(): JSX.Element {
                 setGridConfig(
                     {
                         id: 'messageBoxGridComponent',
-                        headerColour: "#FFEEF0",
-                        headerCellColour: '#94162D',
-                        headerTitles: [{title:'Title', width:40},{title:'Date',width:20}],
-                        hasPaging: true,
-                        oddRowsColur: '#FFFFFF',
-                        evenRowsColour: '#F6F6F6',
-                        hasActions:true
-                    } as IGridConfig)
+                        headerColour: '#FFEEF0',
+                        headerCellColor: '#94162D',
+                        hasActions: true,
+                        headerTitleWidthPair:[{title:'Title',dataKey:'title',width:'35'},
+                        {title:'Date',dataKey:'sentDate',width:'20'}]
+                    } as unknown as IGridConfig)
                 setListDataService(new UserMessageService());
                 setInitialFilter(
                     {
-                        pageNumber : 0
-                    } as IFilter)
+                        pageNumber: 0
+                    } as IListDataServiceFilter)
 
             });
     }, [])
@@ -84,7 +82,7 @@ export default function MessageBoxView(): JSX.Element {
                                                                     <GeneralGrid
                                                                         gridConfig={gridConfig as IGridConfig}
                                                                         listDataService={listDataService as IListDataService}
-                                                                        filter={initialFilter as IFilter} />}
+                                                                        filter={initialFilter as IListDataServiceFilter} />}
                                                             </div>
                                                         </Fragment>
                                                     )

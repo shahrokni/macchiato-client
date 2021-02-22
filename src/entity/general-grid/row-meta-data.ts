@@ -1,14 +1,10 @@
-export default class RowMetaData{
+export default class RowMetaData {
     constructor() {
-        this.annotations = [];
-        this.hasDelete = false;
-        this.hasUpdate = false;
-        this.hasView = false;
-        this.rowData = null;
+        this.annotations = [];     
     }
     annotations: string[];
-    hasDelete: boolean;
-    hasUpdate: boolean;
-    hasView: boolean;
-    rowData: any | null;
+    hasDelete: boolean | undefined;
+    hasUpdate: boolean | undefined;
+    hasView: boolean | undefined;
+    rowData: any | undefined;
 }

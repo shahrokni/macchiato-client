@@ -1,4 +1,5 @@
 class UserMessageController {
+
     constructor(userMessageModel) {
         this.userMessageModel = userMessageModel;
     }
@@ -7,7 +8,7 @@ class UserMessageController {
         return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
-            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();           
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
             this.userMessageModel
                 .countAll(userId)
                 .then((count) => {
@@ -23,13 +24,13 @@ class UserMessageController {
         });
     }
 
-    listMessages(userId, filter) {
+    listMessages(userId, filter, projection) {
         return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
-            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
-            this.userMessageModel.listMessages(userId, filter)
-                .then((userMessages) => {
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();             
+            this.userMessageModel.listMessages(userId, filter, projection)
+                .then((userMessages) => {                   
                     response.isSuccessful = true;
                     response.outputJson = userMessages;
                     resolve(response);
