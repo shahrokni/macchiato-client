@@ -39,6 +39,7 @@ export default function GeneralGrid(
                 listDataService.listData(listDataServiceFilter)
                     .then((listDataServiceResponse: Response<RowMetaData[]>) => {                       
                         if (listDataServiceResponse.isSuccessful) {
+                            console.log(listDataServiceResponse);
                             setRows(listDataServiceResponse.outputJson);                            
                             setHasGridError(false);
                             setIsGridLoaded(true);
@@ -56,11 +57,11 @@ export default function GeneralGrid(
         })
     }, []);   
 
-    const createGridHeader = (): JSX.Element => {
+    const createGridHeader = (): JSX.Element => {       
         const header = (
             <div id={gridId + '-headerContainer'}
                 className={'headerContainer'}
-                style={{ color: headerCellColor, backgroundColor: headerColor }}>
+                style={{backgroundColor: headerColor}}>
                 <div className={'headerCell'} style={{ width: '5%', color:headerCellColor}}>{'Row'}</div>
                 {
                     ((): JSX.Element[] => {
@@ -135,8 +136,9 @@ export default function GeneralGrid(
                                                     {
                                                         r.hasDelete && <div className={'actionBtn deleteAction'}></div>
                                                     }
-
-                                                </div>
+                                                    
+                                                </div>;
+                                                rowCells.push(cell);
                                             }
                                             return rowCells;
                                         })()
@@ -146,7 +148,7 @@ export default function GeneralGrid(
                             rowElements.push(rowElement);
                         })
                         return rowElements;
-                    })
+                    })()
                 }
             </div>
         )
@@ -158,7 +160,7 @@ export default function GeneralGrid(
             !hasGridError ? (
                 <div className={'generalGridContainer'} id={gridId}>
                     {createGridHeader()}
-                    {rows && rows.length && createGridRows()}
+                    {rows && createGridRows()}
                 </div>) :
                 <SimpleNarrowMessage type={GlobalMessageType.Error} messgae={ErrorMessage.Err0000()} link={''} linkTitle={''} />
         ) : <SimpleNarrowWaiting />

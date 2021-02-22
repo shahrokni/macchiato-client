@@ -22,7 +22,7 @@ userMessageApi.get('/message/listdata', requestHandler.isUserAuthenticated, (req
     const userMessageController = new UserMessageController(new UserMessageModel());
     userMessageController.listMessages(userId, filter, 
         { 'title': 1, 'isAdvertisement': 1, 'isRead': 1, 'sentDate': 1 })
-        .then((response) => {
+        .then((response) => {            
         res.json({ response: response });
         return;
     });

@@ -26,7 +26,7 @@ class UserMessageModel {
                 .find({ 'receiverId': `${userId}` }, projection, { skip: skip, limit: pageSize })
                 .sort({ 'sentDate': -1 });
             findQuery.exec()
-                .then((userMessages) => {
+                .then((userMessages) => {                    
                     resolve(userMessages);
                 })
                 .catch((err) => {                   

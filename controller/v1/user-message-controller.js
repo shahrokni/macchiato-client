@@ -30,7 +30,7 @@ class UserMessageController {
             response.serverValidations = [];
             response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();             
             this.userMessageModel.listMessages(userId, filter, projection)
-                .then((userMessages) => {
+                .then((userMessages) => {                   
                     response.isSuccessful = true;
                     response.outputJson = userMessages;
                     resolve(response);

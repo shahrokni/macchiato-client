@@ -30,7 +30,7 @@ export default function MessageBoxView(): JSX.Element {
                     {
                         id: 'messageBoxGridComponent',
                         headerColour: '#FFEEF0',
-                        headerCellColour: '#94162D',
+                        headerCellColor: '#94162D',
                         hasActions: true,
                         headerTitleWidthPair:[{title:'Title',dataKey:'title',width:'35'},
                         {title:'Date',dataKey:'sentDate',width:'20'}]
