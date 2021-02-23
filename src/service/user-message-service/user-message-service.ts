@@ -5,6 +5,7 @@ import IListDataService from '../../entity/general-grid/IListDataService';
 import rowMetaData from '../../entity/general-grid/row-meta-data';
 import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
+import {iso2ShortDate} from '../../util/date-util/date-util2';
 
 export default class UserMessageService implements IListDataService {
 
@@ -26,10 +27,16 @@ export default class UserMessageService implements IListDataService {
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
                     response.outputJson = [];
-                    serverResponse.outputJson?.forEach((item) => {
+                    serverResponse.outputJson?.forEach((item) => {                       
                         const data = new rowMetaData;
                         data.annotations = [];
-                        data.rowData = item;
+                        data.rowData = {
+                            id:item.id,
+                            isAdvertisement:item.isAdvertisement,
+                            isRead:item.isRead,
+                            sentDate: iso2ShortDate(item.sentDate as Date),
+                            title:item.title
+                        };
                         data.hasUpdate = false;
                         data.hasView = false;
                         data.hasDelete = (!item.isAdvertisement) ? false : true;
@@ -45,7 +52,8 @@ export default class UserMessageService implements IListDataService {
                     });
                     resolve(response);
                 }
-            }).catch(() => {
+            }).catch((err:any) => {
+                console.log(err);
                 response.isSuccessful = false;
                 response.clientValidations.push(ErrorMessage.Err0000().toString());
                 resolve(response);
