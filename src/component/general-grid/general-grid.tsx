@@ -9,6 +9,7 @@ import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-mess
 import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
 import ErrorMessage from '../../resource/text/error-message';
 import Response from '../../communication/entity/response-novel';
+import ActionButton,{ActionType} from './grid-action-button';
 
 export interface IGeneralGridParams {
     gridConfig: IGridConfig;
@@ -128,13 +129,13 @@ export default function GeneralGrid(
                                                     key={'actionsCell'}
                                                     style={{ width: '20%' }}>
                                                     {
-                                                        r.hasView && <div className={'actionBtn viewAction'}></div>
+                                                        r.hasView && <ActionButton type={ActionType.view} action={()=>{}} />
                                                     }
                                                     {
-                                                        r.hasUpdate && <div className={'actionBtn updateAction'}></div>
+                                                        r.hasUpdate && <ActionButton type={ActionType.update} action={()=>{}} />
                                                     }
                                                     {
-                                                        r.hasDelete && <div className={'actionBtn deleteAction'}></div>
+                                                        r.hasDelete && <ActionButton type={ActionType.delete} action={()=>{}} />
                                                     }
                                                     
                                                 </div>;
