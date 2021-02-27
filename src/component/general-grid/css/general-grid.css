@@ -14,9 +14,35 @@
 .gridRow{
     display: flex;
     flex-direction: row;
+    font-family:Montserrat-Medium;
+    box-sizing: border-box;
+    color: #707070;   
+}
+.headerCell{
+    font-family:Montserrat-Medium;
+    box-sizing: border-box;
+}
+.oddRow{
+    background-color: #FFFFFF;
+}
+.evenRow{
+    background-color: #F6F6F6;
 }
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape) {  
-   
-
+      
+.gridRow{
+     padding-top: 2.5rem;
+     padding-bottom: 2.5rem;
+     font-size: 1.125rem;
+     padding-left: 0.5rem;
+}
+.headerCell{
+     padding-top: 2.5rem;
+     padding-bottom: 2.5rem;
+     font-size: 1.125rem;
+     padding-left: 0.5rem;
+}
+ 
+  
 }
