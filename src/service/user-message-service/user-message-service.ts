@@ -39,7 +39,7 @@ export default class UserMessageService implements IListDataService {
                         };
                         data.hasUpdate = false;
                         data.hasView = false;
-                        data.hasDelete = (!item.isAdvertisement) ? false : true;
+                        data.hasDelete = (!item.isAdvertisement) ? true : false;
                         (item.isRead) ? data.annotations.push('readMessage') : data.annotations.push('unreadMessage');                        
                         response.outputJson?.push(data);
                     });

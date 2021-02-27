@@ -9,7 +9,7 @@ import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-mess
 import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
 import ErrorMessage from '../../resource/text/error-message';
 import Response from '../../communication/entity/response-novel';
-import ActionButton,{ActionType} from './grid-action-button';
+import ActionButton, { ActionType } from './grid-action-button';
 
 export interface IGeneralGridParams {
     gridConfig: IGridConfig;
@@ -27,21 +27,21 @@ export default function GeneralGrid(
     const [headerColor] = useState<string>(generalGridParams.gridConfig.headerColour);
     const [headerCellColor] = useState<string>(generalGridParams.gridConfig.headerCellColor);
     const [headerTitleWidthPair] = useState<ITitleWidthPair[]>(generalGridParams.gridConfig.headerTitleWidthPair);
-    const [totalRecords, setTotalRecords] = useState<number | undefined>(undefined);
-    const [listDataServiceFilter] = useState<IListDataServiceFilter>(generalGridParams.filter);
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+    const [listDataServiceFilter, setListDataServiceFilter] = useState<IListDataServiceFilter>(generalGridParams.filter);
     const [listDataService] = useState<IListDataService>(generalGridParams.listDataService);
     const [rows, setRows] = useState<RowMetaData[] | undefined>(undefined);
+    const [currentPage, setCurrentPage] = useState(0);
 
-
-    useEffect(() => {       
+    useEffect(() => {
         listDataService?.countListData(null).then((countResponseData: Response<number>) => {
             if (countResponseData.isSuccessful) {
-                setTotalRecords(countResponseData.outputJson);               
+                const countRecords = ((countResponseData.outputJson as number) > 100) ? 100 : countResponseData.outputJson;
+                setTotalRecords(countRecords as number);
                 listDataService.listData(listDataServiceFilter)
-                    .then((listDataServiceResponse: Response<RowMetaData[]>) => {                       
+                    .then((listDataServiceResponse: Response<RowMetaData[]>) => {
                         if (listDataServiceResponse.isSuccessful) {
-                            console.log(listDataServiceResponse);
-                            setRows(listDataServiceResponse.outputJson);                            
+                            setRows(listDataServiceResponse.outputJson);
                             setHasGridError(false);
                             setIsGridLoaded(true);
                         }
@@ -56,14 +56,14 @@ export default function GeneralGrid(
                 setIsGridLoaded(true);
             }
         })
-    }, []);   
+    }, []);
 
-    const createGridHeader = (): JSX.Element => {       
+    const createGridHeader = (): JSX.Element => {
         const header = (
             <div id={gridId + '-headerContainer'}
                 className={'headerContainer'}
-                style={{backgroundColor: headerColor}}>
-                <div className={'headerCell'} style={{ width: '5%', color:headerCellColor}}>{'Row'}</div>
+                style={{ backgroundColor: headerColor }}>
+                <div className={'headerCell'} style={{ width: '5%', color: headerCellColor }}>{'Row'}</div>
                 {
                     ((): JSX.Element[] => {
                         const headerCells: JSX.Element[] = [];
@@ -71,7 +71,7 @@ export default function GeneralGrid(
                             const cell = (
                                 <div key={index}
                                     className={'headerCell'}
-                                    style={{ width: p.width + '%', color:headerCellColor }}>
+                                    style={{ width: p.width + '%', color: headerCellColor }}>
                                     {p.title}
                                 </div>)
                             headerCells.push(cell);
@@ -81,7 +81,7 @@ export default function GeneralGrid(
                 }
                 {
                     hasRowsActions &&
-                    <div className={'headerCell'} style={{ width: '20%', color:headerCellColor }}>{'Actions'}</div>
+                    <div className={'headerCell'} style={{ width: '20%', color: headerCellColor }}>{'Actions'}</div>
                 }
             </div>
         );
@@ -129,15 +129,15 @@ export default function GeneralGrid(
                                                     key={'actionsCell'}
                                                     style={{ width: '20%' }}>
                                                     {
-                                                        r.hasView && <ActionButton type={ActionType.view} action={()=>{}} />
+                                                        r.hasView && <ActionButton type={ActionType.view} action={() => { }} />
                                                     }
                                                     {
-                                                        r.hasUpdate && <ActionButton type={ActionType.update} action={()=>{}} />
+                                                        r.hasUpdate && <ActionButton type={ActionType.update} action={() => { }} />
                                                     }
                                                     {
-                                                        r.hasDelete && <ActionButton type={ActionType.delete} action={()=>{}} />
+                                                        r.hasDelete && <ActionButton type={ActionType.delete} action={() => { }} />
                                                     }
-                                                    
+
                                                 </div>;
                                                 rowCells.push(cell);
                                             }
@@ -156,12 +156,60 @@ export default function GeneralGrid(
         return rowsContainer;
     }
 
+    const loadPage = (chosenPage: number): void => {
+        if (chosenPage === currentPage)
+            return;
+        setListDataServiceFilter({ ...listDataServiceFilter, pageNumber: chosenPage } as IListDataServiceFilter);
+        listDataService?.listData(listDataServiceFilter).then((listDataServiceResponse: Response<RowMetaData[]>) => {
+            if (listDataServiceResponse.isSuccessful) {
+                setRows(listDataServiceResponse.outputJson);
+                setCurrentPage(chosenPage);
+                setHasGridError(false);
+                setIsGridLoaded(true);
+            }
+            else {
+                setHasGridError(true);
+                setIsGridLoaded(true);
+            }
+        })
+    }
+
+    const createGridPaging = (): JSX.Element => {
+        /* TODO:TEST */
+        const pagingContainer =
+            <div id={gridId + '-PagingContainer'}>
+                {
+                    ((): JSX.Element[] => {
+                        const numbericBtns: JSX.Element[] = [];
+                        let btnsCount = Math.floor(totalRecords / 10);
+                        btnsCount = (totalRecords % 10 > 0) ? btnsCount + 1 : btnsCount;
+                        for (let i = 0; i < btnsCount; i++) {
+                            const numericBtn =
+                                <div key={i + 1}
+                                    className={'pagingNumericBtn'}
+                                    id={gridId + '-PagingContainer-' + (i + 1) + 'NumericBtn'}
+                                    onClick={() => {
+                                        loadPage(i);
+                                    }}>
+                                    {i + 1}
+                                </div>;
+                            numbericBtns.push(numericBtn);
+                        }
+                        return numbericBtns;
+                    })()
+                }
+            </div>
+
+        return pagingContainer;
+    }
+
     return (
         isGridLoaded ? (
             !hasGridError ? (
                 <div className={'generalGridContainer'} id={gridId}>
                     {createGridHeader()}
                     {rows && createGridRows()}
+                    {(totalRecords > 10) && createGridPaging()}
                 </div>) :
                 <SimpleNarrowMessage type={GlobalMessageType.Error} messgae={ErrorMessage.Err0000()} link={''} linkTitle={''} />
         ) : <SimpleNarrowWaiting />
