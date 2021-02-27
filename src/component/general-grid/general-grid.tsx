@@ -177,7 +177,9 @@ export default function GeneralGrid(
     const createGridPaging = (): JSX.Element => {
         /* TODO:TEST */
         const pagingContainer =
-            <div id={gridId + '-PagingContainer'}>
+            <div className={'pagingContainer'}
+                 id={gridId + '-PagingContainer'}
+                 style={{backgroundColor:headerColor, color:headerCellColor}}>
                 {
                     ((): JSX.Element[] => {
                         const numbericBtns: JSX.Element[] = [];

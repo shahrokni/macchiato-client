@@ -28,6 +28,11 @@
 .evenRow{
     background-color: #F6F6F6;
 }
+.pagingContainer{
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;  
+}
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape) {  
       
@@ -43,6 +48,9 @@
      font-size: 1.125rem;
      padding-left: 0.5rem;
 }
- 
+.pagingContainer{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
   
 }
