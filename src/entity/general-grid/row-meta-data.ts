@@ -1,10 +1,12 @@
 export default class RowMetaData {
     constructor() {
-        this.annotations = [];     
+        this.annotations = [];      
     }
     annotations: string[];
     hasDelete: boolean | undefined;
     hasUpdate: boolean | undefined;
+    updateUrl: string | undefined;
     hasView: boolean | undefined;
-    rowData: any | undefined;
+    viewUrl: string | undefined;
+    rowData: any | undefined;    
 }

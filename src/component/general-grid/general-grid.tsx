@@ -83,7 +83,7 @@ export default function GeneralGrid(
                 }
                 {
                     hasRowsActions &&
-                    <div className={'headerCell'} style={{ width: '20%', color: headerCellColor }}>{'Actions'}</div>
+                    <div className={'headerCell'} style={{ width: 'fit-content', color: headerCellColor }}>{'Actions'}</div>
                 }
             </div>
         );
@@ -129,12 +129,12 @@ export default function GeneralGrid(
                                             if (hasRowsActions) {
                                                 const cell = <div className={'rowCell'}
                                                     key={'actionsCell'}
-                                                    style={{ width: '20%' }}>
+                                                    style={{ width: 'fit-content' }}>
                                                     {
-                                                        r.hasView && <ActionButton type={ActionType.view} action={() => { }} />
+                                                        (r.hasView && r.viewUrl) && <ActionButton type={ActionType.view} action={() => { }} />
                                                     }
                                                     {
-                                                        r.hasUpdate && <ActionButton type={ActionType.update} action={() => { }} />
+                                                        (r.hasUpdate && r.updateUrl) && <ActionButton type={ActionType.update} action={() => { }} />
                                                     }
                                                     {
                                                         r.hasDelete && <ActionButton type={ActionType.delete} action={() => { }} />
@@ -158,19 +158,33 @@ export default function GeneralGrid(
         return rowsContainer;
     }
 
+    const changeChosenButtnStyle = (chosenPage:number)=>{
+        const currentdBtn=document.getElementById(gridId + '-PagingContainer-' + (currentPage + 1) + 'NumericBtn');
+        const chosenBtn = document.getElementById(gridId + '-PagingContainer-' + (chosenPage + 1) + 'NumericBtn');
+        if(currentdBtn!=null){
+            currentdBtn.style.color = headerCellColor;
+            currentdBtn.style.backgroundColor = headerColor;
+        }
+        if(chosenBtn!=null){
+            chosenBtn.style.color = headerColor;
+            chosenBtn.style.backgroundColor = headerCellColor;
+        }
+    }
+
     const loadPage = (chosenPage: number): void => {
         if (chosenPage === currentPage || isFetchingData===true)
-            return;
-        
+            return;        
         setIsFetchingData(true);
+        
         listDataService?.listData({...listDataServiceFilter, pageNumber: chosenPage} as IListDataServiceFilter).then((listDataServiceResponse: Response<RowMetaData[]>) => {
             if (listDataServiceResponse.isSuccessful) {
                 setRows(listDataServiceResponse.outputJson);
+                changeChosenButtnStyle(chosenPage);
                 setCurrentPage(chosenPage);
                 setListDataServiceFilter({ ...listDataServiceFilter, pageNumber: chosenPage } as IListDataServiceFilter);
                 setIsFetchingData(false);
                 setHasGridError(false);
-                setIsGridLoaded(true);
+                setIsGridLoaded(true);               
             }
             else {
                 setHasGridError(true);
@@ -179,8 +193,7 @@ export default function GeneralGrid(
         })
     }
 
-    const createGridPaging = (): JSX.Element => {
-        /* TODO:TEST */
+    const createGridPaging = (): JSX.Element => {        
         const pagingContainer =
             <div className={'pagingContainer'}
                  id={gridId + '-PagingContainer'}
@@ -221,7 +234,10 @@ export default function GeneralGrid(
                     {rows && createGridRows()}
                     {(totalRecords > 10) && createGridPaging()}
                 </div>) :
-                <SimpleNarrowMessage type={GlobalMessageType.Error} messgae={ErrorMessage.Err0000()} link={''} linkTitle={''} />
+                <SimpleNarrowMessage 
+                type={GlobalMessageType.Error}
+                messgae={ErrorMessage.Err0000()}
+                link={''} linkTitle={''} />
         ) : <SimpleNarrowWaiting />
     )
 
