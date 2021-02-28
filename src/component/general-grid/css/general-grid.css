@@ -21,6 +21,9 @@
 .headerCell{
     font-family:Montserrat-Medium;
     box-sizing: border-box;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
 }
 .oddRow{
     background-color: #FFFFFF;
@@ -31,6 +34,15 @@
 .pagingContainer{
     display: flex;
     flex-direction: row;
+    box-sizing: border-box;  
+}
+.pagingNumericBtn{
+    cursor: pointer;
+    font-family:Montserrat-Medium;   
+    text-decoration: underline; 
+}
+.pagingContainerLoadingMessages{
+    font-family:Montserrat-Medium; 
     box-sizing: border-box;  
 }
 /*DESKTOP*/
@@ -51,6 +63,14 @@
 .pagingContainer{
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+    padding-left: 0.5rem;
+}
+.pagingNumericBtn{
+    padding:0.5rem;    
+}
+.pagingContainerLoadingMessages{
+    padding-top: 0.5rem;
+    font-size: 1.125rem;
 }
   
 }

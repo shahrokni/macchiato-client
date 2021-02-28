@@ -10,6 +10,7 @@ import { GlobalMessageType } from '../../entity/global-message/enum/global-messa
 import ErrorMessage from '../../resource/text/error-message';
 import Response from '../../communication/entity/response-novel';
 import ActionButton, { ActionType } from './grid-action-button';
+import {commonMessages} from '../../resource/text/common-messages';
 
 export interface IGeneralGridParams {
     gridConfig: IGridConfig;
@@ -32,6 +33,7 @@ export default function GeneralGrid(
     const [listDataService] = useState<IListDataService>(generalGridParams.listDataService);
     const [rows, setRows] = useState<RowMetaData[] | undefined>(undefined);
     const [currentPage, setCurrentPage] = useState(0);
+    const [isFetchingData,setIsFetchingData] = useState(false);
 
     useEffect(() => {
         listDataService?.countListData(null).then((countResponseData: Response<number>) => {
@@ -157,13 +159,16 @@ export default function GeneralGrid(
     }
 
     const loadPage = (chosenPage: number): void => {
-        if (chosenPage === currentPage)
+        if (chosenPage === currentPage || isFetchingData===true)
             return;
-        setListDataServiceFilter({ ...listDataServiceFilter, pageNumber: chosenPage } as IListDataServiceFilter);
-        listDataService?.listData(listDataServiceFilter).then((listDataServiceResponse: Response<RowMetaData[]>) => {
+        
+        setIsFetchingData(true);
+        listDataService?.listData({...listDataServiceFilter, pageNumber: chosenPage} as IListDataServiceFilter).then((listDataServiceResponse: Response<RowMetaData[]>) => {
             if (listDataServiceResponse.isSuccessful) {
                 setRows(listDataServiceResponse.outputJson);
                 setCurrentPage(chosenPage);
+                setListDataServiceFilter({ ...listDataServiceFilter, pageNumber: chosenPage } as IListDataServiceFilter);
+                setIsFetchingData(false);
                 setHasGridError(false);
                 setIsGridLoaded(true);
             }
@@ -199,6 +204,9 @@ export default function GeneralGrid(
                         }
                         return numbericBtns;
                     })()
+                }
+                {
+                   isFetchingData && <div className={'pagingContainerLoadingMessages'}> {commonMessages.loading} </div>
                 }
             </div>
 
