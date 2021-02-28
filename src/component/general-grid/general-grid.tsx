@@ -158,19 +158,33 @@ export default function GeneralGrid(
         return rowsContainer;
     }
 
+    const changeChosenButtnStyle = (chosenPage:number)=>{
+        const currentdBtn=document.getElementById(gridId + '-PagingContainer-' + (currentPage + 1) + 'NumericBtn');
+        const chosenBtn = document.getElementById(gridId + '-PagingContainer-' + (chosenPage + 1) + 'NumericBtn');
+        if(currentdBtn!=null){
+            currentdBtn.style.color = headerCellColor;
+            currentdBtn.style.backgroundColor = headerColor;
+        }
+        if(chosenBtn!=null){
+            chosenBtn.style.color = headerColor;
+            chosenBtn.style.backgroundColor = headerCellColor;
+        }
+    }
+
     const loadPage = (chosenPage: number): void => {
         if (chosenPage === currentPage || isFetchingData===true)
-            return;
-        
+            return;        
         setIsFetchingData(true);
+        
         listDataService?.listData({...listDataServiceFilter, pageNumber: chosenPage} as IListDataServiceFilter).then((listDataServiceResponse: Response<RowMetaData[]>) => {
             if (listDataServiceResponse.isSuccessful) {
                 setRows(listDataServiceResponse.outputJson);
+                changeChosenButtnStyle(chosenPage);
                 setCurrentPage(chosenPage);
                 setListDataServiceFilter({ ...listDataServiceFilter, pageNumber: chosenPage } as IListDataServiceFilter);
                 setIsFetchingData(false);
                 setHasGridError(false);
-                setIsGridLoaded(true);
+                setIsGridLoaded(true);               
             }
             else {
                 setHasGridError(true);
