@@ -5,7 +5,7 @@ import IListDataService from '../../entity/general-grid/IListDataService';
 import rowMetaData from '../../entity/general-grid/row-meta-data';
 import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
-import {iso2ShortDate} from '../../util/date-util/date-util2';
+import { iso2ShortDate } from '../../util/date-util/date-util2';
 
 export default class UserMessageService implements IListDataService {
 
@@ -14,62 +14,73 @@ export default class UserMessageService implements IListDataService {
         this.dateUtil = require('../../util/date-util/date-util');
     }
 
-    listData(filter: IListDataServiceFilter | undefined | null): Promise<Response<rowMetaData[]>> {
+    listData(filter: IListDataServiceFilter | undefined | null):
+        Promise<Response<rowMetaData[]>> {
         return new Promise((resolve) => {
             const response = new Response<rowMetaData[]>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());            
-            restInstance.get('user_message_api/v1/message/listdata', { params: filter }).then((res: any) => {
-                let responseUtil = require('../../util/response-util/response-util');
-                let serverResponse = responseUtil.extractResponse(res) as Response<UserMessage[]>;
-                response.operationTimeServer = serverResponse.operationTimeServer;
-                if (serverResponse.isSuccessful) {
-                    response.isSuccessful = true;
-                    response.outputJson = [];
-                    serverResponse.outputJson?.forEach((item) => {                       
-                        const data = new rowMetaData;
-                        data.annotations = [];
-                        data.rowData = {
-                            id:item.id,
-                            isAdvertisement:item.isAdvertisement,
-                            isRead:item.isRead,
-                            sentDate: iso2ShortDate(item.sentDate as Date),
-                            title:item.title
-                        };
-                        data.hasUpdate = false;
-                        data.hasView = false;
-                        data.hasDelete = (!item.isAdvertisement) ? true : false;
-                        (item.isRead) ? data.annotations.push('readMessage') : data.annotations.push('unreadMessage');                        
-                        response.outputJson?.push(data);
-                    });
-                    resolve(response);
-                }
-                else {
+            const restInstance = RestProvider
+                .createInstance(RestProvider.getTimeoutDuration());
+            restInstance.get('user_message_api/v1/message/listdata',
+                { params: filter }).then((res: any) => {
+                    let responseUtil = require('../../util/response-util/response-util');
+                    let serverResponse =
+                        responseUtil.extractResponse(res) as Response<UserMessage[]>;
+                    response.operationTimeServer = serverResponse.operationTimeServer;
+                    if (serverResponse.isSuccessful) {
+                        response.isSuccessful = true;
+                        response.outputJson = [];
+                        serverResponse.outputJson?.forEach((item) => {
+                            const data = new rowMetaData;
+                            data.annotations = [];
+                            data.rowData = {
+                                id: item._id,
+                                isAdvertisement: item.isAdvertisement,
+                                isRead: item.isRead,
+                                sentDate: iso2ShortDate(item.sentDate as Date),
+                                title: item.title
+                            };
+                            data.hasUpdate = false;
+                            data.hasView = false;
+                            data.hasDelete = (!item.isAdvertisement) ? true : false;
+                            data.deletionId = item._id as string;
+                            (item.isRead)
+                                ? data.annotations.push('readMessage')
+                                : data.annotations.push('unreadMessage');
+                            response.outputJson?.push(data);
+                        });
+                        resolve(response);
+                    }
+                    else {
+                        response.isSuccessful = false;
+                        (serverResponse.serverValidations as string[])
+                            .forEach((serverError) => {
+                                response.serverValidations.push(serverError);
+                            });
+                        resolve(response);
+                    }
+                }).catch((err: any) => {
+                    console.log(err);
                     response.isSuccessful = false;
-                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
-                        response.serverValidations.push(serverError);
-                    });
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
                     resolve(response);
-                }
-            }).catch((err:any) => {
-                console.log(err);
-                response.isSuccessful = false;
-                response.clientValidations.push(ErrorMessage.Err0000().toString());
-                resolve(response);
-            });
+                });
         });
     }
 
-    countListData(filter: IListDataServiceFilter | undefined | null): Promise<Response<number>> {
+    countListData(filter: IListDataServiceFilter | undefined | null):
+        Promise<Response<number>> {
         return new Promise((resolve) => {
             const response = new Response<number>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            const restInstance = RestProvider
+                .createInstance(RestProvider.getTimeoutDuration());
             restInstance.get('user_message_api/v1/message/countall').then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
-                let serverResponse = responseUtil.extractResponse(res) as Response<number>;
+                let serverResponse = responseUtil
+                    .extractResponse(res) as Response<number>;
                 response.operationTimeServer = serverResponse.operationTimeServer;
                 if (serverResponse.isSuccessful) {
                     response.isSuccessful = true;
@@ -78,9 +89,10 @@ export default class UserMessageService implements IListDataService {
                 }
                 else {
                     response.isSuccessful = false;
-                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
-                        response.serverValidations.push(serverError);
-                    });
+                    (serverResponse.serverValidations as string[])
+                        .forEach((serverError) => {
+                            response.serverValidations.push(serverError);
+                        });
                     resolve(response);
                 }
             })
@@ -97,28 +109,32 @@ export default class UserMessageService implements IListDataService {
             const response = new Response<UserMessage>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get(`user_message_api/v1/message?ID=${messageId}`).then((res: any) => {
-                let responseUtil = require('../../util/response-util/response-util');
-                let serverResponse = responseUtil.extractResponse(res) as Response<UserMessage>;
-                response.operationTimeServer = serverResponse.operationTimeServer;
-                if (serverResponse.isSuccessful) {
-                    response.isSuccessful = true;
-                    response.outputJson = serverResponse.outputJson;
-                    resolve(response);
-                }
-                else {
+            const restInstance = RestProvider
+                .createInstance(RestProvider.getTimeoutDuration());
+            restInstance.get(`user_message_api/v1/message?ID=${messageId}`)
+                .then((res: any) => {
+                    let responseUtil = require('../../util/response-util/response-util');
+                    let serverResponse = responseUtil
+                        .extractResponse(res) as Response<UserMessage>;
+                    response.operationTimeServer = serverResponse.operationTimeServer;
+                    if (serverResponse.isSuccessful) {
+                        response.isSuccessful = true;
+                        response.outputJson = serverResponse.outputJson;
+                        resolve(response);
+                    }
+                    else {
+                        response.isSuccessful = false;
+                        (serverResponse.serverValidations as string[])
+                            .forEach((serverError) => {
+                                response.serverValidations.push(serverError);
+                            });
+                        resolve(response);
+                    }
+                }).catch(() => {
                     response.isSuccessful = false;
-                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
-                        response.serverValidations.push(serverError);
-                    });
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
                     resolve(response);
-                }
-            }).catch(() => {
-                response.isSuccessful = false;
-                response.clientValidations.push(ErrorMessage.Err0000().toString());
-                resolve(response);
-            })
+                })
         });
     }
 
@@ -127,28 +143,32 @@ export default class UserMessageService implements IListDataService {
             const response = new Response<void>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.delete('user_message_api/v1/message', { params: { messageId: messageId } }).then((res: any) => {
-                let responseUtil = require('../../util/response-util/response-util');
-                let serverResponse = responseUtil.extractResponse(res) as Response<void>;
-                response.operationTimeServer = serverResponse.operationTimeServer;
-                if (serverResponse.isSuccessful) {
-                    response.isSuccessful = true;
-                    resolve(response)
-                }
-                else {
-                    response.isSuccessful = false;
-                    (serverResponse.serverValidations as string[]).forEach((serverError) => {
-                        response.serverValidations.push(serverError);
-                    });
-                    resolve(response);
-                }
+            const restInstance = RestProvider
+                .createInstance(RestProvider.getTimeoutDuration());
+            restInstance.delete('user_message_api/v1/message',
+                { params: { messageId: messageId } }).then((res: any) => {
+                    let responseUtil = require('../../util/response-util/response-util');
+                    let serverResponse = responseUtil
+                        .extractResponse(res) as Response<void>;
+                    response.operationTimeServer = serverResponse.operationTimeServer;
+                    if (serverResponse.isSuccessful) {
+                        response.isSuccessful = true;
+                        resolve(response)
+                    }
+                    else {
+                        response.isSuccessful = false;
+                        (serverResponse.serverValidations as string[])
+                            .forEach((serverError) => {
+                                response.serverValidations.push(serverError);
+                            });
+                        resolve(response);
+                    }
 
-            }).catch(() => {
-                response.isSuccessful = false;
-                response.clientValidations.push(ErrorMessage.Err0000().toString());
-                resolve(response);
-            })
+                }).catch(() => {
+                    response.isSuccessful = false;
+                    response.clientValidations.push(ErrorMessage.Err0000().toString());
+                    resolve(response);
+                })
         });
     }
 
@@ -157,11 +177,14 @@ export default class UserMessageService implements IListDataService {
             const response = new Response<void>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-            restInstance.put('user_message_api/v1/message/readFlag', { messageId: messageId })
+            const restInstance = RestProvider
+                .createInstance(RestProvider.getTimeoutDuration());
+            restInstance.put('user_message_api/v1/message/readFlag',
+                { messageId: messageId })
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
-                    let serverResponse = responseUtil.extractResponse(res) as Response<void>;
+                    let serverResponse =
+                        responseUtil.extractResponse(res) as Response<void>;
                     response.operationTimeServer = serverResponse.operationTimeServer;
                     if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
@@ -169,9 +192,10 @@ export default class UserMessageService implements IListDataService {
                     }
                     else {
                         response.isSuccessful = false;
-                        (serverResponse.serverValidations as string[]).forEach((serverError) => {
-                            response.serverValidations.push(serverError);
-                        });
+                        (serverResponse.serverValidations as string[])
+                            .forEach((serverError) => {
+                                response.serverValidations.push(serverError);
+                            });
                         resolve(response);
                     }
                 })
@@ -188,11 +212,13 @@ export default class UserMessageService implements IListDataService {
             const response = new Response<number>();
             response.isSuccessful = false;
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
-            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            const restInstance = RestProvider
+                .createInstance(RestProvider.getTimeoutDuration());
             restInstance.get('user_message_api/v1/message/countunread')
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
-                    let serverResponse = responseUtil.extractResponse(res) as Response<number>;
+                    let serverResponse = responseUtil
+                        .extractResponse(res) as Response<number>;
                     response.operationTimeServer = serverResponse.operationTimeServer;
                     if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
@@ -201,9 +227,10 @@ export default class UserMessageService implements IListDataService {
                     }
                     else {
                         response.isSuccessful = false;
-                        (serverResponse.serverValidations as string[]).forEach((serverError) => {
-                            response.serverValidations.push(serverError);
-                        });
+                        (serverResponse.serverValidations as string[])
+                            .forEach((serverError) => {
+                                response.serverValidations.push(serverError);
+                            });
                         resolve(response);
                     }
                 })

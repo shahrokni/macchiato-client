@@ -1,6 +1,6 @@
 export default class UserMessage {
 
-    id: string | undefined;
+    _id: string | undefined;
     senderId: string | undefined;
     receiverId: string | undefined;
     sentDate: Date | string |undefined;

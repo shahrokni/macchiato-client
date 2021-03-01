@@ -10,7 +10,7 @@ import { GlobalMessageType } from '../../entity/global-message/enum/global-messa
 import ErrorMessage from '../../resource/text/error-message';
 import Response from '../../communication/entity/response-novel';
 import ActionButton, { ActionType } from './grid-action-button';
-import {commonMessages} from '../../resource/text/common-messages';
+import { commonMessages } from '../../resource/text/common-messages';
 
 export interface IGeneralGridParams {
     gridConfig: IGridConfig;
@@ -20,44 +20,53 @@ export interface IGeneralGridParams {
 
 export default function GeneralGrid(
     generalGridParams: IGeneralGridParams): JSX.Element {
-
     const [isGridLoaded, setIsGridLoaded] = useState<boolean>(false);
     const [hasGridError, setHasGridError] = useState<boolean | undefined>(undefined);
     const [gridId] = useState<string>(generalGridParams.gridConfig.id);
-    const [hasRowsActions] = useState<boolean>(generalGridParams.gridConfig.hasActions);
-    const [headerColor] = useState<string>(generalGridParams.gridConfig.headerColour);
-    const [headerCellColor] = useState<string>(generalGridParams.gridConfig.headerCellColor);
-    const [headerTitleWidthPair] = useState<ITitleWidthPair[]>(generalGridParams.gridConfig.headerTitleWidthPair);
+    const [hasRowsActions] =
+        useState<boolean>(generalGridParams.gridConfig.hasActions);
+    const [headerColor] =
+        useState<string>(generalGridParams.gridConfig.headerColour);
+    const [headerCellColor] =
+        useState<string>(generalGridParams.gridConfig.headerCellColor);
+    const [headerTitleWidthPair] =
+        useState<ITitleWidthPair[]>(generalGridParams.gridConfig.headerTitleWidthPair);
     const [totalRecords, setTotalRecords] = useState<number>(0);
-    const [listDataServiceFilter, setListDataServiceFilter] = useState<IListDataServiceFilter>(generalGridParams.filter);
-    const [listDataService] = useState<IListDataService>(generalGridParams.listDataService);
-    const [rows, setRows] = useState<RowMetaData[] | undefined>(undefined);
+    const [listDataServiceFilter, setListDataServiceFilter] =
+        useState<IListDataServiceFilter>(generalGridParams.filter);
+    const [listDataService] =
+        useState<IListDataService>(generalGridParams.listDataService);
+    const [rows, setRows] =
+        useState<RowMetaData[] | undefined>(undefined);
     const [currentPage, setCurrentPage] = useState(0);
-    const [isFetchingData,setIsFetchingData] = useState(false);
+    const [isFetchingData, setIsFetchingData] = useState(false);
 
     useEffect(() => {
-        listDataService?.countListData(null).then((countResponseData: Response<number>) => {
-            if (countResponseData.isSuccessful) {
-                const countRecords = ((countResponseData.outputJson as number) > 100) ? 100 : countResponseData.outputJson;
-                setTotalRecords(countRecords as number);
-                listDataService.listData(listDataServiceFilter)
-                    .then((listDataServiceResponse: Response<RowMetaData[]>) => {
-                        if (listDataServiceResponse.isSuccessful) {
-                            setRows(listDataServiceResponse.outputJson);
-                            setHasGridError(false);
-                            setIsGridLoaded(true);
-                        }
-                        else {
-                            setHasGridError(true);
-                            setIsGridLoaded(true);
-                        }
-                    })
-            }
-            else {
-                setHasGridError(true);
-                setIsGridLoaded(true);
-            }
-        })
+        listDataService?.countListData(null)
+            .then((countResponseData: Response<number>) => {
+                if (countResponseData.isSuccessful) {
+                    const countRecords =
+                        ((countResponseData.outputJson as number) > 100)
+                            ? 100 : countResponseData.outputJson;
+                    setTotalRecords(countRecords as number);
+                    listDataService.listData(listDataServiceFilter)
+                        .then((listDataServiceResponse: Response<RowMetaData[]>) => {
+                            if (listDataServiceResponse.isSuccessful) {
+                                setRows(listDataServiceResponse.outputJson);
+                                setHasGridError(false);
+                                setIsGridLoaded(true);
+                            }
+                            else {
+                                setHasGridError(true);
+                                setIsGridLoaded(true);
+                            }
+                        })
+                }
+                else {
+                    setHasGridError(true);
+                    setIsGridLoaded(true);
+                }
+            })
     }, []);
 
     const createGridHeader = (): JSX.Element => {
@@ -65,7 +74,10 @@ export default function GeneralGrid(
             <div id={gridId + '-headerContainer'}
                 className={'headerContainer'}
                 style={{ backgroundColor: headerColor }}>
-                <div className={'headerCell'} style={{ width: '5%', color: headerCellColor }}>{'Row'}</div>
+                <div className={'headerCell'} style={{
+                    width: '5%',
+                    color: headerCellColor
+                }}>{'Row'}</div>
                 {
                     ((): JSX.Element[] => {
                         const headerCells: JSX.Element[] = [];
@@ -73,7 +85,10 @@ export default function GeneralGrid(
                             const cell = (
                                 <div key={index}
                                     className={'headerCell'}
-                                    style={{ width: p.width + '%', color: headerCellColor }}>
+                                    style={{
+                                        width: p.width + '%',
+                                        color: headerCellColor
+                                    }}>
                                     {p.title}
                                 </div>)
                             headerCells.push(cell);
@@ -83,7 +98,10 @@ export default function GeneralGrid(
                 }
                 {
                     hasRowsActions &&
-                    <div className={'headerCell'} style={{ width: 'fit-content', color: headerCellColor }}>{'Actions'}</div>
+                    <div className={'headerCell'} style={{
+                        width: 'fit-content',
+                        color: headerCellColor
+                    }}>{'Actions'}</div>
                 }
             </div>
         );
@@ -102,7 +120,8 @@ export default function GeneralGrid(
                             r.annotations.forEach((a) => {
                                 cssClasses = cssClasses + ' ' + a;
                             })
-                            cssClasses = ((rowIndex + 1) % 2 === 0) ? cssClasses + ' evenRow' : cssClasses + ' oddRow';
+                            cssClasses = ((rowIndex + 1) % 2 === 0) ? cssClasses +
+                                ' evenRow' : cssClasses + ' oddRow';
                             const rowElement = (
                                 <div className={'gridRow ' + cssClasses} key={rowIndex} >
                                     {
@@ -131,13 +150,29 @@ export default function GeneralGrid(
                                                     key={'actionsCell'}
                                                     style={{ width: 'fit-content' }}>
                                                     {
-                                                        (r.hasView && r.viewUrl) && <ActionButton type={ActionType.view} action={() => { }} />
+                                                        (r.hasView && r.viewUrl) &&
+                                                        <ActionButton
+                                                            type={ActionType.view}
+                                                            deletionId={undefined}
+                                                            updateUrl={undefined}
+                                                            viewUrl={r.viewUrl} />
                                                     }
                                                     {
-                                                        (r.hasUpdate && r.updateUrl) && <ActionButton type={ActionType.update} action={() => { }} />
+                                                        (r.hasUpdate && r.updateUrl) &&
+                                                        <ActionButton
+                                                            type={ActionType.update}
+                                                            deletionId={undefined}
+                                                            updateUrl={r.updateUrl}
+                                                            viewUrl={undefined}
+                                                        />
                                                     }
                                                     {
-                                                        r.hasDelete && <ActionButton type={ActionType.delete} action={() => { }} />
+                                                        (r.hasDelete && r.deletionId) &&
+                                                        <ActionButton
+                                                            type={ActionType.delete}
+                                                            deletionId={r.deletionId}
+                                                            updateUrl={undefined}
+                                                            viewUrl={undefined} />
                                                     }
 
                                                 </div>;
@@ -158,46 +193,55 @@ export default function GeneralGrid(
         return rowsContainer;
     }
 
-    const changeChosenButtnStyle = (chosenPage:number)=>{
-        const currentdBtn=document.getElementById(gridId + '-PagingContainer-' + (currentPage + 1) + 'NumericBtn');
-        const chosenBtn = document.getElementById(gridId + '-PagingContainer-' + (chosenPage + 1) + 'NumericBtn');
-        if(currentdBtn!=null){
+    const changeChosenButtnStyle = (chosenPage: number) => {
+        const currentdBtn = document.getElementById(gridId +
+            '-PagingContainer-' + (currentPage + 1) + 'NumericBtn');
+        const chosenBtn = document.getElementById(gridId +
+            '-PagingContainer-' + (chosenPage + 1) + 'NumericBtn');
+        if (currentdBtn != null) {
             currentdBtn.style.color = headerCellColor;
             currentdBtn.style.backgroundColor = headerColor;
         }
-        if(chosenBtn!=null){
+        if (chosenBtn != null) {
             chosenBtn.style.color = headerColor;
             chosenBtn.style.backgroundColor = headerCellColor;
         }
     }
 
     const loadPage = (chosenPage: number): void => {
-        if (chosenPage === currentPage || isFetchingData===true)
-            return;        
+        if (chosenPage === currentPage || isFetchingData === true)
+            return;
         setIsFetchingData(true);
-        
-        listDataService?.listData({...listDataServiceFilter, pageNumber: chosenPage} as IListDataServiceFilter).then((listDataServiceResponse: Response<RowMetaData[]>) => {
-            if (listDataServiceResponse.isSuccessful) {
-                setRows(listDataServiceResponse.outputJson);
-                changeChosenButtnStyle(chosenPage);
-                setCurrentPage(chosenPage);
-                setListDataServiceFilter({ ...listDataServiceFilter, pageNumber: chosenPage } as IListDataServiceFilter);
-                setIsFetchingData(false);
-                setHasGridError(false);
-                setIsGridLoaded(true);               
-            }
-            else {
-                setHasGridError(true);
-                setIsGridLoaded(true);
-            }
-        })
+
+        listDataService?.listData({
+            ...listDataServiceFilter,
+            pageNumber: chosenPage
+        } as IListDataServiceFilter)
+            .then((listDataServiceResponse: Response<RowMetaData[]>) => {
+                if (listDataServiceResponse.isSuccessful) {
+                    setRows(listDataServiceResponse.outputJson);
+                    changeChosenButtnStyle(chosenPage);
+                    setCurrentPage(chosenPage);
+                    setListDataServiceFilter({
+                        ...listDataServiceFilter,
+                        pageNumber: chosenPage
+                    } as IListDataServiceFilter);
+                    setIsFetchingData(false);
+                    setHasGridError(false);
+                    setIsGridLoaded(true);
+                }
+                else {
+                    setHasGridError(true);
+                    setIsGridLoaded(true);
+                }
+            })
     }
 
-    const createGridPaging = (): JSX.Element => {        
+    const createGridPaging = (): JSX.Element => {
         const pagingContainer =
             <div className={'pagingContainer'}
-                 id={gridId + '-PagingContainer'}
-                 style={{backgroundColor:headerColor, color:headerCellColor}}>
+                id={gridId + '-PagingContainer'}
+                style={{ backgroundColor: headerColor, color: headerCellColor }}>
                 {
                     ((): JSX.Element[] => {
                         const numbericBtns: JSX.Element[] = [];
@@ -207,7 +251,8 @@ export default function GeneralGrid(
                             const numericBtn =
                                 <div key={i + 1}
                                     className={'pagingNumericBtn'}
-                                    id={gridId + '-PagingContainer-' + (i + 1) + 'NumericBtn'}
+                                    id={gridId + '-PagingContainer-' +
+                                        (i + 1) + 'NumericBtn'}
                                     onClick={() => {
                                         loadPage(i);
                                     }}>
@@ -219,7 +264,8 @@ export default function GeneralGrid(
                     })()
                 }
                 {
-                   isFetchingData && <div className={'pagingContainerLoadingMessages'}> {commonMessages.loading} </div>
+                    isFetchingData && <div className={'pagingContainerLoadingMessages'}>
+                        {commonMessages.loading} </div>
                 }
             </div>
 
@@ -234,10 +280,10 @@ export default function GeneralGrid(
                     {rows && createGridRows()}
                     {(totalRecords > 10) && createGridPaging()}
                 </div>) :
-                <SimpleNarrowMessage 
-                type={GlobalMessageType.Error}
-                messgae={ErrorMessage.Err0000()}
-                link={''} linkTitle={''} />
+                <SimpleNarrowMessage
+                    type={GlobalMessageType.Error}
+                    messgae={ErrorMessage.Err0000()}
+                    link={''} linkTitle={''} />
         ) : <SimpleNarrowWaiting />
     )
 

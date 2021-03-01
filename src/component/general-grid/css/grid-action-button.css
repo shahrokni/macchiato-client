@@ -1,0 +1,31 @@
+.gridActionBtn{
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #BDBDBD;    
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+.gridActionBtnIcon{
+    width: 25%;
+}
+.gridActionBtnTxt{
+    font-family: Montserrat-Medium;
+    color: #707070;    
+    font-weight: normal;
+    width: 75%;
+    text-align: center;
+}
+
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) {  
+    .gridActionBtn{
+        width: 7rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
