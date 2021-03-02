@@ -27,7 +27,8 @@ const appGeneralInfo = {
         checkUserInformation: 'checkuserinformation',
         termOfUse: 'termofuse',
         aboutPersian: 'about_persian',
-        aboutEnglish: 'about_english'
+        aboutEnglish: 'about_english',
+        messageview: 'message_view'
     },
     transactions: {
         functionalTransactions: {

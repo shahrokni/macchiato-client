@@ -17,8 +17,8 @@ import Scores from '../scores/scores';
 
 export default function ProfileView(): JSX.Element {
 
-    const profileTitle = 'Your Account';   
-    const logoutBtnId = 'logoutBtn'   
+    const profileTitle = 'Your Account';
+    const logoutBtnId = 'logoutBtn'
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [isLocked, setIsLocked] = useState(false);
     const [isComponentLoaded, setIsComponentLoaded] = useState(false);
@@ -70,11 +70,14 @@ export default function ProfileView(): JSX.Element {
                             {
                                 (isAuthenticated === AuthenticationState.NotAuthenticated) ?
                                     (
-                                        <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
+                                        <React.Suspense
+                                            fallback={<h3>{commonMessages.loading}</h3>}>
                                             <div style={{ visibility: 'hidden' }}>
                                                 {
-                                                    (window.location.href = appGeneralInfo.baseUrl +
-                                                        appGeneralInfo.mainMenuItems.homePage)
+                                                    (window.location.href =
+                                                        appGeneralInfo.baseUrl +
+                                                        appGeneralInfo
+                                                            .mainMenuItems.homePage)
                                                 }
                                             </div>
                                         </React.Suspense>
@@ -86,21 +89,32 @@ export default function ProfileView(): JSX.Element {
                                         <Fragment>
 
                                             {
-                                                (isAuthenticated === AuthenticationState.CommunicationError) ?
-                                                    (<SimpleNarrowMessage type={GlobalMessageType.Error} link={''} linkTitle={''} messgae={ErrorMessage.Err0007()} />) :
+                                                (isAuthenticated ===
+                                                    AuthenticationState
+                                                        .CommunicationError) ?
+                                                    (<SimpleNarrowMessage
+                                                        type={GlobalMessageType.Error}
+                                                        link={''}
+                                                        linkTitle={''}
+                                                        messgae={ErrorMessage.Err0007()} />)
+                                                    :
                                                     (
                                                         <Fragment>
                                                             <WhiteRibbon />
 
-                                                            <div className={'profileTitleBar'}>
-                                                                <div className={'profileTitle'}>
+                                                            <div
+                                                                className={'profileTitleBar'}>
+                                                                <div
+                                                                    className={'profileTitle'}>
                                                                     {profileTitle}
                                                                 </div>
                                                                 <div
                                                                     id={logoutBtnId}
-                                                                    onClick={() => { logout() }}                                                                   
+                                                                    onClick={() => { logout() }}
                                                                     className={'logoutBtn'}>
-                                                                    <i className="material-icons logoutText absolute">{'logout'}</i>
+                                                                    <i
+                                                                        className="material-icons logoutText absolute">
+                                                                        {'logout'}</i>
                                                                 </div>
                                                             </div>
 
