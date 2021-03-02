@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import  './css/grid-action-button.css';
+import React, { Fragment, useState } from 'react';
+import './css/grid-action-button.css';
 
 export enum ActionType {
     view,
@@ -61,11 +61,29 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
 
     }} className={'gridActionBtn ' + ActionType[actionParam.type]}>
         <div className={'gridActionBtnIcon'}>
-
+            {
+                ((): JSX.Element => {
+                    let icon: JSX.Element;
+                    switch (actionType) {
+                        case ActionType.delete:
+                            icon = <i className="material-icons absolute">{'delete'}</i>;
+                            break;
+                        case ActionType.update:
+                            icon = <i className="material-icons absolute">{'update'}</i>;
+                            break;
+                        case ActionType.view:
+                            icon = <i className="material-icons absolute">{'preview'}</i>;
+                            break;
+                        default:
+                            icon = <Fragment></Fragment>
+                    }
+                    return icon;
+                })()
+            }
         </div>
         <div className={'gridActionBtnTxt'}>
             {
-                (() => {
+                ((): string => {
                     let text = '';
                     switch (actionType) {
                         case ActionType.delete:

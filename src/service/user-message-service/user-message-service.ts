@@ -5,6 +5,7 @@ import IListDataService from '../../entity/general-grid/IListDataService';
 import rowMetaData from '../../entity/general-grid/row-meta-data';
 import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
+import { appGeneralInfo } from '../../setup-general-information';
 import { iso2ShortDate } from '../../util/date-util/date-util2';
 
 export default class UserMessageService implements IListDataService {
@@ -41,8 +42,9 @@ export default class UserMessageService implements IListDataService {
                                 sentDate: iso2ShortDate(item.sentDate as Date),
                                 title: item.title
                             };
-                            data.hasUpdate = false;
-                            data.hasView = false;
+                            data.hasUpdate = false;                            
+                            data.hasView = true;
+                            data.viewUrl = appGeneralInfo.views.messageview + '/'+item._id;
                             data.hasDelete = (!item.isAdvertisement) ? true : false;
                             data.deletionId = item._id as string;
                             (item.isRead)

@@ -12,6 +12,9 @@
 .gridActionBtnIcon{
     width: 25%;
 }
+.gridActionBtnIcon > i{
+    color: black;
+}
 .gridActionBtnTxt{
     font-family: Montserrat-Medium;
     color: #707070;    
@@ -19,7 +22,10 @@
     width: 75%;
     text-align: center;
 }
-
+.actionCell{
+    display: flex;
+    flex-direction: row;
+}
 
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape) {  
@@ -27,5 +33,6 @@
         width: 7rem;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+        margin-left: 1rem;
     }
 }

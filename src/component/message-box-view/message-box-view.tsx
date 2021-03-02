@@ -32,8 +32,16 @@ export default function MessageBoxView(): JSX.Element {
                         headerColour: '#FFEEF0',
                         headerCellColor: '#94162D',
                         hasActions: true,
-                        headerTitleWidthPair:[{title:'Title',dataKey:'title',width:'35'},
-                        {title:'Date',dataKey:'sentDate',width:'20'}]
+                        headerTitleWidthPair: [{
+                            title: 'Title',
+                            dataKey: 'title',
+                            width: '35'
+                        },
+                        {
+                            title: 'Date',
+                            dataKey: 'sentDate',
+                            width: '20'
+                        }]
                     } as unknown as IGridConfig)
                 setListDataService(new UserMessageService());
                 setInitialFilter(
@@ -52,10 +60,12 @@ export default function MessageBoxView(): JSX.Element {
                             {
                                 (isAuthenticated === AuthenticationState.NotAuthenticated) ?
                                     (
-                                        <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
+                                        <React.Suspense
+                                            fallback={<h3>{commonMessages.loading}</h3>}>
                                             <div style={{ visibility: 'hidden' }}>
                                                 {
-                                                    (window.location.href = appGeneralInfo.baseUrl +
+                                                    (window.location.href =
+                                                        appGeneralInfo.baseUrl +
                                                         appGeneralInfo.mainMenuItems.homePage)
                                                 }
                                             </div>
@@ -64,8 +74,13 @@ export default function MessageBoxView(): JSX.Element {
                                     ) : (
                                         <Fragment>
                                             {
-                                                (isAuthenticated === AuthenticationState.CommunicationError) ?
-                                                    (<SimpleNarrowMessage type={GlobalMessageType.Error} link={''} linkTitle={''} messgae={ErrorMessage.Err0007()} />) :
+                                                (isAuthenticated ===
+                                                    AuthenticationState.CommunicationError) ?
+                                                    (<SimpleNarrowMessage
+                                                        type={GlobalMessageType.Error}
+                                                        link={''}
+                                                        linkTitle={''}
+                                                        messgae={ErrorMessage.Err0007()} />) :
                                                     (
                                                         <Fragment>
                                                             <WhiteRibbon />
@@ -80,9 +95,12 @@ export default function MessageBoxView(): JSX.Element {
                                                                     listDataService &&
                                                                     initialFilter &&
                                                                     <GeneralGrid
-                                                                        gridConfig={gridConfig as IGridConfig}
-                                                                        listDataService={listDataService as IListDataService}
-                                                                        filter={initialFilter as IListDataServiceFilter} />}
+                                                                        gridConfig=
+                                                                        {gridConfig as IGridConfig}
+                                                                        listDataService=
+                                                                        {listDataService as IListDataService}
+                                                                        filter=
+                                                                        {initialFilter as IListDataServiceFilter} />}
                                                             </div>
                                                         </Fragment>
                                                     )

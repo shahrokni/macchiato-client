@@ -130,7 +130,7 @@ export default function GeneralGrid(
                                             const rowCounter = <div className={'rowCell'}
                                                 style={{ width: '5%' }}
                                                 key={0}>
-                                                {rowIndex + 1}
+                                                {(currentPage) * 10 + (rowIndex + 1)}
                                             </div>;
                                             rowCells.push(rowCounter);
 
@@ -146,7 +146,8 @@ export default function GeneralGrid(
                                             })
 
                                             if (hasRowsActions) {
-                                                const cell = <div className={'rowCell'}
+                                                const cell = <div
+                                                 className={'rowCell actionCell'}
                                                     key={'actionsCell'}
                                                     style={{ width: 'fit-content' }}>
                                                     {
