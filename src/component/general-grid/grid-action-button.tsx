@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import { appGeneralInfo } from '../../setup-general-information';
 import './css/grid-action-button.css';
 
 export enum ActionType {
@@ -11,14 +12,15 @@ export interface IActionButtonParam {
     type: ActionType;
     viewUrl: string | undefined;
     updateUrl: string | undefined;
-    deletionId: string | undefined;
+    deletionUrl: string | undefined;
+    gridCurrenPage: number | undefined;
 }
 
 export default function ActionButton(actionParam: IActionButtonParam): JSX.Element {
 
 
     const [actionType] = useState(actionParam.type);
-    const [deletionId] = useState(actionParam.deletionId);
+    const [deletionUrl] = useState(actionParam.deletionUrl);
     const [viewUrl] = useState(actionParam.viewUrl);
     const [updateUrl] = useState(actionParam.updateUrl);
 
@@ -26,17 +28,17 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
         (inputParam: string) => void => {
         if (actionType === ActionType.view) {
             return (inputParam: string) => {
-                alert(inputParam);
+                window.location.href = appGeneralInfo.baseUrl + inputParam;
             }
         }
         else if (actionType === ActionType.update) {
             return (inputParam: string) => {
-                alert(inputParam);
+                window.location.href = appGeneralInfo.baseUrl + inputParam;
             }
         }
         else {
             return (inputParam: string) => {
-                alert(inputParam);
+                window.location.href = appGeneralInfo.baseUrl + inputParam;
             }
         }
     }
@@ -46,7 +48,7 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
         let input = '';
         switch (actionType) {
             case ActionType.delete:
-                input = deletionId as string;
+                input = deletionUrl + '.' + actionParam.gridCurrenPage as string;
                 break;
             case ActionType.update:
                 input = updateUrl as string;

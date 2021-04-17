@@ -14,13 +14,19 @@ import IListDataService from '../../entity/general-grid/IListDataService';
 import UserMessageService from '../../service/user-message-service/user-message-service';
 import IListDataServiceFilter from '../../entity/general-grid/I-list-data-service-filter';
 import './css/message-box-view.css';
-export default function MessageBoxView(): JSX.Element {
+
+export interface IMessageBoxViewParam {
+    requestedPage: number | undefined;
+}
+export default function MessageBoxView(messageBoxViewParam: IMessageBoxViewParam): JSX.Element {
 
     const messageBoxTitle = "Messages";
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [gridConfig, setGridConfig] = useState<IGridConfig | undefined>();
     const [listDataService, setListDataService] = useState<IListDataService | undefined>();
     const [initialFilter, setInitialFilter] = useState<IListDataServiceFilter | undefined>();
+    const [requestedPage] = useState<number | undefined>(messageBoxViewParam.requestedPage);
+
     useEffect(() => {
         const userService = new UserService();
         userService.isUserAuthenticated()
@@ -46,7 +52,7 @@ export default function MessageBoxView(): JSX.Element {
                 setListDataService(new UserMessageService());
                 setInitialFilter(
                     {
-                        pageNumber: 0
+                        pageNumber: (requestedPage !== undefined) ? requestedPage : 0
                     } as IListDataServiceFilter)
 
             });

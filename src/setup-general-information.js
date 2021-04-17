@@ -28,7 +28,8 @@ const appGeneralInfo = {
         termOfUse: 'termofuse',
         aboutPersian: 'about_persian',
         aboutEnglish: 'about_english',
-        messageview: 'message_view'
+        messageview: 'message_view',
+        messagedelete:'message_delete'
     },
     transactions: {
         functionalTransactions: {

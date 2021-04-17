@@ -141,9 +141,24 @@ export default class ViewHandler {
         /*Message*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.messages) {
 
-            const MessagesView =
+            const MessagesListView =
                 React.lazy(() => import('../../message-box-view/message-box-view'));
-            createdComponent = <MessagesView  linkClick={innerLinkClickEventHandler}/>;
+            createdComponent = (param) ?  <MessagesListView requestedPage={param} /> : 
+            <MessagesListView requestedPage={undefined} />;
+        }
+
+        /* Message View */
+        if(currentLocatin === appGeneralInfo.views.messageview){
+            const MessageDetailView = 
+                React.lazy(()=>import('../../message-detail-view/message-detail-view'));
+            createdComponent = <MessageDetailView messageId={param} />
+        }
+
+        /* Message Delete */
+        if(currentLocatin === appGeneralInfo.views.messagedelete){
+            const MessageDeleteView = 
+                React.lazy(()=>import('../../message-delete/message-delete'));
+                createdComponent = <MessageDeleteView messageId={param} />
         }
 
         /*About*/

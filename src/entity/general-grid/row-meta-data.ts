@@ -4,7 +4,7 @@ export default class RowMetaData {
     }
     annotations: string[];
     hasDelete: boolean | undefined;
-    deletionId:string | undefined
+    deletionUrl:string | undefined
     hasUpdate: boolean | undefined;
     updateUrl: string | undefined;
     hasView: boolean | undefined;
