@@ -38,7 +38,8 @@ export default function GeneralGrid(
         useState<IListDataService>(generalGridParams.listDataService);
     const [rows, setRows] =
         useState<RowMetaData[] | undefined>(undefined);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] =
+        useState(generalGridParams.filter.pageNumber as number);
     const [isFetchingData, setIsFetchingData] = useState(false);
 
     useEffect(() => {
@@ -147,15 +148,15 @@ export default function GeneralGrid(
 
                                             if (hasRowsActions) {
                                                 const cell = <div
-                                                 className={'rowCell actionCell'}
+                                                    className={'rowCell actionCell'}
                                                     key={'actionsCell'}
                                                     style={{ width: 'fit-content' }}>
                                                     {
                                                         (r.hasView && r.viewUrl) &&
                                                         <ActionButton
                                                             type={ActionType.view}
-                                                            gridCurrentUrl = 
-                                                            {window.location.href}
+                                                            gridCurrenPage=
+                                                            {currentPage}
                                                             deletionUrl={undefined}
                                                             updateUrl={undefined}
                                                             viewUrl={r.viewUrl} />
@@ -164,8 +165,8 @@ export default function GeneralGrid(
                                                         (r.hasUpdate && r.updateUrl) &&
                                                         <ActionButton
                                                             type={ActionType.update}
-                                                            gridCurrentUrl = 
-                                                            {window.location.href}
+                                                            gridCurrenPage=
+                                                            {currentPage}
                                                             deletionUrl={undefined}
                                                             updateUrl={r.updateUrl}
                                                             viewUrl={undefined}
@@ -175,8 +176,8 @@ export default function GeneralGrid(
                                                         (r.hasDelete && r.deletionUrl) &&
                                                         <ActionButton
                                                             type={ActionType.delete}
-                                                            gridCurrentUrl = 
-                                                            {window.location.href}
+                                                            gridCurrenPage=
+                                                            {currentPage}
                                                             deletionUrl={r.deletionUrl}
                                                             updateUrl={undefined}
                                                             viewUrl={undefined} />
@@ -255,8 +256,14 @@ export default function GeneralGrid(
                         let btnsCount = Math.floor(totalRecords / 10);
                         btnsCount = (totalRecords % 10 > 0) ? btnsCount + 1 : btnsCount;
                         for (let i = 0; i < btnsCount; i++) {
+                            const style = (i == 0) ? {
+                                color: headerColor,
+                                backgroundColor: headerCellColor
+                            } :
+                                {};
                             const numericBtn =
                                 <div key={i + 1}
+                                    style={{ ...style }}
                                     className={'pagingNumericBtn'}
                                     id={gridId + '-PagingContainer-' +
                                         (i + 1) + 'NumericBtn'}
@@ -265,7 +272,7 @@ export default function GeneralGrid(
                                     }}>
                                     {i + 1}
                                 </div>;
-                            numbericBtns.push(numericBtn);
+                            numbericBtns.push(numericBtn as JSX.Element);
                         }
                         return numbericBtns;
                     })()
@@ -275,7 +282,6 @@ export default function GeneralGrid(
                         {commonMessages.loading} </div>
                 }
             </div>
-
         return pagingContainer;
     }
 

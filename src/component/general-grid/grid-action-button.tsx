@@ -13,14 +13,14 @@ export interface IActionButtonParam {
     viewUrl: string | undefined;
     updateUrl: string | undefined;
     deletionUrl: string | undefined;
-    gridCurrentUrl : string | undefined;    
+    gridCurrenPage : number | undefined;    
 }
 
 export default function ActionButton(actionParam: IActionButtonParam): JSX.Element {
 
 
     const [actionType] = useState(actionParam.type);
-    const [deletionId] = useState(actionParam.deletionUrl);
+    const [deletionUrl] = useState(actionParam.deletionUrl);
     const [viewUrl] = useState(actionParam.viewUrl);
     const [updateUrl] = useState(actionParam.updateUrl);
 
@@ -48,7 +48,7 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
         let input = '';
         switch (actionType) {
             case ActionType.delete:
-                input = deletionId as string;
+                input = deletionUrl as string;
                 break;
             case ActionType.update:
                 input = updateUrl as string;
