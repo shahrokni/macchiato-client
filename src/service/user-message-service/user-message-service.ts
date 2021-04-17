@@ -46,7 +46,7 @@ export default class UserMessageService implements IListDataService {
                             data.hasView = true;
                             data.viewUrl = appGeneralInfo.views.messageview + '/'+item._id;
                             data.hasDelete = (!item.isAdvertisement) ? true : false;
-                            data.deletionId = item._id as string;
+                            data.deletionUrl = appGeneralInfo.views.messagedelete + '/'+ item._id as string;
                             (item.isRead)
                                 ? data.annotations.push('readMessage')
                                 : data.annotations.push('unreadMessage');

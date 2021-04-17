@@ -154,7 +154,9 @@ export default function GeneralGrid(
                                                         (r.hasView && r.viewUrl) &&
                                                         <ActionButton
                                                             type={ActionType.view}
-                                                            deletionId={undefined}
+                                                            gridCurrentUrl = 
+                                                            {window.location.href}
+                                                            deletionUrl={undefined}
                                                             updateUrl={undefined}
                                                             viewUrl={r.viewUrl} />
                                                     }
@@ -162,16 +164,20 @@ export default function GeneralGrid(
                                                         (r.hasUpdate && r.updateUrl) &&
                                                         <ActionButton
                                                             type={ActionType.update}
-                                                            deletionId={undefined}
+                                                            gridCurrentUrl = 
+                                                            {window.location.href}
+                                                            deletionUrl={undefined}
                                                             updateUrl={r.updateUrl}
                                                             viewUrl={undefined}
                                                         />
                                                     }
                                                     {
-                                                        (r.hasDelete && r.deletionId) &&
+                                                        (r.hasDelete && r.deletionUrl) &&
                                                         <ActionButton
                                                             type={ActionType.delete}
-                                                            deletionId={r.deletionId}
+                                                            gridCurrentUrl = 
+                                                            {window.location.href}
+                                                            deletionUrl={r.deletionUrl}
                                                             updateUrl={undefined}
                                                             viewUrl={undefined} />
                                                     }
