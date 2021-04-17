@@ -143,7 +143,8 @@ export default class ViewHandler {
 
             const MessagesListView =
                 React.lazy(() => import('../../message-box-view/message-box-view'));
-            createdComponent = <MessagesListView />;
+            createdComponent = (param) ?  <MessagesListView requestedPage={param} /> : 
+            <MessagesListView requestedPage={undefined} />;
         }
 
         /* Message View */

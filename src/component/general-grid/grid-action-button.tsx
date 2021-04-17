@@ -13,7 +13,7 @@ export interface IActionButtonParam {
     viewUrl: string | undefined;
     updateUrl: string | undefined;
     deletionUrl: string | undefined;
-    gridCurrenPage : number | undefined;    
+    gridCurrenPage: number | undefined;
 }
 
 export default function ActionButton(actionParam: IActionButtonParam): JSX.Element {
@@ -28,7 +28,7 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
         (inputParam: string) => void => {
         if (actionType === ActionType.view) {
             return (inputParam: string) => {
-                window.location.href = appGeneralInfo.baseUrl + inputParam;                
+                window.location.href = appGeneralInfo.baseUrl + inputParam;
             }
         }
         else if (actionType === ActionType.update) {
@@ -38,7 +38,7 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
         }
         else {
             return (inputParam: string) => {
-                window.location.href = appGeneralInfo.baseUrl  + inputParam;
+                window.location.href = appGeneralInfo.baseUrl + inputParam;
             }
         }
     }
@@ -48,7 +48,7 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
         let input = '';
         switch (actionType) {
             case ActionType.delete:
-                input = deletionUrl as string;
+                input = deletionUrl + '.' + actionParam.gridCurrenPage as string;
                 break;
             case ActionType.update:
                 input = updateUrl as string;

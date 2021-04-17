@@ -45,7 +45,7 @@ export default function GeneralGrid(
     useEffect(() => {
         listDataService?.countListData(null)
             .then((countResponseData: Response<number>) => {
-                if (countResponseData.isSuccessful) {
+                if (countResponseData.isSuccessful) {                    
                     const countRecords =
                         ((countResponseData.outputJson as number) > 100)
                             ? 100 : countResponseData.outputJson;
@@ -256,7 +256,7 @@ export default function GeneralGrid(
                         let btnsCount = Math.floor(totalRecords / 10);
                         btnsCount = (totalRecords % 10 > 0) ? btnsCount + 1 : btnsCount;
                         for (let i = 0; i < btnsCount; i++) {
-                            const style = (i == 0) ? {
+                            const style = (i == currentPage) ? {
                                 color: headerColor,
                                 backgroundColor: headerCellColor
                             } :
