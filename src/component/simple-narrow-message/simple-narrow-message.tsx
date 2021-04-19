@@ -2,8 +2,8 @@ import React from 'react';
 import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
 export interface ISimpleNarrowMessage {
     messgae: string;
-    link: string;
-    linkTitle: string;
+    link: string | undefined;
+    linkTitle: string | undefined;
     type: GlobalMessageType;
 }
 export const SimpleNarrowMessage = (simpleNarrowMessage: ISimpleNarrowMessage): JSX.Element => {

@@ -151,7 +151,7 @@ export default class ViewHandler {
         if(currentLocatin === appGeneralInfo.views.messageview){
             const MessageDetailView = 
                 React.lazy(()=>import('../../message-detail-view/message-detail-view'));
-            createdComponent = <MessageDetailView messageId={param} />
+            createdComponent = <MessageDetailView info={param} />
         }
 
         /* Message Delete */

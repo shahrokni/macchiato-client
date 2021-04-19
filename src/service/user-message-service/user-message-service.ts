@@ -79,7 +79,7 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_message_api/v1/message/countall').then((res: any) => {
+            restInstance.get('/user_message_api/v1/message/countall').then((res: any) => {
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil
                     .extractResponse(res) as Response<number>;
@@ -98,7 +98,8 @@ export default class UserMessageService implements IListDataService {
                     resolve(response);
                 }
             })
-                .catch((() => {
+                .catch(((err:any) => {
+                    console.log(err);
                     response.isSuccessful = false;
                     response.clientValidations.push(ErrorMessage.Err0000().toString());
                     resolve(response);
@@ -113,7 +114,7 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get(`user_message_api/v1/message?ID=${messageId}`)
+            restInstance.get(`/user_message_api/v1/message?ID=${messageId}`)
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil
@@ -132,7 +133,8 @@ export default class UserMessageService implements IListDataService {
                             });
                         resolve(response);
                     }
-                }).catch(() => {
+                }).catch((err:any) => {
+                    console.log(err);
                     response.isSuccessful = false;
                     response.clientValidations.push(ErrorMessage.Err0000().toString());
                     resolve(response);

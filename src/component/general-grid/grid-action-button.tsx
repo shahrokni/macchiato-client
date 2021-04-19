@@ -51,10 +51,10 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
                 input = deletionUrl + '.' + actionParam.gridCurrenPage as string;
                 break;
             case ActionType.update:
-                input = updateUrl as string;
+                input = updateUrl + '.' + actionParam.gridCurrenPage as string;
                 break;
             case ActionType.view:
-                input = viewUrl as string;
+                input = viewUrl + '.' + actionParam.gridCurrenPage as string;
                 break
             default:
                 break;
