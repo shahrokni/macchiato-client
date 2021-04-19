@@ -1,9 +1,29 @@
 class UserMessageModel {
 
+    getMessage(userId, messageId) {
+        return new Promise((resolve, reject) => {
+            const userMessageModel = require('./user-message-schema');
+            const findQuery = userMessageModel.find({
+                'receiverId': `${userId}`,
+                '_id': `${messageId}`
+            })
+            findQuery.exec()
+            .then((userMessageArray)=>{
+                if(userMessageArray && userMessageArray.length!=0)
+                    resolve(userMessageArray[0]);
+                else
+                    resolve({});
+            })
+            .catch((err)=>{
+                reject(err);
+            })
+        })
+    }
+
     countAll(userId) {
         return new Promise((resolve, reject) => {
-            const userMessage = require('./user-message-schema');
-            const countQuery = userMessage.countDocuments({ 'receiverId': `${userId}` });
+            const userMessageModel = require('./user-message-schema');
+            const countQuery = userMessageModel.countDocuments({ 'receiverId': `${userId}` });
             countQuery.exec()
                 .then((count) => {
                     resolve(count);
@@ -20,9 +40,9 @@ class UserMessageModel {
             projection = columns;
         const pageSize = 10;
         const skip = filter.pageNumber * pageSize;
-        const userMessage = require('./user-message-schema');
+        const userMessageModel = require('./user-message-schema');
         return new Promise((resolve, reject) => {
-            const findQuery = userMessage
+            const findQuery = userMessageModel
                 .find({ 'receiverId': `${userId}` }, projection, {
                     skip: skip,
                     limit: pageSize

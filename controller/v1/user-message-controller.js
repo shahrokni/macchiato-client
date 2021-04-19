@@ -4,6 +4,25 @@ class UserMessageController {
         this.userMessageModel = userMessageModel;
     }
 
+    getMessage(userId,messageId){
+        return new Promise((resolve)=>{
+            const response = {};
+            response.serverValidations = [];
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
+            this.userMessageModel.getMessage(userId,messageId)
+            .then((userMessage)=>{
+                response.isSuccessful = true;
+                response.outputJson = userMessage;
+                resolve(response);
+            })
+            .catch(()=>{
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            })
+        })
+    }
+
     countAll(userId) {
         return new Promise((resolve) => {
             const response = {};

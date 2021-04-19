@@ -12,7 +12,7 @@ export const RowItemViewBox:
         const rowItemViewParam = 
          <Fragment>
              {props.children}
-             <SimpleBtn text = {backText} />
+             <SimpleBtn text = {backText} simpleStyle = {{}} action={()=>{alert(props.backLink)}} />
         </Fragment>
         return rowItemViewParam
     }

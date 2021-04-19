@@ -34,7 +34,7 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
                 setIsReturnPageRecalculated(true);
 
                 userMessageService.getMessage(messageId).then((messageResponse) => {
-                    if (messageResponse.isSuccessful) {
+                    if (messageResponse.isSuccessful) {                        
                         setFetchedMessageData(messageResponse.outputJson);
                     }
                     else {
@@ -58,7 +58,7 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
                     linkTitle={undefined}
                 />) :
             (<RowItemViewBox backLink={backLink as string}>
-                {renderMessageDetail(fetchedMessageData)}
+               { renderMessageDetail(fetchedMessageData) }
             </RowItemViewBox>)
     )
 }
@@ -66,7 +66,8 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
 function renderMessageDetail(message: UserMessage): JSX.Element {
     return <h1>
         {
-            message.title
+            message.title + '\n'
+            + message.text
         }
     </h1>
 }

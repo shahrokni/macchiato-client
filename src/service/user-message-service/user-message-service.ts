@@ -114,13 +114,14 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get(`/user_message_api/v1/message?ID=${messageId}`)
+            restInstance.get(`/user_message_api/v1/message`,
+            {params:{messageId:`${messageId}`}})
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil
                         .extractResponse(res) as Response<UserMessage>;
                     response.operationTimeServer = serverResponse.operationTimeServer;
-                    if (serverResponse.isSuccessful) {
+                    if (serverResponse.isSuccessful) {                      
                         response.isSuccessful = true;
                         response.outputJson = serverResponse.outputJson;
                         resolve(response);
@@ -149,7 +150,7 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.delete('user_message_api/v1/message',
+            restInstance.delete('/user_message_api/v1/message',
                 { params: { messageId: messageId } }).then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil
@@ -183,7 +184,7 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.put('user_message_api/v1/message/readFlag',
+            restInstance.put('/user_message_api/v1/message/readFlag',
                 { messageId: messageId })
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
@@ -218,7 +219,7 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_message_api/v1/message/countunread')
+            restInstance.get('/user_message_api/v1/message/countunread')
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil
