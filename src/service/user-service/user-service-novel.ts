@@ -20,7 +20,7 @@ export default class UserService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
 
-            restInstance.get('user_api/v1/user/isAuthenticated').then((res: any) => {
+            restInstance.get('/user_api/v1/user/isAuthenticated').then((res: any) => {
 
                 var responseUtil: any = require('../../util/response-util/response-util');
                 const serverResponse = responseUtil.extractResponse(res);

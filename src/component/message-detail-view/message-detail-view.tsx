@@ -4,10 +4,14 @@ import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
 import UserMessageService from '../../service/user-message-service/user-message-service';
 import { appGeneralInfo } from '../../setup-general-information';
+import { iso2ShortDate } from '../../util/date-util/date-util2';
 import calculatePage from '../../util/page-calculator/page-calculator';
+import { AuthWrapper } from '../authentication-wrapper/auth-wrapper';
+import { HtmlWrapper } from '../html-wrapper/html-wrapper';
 import { RowItemViewBox } from '../row-item-view/row-item-view';
 import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-message';
 import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
+import WhiteRibbon from '../white-ribbon/white-ribbon';
 export interface IMessageDetailViewParam {
     info: string | undefined;
 }
@@ -34,7 +38,7 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
                 setIsReturnPageRecalculated(true);
 
                 userMessageService.getMessage(messageId).then((messageResponse) => {
-                    if (messageResponse.isSuccessful) {                        
+                    if (messageResponse.isSuccessful) {
                         setFetchedMessageData(messageResponse.outputJson);
                     }
                     else {
@@ -49,25 +53,48 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
     }, []);
 
     return (
-        (!isReturnPageRecalculated || !backLink || !fetchedMessageData) ?
-            ((!hasError) ? <SimpleNarrowWaiting /> :
-                <SimpleNarrowMessage
-                    type={GlobalMessageType.Error}
-                    messgae={ErrorMessage.Err0000()}
-                    link={undefined}
-                    linkTitle={undefined}
-                />) :
-            (<RowItemViewBox backLink={backLink as string}>
-               { renderMessageDetail(fetchedMessageData) }
-            </RowItemViewBox>)
+
+        <AuthWrapper>{
+            (!isReturnPageRecalculated || !backLink || !fetchedMessageData) ?
+                ((!hasError) ? <SimpleNarrowWaiting /> :
+                    <SimpleNarrowMessage
+                        type={GlobalMessageType.Error}
+                        messgae={ErrorMessage.Err0000()}
+                        link={undefined}
+                        linkTitle={undefined}
+                    />) :
+                (<RowItemViewBox backLink={backLink as string}>
+                    { renderMessageDetail(fetchedMessageData)}
+                </RowItemViewBox>)}
+        </AuthWrapper>
     )
 }
 
 function renderMessageDetail(message: UserMessage): JSX.Element {
-    return <h1>
-        {
-            message.title + '\n'
-            + message.text
-        }
-    </h1>
+    const messageDetail = (<Fragment>
+        <WhiteRibbon />
+        <div id={'messageDetailContainer'}>
+            <div id={'messageDetailHeader'}>
+                <div className={'messageDetailHeaderRow'}>
+                    <div className={'messageDetailHeaderColumn'}>
+                        {message.title}
+                    </div>
+                </div>
+                <div className={'messageDetailHeaderRow'}>
+                    <div className={'messageDetailHeaderColumn'}>
+                        {message.senderId}
+                    </div>
+                    <div className={'messageDetailHeaderColumn'}>
+                        {iso2ShortDate(message.sentDate as Date)}
+                    </div>
+                </div>
+            </div>
+            <div id={'messageDetailTextBox'}>
+                <HtmlWrapper>
+                    {message.text}
+                </HtmlWrapper>
+            </div>
+        </div>
+    </Fragment>);
+    return messageDetail;
 }
