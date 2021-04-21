@@ -158,7 +158,7 @@ export default class ViewHandler {
         if(currentLocatin === appGeneralInfo.views.messagedelete){
             const MessageDeleteView = 
                 React.lazy(()=>import('../../message-delete/message-delete'));
-                createdComponent = <MessageDeleteView messageId={param} />
+                createdComponent = <MessageDeleteView info={param} />
         }
 
         /*About*/

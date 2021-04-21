@@ -11,7 +11,7 @@ export const AuthWrapper: FunctionComponent = (props) => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(AuthenticationState.NotSet);
     const [hasError, setHasError] = useState<boolean>(false);
-    const [loginLink] = useState(appGeneralInfo.baseUrl + '/' + appGeneralInfo.views.register);
+    const [loginLink] = useState(appGeneralInfo.baseUrl + appGeneralInfo.views.register);
     useEffect(() => {
         const userService = new UserService();
         userService.isUserAuthenticated().then((authResponse)=>{
