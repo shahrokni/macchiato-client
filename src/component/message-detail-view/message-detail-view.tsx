@@ -63,7 +63,11 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
                         link={undefined}
                         linkTitle={undefined}
                     />) :
-                (<RowItemViewBox backLink={backLink as string}>
+                (<RowItemViewBox backLink={backLink as string}
+                    action={() => {
+                        window.location.href =
+                        backLink
+                    }}>
                     { renderMessageDetail(fetchedMessageData)}
                 </RowItemViewBox>)}
         </AuthWrapper>

@@ -23,7 +23,7 @@ export default class UserMessageService implements IListDataService {
             response.operationTimeClient = this.dateUtil.getCurrentDateTime();
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
-            restInstance.get('user_message_api/v1/message/listdata',
+            restInstance.get('/user_message_api/v1/message/listdata',
                 { params: filter }).then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse =
