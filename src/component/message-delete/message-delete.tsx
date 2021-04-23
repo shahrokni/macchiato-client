@@ -3,6 +3,8 @@ import { GlobalMessageType } from '../../entity/global-message/enum/global-messa
 import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
 import UserMessageService from '../../service/user-message-service/user-message-service';
+import { appGeneralInfo } from '../../setup-general-information';
+import calculatePage from '../../util/page-calculator/page-calculator';
 import { AuthWrapper } from '../authentication-wrapper/auth-wrapper';
 import { RowItemDeletionBox } from '../row-item-deletion/row-item-deletion';
 import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-message';
@@ -29,9 +31,38 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
         Promise.all([messageCountPromise, message]).then((responses) => {
             const messageCountResponse = responses[0];
             const messageResponse = responses[1];
+
+            if(!messageCountResponse.isSuccessful || !messageResponse.isSuccessful){
+                setHasError(true);
+            }
+            else{
+                const recalculatedPageNumber =  
+                calculatePage(messageCountResponse.outputJson as number,
+                    parseInt(requestedPage));
+
+                setIsReturnPageRecalculated(true);
+                setBackLink(appGeneralInfo.baseUrl
+                    +appGeneralInfo.mainMenuItems.messages+'/'+recalculatedPageNumber);
+                setFetchedMessageData(messageResponse.outputJson);
+                setHasError(false);
+            }
+
         });
 
     }, []);
+
+    const back = ()=>{
+        window.location.href = 
+        backLink as string;
+    }
+
+    const deleteItem = ()=> {
+        const userMessageService = new UserMessageService();
+        userMessageService.deleteMessage(messageId)
+        .then((deletionResponse)=>{
+            
+        })
+    }
 
     return (
         <AuthWrapper>
@@ -48,10 +79,14 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
                     (
                         <RowItemDeletionBox
                             entityName={'message'}
-                            description={''} />
+                            description={fetchedMessageData.title as string}
+                            backAction = {back}
+                            deletionAction = {deleteItem}
+                            />
                     )
 
             }
         </AuthWrapper>
     )
 }
+
