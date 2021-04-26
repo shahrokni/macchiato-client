@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 class UserMessageModel {
 
     getMessage(userId, messageId) {
@@ -97,6 +98,22 @@ class UserMessageModel {
                 .catch((err) => {
                     reject(err);
                 })
+        })
+    }
+
+    deleteMessage(userId,messageId){
+        return new Promise((resolve,reject)=>{
+            const userMessageModel = require('./user-message-schema');
+            const model = new userMessageModel();
+            model.collection.deleteOne({receiverId: mongoose.Types.ObjectId(`${userId}`),
+            _id: mongoose.Types.ObjectId(`${messageId}`)})            
+            .then(()=>{
+                resolve()
+            })
+            .catch(()=>{
+                reject()
+            })
+            
         })
     }
 }

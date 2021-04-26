@@ -23,6 +23,9 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
     const [hasError, setHasError] = useState(false);
     const [fetchedMessageData, setFetchedMessageData] =
         useState<UserMessage | undefined>(undefined);
+    const [isOperationLocked,setIsOperationLocked] = useState(false);
+    const [isOperationSuccessful,setIsOperationSucessful] = 
+    useState<boolean|undefined>(undefined);
 
     useEffect(() => {
         const userMessageService = new UserMessageService();
@@ -56,11 +59,17 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
         backLink as string;
     }
 
-    const deleteItem = ()=> {
+    const deleteItem = ()=> {       
+        setIsOperationLocked(true);        
         const userMessageService = new UserMessageService();
         userMessageService.deleteMessage(messageId)
         .then((deletionResponse)=>{
-            
+            if(deletionResponse.isSuccessful === true){
+                back();
+            }
+            else{
+                setIsOperationSucessful(false);
+            }
         })
     }
 
@@ -82,6 +91,8 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
                             description={fetchedMessageData.title as string}
                             backAction = {back}
                             deletionAction = {deleteItem}
+                            areActionsDisabled={isOperationLocked}
+                            isDeletionOperationSuccessful = {isOperationSuccessful}
                             />
                     )
 

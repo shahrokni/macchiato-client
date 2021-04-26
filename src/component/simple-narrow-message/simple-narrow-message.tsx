@@ -13,7 +13,8 @@ export const SimpleNarrowMessage = (simpleNarrowMessage: ISimpleNarrowMessage): 
                 {simpleNarrowMessage.messgae}
             </div>
             {(simpleNarrowMessage.link) && <a href={simpleNarrowMessage.link}>
-                {(simpleNarrowMessage.linkTitle) ? (simpleNarrowMessage.linkTitle) : (simpleNarrowMessage.link)}
+                {(simpleNarrowMessage.linkTitle) ?
+                    (simpleNarrowMessage.linkTitle) : (simpleNarrowMessage.link)}
             </a>}
         </div>
     )
