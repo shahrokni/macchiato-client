@@ -52,7 +52,7 @@ export default function GeneralGrid(
                     setTotalRecords(countRecords as number);
                     listDataService.listData(listDataServiceFilter)
                         .then((listDataServiceResponse: Response<RowMetaData[]>) => {
-                            if (listDataServiceResponse.isSuccessful) {
+                            if (listDataServiceResponse.isSuccessful) {                                
                                 setRows(listDataServiceResponse.outputJson);
                                 setHasGridError(false);
                                 setIsGridLoaded(true);
@@ -109,7 +109,7 @@ export default function GeneralGrid(
         return header;
     }
 
-    const createGridRows = (): JSX.Element => {
+    const createGridRows = (): JSX.Element => {       
         const rowsContainer = (
             <div id={gridId + '-rowsContainer'}
                 className={'rowsContainer'}>
@@ -220,13 +220,13 @@ export default function GeneralGrid(
         if (chosenPage === currentPage || isFetchingData === true)
             return;
         setIsFetchingData(true);
-
+        setRows(undefined);
         listDataService?.listData({
             ...listDataServiceFilter,
             pageNumber: chosenPage
         } as IListDataServiceFilter)
             .then((listDataServiceResponse: Response<RowMetaData[]>) => {
-                if (listDataServiceResponse.isSuccessful) {
+                if (listDataServiceResponse.isSuccessful) {                   
                     setRows(listDataServiceResponse.outputJson);
                     changeChosenButtnStyle(chosenPage);
                     setCurrentPage(chosenPage);
