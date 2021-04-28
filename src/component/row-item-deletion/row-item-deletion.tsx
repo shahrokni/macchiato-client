@@ -8,10 +8,11 @@ import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
 export interface IRowItemDeletionParam {
     description: string;
     entityName: string;
-    backAction: (targetPage:number) => void;
+    backAction: (targetPage: number) => void;
     deletionAction: () => void;
     areActionsDisabled: boolean;
     isDeletionOperationSuccessful: boolean | undefined;
+    deletionOperationErrorMessage: string | undefined;
 }
 
 export const RowItemDeletionBox: FunctionComponent<IRowItemDeletionParam> = (props) => {
@@ -19,10 +20,13 @@ export const RowItemDeletionBox: FunctionComponent<IRowItemDeletionParam> = (pro
         useState<undefined | boolean>(undefined);
     const [isDeletionOperationSuccessful, setIsDeletionOperationSuccessful] =
         useState<undefined | boolean>(undefined);
+    const [deletionOperationErrorMessage,setDeletionOperationErrorMessage] =
+        useState<string | undefined>();
 
     useEffect(() => {
         setAreActionsDisabled(props.areActionsDisabled);
         setIsDeletionOperationSuccessful(props.isDeletionOperationSuccessful);
+        setDeletionOperationErrorMessage(props.deletionOperationErrorMessage);
     });
 
     const backBtnText = 'Back';
@@ -47,7 +51,9 @@ export const RowItemDeletionBox: FunctionComponent<IRowItemDeletionParam> = (pro
                     ((isDeletionOperationSuccessful == undefined) ? <SimpleNarrowWaiting /> :
                         <SimpleNarrowMessage
                             type={GlobalMessageType.Error}
-                            messgae={ErrorMessage.Err0000()}
+                            messgae={(deletionOperationErrorMessage) ?
+                                deletionOperationErrorMessage :
+                                ErrorMessage.Err0000()}
                             link={undefined}
                             linkTitle={undefined}
                         />

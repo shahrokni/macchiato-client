@@ -24,6 +24,10 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
     const [isOperationLocked, setIsOperationLocked] = useState(false);
     const [isOperationSuccessful, setIsOperationSucessful] =
         useState<boolean | undefined>(undefined);
+    const [operationError, setOperationError] =
+        useState<string | undefined>(undefined);
+
+
 
     useEffect(() => {
         const userMessageService = new UserMessageService();
@@ -56,14 +60,19 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
                         .then((countResponse) => {
                             const countMesages = countResponse.outputJson as number;
                             const calculatedPageNumber =
-                                calculatePage(countMesages, parseInt(requestedPage));                           
-                                window.location.href =
+                                calculatePage(countMesages, parseInt(requestedPage));
+                            window.location.href =
                                 appGeneralInfo.baseUrl +
                                 appGeneralInfo.mainMenuItems.messages +
                                 '/' + calculatedPageNumber;
                         })
                 }
                 else {
+                    if(deletionResponse.serverValidations &&
+                        deletionResponse.serverValidations.length!==0){
+                            setOperationError(deletionResponse
+                                .serverValidations[0] as string);
+                        }
                     setIsOperationSucessful(false);
                 }
             })
@@ -89,6 +98,7 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
                             deletionAction={deleteItem}
                             areActionsDisabled={isOperationLocked}
                             isDeletionOperationSuccessful={isOperationSuccessful}
+                            deletionOperationErrorMessage = {operationError}
                         />
                     )
 

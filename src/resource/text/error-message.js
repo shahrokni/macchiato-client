@@ -192,6 +192,10 @@ class ErrorMessage {
     static ErrBu0025(){
         return "The code has already been taken!";
     }
+    /* -------------- U S E R M E S S A G E---------------------- */
+    static ErrBu0029(){
+        return "Advertisements cannot be deleted by users!";
+    }
 }
 
 
