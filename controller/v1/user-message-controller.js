@@ -1,3 +1,4 @@
+
 class UserMessageController {
 
     constructor(userMessageModel) {
@@ -78,6 +79,24 @@ class UserMessageController {
                 resolve(response);
             })
         });
+    }
+
+    setReadFlag(userId,messageId){
+        return new Promise((resolve)=>{
+            const response = {};
+            response.serverValidations = [];
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
+            this.userMessageModel.setReadFlag(userId,messageId)
+            .then(()=>{
+                response.isSuccessful = true
+                resolve(response);
+            })
+            .catch(()=>{              
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            })
+        });  
     }
 }
 module.exports = UserMessageController;
