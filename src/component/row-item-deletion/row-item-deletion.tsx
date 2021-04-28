@@ -8,7 +8,7 @@ import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
 export interface IRowItemDeletionParam {
     description: string;
     entityName: string;
-    backAction: () => void;
+    backAction: (targetPage:number) => void;
     deletionAction: () => void;
     areActionsDisabled: boolean;
     isDeletionOperationSuccessful: boolean | undefined;

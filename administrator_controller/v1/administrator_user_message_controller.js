@@ -12,7 +12,8 @@ function sendInitialMessage(userId, sessionOption) {
             receiverId: userId,
             sentDate: Date.now(),
             title: global.systemMessages.welcomeTitle,
-            text: global.systemMessages.welcomeMessage
+            text: global.systemMessages.welcomeMessage,
+            isAdvertisement: false
         }, sessionOption).then((savedUserMessage) => {
             response.isSuccessful = true;
             response.outputJson = savedUserMessage
