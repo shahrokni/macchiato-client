@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
 import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
@@ -18,66 +18,62 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
     const paramArray = param.info?.split('.') as string[];
     const [messageId] = useState(paramArray[0]);
     const [requestedPage] = useState(paramArray[1]);
-    const [isReturnPageRecalculated, setIsReturnPageRecalculated] = useState(false);
-    const [backLink, setBackLink] = useState<string | undefined>();
     const [hasError, setHasError] = useState(false);
     const [fetchedMessageData, setFetchedMessageData] =
         useState<UserMessage | undefined>(undefined);
-    const [isOperationLocked,setIsOperationLocked] = useState(false);
-    const [isOperationSuccessful,setIsOperationSucessful] = 
-    useState<boolean|undefined>(undefined);
+    const [isOperationLocked, setIsOperationLocked] = useState(false);
+    const [isOperationSuccessful, setIsOperationSucessful] =
+        useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         const userMessageService = new UserMessageService();
-        const messageCountPromise = userMessageService.countListData(null);
-        const message = userMessageService.getMessage(messageId);
-        Promise.all([messageCountPromise, message]).then((responses) => {
-            const messageCountResponse = responses[0];
-            const messageResponse = responses[1];
-
-            if(!messageCountResponse.isSuccessful || !messageResponse.isSuccessful){
-                setHasError(true);
-            }
-            else{
-                const recalculatedPageNumber =  
-                calculatePage(messageCountResponse.outputJson as number,
-                    parseInt(requestedPage));
-
-                setIsReturnPageRecalculated(true);
-                setBackLink(appGeneralInfo.baseUrl
-                    +appGeneralInfo.mainMenuItems.messages+'/'+recalculatedPageNumber);
-                setFetchedMessageData(messageResponse.outputJson);
-                setHasError(false);
-            }
-
-        });
-
+        userMessageService.getMessage(messageId)
+            .then((messageResponse) => {
+                if (!messageResponse.isSuccessful) {
+                    setHasError(true);
+                }
+                else {
+                    setFetchedMessageData(messageResponse.outputJson);
+                    setHasError(false);
+                }
+            })
     }, []);
 
-    const back = ()=>{
-        window.location.href = 
-        backLink as string;
+    const back = () => {
+        window.location.href =
+            appGeneralInfo.baseUrl +
+            appGeneralInfo.mainMenuItems.messages +
+            '/' + requestedPage;
     }
 
-    const deleteItem = ()=> {       
-        setIsOperationLocked(true);        
+    const deleteItem = () => {
+        setIsOperationLocked(true);
         const userMessageService = new UserMessageService();
         userMessageService.deleteMessage(messageId)
-        .then((deletionResponse)=>{
-            if(deletionResponse.isSuccessful === true){
-                back();
-            }
-            else{
-                setIsOperationSucessful(false);
-            }
-        })
+            .then((deletionResponse) => {
+                if (deletionResponse.isSuccessful === true) {
+                    userMessageService.countListData(null)
+                        .then((countResponse) => {
+                            const countMesages = countResponse.outputJson as number;
+                            const calculatedPageNumber =
+                                calculatePage(countMesages, parseInt(requestedPage));                           
+                                window.location.href =
+                                appGeneralInfo.baseUrl +
+                                appGeneralInfo.mainMenuItems.messages +
+                                '/' + calculatedPageNumber;
+                        })
+                }
+                else {
+                    setIsOperationSucessful(false);
+                }
+            })
     }
 
     return (
         <AuthWrapper>
             {
 
-                (!isReturnPageRecalculated || !backLink || !fetchedMessageData) ?
+                (!fetchedMessageData) ?
                     ((!hasError) ? <SimpleNarrowWaiting /> :
                         <SimpleNarrowMessage
                             type={GlobalMessageType.Error}
@@ -89,11 +85,11 @@ export default function MessageDeleteView(param: IMessageDeleteViewParam): JSX.E
                         <RowItemDeletionBox
                             entityName={'message'}
                             description={fetchedMessageData.title as string}
-                            backAction = {back}
-                            deletionAction = {deleteItem}
+                            backAction={back}
+                            deletionAction={deleteItem}
                             areActionsDisabled={isOperationLocked}
-                            isDeletionOperationSuccessful = {isOperationSuccessful}
-                            />
+                            isDeletionOperationSuccessful={isOperationSuccessful}
+                        />
                     )
 
             }

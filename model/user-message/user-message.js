@@ -24,7 +24,8 @@ class UserMessageModel {
     countAll(userId) {
         return new Promise((resolve, reject) => {
             const userMessageModel = require('./user-message-schema');
-            const countQuery = userMessageModel.countDocuments({ 'receiverId': `${userId}` });
+            const countQuery = userMessageModel
+            .countDocuments({ 'receiverId': `${userId}` });
             countQuery.exec()
                 .then((count) => {
                     resolve(count);

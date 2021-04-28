@@ -7,6 +7,7 @@ module.exports = function () {
         .on('disconnected', () => {console.log('DB connection was disconnected!')})
         .on('open', () => { console.log('DB Connection was opened!'); });
 
-    mongoose.connect('mongodb://localhost:27017/enmacchiatodb?retryWrites=false', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true });
+    mongoose.connect('mongodb://localhost:27017/enmacchiatodb?retryWrites=false',
+     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true });
 }
 

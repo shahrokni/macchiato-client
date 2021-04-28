@@ -75,7 +75,8 @@ async function registerUser(userDetail) {
     let hash = bcrypt.hashSync(receivedData.password, bcrypt.genSaltSync(salt));
 
     newUser.password = hash;
-    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber': { $regex: '^' + newUserDetail.studentNumber } });
+    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber':
+     { $regex: '^' + newUserDetail.studentNumber } });
     let countedItem;
 
     try {
