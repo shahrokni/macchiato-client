@@ -10,8 +10,6 @@ api.use(bodyParser.json());
 
 //Check if the user is authenticated
 function isUserAuthenticated(req, res, next) {
-
-
     if (req.isAuthenticated()) {
 
         next();
@@ -24,20 +22,19 @@ function isUserAuthenticated(req, res, next) {
 
 //Save the new user
 api.post('/user', async (req, res) => {
-    
     await userController.registerUser(req.body)
-    .then((response)=>{
-               
-        res.json({response:response});
-        return;
-    });   
+        .then((response) => {
+
+            res.json({ response: response });
+            return;
+        });
 });
 
 
 //Update the user information
 api.put('/user', isUserAuthenticated, (req, res) => {
 
-    userController.updateUserInformation(req.body, req.user._id, (response) => {
+    userController.updateUserInformation(req.body.userDetail, req.user._id, (response) => {
 
         res.json({ response: response });
         return;
@@ -57,12 +54,45 @@ api.get('/userDetail', isUserAuthenticated, (req, res) => {
 //Update the email
 api.put('/user/email', isUserAuthenticated, (req, res) => {
 
-    userController.updateUserEmail(req.body.newEmail, req.user._id, (response) => {
+    userController.updateUserEmail(req.body.newEmail, req.user._id)
+        .then((response) => {
+            res.json({ response: response });
+            return;
+        })
+});
+
+// Fetch the email
+api.get('/user/email', isUserAuthenticated, (req, res) => {
+    userController.getEmail(req.user._id).then((response) => {
         res.json({ response: response });
+        return;
+    })
+})
+
+//Update the cellphone
+api.put('/user/cellphone', isUserAuthenticated, (req, res) => {
+    userController.updateCellphone(req.body.cellphone, req.user._id)
+        .then((response) => {           
+            res.json({ response: response });
+            return;
+        })
+});
+
+//Fetch the cellphone
+api.get('/user/cellphone', isUserAuthenticated, (req, res) => {
+    userController.getCellphone(req.user._id).then((response) => {
+        res.json({ response: response });
+        return;
+    })
+});
+
+/* Fetch User Joined With Detail */
+api.get('/user/userjoineddetail',isUserAuthenticated,(req,res)=>{
+    userController.getUserJoinedDetail(req.user._id).then((response)=>{
+        res.json({response:response});
         return;
     });
 });
-
 //Change the password
 api.put('/user/password', isUserAuthenticated, (req, res) => {
 
@@ -76,7 +106,8 @@ api.put('/user/password', isUserAuthenticated, (req, res) => {
     });
 });
 
-api.get('/user/isAuthenticated',isUserAuthenticated,(req,res)=>{
+//Check if user is authenticated
+api.get('/user/isAuthenticated', isUserAuthenticated, (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = true;
@@ -86,19 +117,30 @@ api.get('/user/isAuthenticated',isUserAuthenticated,(req,res)=>{
     return;
 });
 
+//Get score
+api.get('/user/score', isUserAuthenticated, (req, res) => {
+    userController.getScore(req.user._id).then((response) => {
+        res.json({ response: response });
+        return;
+    })
+});
+
 /*------------------------------LOGIN----------------------------------*/
 api.post('/user/login', passport.authenticate('login', {
-
     successRedirect: 'successfulLogin',
     failureRedirect: 'failedLogin',
 }));
-
+/*-------------LOGIN WITH AUTHKEY----------------*/
+api.post('/user/loginwithauthkey', passport.authenticate('login', {
+    successRedirect: 'successfulLogin',
+    failureRedirect: 'failedLogin',
+}));
+/*-----------------------------------------------*/
 api.get('/user/successfulLogin', (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = true;
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
     res.json({ response: response });
     return;
 });
@@ -113,7 +155,23 @@ api.get('/user/failedLogin', (req, res) => {
     res.json({ response: response });
     return;
 });
+/*----------- LOGIN AND SAVE AUT KEY (RMEMBER ME) ---------*/
+api.post('/user/login_set_remember', passport.authenticate('login', {
 
+    successRedirect: 'save_authkey_successfulLogin',
+    failureRedirect: 'failedLogin',
+}));
+
+api.get('/user/save_authkey_successfulLogin', async (req, res) => {
+
+    await userController.saveAuthKey4User(req.user._id).then((response) => {
+
+        res.json({ response: response });
+        return res;
+    });
+});
+
+/*------------------------------------------------*/
 api.get('/user/logout', (req, res) => {
 
     req.logout();
@@ -121,22 +179,20 @@ api.get('/user/logout', (req, res) => {
 });
 
 api.get('/user/logedout', (req, res) => {
-
     let response = new global.responseClass();
     response.isSuccessful = true;
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
     res.json({ response: response });
     return res;
 });
 
+/*-----------------------------------------------*/
 api.get('/notlogedIn', (req, res) => {
 
     let response = new global.responseClass();
     response.isSuccessful = false;
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     response.serverValidations.push(global.errorResource.ErrBu0017());
-
     res.json({ response: response });
     return res;
 });

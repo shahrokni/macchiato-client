@@ -5,6 +5,7 @@ var express = require('express');
 var adminQuestionApi = express.Router();
 adminQuestionApi.use(bodyParser.json());
 /*----------------------------------------*/
+//TODO:Authentication Check!
 adminQuestionApi.post('/question/reading', async (req,res)=>{
 
     await questionController.addNewReadingQuestion(req.body).then((response)=>{
@@ -13,7 +14,7 @@ adminQuestionApi.post('/question/reading', async (req,res)=>{
         return res;
     });   
 });
-
+//TODO:Authentication Check!
 adminQuestionApi.post('/question/listening', async (req,res)=>{
 
     await questionController.addNewListeningQuestion(req.body)
@@ -24,7 +25,7 @@ adminQuestionApi.post('/question/listening', async (req,res)=>{
     });
     
 });
-
+//TODO:Authentication Check!
 adminQuestionApi.post('/question/writing', async (req,res)=>{
 
     await questionController.addNewWritingQuestion(req.body)
@@ -34,7 +35,7 @@ adminQuestionApi.post('/question/writing', async (req,res)=>{
         return res;
     });   
 })
-
+//TODO:Authentication Check!
 adminQuestionApi.post('/question/speaking', async (req,res)=>{
 
     await questionController.addNewSpeakingQuestion(req.body)
@@ -44,7 +45,7 @@ adminQuestionApi.post('/question/speaking', async (req,res)=>{
         return res;
     });    
 });
-
+//TODO:Authentication Check!
 adminQuestionApi.post('/question/visual', async (req,res)=>{
     
     await questionController.addNewVisualQuestion(req.body)
@@ -54,7 +55,7 @@ adminQuestionApi.post('/question/visual', async (req,res)=>{
         return res;
     });    
 })
-
+//TODO:Authentication Check!
 adminQuestionApi.post('/question/vocab', async (req,res)=>{
    
     await questionController.addNewVocabQuestion(req.body)

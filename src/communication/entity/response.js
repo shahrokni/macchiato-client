@@ -5,6 +5,7 @@ class Response {
         this.isSuccessful = false;
         this.clientValidations = [];
         this.serverValidations = [];
+        /*TODO:BUG */
         this.outputJson = "";
         this.operationTimestamp = new Date();
     }

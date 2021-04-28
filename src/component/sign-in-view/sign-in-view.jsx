@@ -7,6 +7,8 @@ import UserService from '../../service/user-service/user-service';
 import { AuthenticationState } from '../../entity/global/authentication-state';
 import User from '../../entity/user/user';
 import { appGeneralInfo } from '../../setup-general-information';
+import { setCookie, getCookieByKey } from '../../util/cookie-util/cookie-util';
+import { commonMessages } from '../../resource/text/common-messages';
 
 export default class SignInView extends React.Component {
 
@@ -64,22 +66,35 @@ export default class SignInView extends React.Component {
 
                 {isUserAuthenticated === AuthenticationState.NotAuthenticated &&
 
-                    <React.Fragment>
-                        {
-                            !window.matchMedia("(max-width:767px)") &&
-                            <WelcomeBox />
-                        }
-                        <div className="signInViewContainer">
-                            <SigInLogo />
-                            <SignInWhiteBox
-                                ref={{ btnRef: this.signinButtonRef, messageRef: this.signinMessageRef }}
-                                {...siginWhiteBoxProps}
-                            />
-                        </div>
-                    </React.Fragment>
+                    (
+                        (getCookieByKey('authKey') === '') ? (
+                            <React.Fragment>
+                                {
+                                    !window.matchMedia("(max-width:767px)") &&
+                                    <WelcomeBox />
+                                }
+                                <div className="signInViewContainer">
+                                    <SigInLogo />
+                                    <SignInWhiteBox
+                                        ref={{ btnRef: this.signinButtonRef, messageRef: this.signinMessageRef }}
+                                        {...siginWhiteBoxProps}
+                                    />
+                                </div>
+                            </React.Fragment>)
+                            : (
+                                <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
+                                    <div style={{ visibility: 'hidden' }}>
+                                        {
+                                            (window.location.href=appGeneralInfo.baseUrl+
+                                                appGeneralInfo.views.checkUserInformation)
+                                        }
+                                    </div>
+                                </React.Suspense>
+                            )
+                    )
                 }
                 {isUserAuthenticated === AuthenticationState.Authenticated &&
-                    <React.Suspense fallback={<h3>Loading ...</h3>}>
+                    <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                         <div style={{ visibility: 'hidden' }}>
                             {
                                 (window.location.href = appGeneralInfo.baseUrl +
@@ -89,7 +104,7 @@ export default class SignInView extends React.Component {
                     </React.Suspense>
                 }
                 {isUserAuthenticated === AuthenticationState.CommunicationError &&
-                    <React.Suspense fallback={<h3>Loading ...</h3>}>
+                    <React.Suspense fallback={<h3>{commonMessages.loading}</h3>}>
                         {
                             /*Redirect to Global View Message*/
                             <div style={{ visibility: 'hidden' }}>
@@ -117,20 +132,29 @@ export default class SignInView extends React.Component {
         this.signinButtonRef.current.disabled = true;
         this.signinButtonRef.current.style.cursor = 'no-drop';
         this.signinMessageRef.current.style.color = '#116805';
-        this.signinMessageRef.current.innerText = 'Please be patient...'
+        this.signinMessageRef.current.innerText = commonMessages.wait;
 
         let userService = new UserService();
         let user = new User();
         user.userName = invoker.signinViewModel.username;
         user.password = invoker.signinViewModel.password;
+        (invoker.signinViewModel.rememberMe === true) ? user.rememberMe = true : user.rememberMe = false;
 
         userService.signIn(user, (response) => {
 
             if (response.isSuccessful === true) {
 
+
+                if (response['hasAuthKey']) {
+                    if (response['hasAuthKey'] === true) {
+                        /* SET REMEMBER ME COOKIE */
+                        setCookie({ key: 'authKey', value: response.outputJson.authKey }, 365);
+                    }
+                }
+
                 userService.getUserDetail((response) => {
 
-                    /* KEEP USER INFORMATION IN LOCAL STORAGE */
+                    /* KEEP USER INFORMATION IN SESSION STORAGE */
                     window.sessionStorage.setItem('userName', response.outputJson.userDetail.name);
                     window.sessionStorage.setItem('userLastName', response.outputJson.userDetail.lastName);
                     invoker.setState({ isAuthenticated: AuthenticationState.Authenticated });

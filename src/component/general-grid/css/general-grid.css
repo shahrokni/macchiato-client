@@ -1,0 +1,77 @@
+.generalGridContainer{
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+}
+.headerContainer{
+    display: flex;
+    flex-direction: row;
+}
+.rowsContainer{
+    display: flex;
+    flex-direction: column;
+}
+.gridRow{
+    display: flex;
+    flex-direction: row;
+    font-family:Montserrat-Medium;
+    box-sizing: border-box;
+    color: #707070;   
+}
+.headerCell{
+    font-family:Montserrat-Medium;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+}
+.oddRow{
+    background-color: #FFFFFF;
+}
+.evenRow{
+    background-color: #F6F6F6;
+}
+.pagingContainer{
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;  
+}
+.pagingNumericBtn{
+    cursor: pointer;
+    font-family:Montserrat-Medium;   
+    text-decoration: underline;     
+}
+.pagingContainerLoadingMessages{
+    font-family:Montserrat-Medium; 
+    box-sizing: border-box;  
+}
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape) {  
+      
+.gridRow{
+     padding-top: 2.5rem;
+     padding-bottom: 2.5rem;
+     font-size: 1.125rem;
+     padding-left: 0.5rem;
+}
+.headerCell{
+     padding-top: 2.5rem;
+     padding-bottom: 2.5rem;
+     font-size: 1.125rem;
+     padding-left: 0.5rem;
+}
+.pagingContainer{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 0.5rem;
+}
+.pagingNumericBtn{
+    padding:0.5rem;  
+    border-radius: 1.25rem;
+}
+.pagingContainerLoadingMessages{
+    padding-top: 0.5rem;
+    font-size: 1.125rem;
+}
+  
+}

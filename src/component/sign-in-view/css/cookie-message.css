@@ -1,0 +1,78 @@
+
+/*TODO: CSS MUST BE RECTIFIED!*/
+.cookieWarningMessage{
+    color:#D9183B;
+    font-family: Montserrat-Medium;
+    text-align: justify;
+}
+
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .cookieWarningMessage{
+        float: left;
+        height: fit-content;       
+        width: 90%;
+        margin-left: 5%;
+        margin-top: 2%;        
+    }   
+    .cookieWarningMessage span{
+        position: relative!important;
+        top: 0.2rem!important;
+    }
+}
+
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    
+    .cookieWarningMessage{
+        float: left;
+        width: 90%;
+        height: fit-content;
+        margin-left: 5%;
+        margin-bottom: 5%;
+        box-sizing: border-box;
+        padding-left: 10%;
+        margin-top: 5%;
+    }
+    .cookieWarningMessage span{
+        position: relative!important;
+        top: 0.2rem!important;
+    }
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){
+
+    .cookieWarningMessage{
+        float: left;
+        width: 90%;
+        height: fit-content;
+        margin-left: 5%;
+        /* margin-bottom: 5%; */
+        box-sizing: border-box;
+        padding-left: 10%;
+        /* margin-top: 5%; */
+      }
+      .cookieWarningMessage span{
+          position: relative!important;
+          top: 0.2rem!important;
+      }
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 768px) and (orientation: landscape)  {
+  .cookieWarningMessage{
+    float: left;
+    width: 90%;
+    height: fit-content;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    box-sizing: border-box;
+    padding-left: 10%;
+    margin-top: 5%;
+  }
+  .cookieWarningMessage span{
+      position: relative!important;
+      top: 0.2rem!important;
+  }
+} 

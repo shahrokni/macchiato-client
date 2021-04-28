@@ -1,0 +1,8 @@
+/*Mobile and Tablet Portrait*/
+
+    .introducerSelectorContainer{
+        width:100%;
+    }
+    .introducerSelectorContainer .MuiOutlinedInput-root{
+        width: 100%;
+    }

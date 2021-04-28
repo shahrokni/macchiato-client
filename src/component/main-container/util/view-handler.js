@@ -12,8 +12,10 @@ export default class ViewHandler {
     static retrieveView(innerLinkClickEventHandler) {
 
         let createdComponent = undefined;
-        let windowUrl = window.location.href;
-        let currentLocatin = (windowUrl.split(appGeneralInfo.baseUrl))[1];        
+        const windowUrl = window.location.href;
+        const currentLocatinParam = (windowUrl.split(appGeneralInfo.baseUrl))[1];   
+        const [currentLocatin,param]  = currentLocatinParam.split('/');       
+
 
         //Do not reload views, if the address has not been changed!
         if (store.getState().location === currentLocatin) {
@@ -25,14 +27,21 @@ export default class ViewHandler {
 
         /* Home Page */
         if (currentLocatin === appGeneralInfo.mainMenuItems.homePage) {
-            const HomePageView = React.lazy(() => import('../../homepage-view/homepage-view'));
+            const HomePageView = 
+            React.lazy(() => import('../../homepage-view/homepage-view'));
             createdComponent = <HomePageView linkClick={innerLinkClickEventHandler} />;
         }
-
+        /* CHECK USER INFORMATION */
+        if(currentLocatin === appGeneralInfo.views.checkUserInformation){
+            const CheckUserInformationView = 
+            React.lazy(()=>import('../../check-user-information/check-user-information'));
+            createdComponent = <CheckUserInformationView/>
+        }
         /*Language Level*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.languageLevel) {
             //TODO
-            const GlobalMessageView = React.lazy(() => import('../../global-message-view/global-message-view'));
+            const GlobalMessageView = 
+            React.lazy(() => import('../../global-message-view/global-message-view'));
             createdComponent = <GlobalMessageView linkClick={innerLinkClickEventHandler}/>;
         }
 
@@ -49,48 +58,60 @@ export default class ViewHandler {
 
             //TODO
             const PracticeFilterView =
-                React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
+                React.lazy(
+                    () => import('../../practice-filter-view/practice-filter-view'));
+            createdComponent =
+             <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Listening Practice*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.listeningPractice) {
             //TODO
             const PracticeFilterView =
-                React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
+                React.lazy(
+                    () => import('../../practice-filter-view/practice-filter-view'));
+            createdComponent =
+             <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Reading Practice*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.readingPractice) {
             //TODO
             const PracticeFilterView =
-                React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
+                React.lazy(
+                    () => import('../../practice-filter-view/practice-filter-view'));
+            createdComponent = 
+            <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Writing Practice*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.writingPractice) {
             //TODO
             const PracticeFilterView =
-                React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
+                React.lazy(
+                    () => import('../../practice-filter-view/practice-filter-view'));
+            createdComponent =
+             <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Speaking Practice*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.speakingPractice) {
             //TODO
             const PracticeFilterView =
-                React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
+                React.lazy(
+                    () => import('../../practice-filter-view/practice-filter-view'));
+            createdComponent = 
+            <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Slang Practice*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.slangPractice) {
             //TODO
             const PracticeFilterView =
-                React.lazy(() => import('../../practice-filter-view/practice-filter-view'));
-            createdComponent = <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
+                React.lazy(
+                    () => import('../../practice-filter-view/practice-filter-view'));
+            createdComponent =
+             <PracticeFilterView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /* Reports */
@@ -104,9 +125,9 @@ export default class ViewHandler {
         /*Account*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.account) {
 
-            const AccountView =
-                React.lazy(() => import('../../account-view/account-view'));
-            createdComponent = <AccountView linkClick={innerLinkClickEventHandler}/>;
+            const ProfileView =
+                React.lazy(() => import('../../profile-view/profile-view'));
+            createdComponent = <ProfileView linkClick={innerLinkClickEventHandler}/>;
         }
 
         /*Wallet*/
@@ -120,9 +141,24 @@ export default class ViewHandler {
         /*Message*/
         if (currentLocatin === appGeneralInfo.mainMenuItems.messages) {
 
-            const MessagesView =
+            const MessagesListView =
                 React.lazy(() => import('../../message-box-view/message-box-view'));
-            createdComponent = <MessagesView  linkClick={innerLinkClickEventHandler}/>;
+            createdComponent = (param) ?  <MessagesListView requestedPage={param} /> : 
+            <MessagesListView requestedPage={undefined} />;
+        }
+
+        /* Message View */
+        if(currentLocatin === appGeneralInfo.views.messageview){
+            const MessageDetailView = 
+                React.lazy(()=>import('../../message-detail-view/message-detail-view'));
+            createdComponent = <MessageDetailView info={param} />
+        }
+
+        /* Message Delete */
+        if(currentLocatin === appGeneralInfo.views.messagedelete){
+            const MessageDeleteView = 
+                React.lazy(()=>import('../../message-delete/message-delete'));
+                createdComponent = <MessageDeleteView info={param} />
         }
 
         /*About*/
@@ -175,7 +211,12 @@ export default class ViewHandler {
             
             createdComponent = <RegisterView linkClick={innerLinkClickEventHandler}/>
         }
-               
+        /* Term of use */   
+        if(currentLocatin === appGeneralInfo.views.termOfUse){
+            const TermOfUse = 
+                React.lazy(()=>import('../../term-of-use/term-of-use'));
+            createdComponent = <TermOfUse linkClick={innerLinkClickEventHandler}/>
+        }
         store.dispatch(keepCurrentComponent(createdComponent));
         return createdComponent;
     }

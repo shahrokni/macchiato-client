@@ -76,23 +76,52 @@ export default class UserService {
         }
         else {
 
-            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-            restInstance.post('user_api/v1/user', userDetail).then(function (res) {
-
+            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());           
+            restInstance.post('user_api/v1/user', userDetail)
+            .then(function (res) {            
                 let responseUtil = require('../../util/response-util/response-util');
                 let serverResponse = responseUtil.extractResponse(res);
                 callBack(serverResponse);
             })
-                .catch(function (err) {
-
-                    response.setClientValidations(errorMessages.push(ErrorMessages.Err0000()));
+                .catch(function (err) {                  
+                    errorMessages.push(ErrorMessages.Err0000());
+                    response.setClientValidations(errorMessages);
                     callBack(response);
                 });
         }
 
     }
+    
+    /*authKey:string */
+    signinWithAuthKey(authKey,callBack){
 
+        let response = new Response();
+        response.isSuccessful = false;
+        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
+
+        if(!authKey){
+
+            response.clientValidations.push(ErrorMessages.Err0000());
+            callBack(response);
+        }
+        else{
+
+            const restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            const api = 'user_api/v1/user/loginwithauthkey';
+            restInstance.post(api,{authKey:authKey})
+            .then((response)=>{
+
+                const responseUtil = require('../../util/response-util/response-util');
+                const serverResponse = responseUtil.extractResponse(response);
+                callBack(serverResponse);
+            })
+            .catch((err)=>{
+
+                response.clientValidations.push(ErrorMessages.Err0000());
+                callBack(response);
+            });
+        }
+    }
     /*user: User - output: Response*/
     signIn(user, callBack) {
 
@@ -108,8 +137,10 @@ export default class UserService {
         else {
 
             let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
+            let api = '';
+            (user.rememberMe === false) ? api = 'user_api/v1/user/login' : api = 'user_api/v1/user/login_set_remember';
 
-            restInstance.post('user_api/v1/user/login', { username: user.userName, password: user.password })
+            restInstance.post(api, { username: user.userName, password: user.password })
                 .then(function (res) {
 
                     let responseUtil = require('../../util/response-util/response-util');
@@ -121,10 +152,10 @@ export default class UserService {
                     response.clientValidations.push(ErrorMessages.Err0000());
                     callBack(response);
                 });
-
         }
     }
 
+    /*deprecated*/
     /*userDetail: UserDetail-output: Reponse*/
     update(userDetail, callBack) {
 
@@ -158,43 +189,6 @@ export default class UserService {
                     response.clientValidations.push(ErrorMessages.Err0000());
                     callBack(response);
                 });
-        }
-    }
-
-    /*output: Response*/
-    updateEmail(newEmail, callBack) {
-
-        let UserValidationClass = require('../../util/validation/user-validation');
-        let validator = new UserValidationClass();
-
-        let response = new Response();
-        response.isSuccessful = false;
-        response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
-        let errorMessages = validator.validateUpdateEmail(newEmail);
-
-        if (errorMessages != null && errorMessages.length !== 0) {
-
-            response.setClientValidations(errorMessages);
-            callBack(response);
-        }
-        else {
-
-            let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-            restInstance.put('user_api/v1/user/email', { 'newEmail': newEmail }).then(function (res) {
-
-                let responseUtil = require('../../util/response-util/response-util');
-                let serverResponse = responseUtil.extractResponse(res);
-                callBack(serverResponse);
-
-            })
-                .catch(function (err) {
-
-                    response.clientValidations.push(ErrorMessages.Err0000());
-                    callBack(response);
-                });
-
         }
     }
 
@@ -237,28 +231,5 @@ export default class UserService {
                     callBack(response);
                 });
         }
-    }
-
-    /*output: Response*/
-    logOut(callBack) {
-
-        let restInstance = RestProvider.createInstance(RestProvider.getTimeoutDuration());
-
-        restInstance.get('user_api/v1/user/logout').then(function (res) {
-
-            let responseUtil = require('../../util/response-util/response-util');
-            let serverResponse = responseUtil.extractResponse(res);
-            callBack(serverResponse);
-
-        })
-            .catch(function (err) {
-
-                let response = new Response();
-                response.isSuccessful = false;
-                response.operationTimestamp = this.dateUtil.getCurrentDateTime();
-
-                response.clientValidations.push(ErrorMessages.Err0000());
-                callBack(response);
-            });
-    }
+    }   
 }

@@ -1,51 +1,57 @@
-var UserMessage = require('../../model/user-message/user-message');
 /*-------------------EXPOSED FUNCTION--------------------------*/
-async function sendInitialMessage(userId, sessionOption) {
+const administrator = 'Administrator';
 
-    let response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-    let userMessage = new UserMessage();
-    userMessage.senderId = 'Administrator';
-    userMessage.receiverId = userId;
-    userMessage.sentDate = Date.now();
-    userMessage.title = global.systemMessages.welcomeTitle;
-    userMessage.text = global.systemMessages.welcomeMessage;
-
-    try {
-        await userMessage.save(sessionOption);
-        return Promise.resolve();
-    }
-    catch(exception){
-
-        return Promise.reject(exception);
-    }
+function sendInitialMessage(userId, sessionOption) {
+    return new Promise((resolve,reject) => {
+        const userMessageModel = require('../../model/user-message/user-message');
+        const model = new userMessageModel();
+        let response = new global.responseClass();
+        response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+        model.saveBySessionId({
+            senderId: administrator,
+            receiverId: userId,
+            sentDate: Date.now(),
+            title: global.systemMessages.welcomeTitle,
+            text: global.systemMessages.welcomeMessage,
+            isAdvertisement: false
+        }, sessionOption).then((savedUserMessage) => {
+            response.isSuccessful = true;
+            response.outputJson = savedUserMessage
+            resolve(response);
+        }).catch((err) => {
+            //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+            // response.isSuccessful = false;
+            // response.serverValidations.push(global.errorResource.Err0000());
+            // resolve(response);
+            reject(err);
+        })
+    })
 }
 module.exports.sendInitialMessage = sendInitialMessage;
 
-async function sendMessage(message) {
-
-    let response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
-    let userMessage = new UserMessage();
-    userMessage.senderId = message.senderId;
-    userMessage.receiverId = message.receiverId;
-    userMessage.sentDate = message.sentDate;
-    userMessage.title = message.title;
-    userMessage.text = message.text;
-
-    userMessage.save()
-        .then((savedMessage) => {
-
+function sendMessage(message) {
+    return new Promise((resolve) => {
+        const userMessageModel = require('../../model/user-message/user-message');
+        const model = new userMessageModel();
+        let response = new global.responseClass();
+        response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+        model.save({
+            senderId: message.senderId,
+            receiverId: message.receiverId,
+            sentDate: message.sentDate,
+            title: message.title,
+            text: message.text,
+            isAdvertisement: message.isAdvertisement
+        }).then((savedUserMessage) => {
             response.isSuccessful = true;
-            response.outputJson = savedMessage;
-            return Promise.resolve(response);
-        })
-        .catch((saveException) => {
-
+            response.outputJson = savedUserMessage
+            resolve(response);
+        }).catch(() => {
             response.isSuccessful = false;
             response.serverValidations.push(global.errorResource.Err0000());
-            return Promise.resolve(response);
-        });
+            resolve(response);
+        })
+    });
+
 }
 module.exports.sendMessage = sendMessage; 

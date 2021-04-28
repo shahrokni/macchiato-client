@@ -29,7 +29,11 @@ class ErrorMessage {
 
         return "Database error has occurred!";
     }
-    /*------------------------------------------------------------ */
+
+    static Err0007(){
+        return "No connection could be made due some network problems!"
+    }
+    /*-----------------U   S   E   R---------------------- */
 
     //studentNumber
     static ErrBu0001() {
@@ -58,7 +62,17 @@ class ErrorMessage {
     //name and lastName
     static ErrBu0005() {
 
-        return "Either you name or last name format is not correct!";
+        return "Either your name or last name format is not correct!";
+    }
+    //name
+    static ErrBu0026(){
+
+        return "The name format is not correct!";
+    }
+
+    //last name
+    static ErrBu0027(){
+        return "The last name format is not correct!"
     }
 
     //password
@@ -159,7 +173,12 @@ class ErrorMessage {
 
         return "Advertisment cannot be deleted by the applicaition users!"
     }
-    /*-----------------------------------------------------------*/
+    //agreement
+    static ErrBu0028(){
+
+        return "You need to accept the terms of use!";
+    }
+    /*------------------Q   U   E  S  T  I  O  N----------------------*/
     static ErrBu0023() {
 
         return "System could not generate the question number!";
@@ -169,6 +188,11 @@ class ErrorMessage {
 
         return "System could not generate the new question!";
     }
+    /*--------------- I N T R O D U C E R -------------------------*/
+    static ErrBu0025(){
+        return "The code has already been taken!";
+    }
 }
+
 
 module.exports = ErrorMessage;

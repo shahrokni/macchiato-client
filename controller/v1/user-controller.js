@@ -8,11 +8,12 @@ var userValidationClass = require('../../src/util/validation/user-validation');
 var User = require('../../model/user/user');
 var UserDetail = require('../../model/user/user-detail');
 var mongoose = require('mongoose');
+//const { response } = require('express');
 /*-----------------------------------------*/
 const salt = 10;
 const hiddenData = '***';
 /*-----------------------------------------*/
-
+//TODO
 async function registerUser(userDetail) {
 
     const bcrypt = require('bcrypt-nodejs');
@@ -38,7 +39,9 @@ async function registerUser(userDetail) {
         name: receivedData.name,
         lastName: receivedData.lastName,
         registerationDate: Date.now(),
-        province: receivedData.province
+        province: receivedData.province,
+        introducer: receivedData.introducerCode,
+        gender: receivedData.gender
     });
 
     let SkillScoreSchema = require('../../model/user/skill-score');
@@ -72,7 +75,8 @@ async function registerUser(userDetail) {
     let hash = bcrypt.hashSync(receivedData.password, bcrypt.genSaltSync(salt));
 
     newUser.password = hash;
-    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber': { $regex: '^' + newUserDetail.studentNumber } });
+    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber':
+     { $regex: '^' + newUserDetail.studentNumber } });
     let countedItem;
 
     try {
@@ -126,7 +130,6 @@ async function registerUser(userDetail) {
                 newUserDetailId = savedUserDetail._id;
             })
             .catch((exception) => {
-
                 let message = global.dbExceptionHandler.tryGetErrorMessage(exception);
                 if (message != null)
                     throw message;
@@ -138,7 +141,7 @@ async function registerUser(userDetail) {
         let accountControler =
             require('../../administrator_controller/v1/administrator_financial_account_controller');
 
-        await accountControler.initiateUserFinancialAccount(newUserDetailId, opt)
+        await accountControler.initiateUserFinancialAccount(newUserId, opt)
             .catch((exception) => {
 
                 throw global.errorResource.Err0000();
@@ -149,8 +152,8 @@ async function registerUser(userDetail) {
             require('../../administrator_controller/v1/administrator_user_message_controller');
 
 
-        await messageController.sendInitialMessage(newUserDetailId, opt)
-            .catch((exception) => {
+        await messageController.sendInitialMessage(newUserId, opt)
+            .catch(() => {
 
                 throw global.errorResource.Err0000();
             });
@@ -162,7 +165,7 @@ async function registerUser(userDetail) {
 
             foundNewUser = newUser;
         })
-            .catch((exception) => {
+            .catch(() => {
 
                 throw global.errorResource.Err0000();
             });
@@ -191,7 +194,6 @@ async function registerUser(userDetail) {
                     registerationDate: fetchedUser.registerationDate,
                     province: fetchedUser.province
                 }
-
             })
             .catch((exception) => {
 
@@ -208,7 +210,6 @@ async function registerUser(userDetail) {
     }
     catch (exception) {
 
-        console.log(exception);
         await session.abortTransaction();
         session.endSession();
 
@@ -219,7 +220,7 @@ async function registerUser(userDetail) {
 }
 module.exports.registerUser = registerUser;
 //---------------------------------------------------------------------------------------
-
+//TODO
 function updateUserInformation(userDetail, userId, done) {
 
     let response = new global.responseClass();
@@ -254,11 +255,10 @@ function updateUserInformation(userDetail, userId, done) {
                             //Set sent data
                             foundUserDetail.name = receivedData.name;
                             foundUserDetail.lastName = receivedData.lastName;
-                            foundUserDetail.gender = receivedData.gender;
-                            foundUserDetail.cellphone = receivedData.cellphone;
+                            foundUserDetail.gender = receivedData.gender;                            
                             foundUserDetail.province = receivedData.province;
                             foundUserDetail.birthDate = receivedData.birthDate;
-
+                            foundUserDetail.introducer = receivedData.introducerCode;
                             //Save the instance and return it to the client
                             foundUserDetail.save(function (saveErr, savedUserDetail) {
 
@@ -271,10 +271,10 @@ function updateUserInformation(userDetail, userId, done) {
                                         lastName: savedUserDetail.lastName,
                                         studentNumber: savedUserDetail.studentNumber,
                                         registerationDate: savedUserDetail.registerationDate,
-                                        gender: savedUserDetail.gender,
-                                        cellphone: savedUserDetail.cellphone,
                                         province: savedUserDetail.province,
                                         birthDate: savedUserDetail.birthDate,
+                                        introducerCode:savedUserDetail.introducer,
+                                        gender:savedUserDetail.gender
                                     }
                                     response.outputJson = userDetailObj;
                                     done(response);
@@ -326,6 +326,7 @@ function updateUserInformation(userDetail, userId, done) {
 }
 module.exports.updateUserInformation = updateUserInformation;
 //------------------------------------------------------------------
+//TODO
 function getDetailedUserInformation(userId, done) {
 
     let response = new global.responseClass();
@@ -340,18 +341,18 @@ function getDetailedUserInformation(userId, done) {
 
             response.isSuccessful = true;
             responseObj = {
-                userName : fetchedUserDetail.userName,
-                userDetail : {
-                    name : fetchedUserDetail.userDetail.name,
-                    lastName : fetchedUserDetail.userDetail.lastName,
-                    studentNumber : fetchedUserDetail.userDetail.studentNumber,
-                    registerationDate : fetchedUserDetail.userDetail.registerationDate,
-                    email : fetchedUserDetail.userDetail.email,
-                    gender : fetchedUserDetail.userDetail.gender,
-                    cellphone : fetchedUserDetail.userDetail.cellphone,
-                    province : fetchedUserDetail.userDetail.province,
-                    birthDate : fetchedUserDetail.userDetail.birthDate,
-                    skillScore : fetchedUserDetail.userDetail.skillScore,
+                userName: fetchedUserDetail.userName,
+                userDetail: {
+                    name: fetchedUserDetail.userDetail.name,
+                    lastName: fetchedUserDetail.userDetail.lastName,
+                    studentNumber: fetchedUserDetail.userDetail.studentNumber,
+                    registerationDate: fetchedUserDetail.userDetail.registerationDate,
+                    email: fetchedUserDetail.userDetail.email,
+                    gender: fetchedUserDetail.userDetail.gender,
+                    cellphone: fetchedUserDetail.userDetail.cellphone,
+                    province: fetchedUserDetail.userDetail.province,
+                    birthDate: fetchedUserDetail.userDetail.birthDate,
+                    skillScore: fetchedUserDetail.userDetail.skillScore,
                     id: fetchedUserDetail.userDetail._id
                 }
             }
@@ -359,7 +360,7 @@ function getDetailedUserInformation(userId, done) {
             done(response)
         }
         else {
-          
+
             response.isSuccessful = false;
             let message = global.dbExceptionHandler.tryGetErrorMessage(userFindErr);
 
@@ -375,102 +376,190 @@ function getDetailedUserInformation(userId, done) {
 }
 module.exports.getDetailedUserInformation = getDetailedUserInformation;
 //---------------------------------------------------------------------
-
-function updateUserEmail(newEmail, userId, done) {
-
-    let response = new global.responseClass();
+function updateUserEmail(newEmail, userId) {
+    const response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-
-    let userValidation = new userValidationClass();
-    let errorMessages = userValidation.validateUpdateEmail(newEmail);
-
-    if (errorMessages != null && errorMessages.length !== 0) {
-
-        response.serverValidations = errorMessages;
-        done(response);
-    }
-    else {
-
-        let findUserQuery = User.findOne({ _id: userId }, 'userDetail');
-        findUserQuery.exec((findUserErr, foundUser) => {
-
-            if (!findUserErr) {
-
-                let userDetailId = foundUser.userDetail;
-                //Check whther the email has already been taken
-                UserDetail.UserDetail
-                    .countDocuments({ email: newEmail, _id: { $ne: userDetailId } })
-                    .exec((countErr, countRedundantQuery) => {
-
-                        if (!countErr) {
-
-                            if (countRedundantQuery === 0) {
-
-                                UserDetail.UserDetail.findById(userDetailId, (findUserDetailErr, fetchedUserDetail) => {
-
-                                    if (!findUserDetailErr) {
-
-                                        fetchedUserDetail.email = newEmail;
-                                        fetchedUserDetail.save((saveErr, savedUserDetail) => {
-
-                                            if (!saveErr) {
-
-                                                response.isSuccessful = true;
-                                                userDetailObj = {
-                                                    studenNumber: savedUserDetail.studentNumber,
-                                                    email: savedUserDetail.email,
-                                                }
-
-                                                response.outputJson = userDetailObj;
-                                                done(response);
-                                            }
-                                            else {
-
-                                                response.isSuccessful = false;
-                                                let message = global.dbExceptionHandler.tryGetErrorMessage(saveErr);
-
-                                                if (message != null)
-                                                    response.serverValidations.push(message);
-                                                else
-                                                    response.serverValidations.push(global.errorResource.Err0000());
-                                                done(response);
-                                            }
-                                        });
-                                    }
-                                    else {
-
-                                        response.isSuccessful = false;
-                                        response.serverValidations.push(global.errorResource.Err0000());
-                                        done(response);
-                                    }
-                                }).exec();
-                            }
-                            else {
-
-                                response.isSuccessful = false;
-                                response.serverValidations.push(global.errorResource.ErrBu0013());
-                                done(response);
-                            }
-                        }
-                        else {
-
-                            response.isSuccessful = false;
-                            response.serverValidations.push(global.errorResource.Err0000());
-                            done(response);
-                        }
-
-                    });
-            }
-            else {
-
+    return new Promise(
+        (resolve) => {
+            if (!userId) {
                 response.isSuccessful = false;
-                response.serverValidations.push(global.errorResource.Err0000());
-                done(response);
+                response.serverValidations.push(global.errorResource.Err0005());
+                resolve(response);
             }
-        })
-    }
+            const userValidation = new userValidationClass();
+            const errorMessages = userValidation.validateUpdateEmail(newEmail);
+            if (errorMessages != null && errorMessages.length !== 0) {
+                response.isSuccessful = false;
+                response.serverValidations = errorMessages;
+                resolve(respone);
+            }
+            const fetchDetailIdQuery = User.findById(userId, { userDetail: 1, _id: 0 });
+            fetchDetailIdQuery.exec()
+                .then((fetchedDetailId) => {
+                    if (!fetchedDetailId || !fetchedDetailId.userDetail) {
+                        response.isSuccessful = false;
+                        response.serverValidations.push(global.errorResource.Err0005());
+                        resolve(response);
+                    }
+                    else {
+                        const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
+                            { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
+                            { email: newEmail }, { upsert: false, new:true });
+                        updateDetailObjectQuery.exec().then(
+                            (detailObject) => {
+                                response.isSuccessful = true;
+                                userDetailObject = {
+                                    studenNumber: detailObject.studentNumber,
+                                    email: detailObject.email,
+                                }
+                                response.outputJson = userDetailObject;
+                                resolve(response);
+                            }).catch((err) => {
+                                response.isSuccessful = false;
+                                let message = global.dbExceptionHandler.tryGetErrorMessage(err);
+                                if (message != null)
+                                    response.serverValidations.push(message);
+                                else
+                                    response.serverValidations.push(global.errorResource.Err0000());
+                                resolve(response);
+                            })
+                    }
+                }).catch(() => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.Err0000());
+                    resolve(response);
+                })
+
+        });
 }
 module.exports.updateUserEmail = updateUserEmail;
+//---------------------------------------------------------------
+function getEmail(userId) {
+    const response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    return new Promise((resolve) => {
+        if (!userId) {
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0005());
+            resolve(response)
+        }
+        else {
+            fetchUserJoinedDetail(userId).then((userCompleteObject) => {
+                if (!userCompleteObject ||
+                    !userCompleteObject.userDetailCollection ||
+                    !userCompleteObject.userDetailCollection[0]) {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.ErrBu0010());
+                    resolve(response);
+                }
+                else {
+                    response.isSuccessful = true;
+                    response.outputJson = (userCompleteObject.userDetailCollection[0].email) ?
+                        userCompleteObject.userDetailCollection[0].email : '';
+                    resolve(response);
+                }
+            })
+                .catch((err) => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(err);
+                    resolve(response);
+                });
+        }
+    });
+}
+module.exports.getEmail = getEmail;
+//---------------------------------------------------------
+function getCellphone(userId) {
+    const response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCompactCurrentDate();
+    return new Promise((resolve) => {
+        if (!userId) {
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0005());
+            resolve(response)
+        }
+        else {
+            fetchUserJoinedDetail(userId).then((userCompleteObject) => {
+                if (!userCompleteObject ||
+                    !userCompleteObject.userDetailCollection ||
+                    !userCompleteObject.userDetailCollection[0]) {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.ErrBu0010());
+                    resolve(response);
+                }
+                else {
+                    response.isSuccessful = true;
+                    response.outputJson = (userCompleteObject.userDetailCollection[0].cellphone) ?
+                        userCompleteObject.userDetailCollection[0].cellphone : '';
+                    resolve(response);
+                }
+            })
+                .catch((err) => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(err);
+                    resolve(response);
+                });
+        }
+    })
+}
+module.exports.getCellphone = getCellphone;
+//---------------------------------------------------------
+function updateCellphone(cellphone, userId) {
+    const response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();   
+    return new Promise((resolve) => {
+        if (!userId) {
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0005());
+            resolve(response);
+        }
+        const userValidation = new userValidationClass();
+        const errorMessages = userValidation.validateUpdateCellphone(cellphone);
+        if (errorMessages != null && errorMessages.length != 0) {
+            response.isSuccessful = false;
+            response.serverValidations = errorMessages;
+            resolve(response);
+        }
+        const fetchDetailIdQuery = User.findById(userId, { userDetail: 1, _id: 0 });
+        fetchDetailIdQuery.exec()
+            .then((fetchedDetailId) => {
+                if (!fetchedDetailId || !fetchedDetailId.userDetail) {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.Err0005());
+                    resolve(response);
+                }
+                else {
+                    const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
+                        { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
+                        { cellphone: cellphone }, { upsert: false, new:true });
+                    updateDetailObjectQuery.exec().then((detailObject) => {
+                        response.isSuccessful = true;
+                        userDetailObject = {
+                            studenNumber: detailObject.studentNumber,
+                            cellphone: detailObject.cellphone,
+                        }
+                        response.outputJson = userDetailObject;                        
+                        resolve(response);
+                    }).catch((err) => {
+                        response.isSuccessful = false;
+                        let message = global.dbExceptionHandler.tryGetErrorMessage(err);
+                        if (message != null)
+                            response.serverValidations.push(message);
+                        else
+                            response.serverValidations.push(global.errorResource.Err0000());
+                        resolve(response);
+                    })
+                }
+            }).catch(() => {
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+            })
+    });
+}
+module.exports.updateCellphone = updateCellphone;
+//---------------------------------------------------------
+//TODO
 //---------------------------------------------------------
 function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userId, done) {
 
@@ -515,7 +604,7 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
 
                                                 response.isSuccessful = true;
                                                 responseObj = {
-                                                    password:hiddenData
+                                                    password: hiddenData
                                                 }
 
                                                 response.outputJson = responseObj
@@ -580,3 +669,138 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
     }
 }
 module.exports.changeUserPassword = changeUserPassword;
+//---------------------------------------------------------
+/*TODO:BAD PRACTICE*/
+/* WHY SHOULD WE WAIT?! :) */
+/* CASUE THE WAY THE PROMISE IS RETURNED! */
+async function saveAuthKey4User(userId) {
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    response.isSuccessful = false;
+
+    let authKey = mongoose.Types.ObjectId();
+    const docQuery = User.findOneAndUpdate({ _id: userId }, { authkKey: authKey });
+    await docQuery.exec().then((doc) => {
+
+        response.isSuccessful = true;
+        response["hasAuthKey"] = true;
+        response.outputJson = { authKey: authKey };
+    })
+        .catch((err) => {
+
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0000());
+
+        });
+    return Promise.resolve(response);
+}
+module.exports.saveAuthKey4User = saveAuthKey4User;
+//--------------------------------------------------------
+function getScore(userId) {
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    return new Promise((resolve) => {
+        if (!userId) {
+            response.isSuccessful = false;
+            response.serverValidations.push(global.errorResource.Err0005());
+            resolve(response)
+        }
+        fetchUserJoinedDetail(userId).then((userCompleteObject) => {
+            if (!userCompleteObject ||
+                !userCompleteObject.userDetailCollection ||
+                !userCompleteObject.userDetailCollection[0] ||
+                !userCompleteObject.userDetailCollection[0].skillScore ||
+                !userCompleteObject.userDetailCollection[0].skillScore[0]) {
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.ErrBu0010());
+                resolve(response);
+            }
+            else {
+                response.isSuccessful = true;
+                response.outputJson = userCompleteObject.userDetailCollection[0].skillScore[0];
+                resolve(response);
+            }
+        })
+            .catch((err) => {
+                response.isSuccessful = false;
+                response.serverValidations.push(err);
+                resolve(response);
+            })
+    })
+}
+module.exports.getScore = getScore;
+/*---------------------------------*/
+
+function getUserJoinedDetail(userId){
+
+    let response = new global.responseClass();
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+    if (!userId) {
+        response.isSuccessful = false;
+        response.serverValidations.push(global.errorResource.Err0005());
+        resolve(response)
+    }
+    return new Promise((resolve)=>{
+        fetchUserJoinedDetail(userId)
+        .then((userJoinedDetailData)=>{
+            if(!userJoinedDetailData){
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.ErrBu0010());
+                resolve(response);
+            }
+            else{
+                const userJoinedDetil = {
+                    userName:userJoinedDetailData.userName,
+                    name:userJoinedDetailData.userDetailCollection[0].name,
+                    lastName:userJoinedDetailData.userDetailCollection[0].lastName,
+                    studentNumber:userJoinedDetailData.userDetailCollection[0].studentNumber,
+                    registerationDate:userJoinedDetailData.userDetailCollection[0].registerationDate,
+                    email:userJoinedDetailData.userDetailCollection[0].email,
+                    birthDate:userJoinedDetailData.userDetailCollection[0].birthDate,
+                    gender:userJoinedDetailData.userDetailCollection[0].gender,
+                    cellphone:userJoinedDetailData.userDetailCollection[0].cellphone,
+                    skillScore:userJoinedDetailData.userDetailCollection[0].skillScore,
+                    province:userJoinedDetailData.userDetailCollection[0].province,
+                    introducerCode:userJoinedDetailData.userDetailCollection[0].introducer
+                }
+                response.isSuccessful = true;
+                response.outputJson = userJoinedDetil;
+                resolve(response);
+            }
+        }).catch((err)=>{
+            response.isSuccessful = false;
+            response.serverValidations.push(err);
+            resolve(response);
+        })
+    });
+}
+module.exports.getUserJoinedDetail = getUserJoinedDetail;
+/*------------------------ PRIVATE FUNCTIONS--------------*/
+function fetchUserJoinedDetail(userId) {
+    return new Promise((resolve, reject) => {
+        const aggregate = User.aggregate([
+            {
+                $match: {
+                    _id: mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'userdetails',
+                    localField: 'userDetail',
+                    foreignField: '_id',
+                    as: 'userDetailCollection'
+                }
+            }]);
+        aggregate.exec((err, result) => {
+            if (err) {
+                reject(global.errorResource.Err0000());
+            }
+            else {
+                (result && result.length != 0) ?
+                    resolve(result[0]) : resolve(null);
+            }
+        })
+    });
+}
