@@ -5,22 +5,22 @@ class UserMessageController {
         this.userMessageModel = userMessageModel;
     }
 
-    getMessage(userId,messageId){
-        return new Promise((resolve)=>{
+    getMessage(userId, messageId) {
+        return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
             response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
-            this.userMessageModel.getMessage(userId,messageId)
-            .then((userMessage)=>{
-                response.isSuccessful = true;
-                response.outputJson = userMessage;
-                resolve(response);
-            })
-            .catch(()=>{
-                response.isSuccessful = false;
-                response.serverValidations.push(global.errorResource.Err0000());
-                resolve(response);
-            })
+            this.userMessageModel.getMessage(userId, messageId)
+                .then((userMessage) => {
+                    response.isSuccessful = true;
+                    response.outputJson = userMessage;
+                    resolve(response);
+                })
+                .catch(() => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.Err0000());
+                    resolve(response);
+                })
         })
     }
 
@@ -48,9 +48,9 @@ class UserMessageController {
         return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
-            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();             
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
             this.userMessageModel.listMessages(userId, filter, projection)
-                .then((userMessages) => {                   
+                .then((userMessages) => {
                     response.isSuccessful = true;
                     response.outputJson = userMessages;
                     resolve(response);
@@ -63,40 +63,53 @@ class UserMessageController {
         });
     }
 
-    deleteMessage(userId,messageId){
-        return new Promise((resolve)=>{
+    deleteMessage(userId, messageId) {
+        return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
             response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
-            this.userMessageModel.deleteMessage(userId,messageId)
-            .then(()=>{
-                response.isSuccessful = true;
-                resolve(response);
-            })
-            .catch(()=>{
-                response.isSuccessful = false;
-                response.serverValidations.push(global.errorResource.Err0000());
-                resolve(response);
+            this.getMessage(userId, messageId).then((fetchedMessage) => {                       
+                if (fetchedMessage != null && 
+                    fetchedMessage.outputJson !=null &&
+                    fetchedMessage.outputJson.isAdvertisement === true) {                   
+                    response.isSuccessful = false;
+                    response.serverValidations
+                    .push(global.errorResource.ErrBu0029());
+                    resolve(response);
+                }
+                else {
+                    this.userMessageModel.deleteMessage(userId, messageId)
+                        .then(() => {
+                            response.isSuccessful = true;
+                            resolve(response);
+                        })
+                        .catch(() => {
+                            response.isSuccessful = false;
+                            response.serverValidations
+                            .push(global.errorResource.Err0000());
+                            resolve(response);
+                        })
+                }
             })
         });
     }
 
-    setReadFlag(userId,messageId){
-        return new Promise((resolve)=>{
+    setReadFlag(userId, messageId) {
+        return new Promise((resolve) => {
             const response = {};
             response.serverValidations = [];
             response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
-            this.userMessageModel.setReadFlag(userId,messageId)
-            .then(()=>{
-                response.isSuccessful = true
-                resolve(response);
-            })
-            .catch(()=>{              
-                response.isSuccessful = false;
-                response.serverValidations.push(global.errorResource.Err0000());
-                resolve(response);
-            })
-        });  
+            this.userMessageModel.setReadFlag(userId, messageId)
+                .then(() => {
+                    response.isSuccessful = true
+                    resolve(response);
+                })
+                .catch(() => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.Err0000());
+                    resolve(response);
+                })
+        });
     }
 }
 module.exports = UserMessageController;
