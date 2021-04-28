@@ -9,23 +9,42 @@ class UserMessageModel {
                 '_id': `${messageId}`
             })
             findQuery.exec()
-            .then((userMessageArray)=>{
-                if(userMessageArray && userMessageArray.length!=0)
-                    resolve(userMessageArray[0]);
-                else
-                    resolve({});
-            })
-            .catch((err)=>{
-                reject(err);
-            })
+                .then((userMessageArray) => {
+                    if (userMessageArray && userMessageArray.length != 0)
+                        resolve(userMessageArray[0]);
+                    else
+                        resolve({});
+                })
+                .catch((err) => {
+                    reject(err);
+                })
         })
+    }
+
+    setReadFlag(userId, messageId) {
+        return new Promise((resolve, reject) => {
+            const userMessageModel = require('./user-message-schema');  
+            const model = new userMessageModel();          
+            model.collection
+                .updateOne({
+                    receiverId: mongoose.Types.ObjectId(`${userId}`),
+                    _id: mongoose.Types.ObjectId(`${messageId}`)
+                }, {$set:{isRead: true}})
+                .then(() => {                   
+                    resolve();
+                })
+                .catch((err) => {                                                         
+                    reject(err);
+                })
+        });
+
     }
 
     countAll(userId) {
         return new Promise((resolve, reject) => {
             const userMessageModel = require('./user-message-schema');
             const countQuery = userMessageModel
-            .countDocuments({ 'receiverId': `${userId}` });
+                .countDocuments({ 'receiverId': `${userId}` });
             countQuery.exec()
                 .then((count) => {
                     resolve(count);
@@ -102,19 +121,21 @@ class UserMessageModel {
         })
     }
 
-    deleteMessage(userId,messageId){
-        return new Promise((resolve,reject)=>{
+    deleteMessage(userId, messageId) {
+        return new Promise((resolve, reject) => {
             const userMessageModel = require('./user-message-schema');
             const model = new userMessageModel();
-            model.collection.deleteOne({receiverId: mongoose.Types.ObjectId(`${userId}`),
-            _id: mongoose.Types.ObjectId(`${messageId}`)})            
-            .then(()=>{
-                resolve()
+            model.collection.deleteOne({
+                receiverId: mongoose.Types.ObjectId(`${userId}`),
+                _id: mongoose.Types.ObjectId(`${messageId}`)
             })
-            .catch(()=>{
-                reject()
-            })
-            
+                .then(() => {
+                    resolve()
+                })
+                .catch(() => {
+                    reject()
+                })
+
         })
     }
 }

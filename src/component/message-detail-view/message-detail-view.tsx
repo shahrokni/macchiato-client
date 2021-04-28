@@ -1,3 +1,4 @@
+
 import React, { Fragment, useEffect, useState } from 'react';
 import { GlobalMessageType } from '../../entity/global-message/enum/global-message-type';
 import UserMessage from '../../entity/user-message/user-message';
@@ -37,8 +38,12 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
                 setBackLink(createdBackLink);
                 setIsReturnPageRecalculated(true);
 
-                userMessageService.getMessage(messageId).then((messageResponse) => {
+                userMessageService.getMessage(messageId)
+                .then((messageResponse) => {
                     if (messageResponse.isSuccessful) {
+                        if(messageResponse.outputJson?.isRead === false){
+                            userMessageService.setReadFlag(messageId);
+                        }
                         setFetchedMessageData(messageResponse.outputJson);
                     }
                     else {
