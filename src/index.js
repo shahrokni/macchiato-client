@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Foundation from '../src/component/foundation/foundation';
+import {Foundation} from '../src/component/foundation/foundation';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Foundation />, document.getElementById('root'));
