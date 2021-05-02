@@ -13,7 +13,7 @@ export default class UserMessageService implements IListDataService {
     dateUtil: any;
     constructor() {
         this.dateUtil = require('../../util/date-util/date-util');
-    }
+    }  
 
     listData(filter: IListDataServiceFilter | undefined | null):
         Promise<Response<rowMetaData[]>> {
@@ -247,5 +247,9 @@ export default class UserMessageService implements IListDataService {
                     resolve(response);
                 })
         });
+    }
+
+    static subscribe2NewMessageCount(callBack:(newMessageCount:number)=>void){
+
     }
 }
