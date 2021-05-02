@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import UserMessageService from '../../service/user-message-service/user-message-service';
 export const NewMessageCounter: FunctionComponent = () => {
 
@@ -14,9 +14,10 @@ export const NewMessageCounter: FunctionComponent = () => {
         }
     })
     return (
-        <div className="menuRowBtnTitle newMsgCount"
+
+        ((newMessageCount !== 0) ? <div className="menuRowBtnTitle newMsgCount"
             style={{ backgroundColor: '#D9183B', color: '#FFFFFF' }}>
-            {(newMessageCount !== 0) && newMessageCount}
-        </div>
+            {newMessageCount}
+        </div> : <Fragment></Fragment>)
     )
 }
