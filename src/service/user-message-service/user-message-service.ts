@@ -7,6 +7,8 @@ import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
 import { appGeneralInfo } from '../../setup-general-information';
 import { iso2ShortDate } from '../../util/date-util/date-util2';
+import { WsSubscription } from '../../entity/global/subscription';
+
 import { io } from "socket.io-client";
 
 export default class UserMessageService implements IListDataService {
@@ -251,7 +253,8 @@ export default class UserMessageService implements IListDataService {
     }
 
     static subscribe2NewMessageCount(updateCounterComponent:
-        (newMessageCount: number) => void) {
+        ((newMessageCount: number) => void) | undefined, subscriptionMode: WsSubscription):
+        () => void {
         const socket = io(appGeneralInfo.wsBaseUrl, {
             forceNew: false,
             multiplex: true,
@@ -260,8 +263,17 @@ export default class UserMessageService implements IListDataService {
             autoConnect: false
         });
         socket.onAny((en, ...args) => {
-            updateCounterComponent(args[0]);
+            console.log(en, args);
         })
-        socket.connect();
+        if (subscriptionMode === WsSubscription.connect) {
+            return () => {
+                socket.connect();
+            }
+        }
+        else {
+            return () => {
+                socket.disconnect();
+            }
+        }
     }
 }
