@@ -1,10 +1,8 @@
-module.exports = setupSocketNewMessageNotification = () => {
-    let counter = 2;
+module.exports = setupSocketNewMessageNotification = () => {    
     const io = require("socket.io")(3001);
-    io.on("connection", socket => {        
-        setInterval(()=>{
-            socket.send(counter);
-            counter+=1;        
-        },10000)        
+    io.on("connection", socket => {
+        // setInterval(()=>{
+        //     socket.send(8);
+        // },1000)           
     });
 }
