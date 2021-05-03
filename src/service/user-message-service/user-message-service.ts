@@ -7,13 +7,14 @@ import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
 import { appGeneralInfo } from '../../setup-general-information';
 import { iso2ShortDate } from '../../util/date-util/date-util2';
+import { io } from "socket.io-client";
 
 export default class UserMessageService implements IListDataService {
 
     dateUtil: any;
     constructor() {
         this.dateUtil = require('../../util/date-util/date-util');
-    }  
+    }
 
     listData(filter: IListDataServiceFilter | undefined | null):
         Promise<Response<rowMetaData[]>> {
@@ -42,13 +43,13 @@ export default class UserMessageService implements IListDataService {
                                 sentDate: iso2ShortDate(item.sentDate as Date),
                                 title: item.title
                             };
-                            data.hasUpdate = false;                            
+                            data.hasUpdate = false;
                             data.hasView = true;
-                            data.viewUrl = appGeneralInfo.views.messageview + '/'+item._id;
+                            data.viewUrl = appGeneralInfo.views.messageview + '/' + item._id;
                             data.hasDelete = (!item.isAdvertisement) ? true : false;
-                            data.deletionUrl = (!item.isAdvertisement)?
-                             appGeneralInfo.views.messagedelete + '/'+ item._id as string
-                             : '';
+                            data.deletionUrl = (!item.isAdvertisement) ?
+                                appGeneralInfo.views.messagedelete + '/' + item._id as string
+                                : '';
                             (item.isRead)
                                 ? data.annotations.push('readMessage')
                                 : data.annotations.push('unreadMessage');
@@ -100,7 +101,7 @@ export default class UserMessageService implements IListDataService {
                     resolve(response);
                 }
             })
-                .catch(((err:any) => {
+                .catch(((err: any) => {
                     console.log(err);
                     response.isSuccessful = false;
                     response.clientValidations.push(ErrorMessage.Err0000().toString());
@@ -117,13 +118,13 @@ export default class UserMessageService implements IListDataService {
             const restInstance = RestProvider
                 .createInstance(RestProvider.getTimeoutDuration());
             restInstance.get(`/user_message_api/v1/message`,
-            {params:{messageId:`${messageId}`}})
+                { params: { messageId: `${messageId}` } })
                 .then((res: any) => {
                     let responseUtil = require('../../util/response-util/response-util');
                     let serverResponse = responseUtil
                         .extractResponse(res) as Response<UserMessage>;
                     response.operationTimeServer = serverResponse.operationTimeServer;
-                    if (serverResponse.isSuccessful) {                      
+                    if (serverResponse.isSuccessful) {
                         response.isSuccessful = true;
                         response.outputJson = serverResponse.outputJson;
                         resolve(response);
@@ -136,7 +137,7 @@ export default class UserMessageService implements IListDataService {
                             });
                         resolve(response);
                     }
-                }).catch((err:any) => {
+                }).catch((err: any) => {
                     console.log(err);
                     response.isSuccessful = false;
                     response.clientValidations.push(ErrorMessage.Err0000().toString());
@@ -249,7 +250,17 @@ export default class UserMessageService implements IListDataService {
         });
     }
 
-    static subscribe2NewMessageCount(callBack:(newMessageCount:number)=>void){
-
+    static subscribe2NewMessageCount(callBack: (newMessageCount: number) => void) {
+        const socket = io(appGeneralInfo.wsBaseUrl,{
+            forceNew: false,
+            multiplex: true,
+            transports: ["websocket"],
+            reconnection:true,
+            autoConnect : false
+        });       
+        socket.onAny((en,...args)=>{
+            console.log(en,args);
+        })
+        socket.connect();        
     }
 }

@@ -2,6 +2,7 @@ const appGeneralInfo = {
     appName: 'English Macchiato',
     appSlogan: 'Drink Your English Macchiato Now!',
     baseUrl: 'http://localhost:3000/',
+    wsBaseUrl:'http://localhost:3001/',
     mainMenuItems: {
         homePage: 'homepage',
         languageLevel: 'languagelevel',

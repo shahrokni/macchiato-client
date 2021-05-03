@@ -9,8 +9,8 @@ export const NewMessageCounter: FunctionComponent = () => {
             setNewMessageCount(newMessageCount);
         }
         UserMessageService.subscribe2NewMessageCount(handleNewMessageCount);
-        return () => {
-            /* CLEAN UP */
+        return function clearSubscription():void{
+            
         }
     })
     return (
