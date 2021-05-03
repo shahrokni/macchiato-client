@@ -250,17 +250,18 @@ export default class UserMessageService implements IListDataService {
         });
     }
 
-    static subscribe2NewMessageCount(callBack: (newMessageCount: number) => void) {
-        const socket = io(appGeneralInfo.wsBaseUrl,{
+    static subscribe2NewMessageCount(updateCounterComponent:
+        (newMessageCount: number) => void) {
+        const socket = io(appGeneralInfo.wsBaseUrl, {
             forceNew: false,
             multiplex: true,
             transports: ["websocket"],
-            reconnection:true,
-            autoConnect : false
-        });       
-        socket.onAny((en,...args)=>{
-            console.log(en,args);
+            reconnection: true,
+            autoConnect: false
+        });
+        socket.onAny((en, ...args) => {
+            updateCounterComponent(args[0]);
         })
-        socket.connect();        
+        socket.connect();
     }
 }

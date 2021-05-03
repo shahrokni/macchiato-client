@@ -23,17 +23,17 @@ class UserMessageModel {
 
     setReadFlag(userId, messageId) {
         return new Promise((resolve, reject) => {
-            const userMessageModel = require('./user-message-schema');  
-            const model = new userMessageModel();          
+            const userMessageModel = require('./user-message-schema');
+            const model = new userMessageModel();
             model.collection
                 .updateOne({
                     receiverId: mongoose.Types.ObjectId(`${userId}`),
                     _id: mongoose.Types.ObjectId(`${messageId}`)
-                }, {$set:{isRead: true}})
-                .then(() => {                   
+                }, { $set: { isRead: true } })
+                .then(() => {
                     resolve();
                 })
-                .catch((err) => {                                                         
+                .catch((err) => {
                     reject(err);
                 })
         });
@@ -137,6 +137,23 @@ class UserMessageModel {
                 })
 
         })
+    }
+
+    countUnreadMessages(userId) {
+        return new Promise((resolve, reject) => {
+            const userMessageModel = require('./user-message-schema');
+            const model = new userMessageModel();
+            model.collection.countDocuments({
+                receiverId: mongoose.Types.ObjectId(`${userId}`),
+                isRead: false
+            })
+            .then((countedUnreadMessages)=>{
+                resolve(countedUnreadMessages);
+            })
+            .catch(()=>{
+                reject();
+            })
+        });
     }
 }
 module.exports = UserMessageModel;

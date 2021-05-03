@@ -16,15 +16,15 @@ userMessageApi.get('/message/countall', requestHandler.isUserAuthenticated, (req
     });
 });
 
-userMessageApi.put('/message/readFlag',requestHandler.isUserAuthenticated,(req,res)=>{   
+userMessageApi.put('/message/readFlag', requestHandler.isUserAuthenticated, (req, res) => {
     const userId = req.user._id;
-    const messageId = req.body.messageId;     
+    const messageId = req.body.messageId;
     const userMessageController = new UserMessageController(new UserMessageModel());
-    userMessageController.setReadFlag(userId,messageId)
-    .then((response)=>{        
-        res.json({response:response});
-        return;
-    })
+    userMessageController.setReadFlag(userId, messageId)
+        .then((response) => {
+            res.json({ response: response });
+            return;
+        })
 
 })
 
@@ -59,8 +59,18 @@ userMessageApi.delete('/message/', requestHandler.isUserAuthenticated, (req, res
         .then((response) => {
             res.json({ response: response });
             return;
-        })
+        });
 
+});
+
+userMessageApi.get('/message/countunread', requestHandler.isUserAuthenticated, (req, res) => {    
+    const userId = req.user._id;
+    const userMessageController = new UserMessageController(new UserMessageModel());
+    userMessageController.countUnreadMessages(userId)
+        .then((response) => {
+            res.json({ response: response });
+            return;
+        });
 });
 
 module.exports = userMessageApi;
