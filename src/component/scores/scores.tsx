@@ -7,17 +7,22 @@ import { PracticeType } from '../../entity/global/practice-type';
 import { sortScoreTypeByScore, IScoreTypePair } from '../../util/score-util/score-util';
 import { ScoreBox } from '../score-box/score-box';
 
-export default function Scores(): JSX.Element {
 
+interface IScoreArrData {
+    score: number;
+    type: PracticeType;
+}
+
+export default function Scores(): JSX.Element {
 
     const [orderedScoreArray, setOrderedScoreArray] = useState<IScoreTypePair[]>([]);
     const [scoreData, setScoreData] = useState<Score>();
-    const [isComponentLoaded,setIsComponentLoaded] = useState(false);
+    const [isComponentLoaded, setIsComponentLoaded] = useState(false);
     useEffect(() => {
         const userService = new UserService();
         userService.getScore().then((response) => {
             if (response && response.isSuccessful && response.outputJson) {
-                const scoreArr = [];
+                const scoreArr: IScoreArrData[] = [];
                 const score = new Score();
                 score.listeningScore = response.outputJson.listeningScore;
                 scoreArr.push({ score: score.listeningScore, type: PracticeType.Listening });
@@ -46,12 +51,18 @@ export default function Scores(): JSX.Element {
             {
                 (orderedScoreArray && orderedScoreArray.length != 0 && isComponentLoaded) ?
                     <Fragment>
-                        <ScoreBox practiceType={orderedScoreArray[0].type} score={scoreData as Score} />
-                        <ScoreBox practiceType={orderedScoreArray[1].type} score={scoreData as Score} />
-                        <ScoreBox practiceType={orderedScoreArray[2].type} score={scoreData as Score} />
-                        <ScoreBox practiceType={orderedScoreArray[3].type} score={scoreData as Score} />
-                        <ScoreBox practiceType={orderedScoreArray[4].type} score={scoreData as Score} />
-                        <ScoreBox practiceType={orderedScoreArray[5].type} score={scoreData as Score} />
+                        <ScoreBox practiceType={orderedScoreArray[0].type}
+                            score={scoreData as Score} />
+                        <ScoreBox practiceType={orderedScoreArray[1].type}
+                            score={scoreData as Score} />
+                        <ScoreBox practiceType={orderedScoreArray[2].type}
+                            score={scoreData as Score} />
+                        <ScoreBox practiceType={orderedScoreArray[3].type}
+                            score={scoreData as Score} />
+                        <ScoreBox practiceType={orderedScoreArray[4].type}
+                            score={scoreData as Score} />
+                        <ScoreBox practiceType={orderedScoreArray[5].type}
+                            score={scoreData as Score} />
                     </Fragment> :
                     <SimpleNarrowWaiting />
             }
