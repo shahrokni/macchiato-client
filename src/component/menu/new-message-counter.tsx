@@ -5,12 +5,23 @@ export const NewMessageCounter: FunctionComponent = () => {
     const [newMessageCount, setNewMessageCount] = useState<number>(0);
 
     useEffect(() => {
+        const userMessageService = new UserMessageService();
+        userMessageService.countUnreadMessages()
+            .then((unreadMessageCountResponse) => {
+                if (unreadMessageCountResponse && unreadMessageCountResponse.isSuccessful) {
+                    setNewMessageCount(unreadMessageCountResponse.outputJson as number)
+                }
+            })
+
+    }, []);
+
+    useEffect(() => {
         const handleNewMessageCount = (newMessageCount: number): void => {
             setNewMessageCount(newMessageCount);
         }
         UserMessageService.subscribe2NewMessageCount(handleNewMessageCount);
-        return function clearSubscription():void{
-            
+        return function clearNewMessageSubscription(): void {
+
         }
     })
     return (

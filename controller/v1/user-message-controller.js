@@ -1,3 +1,4 @@
+const { response } = require("express");
 
 class UserMessageController {
 
@@ -68,13 +69,13 @@ class UserMessageController {
             const response = {};
             response.serverValidations = [];
             response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
-            this.getMessage(userId, messageId).then((fetchedMessage) => {                       
-                if (fetchedMessage != null && 
-                    fetchedMessage.outputJson !=null &&
-                    fetchedMessage.outputJson.isAdvertisement === true) {                   
+            this.getMessage(userId, messageId).then((fetchedMessage) => {
+                if (fetchedMessage != null &&
+                    fetchedMessage.outputJson != null &&
+                    fetchedMessage.outputJson.isAdvertisement === true) {
                     response.isSuccessful = false;
                     response.serverValidations
-                    .push(global.errorResource.ErrBu0029());
+                        .push(global.errorResource.ErrBu0029());
                     resolve(response);
                 }
                 else {
@@ -86,7 +87,7 @@ class UserMessageController {
                         .catch(() => {
                             response.isSuccessful = false;
                             response.serverValidations
-                            .push(global.errorResource.Err0000());
+                                .push(global.errorResource.Err0000());
                             resolve(response);
                         })
                 }
@@ -110,6 +111,25 @@ class UserMessageController {
                     resolve(response);
                 })
         });
+    }
+
+    countUnreadMessages(userId) {
+        return new Promise((resolve) => {
+            response.serverValidations = [];
+            response.operationTimeServer = global.dateUtilModule.getCurrentDateTime();
+            this.userMessageModel.countUnreadMessages(userId)
+                .then((countUnreadMessages) => {
+                    response.isSuccessful = true;
+                    response.outputJson = (countUnreadMessages) ?
+                        countUnreadMessages : 0;
+                    resolve(response);
+                })
+                .catch(() => {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.Err0000());
+                    resolve(response);
+                })
+        })
     }
 }
 module.exports = UserMessageController;
