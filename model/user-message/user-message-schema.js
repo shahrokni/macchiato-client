@@ -10,4 +10,5 @@ const userMessageSchema = mongoose.Schema({
     text:{type:mongoose.Schema.Types.String,require:true}
 });
 const UserMessage = mongoose.model('UserMessage', userMessageSchema);
+UserMessage.watch().on('change',data=>console.log(new Date(),data));
 module.exports = UserMessage;

@@ -3,6 +3,7 @@ const appGeneralInfo = {
     appSlogan: 'Drink Your English Macchiato Now!',
     baseUrl: 'http://localhost:3000/',
     wsBaseUrl:'http://localhost:3001/',
+    connectionString: 'mongodb://localhost:27017/enmacchiatodb?retryWrites=false',
     mainMenuItems: {
         homePage: 'homepage',
         languageLevel: 'languagelevel',
