@@ -1,8 +1,9 @@
 module.exports = setupSocketNewMessageNotification = () => {    
     const io = require("socket.io")(3001);
     io.on("connection", socket => {
-        // setInterval(()=>{
-        //     socket.send(8);
-        // },1000)           
+        global.userMessageEventEmiiter.on('insert',function(documentKey){
+            console.log('Soket',documentKey);
+               //     socket.send(8);
+        })                 
     });
 }
