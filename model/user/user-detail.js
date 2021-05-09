@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var SkillScoreSchema = require('./skill-score');
 /*---------------------------------*/
 var userDetailSchema = mongoose.Schema({
-
     name: { type: mongoose.Schema.Types.String, required: true },
     lastName: { type: mongoose.Schema.Types.String, required: true },
     studentNumber: { type: mongoose.Schema.Types.String, required: true, unique: true },

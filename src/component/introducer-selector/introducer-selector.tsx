@@ -11,40 +11,43 @@ export interface IIntroducerSelector {
     appIntroducers: AppIntroducer[] | null;
     isDisabled: boolean;
     changeEvent: any,
-    defaultValue:string
+    defaultValue: string
 }
 
-export const IntroducerSelector = (introducerSelectorParam: IIntroducerSelector): JSX.Element => {
+export const IntroducerSelector =
+    (introducerSelectorParam: IIntroducerSelector): JSX.Element => {
+        const [appIntroducers, setAppIntroducers] =
+            useState<IAppIntroducer[]>([]);
+        const [defaultValue] =
+            useState((introducerSelectorParam.defaultValue) || 'NONE');
+            
+        useEffect(() => {              
+            if (appIntroducers.length === 0) {               
+                const introducerService = new IntroducerService();
+                introducerService.getAllIntroducers()
+                    .then((response) => {                       
+                        setAppIntroducers([...(response.outputJson as IAppIntroducer[])]);
+                    })
+            }
+        }, []);
 
-    const [appIntroducers, setAppIntroducers] = useState<IAppIntroducer[]>([]);
-    useEffect(() => {
-        //FETCH ALL INTRODUCERS FROM DATABASE
-        if (appIntroducers.length === 0) {
-            const introducerService = new IntroducerService();
-            introducerService.getAllIntroducers()
-                .then((response) => {
-                    setAppIntroducers([...(response.outputJson as IAppIntroducer[])]);                    
-                })
-        }
-    }, []);
+        return (
 
-    return (
-
-        (appIntroducers.length !== 0) ? (
-            <div className='introducerSelectorContainer'>
-                <Select
-                    defaultValue={introducerSelectorParam.defaultValue}
-                    variant="outlined"
-                    disabled={introducerSelectorParam.isDisabled}
-                    onChange={(e) => {
-                        introducerSelectorParam.changeEvent(e.target.value)
-                    }}
-                >
-                    <MenuItem key={0} value={'NONE'}>{'No One!'}</MenuItem>
-                    {appIntroducers.map((item, index) =>
-                        <MenuItem key={index + 1} value={item.code}>{item.name}</MenuItem>
-                    )}
-                </Select>
-            </div>) : <SimpleNarrowWaiting />
-    )
-}
+            (appIntroducers.length !== 0) ? (
+                <div className='introducerSelectorContainer'>
+                    <Select
+                        defaultValue={defaultValue}
+                        variant="outlined"
+                        disabled={introducerSelectorParam.isDisabled}
+                        onChange={(e) => {
+                            introducerSelectorParam.changeEvent(e.target.value)
+                        }}
+                    >
+                        <MenuItem key={0} value={'NONE'}>{'No One!'}</MenuItem>
+                        {appIntroducers.map((item, index) =>
+                            <MenuItem key={index + 1} value={item.code}>{item.name}</MenuItem>
+                        )}
+                    </Select>
+                </div>) : <SimpleNarrowWaiting />
+        )
+    }
