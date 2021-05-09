@@ -104,7 +104,7 @@ export default function ProfileWhiteBox(): JSX.Element {
                 setFetchedUserName(response.outputJson.userName);
                 setFetchedUserGender(response.outputJson.gender as string);
                 setFetchedProvince(response.outputJson.province);
-                setFetchedUserIntroducer(response.outputJson.introducerCode);
+                setFetchedUserIntroducer((response.outputJson.introducerCode)|| 'NONE');
 
                 setIsComponentLoaded(true);
             }
@@ -323,7 +323,10 @@ export default function ProfileWhiteBox(): JSX.Element {
             {
                 (fetchedUserIntroducer) ?
                     <div className='profileWhiteBoxRow'>
-                        <IntroducerSelector appIntroducers={null} isDisabled={isControlDisabled} changeEvent={trackIntroducer} defaultValue={fetchedUserIntroducer} />
+                        <IntroducerSelector appIntroducers={null}
+                         isDisabled={isControlDisabled}
+                         changeEvent={trackIntroducer}
+                         defaultValue={fetchedUserIntroducer} />
                     </div>
                     :
                     <SimpleNarrowWaiting />

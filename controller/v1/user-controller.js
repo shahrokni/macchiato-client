@@ -23,18 +23,15 @@ async function registerUser(userDetail) {
     //Unifrom data before the the data is saved in database
     let receivedData = global.uniformData.uniformUserDetail(userDetail);
     let errorMessages = userValidation.validateSignUpData(receivedData);
-
     if (errorMessages != null && errorMessages.length != 0) {
-
         response.isSuccessful = false;
         response.serverValidations = errorMessages;
         return Promise.resolve(response);
     }
-
     let newUser = new User({
         userName: receivedData.userName,
+        authkKey: mongoose.Types.ObjectId()
     });
-
     let newUserDetail = new UserDetail.UserDetail({
         name: receivedData.name,
         lastName: receivedData.lastName,
@@ -43,55 +40,41 @@ async function registerUser(userDetail) {
         introducer: receivedData.introducerCode,
         gender: receivedData.gender
     });
-
     let SkillScoreSchema = require('../../model/user/skill-score');
     let SkillScore = mongoose.model('SkillScore', SkillScoreSchema);
-
     //Set the first part of the student number
     newUserDetail.studentNumber = global.dateUtilModule.getCompactCurrentDate();
-    //Add a SkillScore subdocument    
     newUserDetail.skillScore.push(new SkillScore());
 
     let query = User.findOne({ 'userName': receivedData.userName }, 'userName');
-
     try {
-
         await query.exec().then((foundUser) => {
-
-            //Check wether the chosen username has already been taken by another user!
             if (foundUser) {
-
                 throw global.errorResource.ErrBu0009();
             }
         });
     }
     catch (exception) {
-
         response.isSuccessful = false;
         response.serverValidations.push(exception);
         return Promise.resolve(response);
     }
-
     let hash = bcrypt.hashSync(receivedData.password, bcrypt.genSaltSync(salt));
-
     newUser.password = hash;
-    let countQuery = UserDetail.UserDetail.countDocuments({ 'studentNumber':
-     { $regex: '^' + newUserDetail.studentNumber } });
+    let countQuery = UserDetail.UserDetail.countDocuments({
+        'studentNumber':
+            { $regex: '^' + newUserDetail.studentNumber }
+    });
     let countedItem;
-
     try {
-
         await countQuery.exec().then((count) => {
-
             countedItem = count;
         })
-            .catch((exception) => {
-
+            .catch(() => {
                 throw global.errorResource.Err0000();
             });
     }
     catch (exception) {
-
         response.isSuccessful = false;
         response.serverValidations.push(exception);
         return Promise.resolve(response);
@@ -99,20 +82,17 @@ async function registerUser(userDetail) {
 
     //Add the second part of the student number    
     newUserDetail.studentNumber += countedItem;
-
     //Create a session and start a transaction. ALL-OR-NONE OPERATION!
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-
         let newUserId = '';
         let newUserDetailId = '';
-
         const opt = { session };
+        console.log('NEW USER', newUser);
         await newUser.save(opt)
             .then((savedUser) => {
-
                 newUserId = savedUser._id;
             })
             .catch((exception) => {
@@ -154,7 +134,6 @@ async function registerUser(userDetail) {
 
         await messageController.sendInitialMessage(newUserId, opt)
             .catch(() => {
-
                 throw global.errorResource.Err0000();
             });
 
@@ -162,19 +141,16 @@ async function registerUser(userDetail) {
         let foundNewUser;
 
         await findQuery.exec().then((newUser) => {
-
             foundNewUser = newUser;
         })
             .catch(() => {
-
                 throw global.errorResource.Err0000();
             });
 
         foundNewUser.userDetail = newUserDetailId;
         //Connect user to userDetail
         await foundNewUser.save(opt)
-            .catch((exception) => {
-
+            .catch(() => {
                 throw global.errorResource.Err0000();
             });
 
@@ -185,7 +161,6 @@ async function registerUser(userDetail) {
 
         await fetchFinalResultQuery.exec()
             .then((fetchedUser) => {
-
                 userDetailObject = {
                     userName: receivedData.userName,
                     name: fetchedUser.name,
@@ -195,8 +170,7 @@ async function registerUser(userDetail) {
                     province: fetchedUser.province
                 }
             })
-            .catch((exception) => {
-
+            .catch(() => {
                 throw global.errorResource.Err0000();
             });
 
@@ -209,10 +183,8 @@ async function registerUser(userDetail) {
 
     }
     catch (exception) {
-
         await session.abortTransaction();
         session.endSession();
-
         response.isSuccessful = false;
         response.serverValidations.push(exception);
         return Promise.resolve(response);
@@ -255,7 +227,7 @@ function updateUserInformation(userDetail, userId, done) {
                             //Set sent data
                             foundUserDetail.name = receivedData.name;
                             foundUserDetail.lastName = receivedData.lastName;
-                            foundUserDetail.gender = receivedData.gender;                            
+                            foundUserDetail.gender = receivedData.gender;
                             foundUserDetail.province = receivedData.province;
                             foundUserDetail.birthDate = receivedData.birthDate;
                             foundUserDetail.introducer = receivedData.introducerCode;
@@ -273,8 +245,8 @@ function updateUserInformation(userDetail, userId, done) {
                                         registerationDate: savedUserDetail.registerationDate,
                                         province: savedUserDetail.province,
                                         birthDate: savedUserDetail.birthDate,
-                                        introducerCode:savedUserDetail.introducer,
-                                        gender:savedUserDetail.gender
+                                        introducerCode: savedUserDetail.introducer,
+                                        gender: savedUserDetail.gender
                                     }
                                     response.outputJson = userDetailObj;
                                     done(response);
@@ -404,7 +376,7 @@ function updateUserEmail(newEmail, userId) {
                     else {
                         const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
                             { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
-                            { email: newEmail }, { upsert: false, new:true });
+                            { email: newEmail }, { upsert: false, new: true });
                         updateDetailObjectQuery.exec().then(
                             (detailObject) => {
                                 response.isSuccessful = true;
@@ -506,7 +478,7 @@ module.exports.getCellphone = getCellphone;
 //---------------------------------------------------------
 function updateCellphone(cellphone, userId) {
     const response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();   
+    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
     return new Promise((resolve) => {
         if (!userId) {
             response.isSuccessful = false;
@@ -531,14 +503,14 @@ function updateCellphone(cellphone, userId) {
                 else {
                     const updateDetailObjectQuery = UserDetail.UserDetail.findOneAndUpdate(
                         { _id: mongoose.Types.ObjectId(fetchedDetailId.userDetail) },
-                        { cellphone: cellphone }, { upsert: false, new:true });
+                        { cellphone: cellphone }, { upsert: false, new: true });
                     updateDetailObjectQuery.exec().then((detailObject) => {
                         response.isSuccessful = true;
                         userDetailObject = {
                             studenNumber: detailObject.studentNumber,
                             cellphone: detailObject.cellphone,
                         }
-                        response.outputJson = userDetailObject;                        
+                        response.outputJson = userDetailObject;
                         resolve(response);
                     }).catch((err) => {
                         response.isSuccessful = false;
@@ -670,30 +642,34 @@ function changeUserPassword(oldPassword, newPassword, repeatedNewPassword, userI
 }
 module.exports.changeUserPassword = changeUserPassword;
 //---------------------------------------------------------
-/*TODO:BAD PRACTICE*/
-/* WHY SHOULD WE WAIT?! :) */
-/* CASUE THE WAY THE PROMISE IS RETURNED! */
-async function saveAuthKey4User(userId) {
 
-    let response = new global.responseClass();
-    response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
-    response.isSuccessful = false;
+function saveAuthKey4User(userId) {
 
-    let authKey = mongoose.Types.ObjectId();
-    const docQuery = User.findOneAndUpdate({ _id: userId }, { authkKey: authKey });
-    await docQuery.exec().then((doc) => {
 
-        response.isSuccessful = true;
-        response["hasAuthKey"] = true;
-        response.outputJson = { authKey: authKey };
+    return new Promise((resolve) => {
+        let response = new global.responseClass();
+        response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
+        response.isSuccessful = false;
+        let authKey = mongoose.Types.ObjectId();
+        const docQuery = User.findOneAndUpdate({ _id: userId }, { authkKey: authKey });
+
+        docQuery.exec()
+            .then(() => {
+
+                response.isSuccessful = true;
+                response["hasAuthKey"] = true;
+                response.outputJson = { authKey: authKey };
+                resolve(response);
+            })
+            .catch((err) => {
+
+                response.isSuccessful = false;
+                response.serverValidations.push(global.errorResource.Err0000());
+                resolve(response);
+
+            });
     })
-        .catch((err) => {
 
-            response.isSuccessful = false;
-            response.serverValidations.push(global.errorResource.Err0000());
-
-        });
-    return Promise.resolve(response);
 }
 module.exports.saveAuthKey4User = saveAuthKey4User;
 //--------------------------------------------------------
@@ -732,7 +708,7 @@ function getScore(userId) {
 module.exports.getScore = getScore;
 /*---------------------------------*/
 
-function getUserJoinedDetail(userId){
+function getUserJoinedDetail(userId) {
 
     let response = new global.responseClass();
     response.operationTimestamp = global.dateUtilModule.getCurrentDateTime();
@@ -741,38 +717,38 @@ function getUserJoinedDetail(userId){
         response.serverValidations.push(global.errorResource.Err0005());
         resolve(response)
     }
-    return new Promise((resolve)=>{
+    return new Promise((resolve) => {
         fetchUserJoinedDetail(userId)
-        .then((userJoinedDetailData)=>{
-            if(!userJoinedDetailData){
-                response.isSuccessful = false;
-                response.serverValidations.push(global.errorResource.ErrBu0010());
-                resolve(response);
-            }
-            else{
-                const userJoinedDetil = {
-                    userName:userJoinedDetailData.userName,
-                    name:userJoinedDetailData.userDetailCollection[0].name,
-                    lastName:userJoinedDetailData.userDetailCollection[0].lastName,
-                    studentNumber:userJoinedDetailData.userDetailCollection[0].studentNumber,
-                    registerationDate:userJoinedDetailData.userDetailCollection[0].registerationDate,
-                    email:userJoinedDetailData.userDetailCollection[0].email,
-                    birthDate:userJoinedDetailData.userDetailCollection[0].birthDate,
-                    gender:userJoinedDetailData.userDetailCollection[0].gender,
-                    cellphone:userJoinedDetailData.userDetailCollection[0].cellphone,
-                    skillScore:userJoinedDetailData.userDetailCollection[0].skillScore,
-                    province:userJoinedDetailData.userDetailCollection[0].province,
-                    introducerCode:userJoinedDetailData.userDetailCollection[0].introducer
+            .then((userJoinedDetailData) => {
+                if (!userJoinedDetailData) {
+                    response.isSuccessful = false;
+                    response.serverValidations.push(global.errorResource.ErrBu0010());
+                    resolve(response);
                 }
-                response.isSuccessful = true;
-                response.outputJson = userJoinedDetil;
+                else {
+                    const userJoinedDetil = {
+                        userName: userJoinedDetailData.userName,
+                        name: userJoinedDetailData.userDetailCollection[0].name,
+                        lastName: userJoinedDetailData.userDetailCollection[0].lastName,
+                        studentNumber: userJoinedDetailData.userDetailCollection[0].studentNumber,
+                        registerationDate: userJoinedDetailData.userDetailCollection[0].registerationDate,
+                        email: userJoinedDetailData.userDetailCollection[0].email,
+                        birthDate: userJoinedDetailData.userDetailCollection[0].birthDate,
+                        gender: userJoinedDetailData.userDetailCollection[0].gender,
+                        cellphone: userJoinedDetailData.userDetailCollection[0].cellphone,
+                        skillScore: userJoinedDetailData.userDetailCollection[0].skillScore,
+                        province: userJoinedDetailData.userDetailCollection[0].province,
+                        introducerCode: userJoinedDetailData.userDetailCollection[0].introducer
+                    }
+                    response.isSuccessful = true;
+                    response.outputJson = userJoinedDetil;
+                    resolve(response);
+                }
+            }).catch((err) => {
+                response.isSuccessful = false;
+                response.serverValidations.push(err);
                 resolve(response);
-            }
-        }).catch((err)=>{
-            response.isSuccessful = false;
-            response.serverValidations.push(err);
-            resolve(response);
-        })
+            })
     });
 }
 module.exports.getUserJoinedDetail = getUserJoinedDetail;
