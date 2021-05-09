@@ -3,6 +3,7 @@ const port = process.env.PORT || 5000;
 var setupMongoose = require('./setup-mongo');
 var setupSocketNewMessage = require('./setup-socket-new-message-notification');
 var setupPassport = require('./setup-passport');
+var setupRegisterEvents = require('./setup-register-events');
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -31,6 +32,7 @@ global.systemMessages = require('./src/resource/text/system-message');
 const app = express();
 setupMongoose();
 setupPassport();
+setupRegisterEvents();
 setupSocketNewMessage();
 /*--------------------- APP USE --------------------*/
 app.use(bodyParser.urlencoded({ extended: false }));

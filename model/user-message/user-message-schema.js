@@ -10,5 +10,11 @@ const userMessageSchema = mongoose.Schema({
     text:{type:mongoose.Schema.Types.String,require:true}
 });
 const UserMessage = mongoose.model('UserMessage', userMessageSchema);
-UserMessage.watch().on('change',data=>console.log(new Date(),data));
+UserMessage.watch().on('change',(data)=>{
+    if(data.operationType === 'insert'){
+        console.log('Watch',data);
+        global.userMessageEventEmiiter
+        .emit('insert',data.documentKey)
+    }
+});
 module.exports = UserMessage;
