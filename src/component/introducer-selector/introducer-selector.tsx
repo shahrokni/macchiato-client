@@ -28,7 +28,7 @@ export const IntroducerSelector =
                     .then((response) => {                       
                         setAppIntroducers([...(response.outputJson as IAppIntroducer[])]);
                     })
-            }
+            }           
         }, []);
 
         return (
