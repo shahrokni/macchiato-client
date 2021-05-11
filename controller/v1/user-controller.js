@@ -89,8 +89,7 @@ async function registerUser(userDetail) {
     try {
         let newUserId = '';
         let newUserDetailId = '';
-        const opt = { session };
-        console.log('NEW USER', newUser);
+        const opt = { session };       
         await newUser.save(opt)
             .then((savedUser) => {
                 newUserId = savedUser._id;

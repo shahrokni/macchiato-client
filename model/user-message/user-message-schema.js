@@ -10,11 +10,11 @@ const userMessageSchema = mongoose.Schema({
     text:{type:mongoose.Schema.Types.String,require:true}
 });
 const UserMessage = mongoose.model('UserMessage', userMessageSchema);
-UserMessage.watch().on('change',(data)=>{
-    if(data.operationType === 'insert'){
-        console.log('Watch',data);
+function watchChangeHandler(data){
+    if(data.operationType === 'insert'){        
         global.userMessageEventEmiiter
-        .emit('insert',data.documentKey)
-    }
-});
+        .emit('insert',data.fullDocument.receiverId)
+    } 
+}
+UserMessage.watch().on('change', watchChangeHandler);
 module.exports = UserMessage;
