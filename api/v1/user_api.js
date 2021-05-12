@@ -30,6 +30,16 @@ api.post('/user', async (req, res) => {
         });
 });
 
+api.get('/user/id',isUserAuthenticated,(req,res)=>{
+    const response = {
+        isSuccessful : true,
+        serverValidations: [],
+        outputJson: req.user._id
+    }
+    response.serverValidations = [];
+    res.json({response:response})
+    return;
+});
 
 //Update the user information
 api.put('/user', isUserAuthenticated, (req, res) => {
