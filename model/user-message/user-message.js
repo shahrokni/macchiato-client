@@ -80,21 +80,23 @@ class UserMessageModel {
     }
 
     save(userMessage) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {           
             if (!userMessage)
                 reject(global.errorResource.Err0005());
-            const userMessageModel = require('./user-message-schema');
+            const userMessageModel = require('./user-message-schema');            
             const model = new userMessageModel();
             model.senderId = userMessage.senderId;
-            model.receiverId = userMessage.receiverId;
+            model.receiverId = mongoose.Types.ObjectId(userMessage.receiverId);
             model.sentDate = Date.now();;
-            model.isAdvertisement = userMessage.isAdvertisement;
+            model.isAdvertisement = userMessage.isAdvertisement;            
             model.title = userMessage.title;
             model.text = userMessage.text;
-            model.save().then((savedUserMessage) => {
+            model.save()
+            .then((savedUserMessage) => {               
                 resolve(savedUserMessage);
             })
                 .catch((err) => {
+                    console.log(err);
                     reject(err);
                 })
         })

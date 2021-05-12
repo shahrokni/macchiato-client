@@ -217,6 +217,11 @@ export default class ViewHandler {
                 React.lazy(()=>import('../../term-of-use/term-of-use'));
             createdComponent = <TermOfUse linkClick={innerLinkClickEventHandler}/>
         }
+        if(currentLocatin === 'test'){
+            const Test = 
+                React.lazy(()=>import('../../test/test'));
+            createdComponent = <Test/>
+        }
         store.dispatch(keepCurrentComponent(createdComponent));
         return createdComponent;
     }
