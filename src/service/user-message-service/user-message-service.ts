@@ -7,9 +7,6 @@ import UserMessage from '../../entity/user-message/user-message';
 import ErrorMessage from '../../resource/text/error-message';
 import { appGeneralInfo } from '../../setup-general-information';
 import { iso2ShortDate } from '../../util/date-util/date-util2';
-import { WsSubscription } from '../../entity/global/subscription';
-import { Socket } from "socket.io-client";
-import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 
 export default class UserMessageService implements IListDataService {
 
