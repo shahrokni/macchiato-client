@@ -2,18 +2,20 @@ import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import { AuthenticationState } from '../../entity/global/authentication-state-novel';
 import UserMessageService from '../../service/user-message-service/user-message-service';
 import UserService from '../../service/user-service/user-service-novel';
-import {socketNewMessageSingletone} from '../../communication/entity/socket-objects'
+import { socketNewMessageSingletone } from '../../communication/entity/socket-objects'
 
 export const NewMessageCounter: FunctionComponent = () => {
 
     const [newMessageCount, setNewMessageCount] = useState<number>(0);
     const [userService] = useState<UserService>(new UserService);
 
-    useEffect(() => {          
-        socketNewMessageSingletone()
-        .on('message',(data)=>{           
-           setNewMessageCount(data);
+    useEffect(() => {
+        socketNewMessageSingletone().then((socketObject) => {
+            socketObject?.on('message', (data) => {
+                setNewMessageCount(data);
+            })
         })
+
         userService.isUserAuthenticated()
             .then((authResponse) => {
                 if (authResponse &&
@@ -27,27 +29,34 @@ export const NewMessageCounter: FunctionComponent = () => {
                                 unreadMessageCountResponse.isSuccessful) {
                                 setNewMessageCount(unreadMessageCountResponse
                                     .outputJson as number)
-                                
+
                             }
                         });
                 }
             });
-           
+
     }, []);
 
-    useEffect(() => {      
+    useEffect(() => {
         userService.isUserAuthenticated()
             .then((authResponse) => {
                 if (authResponse &&
                     authResponse.isSuccessful &&
-                    authResponse.outputJson === AuthenticationState.Authenticated) {   
-                    if(!socketNewMessageSingletone().connected)                    
-                        socketNewMessageSingletone().connect();                                                        
+                    authResponse.outputJson === AuthenticationState.Authenticated) {
+                    socketNewMessageSingletone()
+                        .then((socketObject) => {
+                            if (!socketObject?.connected) {
+                                socketObject?.connect();
+                            }
+                        })
                 }
             })
-       return ()=>{
-        socketNewMessageSingletone().disconnect();
-       }
+        return () => {
+            socketNewMessageSingletone()
+                .then((socketObject) => {
+                    socketObject?.disconnect()
+                })
+        }
     });
 
     return (
