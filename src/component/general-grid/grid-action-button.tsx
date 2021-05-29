@@ -68,13 +68,16 @@ export default function ActionButton(actionParam: IActionButtonParam): JSX.Eleme
                     let icon: JSX.Element;
                     switch (actionType) {
                         case ActionType.delete:
-                            icon = <i className="material-icons absolute">{'delete'}</i>;
+                            icon = <i className="material-icons absolute gridActionBtnIcon">
+                                {'delete'}</i>;
                             break;
                         case ActionType.update:
-                            icon = <i className="material-icons absolute">{'update'}</i>;
+                            icon = <i className="material-icons absolute gridActionBtnIcon">
+                                {'update'}</i>;
                             break;
                         case ActionType.view:
-                            icon = <i className="material-icons absolute">{'preview'}</i>;
+                            icon = <i className="material-icons absolute gridActionBtnIcon">
+                                {'preview'}</i>;
                             break;
                         default:
                             icon = <Fragment></Fragment>
