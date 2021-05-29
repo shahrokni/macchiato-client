@@ -118,6 +118,9 @@ export default function GeneralGrid(
         else if(window.matchMedia('(max-width:767px) and (orientation: portrait)').matches){            
             return '10%';
         }
+        else if(window.matchMedia('(min-width: 768px) and (orientation: portrait)').matches){            
+            return '10%';
+        }
         return '5%';
     }
 

@@ -89,6 +89,36 @@
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){   
+    .gridRow{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+        font-size: 1.125rem;
+        padding-left: 0.5rem;
+   }
+   .headerCell{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+        font-size: 1.125rem;
+        padding-left: 0.5rem;
+   }
+   .pagingContainer{
+       padding-top: 1.5rem;
+       padding-bottom: 1.5rem;
+       padding-left: 0.5rem;
+   }
+   .pagingNumericBtn{
+       padding:0.5rem;  
+       border-radius: 1.25rem;
+   }
+   .pagingContainerLoadingMessages{
+       padding-top: 0.5rem;
+       font-size: 1.125rem;
+   }
+   .rowCell{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
 }
 
 

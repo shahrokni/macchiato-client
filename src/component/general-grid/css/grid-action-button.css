@@ -63,6 +63,12 @@
 
 /*iphonX, ipad, ipad pro*/
 @media only screen and (min-width: 768px) and (orientation: portrait){   
+    .gridActionBtn{
+        width: 7rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin-left: 1rem;
+    }
 }
 
 /*DESKTOP*/
