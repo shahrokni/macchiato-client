@@ -76,7 +76,7 @@ export default function GeneralGrid(
                 className={'headerContainer'}
                 style={{ backgroundColor: headerColor }}>
                 <div className={'headerCell'} style={{
-                    width: '5%',
+                    width: getRowNumberWidth(),
                     color: headerCellColor
                 }}>{'Row'}</div>
                 {
@@ -109,6 +109,18 @@ export default function GeneralGrid(
         return header;
     }
 
+    const getRowNumberWidth  = ():string =>{
+         /* MOBILE LANDSCAPE */
+        if (window.matchMedia('(max-width:767px) and (orientation: landscape)').matches) {            
+            return '5%';
+        }
+        /* MOBILE PORTRAIT */
+        else if(window.matchMedia('(max-width:767px) and (orientation: portrait)').matches){            
+            return '10%';
+        }
+        return '5%';
+    }
+
     const createGridRows = (): JSX.Element => {       
         const rowsContainer = (
             <div id={gridId + '-rowsContainer'}
@@ -129,7 +141,7 @@ export default function GeneralGrid(
                                         ((): JSX.Element[] => {
                                             const rowCells: JSX.Element[] = [];
                                             const rowCounter = <div className={'rowCell'}
-                                                style={{ width: '5%' }}
+                                                style={{ width: getRowNumberWidth() }}
                                                 key={0}>
                                                 {(currentPage) * 10 + (rowIndex + 1)}
                                             </div>;

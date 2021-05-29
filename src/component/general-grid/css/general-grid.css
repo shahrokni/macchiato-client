@@ -45,6 +45,54 @@
     font-family:Montserrat-Medium; 
     box-sizing: border-box;  
 }
+
+/*Mobile and Tablet Portrait*/
+@media only screen and (max-width:767px) and (orientation: portrait){
+    .headerCell{
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+        font-size: 0.8rem;    
+        padding-left: 0.2rem;    
+   }
+   .gridRow{
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    font-size: 0.8rem;
+    padding-left: 0.2rem;
+    }
+    .rowCell{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+/*Mobile and Tablet Landscape*/
+@media only screen and (max-width:767px) and (orientation: landscape){
+    .headerCell{
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+        font-size: 0.8rem;    
+        padding-left: 0.2rem;    
+   }
+   .gridRow{
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    font-size: 0.8rem;
+    padding-left: 0.2rem;
+    }
+    .rowCell{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/*iphonX, ipad, ipad pro*/
+@media only screen and (min-width: 768px) and (orientation: portrait){   
+}
+
+
+
 /*DESKTOP*/
 @media only screen and (min-width: 768px) and (orientation: landscape) {  
       
