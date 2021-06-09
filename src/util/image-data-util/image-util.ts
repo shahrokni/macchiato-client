@@ -11,10 +11,14 @@ export default class ImageUtil {
         const desktop = '-desktop';
         let imageName = '';
 
-        const mobileTabletPrtMQ = window.matchMedia('only screen and (max-width:767px) and (orientation: portrait)');
-        const mobileTabletLandscapeMQ = window.matchMedia('only screen and (max-width:767px) and (orientation: landscape)');
-        const ipadFamilyMQ = window.matchMedia('only screen and (min-width: 768px) and (orientation: portrait)');
-        const desktopFamilyMQ = window.matchMedia('only screen and (min-width: 768px) and (orientation: landscape)');
+        const mobileTabletPrtMQ = 
+        window.matchMedia('only screen and (max-width:767px) and (orientation: portrait)');
+        const mobileTabletLandscapeMQ = 
+        window.matchMedia('only screen and (max-width:767px) and (orientation: landscape)');
+        const ipadFamilyMQ = 
+        window.matchMedia('only screen and (min-width: 768px) and (orientation: portrait)');
+        const desktopFamilyMQ = 
+        window.matchMedia('only screen and (min-width: 768px) and (orientation: landscape)');
 
         if (image.hasMobileTabletPortrait && mobileTabletPrtMQ.matches)
             imageName = image.name + mtp;

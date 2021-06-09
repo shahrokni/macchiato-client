@@ -13,6 +13,7 @@ import { RowItemViewBox } from '../row-item-view/row-item-view';
 import { SimpleNarrowMessage } from '../simple-narrow-message/simple-narrow-message';
 import SimpleNarrowWaiting from '../simple-waiting/simple-waiting';
 import WhiteRibbon from '../white-ribbon/white-ribbon';
+import './css/message-detail-view.css';
 export interface IMessageDetailViewParam {
     info: string | undefined;
 }
@@ -68,7 +69,7 @@ export default function MessageDetailView(param: IMessageDetailViewParam): JSX.E
                         link={undefined}
                         linkTitle={undefined}
                     />) :
-                (<RowItemViewBox backLink={backLink as string}
+                (<RowItemViewBox
                     action={() => {
                         window.location.href =
                         backLink
@@ -86,20 +87,20 @@ function renderMessageDetail(message: UserMessage): JSX.Element {
             <div id={'messageDetailHeader'}>
                 <div className={'messageDetailHeaderRow'}>
                     <div className={'messageDetailHeaderColumn'}>
-                        {message.title}
+                        <b>{message.title}</b>
                     </div>
                 </div>
                 <div className={'messageDetailHeaderRow'}>
                     <div className={'messageDetailHeaderColumn'}>
-                        {message.senderId}
+                        <b>{'Sent by ' + message.senderId}</b>
                     </div>
                     <div className={'messageDetailHeaderColumn'}>
-                        {iso2ShortDate(message.sentDate as Date)}
+                        <b>{iso2ShortDate(message.sentDate as Date)}</b>
                     </div>
                 </div>
             </div>
             <div id={'messageDetailTextBox'}>
-                <HtmlWrapper>
+                <HtmlWrapper fontFamily = {'Montserrat-Medium'}>
                     {message.text}
                 </HtmlWrapper>
             </div>

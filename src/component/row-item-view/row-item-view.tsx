@@ -1,8 +1,7 @@
 import React, { Fragment, useEffect, useState, FunctionComponent } from 'react';
 import SimpleBtn from '../simple-btn/simple-btn';
 
-export interface IRowItemViewParam {
-    backLink: string;
+export interface IRowItemViewParam {   
     action:()=>void;
 }
 

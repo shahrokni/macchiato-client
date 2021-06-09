@@ -1,8 +1,12 @@
 import React, { FunctionComponent } from 'react';
-export const HtmlWrapper : FunctionComponent  = (props) =>{
-    const htmlWrapper = 
-     <div dangerouslySetInnerHTML={{ __html: props.children as string }}>
-        
-    </div>
+export interface IHtmlWrapperParam {
+    fontFamily: string | undefined;
+}
+export const HtmlWrapper: FunctionComponent<IHtmlWrapperParam> = (props) => {
+    const htmlWrapper =
+        <div style={{ fontFamily: props.fontFamily }}
+            dangerouslySetInnerHTML={{ __html: props.children as string }}>
+
+        </div>
     return htmlWrapper;
 }
