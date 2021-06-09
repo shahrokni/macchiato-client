@@ -46,6 +46,12 @@
     box-sizing: border-box;  
 }
 
+.rowCell{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+
 /*Mobile and Tablet Portrait*/
 @media only screen and (max-width:767px) and (orientation: portrait){
     .headerCell{
@@ -59,12 +65,7 @@
     padding-bottom: 0.8rem;
     font-size: 0.8rem;
     padding-left: 0.2rem;
-    }
-    .rowCell{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+    }    
 }
 /*Mobile and Tablet Landscape*/
 @media only screen and (max-width:767px) and (orientation: landscape){
@@ -79,12 +80,7 @@
     padding-bottom: 0.8rem;
     font-size: 0.8rem;
     padding-left: 0.2rem;
-    }
-    .rowCell{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+    }   
 }
 
 /*iphonX, ipad, ipad pro*/
@@ -113,12 +109,7 @@
    .pagingContainerLoadingMessages{
        padding-top: 0.5rem;
        font-size: 1.125rem;
-   }
-   .rowCell{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    }
+   }  
 }
 
 
